@@ -17,3 +17,4 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
     - addon-google_apis-google-27
+    - build-tools-28.0.3
