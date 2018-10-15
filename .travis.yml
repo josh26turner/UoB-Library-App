@@ -17,3 +17,5 @@ android:
   - android-sdk-preview-license-.+
   - android-sdk-license-.+
   - google-gdk-license-.+
+before_install:before_install:
+  - yes | sdkmanager "platforms;android-27"
