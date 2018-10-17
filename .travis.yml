@@ -3,7 +3,7 @@ android:
   components:
     - build-tools-28.0.3
     - android-27
-    - sys-img-armeabi-v7a-27
+    - sys-img-armeabi-v7a-android-27
     - extra-android-support
     - extra-android-m2repository
     - extra-google-m2repository
