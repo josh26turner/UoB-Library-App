@@ -1,4 +1,4 @@
-# UoB-Library-App
+# UoB-Library-App [![CircleCI](https://circleci.com/gh/josh26turner/UoB-Library-App.svg?style=svg)](https://circleci.com/gh/josh26turner/UoB-Library-App)
 
 Four main parts to the system:
 ------------------------------
