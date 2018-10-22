@@ -1,4 +1,4 @@
-# List of Stakeholders:
+# List of Stakeholders
 	1. Students/Library Customers
 	1. Librarians
 	1. Library service staff
