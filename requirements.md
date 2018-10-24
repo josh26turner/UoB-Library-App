@@ -11,3 +11,6 @@
 1. Use in any library building - 9
 1. Notifies when book is due back
 1. Autorenew
+1. Notifications:
+	* Renewal
+	* Book is reserved
