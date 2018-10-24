@@ -14,3 +14,4 @@
 1. Notifications:
 	* Renewal
 	* Book is reserved
+	* Book is (not) available
