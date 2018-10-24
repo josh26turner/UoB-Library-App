@@ -19,3 +19,4 @@
 1. Item not for loan:
 	* Reference materials
 	* Other person has borrowed it - please return
+1. Account blocking
