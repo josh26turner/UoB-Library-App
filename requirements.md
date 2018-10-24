@@ -6,6 +6,7 @@
 		* Bibliothek
 	* Security tag turned off
 1. Secure:
+	* SSO - User information storage
 	* GDPR
 	* Personal data
 1. Use in any library building - 9
