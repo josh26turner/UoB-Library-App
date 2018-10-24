@@ -16,3 +16,6 @@
 	* Book is reserved
 	* Book is (not) available
 1. eReceipt - PDF or email
+1. Item not for loan:
+	* Reference materials
+	* Other person has borrowed it
