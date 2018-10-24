@@ -15,3 +15,4 @@
 	* Renewal
 	* Book is reserved
 	* Book is (not) available
+1. eReceipt - PDF or email
