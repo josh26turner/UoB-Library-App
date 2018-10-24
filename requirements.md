@@ -20,4 +20,5 @@
 	* Reference materials
 	* Other person has borrowed it - please return
 1. Account blocking
+	* Borrowed too many books
 1. App doesn't have to send overdue messages
