@@ -1,6 +1,6 @@
 Goal: To validate, scan & take out books. (As self service machine)
 
-1. Login
+1. **Login**
   * Basic Flow:
     * Open Application [internet connection required]
     * Input email
@@ -13,7 +13,7 @@ Goal: To validate, scan & take out books. (As self service machine)
     * User has no internet connection
     * SSO/WMS is down.
 
-1. Scan book
+1. **Scan book**
   * Basic Flow:
     * Open Sidebar
     * Press "Scan a New Book"
@@ -28,7 +28,7 @@ Goal: To validate, scan & take out books. (As self service machine)
     * Phone does NOT have NFC Capability. [therefore option is disabled]
     * Phone does NOT read the NFC Tag. [use "report" button]
 
-1. Reserve book
+1. **Reserve book**
   * Basic Flow:
     * Open Sidebar
     * Press "Reservations"
@@ -41,7 +41,7 @@ Goal: To validate, scan & take out books. (As self service machine)
     * User has no internet connection
     * WMS goes down
 
-1. Check Current Loans
+1. **Check Current Loans**
   * Basic Flow:
     * Open Sidebar
     * Press "Current Loans"
@@ -51,7 +51,7 @@ Goal: To validate, scan & take out books. (As self service machine)
     * User has no internet connection
     * WMS goes down
 
-1. Check Fines
+1. **Check Fines**
   * Basic Flow:
     * Open Sidebar
     * Press "FINES"
