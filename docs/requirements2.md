@@ -2,13 +2,13 @@ Goal: To validate, scan & take out books. (As self service machine)
 
 1. Login
   * Basic Flow:
-		* Open Application [internet connection required]
-		* Input email
-		* Input password
-		* Press "login" [query SSO]
-		* Direct to home page [query WMS]
+    * Open Application [internet connection required]
+    * Input email
+    * Input password
+    * Press "login" [query SSO]
+    * Direct to home page [query WMS]
   * Alternative Flow:
-		* Redirect to forgot password page [at any point in the basic flow]
+    * Redirect to forgot password page [at any point in the basic flow]
   * Exceptional Flow:
     * User has no internet connection
     * SSO/WMS is down.
