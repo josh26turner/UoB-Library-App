@@ -1,7 +1,5 @@
 **Overview**
 
-
-
 **Client:** University of Bristol Library Services.
 
 The client predominantly provides access to a large number print materials (such of books and digital content) to the existing 18000+ University of Bristol members. Graduates, former staff, members of local societies as well as members of universities in the UK & Ireland part of the SCONUL Access Scheme can also apply for memberships and become members but these are subject to individual review. There is also visitor passes available however print materials cannot be issued to such members.
