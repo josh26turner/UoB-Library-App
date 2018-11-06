@@ -4,7 +4,7 @@ The client predominantly provides access to a large number print materials (such
 
 As part of a new upgrade going live in January 2019, the client will be upgrading their library management system to a new cloud based setup hosted by OCLC and managed by WMS. In addition to these upgrades, the client loves the idea of developing a quick and robust app for their existing members to self-issue print materials. This would negate the need for existing members to use the librarian or the self service machines to take out materials as they would be able to do on the fly, with their phones via their fingertips.
 
-Alongside issuing print materials to themselves, it is envisioned the application will provide push notifications which will allow the user to be alerted of over-due books, which will allow them to setup over-due reminders such as the day before or the morning when the book is due as well as notifying the users when their print materials have not been renewed.
+Alongside issuing print materials to themselves, it is envisioned the application will provide push notifications which will allow the user to be alerted of over-due books, which will allow them to setup over-due reminders such as the day before or the morning when the book is due as well as notifying the users when their print materials have not been renewed. These new  notifications will replace the current system which is all currently done via email. This current method is not very efficient as not every user is proactive in checking their emails but with this new proposed design, users will be instantly alerted on their mobile phone/tablet.
 
 
 
@@ -25,10 +25,3 @@ WMS will also provide a new discovery service to find, locate and access all lib
 
     Moving this operation to the users own mobile device would require that the near field communications (NFC) functionality on the device is used to interact with the RFID tag which would then, in turn, interact with the central system via SIP2.
     The output of this project would be a mobile app that is able to carry out these tasks of reading the borrower Ucard, the RFID tag, and communicating back to the central system. The user experience would be that of a significantly enhanced and flexible service for issuing books to themselves.
-
-2. Push notifications for user transactions:
-    This app would develop notifications for library users about the status of items that they have on loan. For example, when an item that is out on loan is required by another library user this title is recalled on the central library system. The library user then receives a recall notification, currently an e-mail. The aim of this app would be to replace the e-mail notifications with push notification direct to the user’s mobile device. It is envisioned that this app would work based on Bluetooth beacons to transmit the push notifications.
-    Notification Scenarios:
-        - User is notified when the book is (not) renewed
-        - Night before book is due
-        - Morning when book is due
