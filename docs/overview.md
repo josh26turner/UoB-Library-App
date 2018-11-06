@@ -1,4 +1,9 @@
-# UoB-Library-App [![CircleCI](https://circleci.com/gh/josh26turner/UoB-Library-App.svg?style=svg)](https://circleci.com/gh/josh26turner/UoB-Library-App)
+**Client:** University of Bristol Library Services.
+
+The client predominantly provides access to a large number print materials (such of books and digital content) to the existing 18000+ University of Bristol members. Graduates, former staff, members of local societies as well as members of universities in the UK & Ireland part of the SCONUL Access Scheme can also apply for memberships and become members but these are subject to individual review. There is also visitor passes available however print materials cannot be issued to such members.
+
+
+
 
 Four main parts to the system:
 ------------------------------
@@ -14,9 +19,6 @@ Mobile apps projects
 University of Bristol Library Services comprises 9 libraries and 4 study centres. We operate across the print and digital environments, with a print book collection of approximately 1 million titles and an equally large volume of digital content. Library Services supports all students and staff at the University of Bristol.
 
 Key central library services are managed by a library management system. This is currently being replaced with a new library services platform which will go live in January 2019. This new service, WorldShare Management Services (WMS) will be supplied as a software as a service solution by the supplier OCLC. WMS will also provide a new discovery service to find, locate and access all library materials, both print and digital. This will replace the current Library Search service.
-
-As part of the project to migrate to WMS, Library Services is keen to develop a suite of apps to support interactions with our services and collections. These apps would significantly enhance the user experience of our activities and enable us to deliver new and enhanced services to our users.
-The apps suggested for development through this project will be created to work with WMS. Access to WMS will be provided by Library Services staff. In addition OCLC has a Developer Network (https://www.oclc.org/developer/home.en.html) and a published directory of currently available APIs (https://platform.worldcat.org/api-explorer/apis).
 
 The following are some of the mobile apps that we are keen to develop. We would welcome the opportunity to work with University of Bristol students to develop these. We believe that this would be both an excellent learning experience for students but would also allow Library Services to work in the co-design of future service offerings.
 
