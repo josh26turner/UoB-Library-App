@@ -2,8 +2,7 @@
 
 The client predominantly provides access to a large number print materials (such of books and digital content) to the existing 18000+ University of Bristol members. Graduates, former staff, members of local societies as well as members of universities in the UK & Ireland part of the SCONUL Access Scheme can also apply for memberships and become members but these are subject to individual review. There is also visitor passes available however print materials cannot be issued to such members.
 
-
-
+As part of a new upgrade going live in January 2019, the client will be upgrading their library management system to a new cloud based setup hosted by OCLC and managed by WMS. In addition to these upgrades, the client loves the idea of developing an app for their existing members to self-issue print materials. This would negate the need for existing members to use the librarian or the self service machines to take out materials as they would be able to do on the fly, with their phones via their fingertips. 
 
 Four main parts to the system:
 ------------------------------
