@@ -1,17 +1,18 @@
-Goal: To validate, scan & take out books. (As self service machine)
+Goal: To validate(check if users are allowed to take books), scan & loan books. (As self service machine)
 
 1. **Login**
    * Basic Flow:
      * Open Application [internet connection required]
      * Input email
      * Input password
-     * Press "login" [query SSO]
-     * Direct to home page [query WMS]
+     * Press "login". Retrieve user info from SSO login [query SSO]
+     * Direct to app home page (Displayed in English) [query WMS]
    * Alternative Flow:
-     * Redirect to forgot password page [at any point in the basic flow]
+     * Redirect to forgot password page (handled by SSO) [at any point in the basic flow]
    * Exceptional Flow:
      * User has no internet connection
-     * SSO/WMS is down.
+     * SSO is offline.
+     * App will not work if WMS is offline, redirect to offline circulations info page.
 
 1. **Scan book**
    * Basic Flow:
@@ -22,9 +23,12 @@ Goal: To validate, scan & take out books. (As self service machine)
      * Press "CONFIRM"
    * Alternative Flow:
      * Press "RESCAN" if the information displayed and the book DO NOT match
+     * Display information to visit the service desk if a not-for-loan(reference) book is scanned. [User Guidances]
+     * Display information to visit the service desk if RFID tag is not present (book is not tagged). [User Guidances]
    * Exceptional Flow:
      * User has no internet connection
-     * WMS goes down
+     * SSO is offline.
+     * App will not work if WMS is offline, redirect to offline circulations info page.
      * Phone does NOT have NFC Capability. [therefore option is disabled]
      * Phone does NOT read the NFC Tag. [use "report" button]
 
