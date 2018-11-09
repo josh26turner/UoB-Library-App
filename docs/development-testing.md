@@ -2,21 +2,18 @@
 # Development Testing
 
 ## Test Strategies
-### NFC Scanning Class
-To test this section we will need to create a mock `NFC API`, this will simulate an NFC tag being scanned. Once we have this we can test our `NFC Scanning Class`, using unit tests to ensure it works as we expect it to. 
 
-### WMS Class
-Again we will need to make mock services to simulate the APIs responses during testing. This will then allow us to create unit tests to test the `WMS Class` and esure it functions correctly
+### WMS & SSO Auth & NFC Scanning
 
-### SSO Auth Class
-This will need mock services created to ensure that the `SSO Auth Class` returns the correct information about a user, if they attempt to login.
+These three components will have a similar testing strategy. Since they are all external services we will have to create mock services for each service, this will allow us to predict the data being *received* by our system, since it will be hard coded into the mock service. This allows us to ensure that the data is parsed correctly by our system, we can do this by creating unit tests to ensure that the data output of the parser matches what we expect when given the data in the mock service.
 
-### UI
-For this we will mainly test the UI by hand, we will also research how to create unit tests that allow us to ensure that the UI behaves as we expect it to.
+We could also attempt to ensure that the requests made by our service are the same as what we are expecting them to be when *requesting a users loan history* for example.
 
+## UI Testing
+We will need to create tests for the UI to ensure that the app looks as we expect it to do, this will involve creating unit tests and also doing some manual testing. The unit tests will ensure that making a change to the UI does not affect another part without us knowing. We would also want to do standard user testing to ensure that the UI is easy to use and meets the requirements for accessibility, which are important to our client.
 
 ## Testing Frameworks
-We will use JUnit to write out tests, these will then be run on Circle CI after each commit.
+We will use JUnit to write out tests, these will then be run on Circle CI after each commit. This will ensure that all our components constantly checked after each addition.
 
 
 
@@ -31,7 +28,7 @@ To overcome this issue we will have to create an interface for each of these ext
 
 
 
-## Probably remove the nfc stuff
+## Probably remove this nfc stuff
 The core component of the system that we have chosen to look at is the scanning book capabilities. We have chosen to look at this as it is the most important part of the app, without being able to scan the NFC tags in the library books we would not be able to make the app. 
 
 It is also crucial that this component functions exactly as specified, if it does not then we could causes issues with consequences for the library services such as:
