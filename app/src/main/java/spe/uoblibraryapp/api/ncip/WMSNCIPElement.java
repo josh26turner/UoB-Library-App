@@ -1,22 +1,27 @@
 package spe.uoblibraryapp.api.ncip;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import spe.uoblibraryapp.api.ElementHolder;
 
+/**
+ * Stores the document element for an WMS NCIP response
+ *
+ */
 public class WMSNCIPElement implements ElementHolder {
-    private Element elem;
-    public WMSNCIPElement(Element elem) {
+    private Node elem;
+    public WMSNCIPElement(Node elem) {
         this.elem = elem;
     }
 
     @Override
-    public void setElem(Element elem) {
+    public void setElem(Node elem) {
         this.elem = elem;
     }
 
     @Override
-    public Element getElem(){
+    public Node getElem(){
         return this.elem;
     }
 }

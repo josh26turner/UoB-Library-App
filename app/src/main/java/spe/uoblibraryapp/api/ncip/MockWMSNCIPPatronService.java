@@ -1,7 +1,5 @@
 package spe.uoblibraryapp.api.ncip;
 
-import org.w3c.dom.Document;
-
 import spe.uoblibraryapp.api.WMSResponse;
 
 class MockWMSNCIPPatronService implements WMSNCIPPatronService {
