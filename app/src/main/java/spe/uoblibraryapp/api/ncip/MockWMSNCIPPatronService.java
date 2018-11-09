@@ -103,29 +103,40 @@ class MockWMSNCIPPatronService implements WMSNCIPPatronService {
     }
 
     @Override
-    public WMSResponse renew_item(String book_id) { return null; }
+    public WMSResponse renew_item(String book_id) {
+        // TODO: Add mock api response
+        return null;
+    }
 
     @Override
     public WMSResponse renew_all() {
+        // TODO: Add mock api response
         return null;
     }
 
     @Override
     public WMSResponse request_item() {
+        // TODO: Add mock api response
         return null;
     }
 
     @Override
     public WMSResponse request_bibliographic() {
+        // TODO: Add mock api response
         return null;
     }
 
     @Override
-    public WMSResponse update_request() { return null; }
+    public WMSResponse update_request() {
+        // TODO: Add mock api response
+        return null;
+    }
 
     @Override
-    public WMSResponse cancel_request() { return null; }
-
+    public WMSResponse cancel_request() {
+        // TODO: Add mock api response
+        return null;
+    }
 
     private WMSResponse create_response(String xml){
         return new WMSNCIPResponse(
