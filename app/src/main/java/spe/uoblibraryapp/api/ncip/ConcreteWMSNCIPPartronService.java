@@ -1,15 +1,12 @@
-package spe.uoblibraryapp.api;
+package spe.uoblibraryapp.api.ncip;
 
-public class ConcreteWMSNCIPPartronService implements WMSNCIPPatronService {
+import spe.uoblibraryapp.api.WMSResponse;
+
+class ConcreteWMSNCIPPartronService implements WMSNCIPPatronService {
 
 
     @Override
     public WMSResponse lookup_user(String user_id) {
-        return null;
-    }
-
-    @Override
-    public WMSResponse renew_item(WMSBook book) {
         return null;
     }
 

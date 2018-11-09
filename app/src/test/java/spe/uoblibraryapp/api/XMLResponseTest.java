@@ -14,14 +14,13 @@ import static junit.framework.Assert.assertEquals;
 
 
 /**
- * Tests to check the XMLService
+ * Tests to check the XMLResponse
  */
 
-public class XMLServiceTest {
-
+public class XMLResponseTest {
 
     private Document getXMLDocument(String xml){
-        XMLService parser = new XMLService();
+        XMLResponse parser = new XMLResponse();
         Document doc = null;
         try {
             doc = parser.parseXML(xml);

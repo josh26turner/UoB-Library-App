@@ -7,7 +7,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.*;
 import java.io.*;
 
-public class XMLService {
+public class XMLResponse {
 
     /**
      * Parses the XML response from an API request.
