@@ -179,7 +179,7 @@ class MockWMSNCIPPatronService implements WMSNCIPPatronService {
 
     @Override
     public WMSResponse request_item() {
-        String = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
                 "<ns1:NCIPMessage xmlns:ns1=\"http://www.niso.org/2008/ncip\" xmlns=\"http://oclc.org/WCL/ncip/2011/extensions\" xmlns:ns3=\"http://www.oclc.org/ncip/usernote/2012\">\n" +
                 "<ns1:RequestItemResponse>\n" +
                         "<ns1:RequestId>" +
