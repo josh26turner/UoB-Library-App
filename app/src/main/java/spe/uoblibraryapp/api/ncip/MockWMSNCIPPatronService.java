@@ -262,8 +262,6 @@ class MockWMSNCIPPatronService implements WMSNCIPPatronService {
     }
 
     private WMSResponse create_response(String xml){
-        return new WMSNCIPResponse(
-                xml
-        );
+        return new WMSNCIPResponse(xml);
     }
 }
