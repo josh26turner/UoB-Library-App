@@ -2,7 +2,7 @@ package spe.uoblibraryapp.api.ncip;
 
 import spe.uoblibraryapp.api.WMSResponse;
 
-class MockWMSNCIPPatronService implements WMSNCIPPatronService {
+class MockWMSNCIPStaffService implements WMSNCIPStaffService {
     @Override
     public WMSResponse check_out(String user_id, String item_id){
         //TODO: Add example response
@@ -21,7 +21,8 @@ class MockWMSNCIPPatronService implements WMSNCIPPatronService {
         return null;
     }
 
-    @Override WMSResponse request_bibliographic(){
+    @Override
+    public WMSResponse request_bibliographic(){
         //TODO: Add example response
         return null;
     }
