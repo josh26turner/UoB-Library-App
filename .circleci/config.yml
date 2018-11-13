@@ -52,7 +52,7 @@ jobs:
       - run:
           name: Run Tests
           command: ./gradlew assembleDebug
-      - store_artefacts:
+      - store_artifacts:
           path: app/build/outputs/apk
           destination: apk
       - store_test_results:
