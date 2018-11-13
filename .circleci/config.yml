@@ -80,8 +80,6 @@ workflows:
 #             tags:
 #               only: /^\d+\.\d+\.\d+$/
       - build-apk:
-          requires:
-            - test
           filters:
             branches:
               ignore: /.*/
