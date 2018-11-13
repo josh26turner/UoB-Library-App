@@ -2,7 +2,7 @@ package spe.uoblibraryapp.api.ncip;
 
 import spe.uoblibraryapp.api.WMSResponse;
 
-interface WMSNCIPStaffService {
+public interface WMSNCIPStaffService {
     WMSResponse check_out(String user_id, String item_id);
     WMSResponse check_in(String item_id);
     WMSResponse request_item();

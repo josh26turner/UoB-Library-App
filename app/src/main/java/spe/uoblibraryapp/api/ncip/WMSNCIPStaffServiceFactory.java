@@ -9,7 +9,7 @@ public class WMSNCIPStaffServiceFactory {
         if (mock){
             return new MockWMSNCIPStaffService();
         } else{
-            // Should return ConcreteWMSNCIPPatronService once we have access to
+            // Should return ConcreteWMSNCIPStaffService once we have access to
             // the api and it is implemented.
             return new MockWMSNCIPStaffService();
         }

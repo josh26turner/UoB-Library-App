@@ -18,6 +18,8 @@ public class WMSNCIPController {
     // All methods in this class will return wms objects, no XML.
 
     private WMSNCIPPatronService patronService;
+    private WMSNCIPStaffService staffService;
+
 
     public WMSNCIPController(Boolean mock){
         // Initialise patron service
@@ -26,6 +28,10 @@ public class WMSNCIPController {
         this.patronService = patronServiceFactory.getService();
 
         // Initialise staff service
+        WMSNCIPStaffServiceFactory staffServiceFactory = new WMSNCIPStaffServiceFactory();
+        staffServiceFactory.setMock(mock);
+        this.staffService = staffServiceFactory.getService();
+
         // TODO: Create this when jerry has made it.
 
     }
@@ -40,22 +46,18 @@ public class WMSNCIPController {
     /**
      * This gets the UserProfile for a given user_id.
      *
-     * @param user_id
-     * @return
-     * @throws WMSException
+     * @param userId the ID relating to the user who is requesting the profile.
+     * @return returns a WMSUserProfile which has all actions that a user may need to carry out.
+     * @throws WMSException thrown if there is an error getting
      */
-    public WMSUserProfile get_user_details(String user_id) throws WMSException{
-        WMSResponse response = this.patronService.lookup_user(user_id);
-        if (response.did_fail()){
+    public WMSUserProfile getUserDetails(String userId) throws WMSException {
+        WMSResponse response = this.patronService.lookup_user(userId);
+        if (response.did_fail()) {
             throw new WMSException();
         }
 
         Document doc = response.parse_response();
         Node node = doc.getElementsByTagName("LookupUserResponse").item(0);
-        return new WMSUserProfile(new WMSNCIPElement(node));
+        return new WMSUserProfile(new WMSNCIPElement(node), this.patronService, this.staffService);
     }
-
-
-
-
 }
