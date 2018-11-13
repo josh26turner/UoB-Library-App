@@ -56,7 +56,7 @@ jobs:
           path: app/build/outputs/apk
           destination: apk
       - persist_to_workspace:
-          root: apk
+          root: code
       - store_test_results:
           path: app/build/test-results
   
