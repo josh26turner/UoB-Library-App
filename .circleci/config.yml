@@ -86,7 +86,7 @@ workflows:
             tags:
               only: /^\d+\.\d+\.\d+$/
               
-      - publish-github-release:
+      - publish-github-debug-release:
           requires:
             - build-apk
           filters:
