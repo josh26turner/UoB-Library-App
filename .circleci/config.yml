@@ -68,7 +68,8 @@ jobs:
       - run:
           name: "Publish Release on GitHub"
           command: |
-            ls apk/output
+            TEST=`ls ./apk/debug`
+            echo $TEST
             VERSION=`grep -o '[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+' ./apk/debug/output.json`
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./apk/debug/
 
