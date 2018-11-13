@@ -73,8 +73,8 @@ jobs:
           name: "Publish Release on GitHub"
           command: |
             ls ./workspace/build
-            VERSION=`grep -o '[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+' ./workspace/build/apk/debug/output.json`
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./workspace/build/apk/debug/
+            VERSION=`grep -o '[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+' ./workspace/build/outputs/apk/debug/output.json`
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./workspace/build/outputs/apk/debug/
 
 workflows:
   version: 2
