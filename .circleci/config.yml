@@ -56,7 +56,9 @@ jobs:
           path: app/build/outputs/apk
           destination: apk
       - persist_to_workspace:
-          root: code
+          root: app
+          paths:
+            - build/outputs/apk
       - store_test_results:
           path: app/build/test-results
   
@@ -66,13 +68,13 @@ jobs:
       - image: cibuilds/github:0.10
     steps:
       - attach_workspace:
-          at: ./apk/debug
+          at: ./workspace
       - run:
           name: "Publish Release on GitHub"
           command: |
-            ls ./apk/debug
-            VERSION=`grep -o '[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+' ./apk/debug/output.json`
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./apk/debug/
+            ls ./workspace/app/build/apk/debug
+            VERSION=`grep -o '[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+' ./workspace/app/build/apk/debug/output.json`
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./workspace/app/build/apk/debug/
 
 workflows:
   version: 2
