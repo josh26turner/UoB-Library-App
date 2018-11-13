@@ -5,6 +5,7 @@ import org.w3c.dom.Node;
 
 import spe.uoblibraryapp.api.WMSException;
 import spe.uoblibraryapp.api.WMSResponse;
+import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 /**
@@ -50,7 +51,7 @@ public class WMSNCIPController {
      * @return returns a WMSUserProfile which has all actions that a user may need to carry out.
      * @throws WMSException thrown if there is an error getting
      */
-    public WMSUserProfile getUserDetails(String userId) throws WMSException {
+    public WMSUserProfile getUserDetails(String userId) throws WMSException, WMSParseException {
         WMSResponse response = this.patronService.lookup_user(userId);
         if (response.did_fail()) {
             throw new WMSException();
