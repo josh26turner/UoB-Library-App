@@ -55,6 +55,8 @@ jobs:
       - store_artifacts:
           path: app/build/outputs/apk
           destination: apk
+      - persist_to_workspace:
+          root: apk
       - store_test_results:
           path: app/build/test-results
   
@@ -68,8 +70,7 @@ jobs:
       - run:
           name: "Publish Release on GitHub"
           command: |
-            TEST=`ls ./apk/debug`
-            echo $TEST
+            ls ./apk/debug
             VERSION=`grep -o '[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+' ./apk/debug/output.json`
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./apk/debug/
 
