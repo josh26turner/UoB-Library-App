@@ -12,22 +12,14 @@ import spe.uoblibraryapp.api.XMLResponse;
 
 public class WMSNCIPResponse  extends XMLResponse implements WMSResponse {
     private String xml;
-
     WMSNCIPResponse(String xml){
         super(xml);
+        this.xml = xml;
     }
 
     public String rawResponse() {
         return this.xml;
     }
-
-//    public Document parseResponse() {
-//        try {
-//            return parseXML(this.xml);
-//        } catch (Exception e){
-//            return null;
-//        }
-//    }
 
     public Boolean didFail() {
         // TODO: Add check here to parse xml and test if the request failed.

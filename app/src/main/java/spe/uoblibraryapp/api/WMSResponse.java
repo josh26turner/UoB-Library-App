@@ -10,4 +10,5 @@ import javax.xml.parsers.ParserConfigurationException;
 public interface WMSResponse {
     String rawResponse();
     Boolean didFail();
+    Document parse() throws SAXException, IOException, ParserConfigurationException;
 }
