@@ -1,6 +1,12 @@
 package spe.uoblibraryapp.api.ncip;
 
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import spe.uoblibraryapp.api.WMSResponse;
 import spe.uoblibraryapp.api.XMLResponse;
 
@@ -32,5 +38,12 @@ public class WMSNCIPResponse  extends XMLResponse implements WMSResponse {
         }
         // TODO: Do some magical stuff with parsed_response
         return null;
+    }
+
+    @Override
+    public Document parse() throws ParserConfigurationException, SAXException, IOException {
+        Document document = super.parse();
+        //Do some NCIP specific stuff here
+        return document;
     }
 }
