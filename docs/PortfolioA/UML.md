@@ -3,3 +3,4 @@ This diagram details the flow of data as a request to the WMS API is made to get
   
 ## Static UML
 For WMS{API}Response class it will implement the WMSResponse interface (the {API} is a generalisation, for the NCIP API it wouldbe WMSNCIPResponse). This interface will specify the standard structure that all responses from the WMS API should take. The implementation will change per API which is why an implementation is best suited. This means all the calls to the different WMS APIs can be written in a standard form too. It also extends the XMLResponse class so that the response can be parsed. The parse method is under a protected view so the WMSNIPResponse, and other response classes, should extend the class to access this method. It is protected so that overrides the method with a super call. 
+
