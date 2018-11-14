@@ -8,17 +8,8 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPStaffService;
 
 public class WMSRequest {
 
-    private WMSNCIPPatronService patronService;
-    private WMSNCIPStaffService staffService;
+    public WMSRequest(WMSNCIPElement elemHolder) throws WMSParseException{
 
-    public WMSRequest(WMSNCIPElement elemHolder,
-                      WMSNCIPPatronService patronService,
-                      WMSNCIPStaffService staffService
-    ) throws WMSParseException{
-
-        // Save Services
-        this.patronService = patronService;
-        this.staffService = staffService;
         // TODO: Run some checks on elem to ensure it is correct and then extract the data.
         Node element = elemHolder.getElem();
     }

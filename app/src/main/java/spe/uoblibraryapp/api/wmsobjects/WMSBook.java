@@ -22,5 +22,10 @@ public class WMSBook {
 
         // TODO: Run some checks on elem to ensure it is correct and then extract the data.
         Node element = elemHolder.getElem();
+        // TODO: Extract book details from element and setup object.
+    }
+
+    public WMSBook(String bookId){
+         // TODO: Use search service to find the book details and setup object.
     }
 }
