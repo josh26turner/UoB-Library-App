@@ -39,11 +39,4 @@ public class WMSNCIPResponse  extends XMLResponse implements WMSResponse {
         // TODO: Do some magical stuff with parsed_response
         return null;
     }
-
-    @Override
-    public Document parse() throws ParserConfigurationException, SAXException, IOException {
-        Document document = super.parse();
-        //Do some NCIP specific stuff here
-        return document;
-    }
 }
