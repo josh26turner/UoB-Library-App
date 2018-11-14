@@ -33,8 +33,6 @@ public class WMSNCIPController {
         staffServiceFactory.setMock(mock);
         this.staffService = staffServiceFactory.getService();
 
-        // TODO: Create this when jerry has made it.
-
     }
     public WMSNCIPController(){
         /**
@@ -53,11 +51,15 @@ public class WMSNCIPController {
      */
     public WMSUserProfile getUserDetails(String userId) throws WMSException, WMSParseException {
         WMSResponse response = this.patronService.lookup_user(userId);
-        if (response.did_fail()) {
+        if (response.didFail()) {
             throw new WMSException();
         }
-
-        Document doc = response.parse_response();
+        Document doc;
+        try {
+            doc = response.parse();
+        } catch (Exception e){ // Doing this is really really bad and it needs fixing. TODO
+            throw new WMSException();
+        }
         Node node = doc.getElementsByTagName("LookupUserResponse").item(0);
         return new WMSUserProfile(new WMSNCIPElement(node), this.patronService, this.staffService);
     }
