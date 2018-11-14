@@ -36,12 +36,10 @@ public class WMSUserProfile {
         this.staffService = staffService;
 
 
-
         // TODO: Run some checks on elem to ensure it is correct.
         Node node = elemHolder.getElem();
 
         // Check the node contains the correct data, before parsing.
-
 
 
 
@@ -81,10 +79,11 @@ public class WMSUserProfile {
     public List<WMSRequest> getRecentlyRecieved(){
         return this.recentlyRecieved;
     }
+    public String getUserId(){ return this.userId; }
 
     public WMSCheckout checkoutBook(String bookId){
         // TODO use staff service to make checkout request.
-        return new WMSCheckout();
+        return new WMSCheckout(bookId, this, staffService);
     }
 
 
@@ -93,8 +92,6 @@ public class WMSUserProfile {
         List<Node> holdNodes = new ArrayList<>();
         List<Node> recentlyRecievedNodes = new ArrayList<>();
         List<Node> fineNodes = new ArrayList<>();
-
-        // TODO: get nodes children and split into lists
 
         NodeList childNodes = node.getChildNodes();
         for (int i=0; i<childNodes.getLength(); i++) {
@@ -114,7 +111,7 @@ public class WMSUserProfile {
                     Node childsChild = childsChildren.item(j);
                     if (childsChild.getNodeName().equals("UserFiscalAccountSummary")){
                         // TODO: Find example of api response with charges
-
+                        // Implement this once we know, not a high priority until final build.
                     }
                 }
             }
@@ -145,7 +142,7 @@ public class WMSUserProfile {
     private List<WMSLoan> parseLoans(List<Node> loanNodes) throws WMSParseException {
         List<WMSLoan> loans = new ArrayList<>();
         for (Node loan : loanNodes){
-            loans.add(new WMSLoan(new WMSNCIPElement(loan), patronService, staffService));
+            loans.add(new WMSLoan(new WMSNCIPElement(loan)));
         }
         return loans;
     }
@@ -153,7 +150,7 @@ public class WMSUserProfile {
     private List<WMSRequest> parseHolds(List<Node> holdNodes) throws WMSParseException {
         List<WMSRequest> holds = new ArrayList<>();
         for (Node node : holdNodes){
-            holds.add(new WMSRequest(new WMSNCIPElement(node), patronService, staffService));
+            holds.add(new WMSRequest(new WMSNCIPElement(node)));
         }
         return holds;
     }
@@ -161,7 +158,7 @@ public class WMSUserProfile {
     private List<WMSRequest> parseRecentlyRecieved(List<Node> recentlyRecievedNodes) throws WMSParseException {
         List<WMSRequest> recentlyRecieved = new ArrayList<>();
         for (Node node : recentlyRecievedNodes) {
-            recentlyRecieved.add(new WMSRequest(new WMSNCIPElement(node), patronService, staffService));
+            recentlyRecieved.add(new WMSRequest(new WMSNCIPElement(node)));
         }
         return recentlyRecieved;
     }
@@ -169,7 +166,7 @@ public class WMSUserProfile {
     private List<WMSFine> parseFines(List<Node> fineNodes) throws WMSParseException {
         List<WMSFine> fines = new ArrayList<>();
         for (Node node : fineNodes) {
-            fines.add(new WMSFine(new WMSNCIPElement(node), patronService, staffService));
+            fines.add(new WMSFine(new WMSNCIPElement(node)));
         }
         return fines;
     }

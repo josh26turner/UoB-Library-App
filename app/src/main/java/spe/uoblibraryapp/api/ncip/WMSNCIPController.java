@@ -32,7 +32,6 @@ public class WMSNCIPController {
         WMSNCIPStaffServiceFactory staffServiceFactory = new WMSNCIPStaffServiceFactory();
         staffServiceFactory.setMock(mock);
         this.staffService = staffServiceFactory.getService();
-
     }
     public WMSNCIPController(){
         /**

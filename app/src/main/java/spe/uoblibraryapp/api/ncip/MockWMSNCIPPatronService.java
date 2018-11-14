@@ -256,8 +256,6 @@ class MockWMSNCIPPatronService implements WMSNCIPPatronService {
                             "</ns1:UserId>\n" +
                         "</ns1:CancelRequestItemResponse>\n" +
                     "</ns1:NCIPMessage>\n";
-
-
         return create_response(xml);
     }
 
