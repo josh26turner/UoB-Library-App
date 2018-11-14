@@ -36,31 +36,36 @@ Goal: To validate(check if users are allowed to take books), scan & loan books. 
    * Basic Flow:
      * Open Sidebar
      * Press "Reservations"
-     * Press "Make New Reservation"
-     * Search and select the required material
+     * Check current reservations status (books and the available dates)
+     * Select options such as "cancel reservation"
+     * Or search for a book
+     * Press "Reserve" on book details screen
    * Alternative Flow:
-     * "Make New Reservation" is greyed out as takeout limit reached
-     * User cancels another reservation and proceeds
+     * User have reached maximum number of reservations/loans. Shows warning message why reservation failed
    * Exceptional Flow:
      * User has no internet connection
-     * WMS goes down
+     * SSO is offline.
+     * App will not work if WMS is offline, redirect to offline circulations info page.
 
-1. **Check Current Loans**
+1. **Check Current Loans (Homepage)**
    * Basic Flow:
-     * Open Sidebar
-     * Press "Current Loans"
+     * Perform login as described
+     * User directed to homepage which displays currents loans in chronologic order
    * Alternative Flow:
-     * N/A
+     * Perform login as described
+     * User has unpaid fines, shows warning on homepage and can choose to be directed to payment webpage
+     * User account is blocked, shows "account blocked" page, redirect to instrutions to visit service desk
    * Exceptional Flow:
      * User has no internet connection
-     * WMS goes down
+     * SSO is offline.
+     * App will not work if WMS is offline, redirect to offline circulations info page.
 
 1. **Check Fines**
    * Basic Flow:
-     * Open Sidebar
-     * Press "FINES"
+     * Red warning icon shown on top-right coner (previsional), icon shows amount of fine. Click icon to expand details
    * Alternative Flow:
-     * User can press "View Breakdown" for more information regarding their fines
+     * Press warning icon. Then press "View Breakdown" (if API allows) for more information regarding their fines including how to pay
    * Exceptional Flow:
      * User has no internet connection
-     * WMS goes down
+     * SSO is offline.
+     * App will not work if WMS is offline, redirect to offline circulations info page.
