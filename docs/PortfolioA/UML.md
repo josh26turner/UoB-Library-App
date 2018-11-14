@@ -1,0 +1,2 @@
+## Dynamic UML
+This diagram details the flow of data as a request to the WMS API is made to get the data on a particular user. The data would be loaded from the user when they sign in to the applicaiton. 
