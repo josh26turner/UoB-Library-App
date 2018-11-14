@@ -8,26 +8,28 @@ public class WMSNCIPResponse  extends XMLResponse implements WMSResponse {
     private String xml;
 
     WMSNCIPResponse(String xml){
-        this.xml = xml;
+        super(xml);
     }
 
-    @Override
-    public String raw_response() {
+    public String rawResponse() {
         return this.xml;
     }
 
-    public Document parse_response() {
-        try {
-            return parseXML(this.xml);
-        } catch (Exception e){
-            return null;
-        }
-    }
+//    public Document parseResponse() {
+//        try {
+//            return parseXML(this.xml);
+//        } catch (Exception e){
+//            return null;
+//        }
+//    }
 
-    @Override
-    public Boolean did_fail() {
+    public Boolean didFail() {
         // TODO: Add check here to parse xml and test if the request failed.
-        Document parsed_response = this.parse_response();
+        try {
+            Document parsedResponse = this.parse();
+        } catch (Exception e){
+            return null; // Make this do something.
+        }
         // TODO: Do some magical stuff with parsed_response
         return null;
     }

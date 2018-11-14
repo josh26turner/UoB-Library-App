@@ -20,10 +20,10 @@ import static junit.framework.Assert.assertEquals;
 public class XMLResponseTest {
 
     private Document getXMLDocument(String xml){
-        XMLResponse parser = new XMLResponse();
+        XMLResponse parser = new XMLResponse(xml);
         Document doc = null;
         try {
-            doc = parser.parseXML(xml);
+            doc = parser.parse();
         } catch (ParserConfigurationException e) {
             fail("There was a issue configuring the parser");
         } catch (SAXException e) {

@@ -9,15 +9,21 @@ import java.io.*;
 
 public class XMLResponse {
 
+    private String xml;
+
+    public XMLResponse(String xml){
+        this.xml = xml;
+    }
+
+
     /**
      * Parses the XML response from an API request.
      * https://www.tutorialspoint.com/java_xml/java_dom_parse_document.htm
      */
-    public Document parseXML(String raw_xml) throws ParserConfigurationException, SAXException, IOException {
+    public Document parse() throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        InputSource is = new InputSource(new StringReader(raw_xml));
-        Document document = builder.parse(is);
-        return document;
+        InputSource is = new InputSource(new StringReader(xml));
+        return builder.parse(is);
     }
 }
