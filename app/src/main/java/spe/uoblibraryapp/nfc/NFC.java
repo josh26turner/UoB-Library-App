@@ -10,14 +10,14 @@ import java.io.IOException;
 public class NFC {
     private NfcV nfcTag;
 
-    public NfcV getNfcTag() { return nfcTag; }
-
     private Tag tagFromIntent (Intent intent){
         String intentAction = intent.getAction();
+
         if (intentAction.equals(NfcAdapter.ACTION_TECH_DISCOVERED)
-                || intentAction.equals(NfcAdapter.ACTION_TAG_DISCOVERED)){
-            return (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-        }
+                || intentAction.equals(NfcAdapter.ACTION_TAG_DISCOVERED))
+                return (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+
+
         return null;
     }
 
