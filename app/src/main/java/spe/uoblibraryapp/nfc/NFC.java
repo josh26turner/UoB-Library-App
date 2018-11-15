@@ -26,12 +26,24 @@ public class NFC {
 
         if (tag == null) throw new IOException();
 
-        for (String tech : tag.getTechList())
-            if (tech.equals(NfcV.class.getName()))
+        boolean techPresent = false;
+
+        for (String tech : tag.getTechList()) {
+            if (tech.equals(NfcV.class.getName())) {
                 nfcTag = NfcV.get(tag);
+                techPresent = true;
+            }
+            if (techPresent) break;
+        }
+
+        if (!techPresent) throw new IOException();
 
         nfcTag.connect();
     }
+
+    //public byte[] getBookID() throws IOException{
+
+   // }
 
     public void removeSecureSetting(){
         //NFC Transceive to turn off security
