@@ -5,8 +5,12 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.NfcV;
 
+import java.io.IOException;
+
 public class NFC {
     private NfcV nfcTag;
+
+    public NfcV getNfcTag() { return nfcTag; }
 
     private Tag tagFromIntent (Intent intent){
         String intentAction = intent.getAction();
@@ -17,19 +21,19 @@ public class NFC {
         return null;
     }
 
-    public void setNfcTag(Intent intent){
+    public void setNfcTag(Intent intent) throws IOException {
         Tag tag = tagFromIntent(intent);
 
-        //if (tag )
+        if (tag == null) throw new IOException();
 
-        for (String tech : tag.getTechList()){
-            if (tech.equals(NfcV.class.getName())){
+        for (String tech : tag.getTechList())
+            if (tech.equals(NfcV.class.getName()))
+                nfcTag = NfcV.get(tag);
 
-            }
-        }
+        nfcTag.connect();
     }
 
-    public byte[] tagID(Tag tag){
-        return tag.getId();
+    public void removeSecureSetting(){
+        //NFC Transceive to turn off security
     }
 }
