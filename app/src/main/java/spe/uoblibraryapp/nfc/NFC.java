@@ -21,10 +21,10 @@ public class NFC {
         return null;
     }
 
-    public void setNfcTag(Intent intent) throws IOException {
+    public void setNfcTag(Intent intent) throws NFCTechException, IntentException, IOException {
         Tag tag = tagFromIntent(intent);
 
-        if (tag == null) throw new IOException();
+        if (tag == null) throw new IntentException();
 
         boolean techPresent = false;
 
@@ -36,7 +36,7 @@ public class NFC {
             if (techPresent) break;
         }
 
-        if (!techPresent) throw new IOException();
+        if (!techPresent) throw new NFCTechException();
 
         nfcTag.connect();
     }
