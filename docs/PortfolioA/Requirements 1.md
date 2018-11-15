@@ -1,5 +1,7 @@
 Goal: To validate(check if users are allowed to take books), scan & loan books. (As self service machine)
 
+The key objectives of our app are to be able to login and scan books, below we have designed the flow that is required for the app to function as we expect it to.
+
 1. **Login**
    * Basic Flow:
      * Open Application [internet connection required]
@@ -31,6 +33,9 @@ Goal: To validate(check if users are allowed to take books), scan & loan books. 
      * App will not work if WMS is offline, redirect to offline circulations info page.
      * Phone does NOT have NFC Capability. [therefore option is disabled]
      * Phone does NOT read the NFC Tag. [use "report" button]
+
+
+These are some additional requirement flows that could be included in our app.
 
 1. **Reserve book**
    * Basic Flow:

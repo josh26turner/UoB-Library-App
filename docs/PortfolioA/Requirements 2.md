@@ -1,4 +1,5 @@
-**Atomic Requirements:** 
+Required User Flow
+------------------
 
 Requirement: **Scan book through the phone's built-in NFC Reader**
  
@@ -32,3 +33,21 @@ Once logged in, the system shall allow the users with a phone that has NFC Capab
           * open & show problems scanning activity.
     * If unsuccessful:
       * the appropriate error message will be displayed.
+
+NOTES:
+=====
+- The requirements cannot mention activity, this is to do with how the app is built and not how it must function.
+
+
+Atomic Requirements
+-------------------
+
+1. The app must be able to scan the ISO-15693 tag inside the book.
+1. The app must be able to read the book id off the ISO-15693 tag.
+1. The app must ask the user if they would like to checkout the book.
+1. The app must deactivate the security element of the tag, when the book is checked out.
+1. The app must communicate with the OCLC API, to ensure the book is not already checked out.
+1. The app must communicate with the OCLC API, to ensure the book is not a reference book.
+1. The app must communicate with the OCLC API, to checkout the book against a user.
+1. If the book is not available to checkout it must display a message asking the user to speak to a librarian.
+
