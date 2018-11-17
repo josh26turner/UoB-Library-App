@@ -7,11 +7,11 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.*;
 import java.io.*;
 
-public class XMLResponse {
+public class XMLParser {
 
     private String xml;
 
-    public XMLResponse(String xml){
+    public XMLParser(String xml){
         this.xml = xml;
     }
 
@@ -21,6 +21,10 @@ public class XMLResponse {
      * https://www.tutorialspoint.com/java_xml/java_dom_parse_document.htm
      */
     public Document parse() throws ParserConfigurationException, SAXException, IOException {
+        return parse(this.xml);
+    }
+
+    public static Document parse(String xml) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         InputSource is = new InputSource(new StringReader(xml));

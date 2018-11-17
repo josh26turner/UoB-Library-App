@@ -1,16 +1,11 @@
 package spe.uoblibraryapp.api.ncip;
 
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import spe.uoblibraryapp.api.WMSResponse;
-import spe.uoblibraryapp.api.XMLResponse;
+import spe.uoblibraryapp.api.XMLParser;
 
-public class WMSNCIPResponse  extends XMLResponse implements WMSResponse {
+public class WMSNCIPResponse  extends XMLParser implements WMSResponse {
     private String xml;
     WMSNCIPResponse(String xml){
         super(xml);

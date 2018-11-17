@@ -1,11 +1,18 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import spe.uoblibraryapp.api.WMSException;
+import spe.uoblibraryapp.api.WMSResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPStaffService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPPatronService;
@@ -17,7 +24,7 @@ public class WMSUserProfile {
 
     private List<WMSLoan> loans;
     private List<WMSRequest> onHold;
-    private List<WMSRequest> recentlyRecieved;
+    private List<WMSRequest> recentlyReceived;
     private List<WMSFine> fines;
 
     private WMSNCIPPatronService patronService;
@@ -73,12 +80,14 @@ public class WMSUserProfile {
     }
 
     /**
-     * Gets all requests the the user has
-     * @return
+     * Gets all requests the the user has recently made, and not actioned yet by the library.
+     * @return Returns a list of requests
      */
-    public List<WMSRequest> getRecentlyRecieved(){
-        return this.recentlyRecieved;
+    public List<WMSRequest> getRecentlyReceived(){
+        return this.recentlyReceived;
     }
+
+
     public String getUserId(){ return this.userId; }
 
     public WMSCheckout checkoutBook(String bookId){
@@ -86,34 +95,59 @@ public class WMSUserProfile {
         return new WMSCheckout(bookId, this, staffService);
     }
 
+    /**
+     * This will refresh the data contained in the UserProfile,
+     * could be called when the user refreshes home page
+     */
+    public void refresh() throws WMSException, WMSParseException{
+        WMSResponse response = patronService.lookup_user(this.userId);
+
+        if (response.didFail()) {
+            throw new WMSException("There was an error retrieving the User Profile");
+        }
+        Document doc;
+        try {
+            doc = response.parse();
+        } catch (IOException | SAXException | ParserConfigurationException e){
+            throw new WMSException("There was an error Parsing the WMS response");
+        }
+        Node node = doc.getElementsByTagName("ns1:LookupUserResponse").item(0);
+
+        parseNode(node);
+    }
 
     private void parseNode(Node node) throws WMSParseException {
         List<Node> loanNodes = new ArrayList<>();
         List<Node> holdNodes = new ArrayList<>();
-        List<Node> recentlyRecievedNodes = new ArrayList<>();
+        List<Node> recentlyReceivedNodes = new ArrayList<>(); // Will this be needed TODO!
         List<Node> fineNodes = new ArrayList<>();
 
         NodeList childNodes = node.getChildNodes();
         for (int i=0; i<childNodes.getLength(); i++) {
             Node child = childNodes.item(i);
-            if (child.getNodeName().equals("UserId")) {
-                parseUserId(child);
-            } else if (child.getNodeName().equals("LoanedItem")) {
-                loanNodes.add(child);
-            } else if (child.getNodeName().equals("RequestedItem")) {
-                // TODO: Add check if request is on hold or recently recieved.
-                // Can they be dealt with by the same list?
 
-                holdNodes.add(child);
-            } else if (child.getNodeName().equals("Ext")){
-                NodeList childsChildren = child.getChildNodes();
-                for (int j=0; j<childsChildren.getLength(); j++){
-                    Node childsChild = childsChildren.item(j);
-                    if (childsChild.getNodeName().equals("UserFiscalAccountSummary")){
-                        // TODO: Find example of api response with charges
-                        // Implement this once we know, not a high priority until final build.
+            switch (child.getNodeName()) {
+                case "ns1:UserId":
+                    parseUserId(child);
+                    break;
+                case "ns1:LoanedItem":
+                    loanNodes.add(child);
+                    break;
+                case "ns1:RequestedItem":
+                    // TODO: Add check if request is on hold or recently recieved.
+                    // Can they be dealt with by the same list?
+                    holdNodes.add(child);
+                    break;
+                case "ns1:Ext":
+                    NodeList childsChildren = child.getChildNodes();
+                    for (int j=0; j<childsChildren.getLength(); j++){
+                        Node childsChild = childsChildren.item(j);
+                        if (childsChild.getNodeName().equals("UserFiscalAccountSummary")){
+                            // TODO: Find example of api response with charges
+                            // Implement this once we know, not a high priority until final build.
+                        }
                     }
-                }
+                    break;
             }
         }
 
@@ -121,7 +155,7 @@ public class WMSUserProfile {
 
         this.loans = parseLoans(loanNodes);
         this.onHold = parseHolds(holdNodes);
-        this.recentlyRecieved = parseRecentlyRecieved(recentlyRecievedNodes);
+        this.recentlyReceived = parseRecentlyReceived(recentlyReceivedNodes);
         this.fines = parseFines(fineNodes);
     }
 
@@ -129,13 +163,13 @@ public class WMSUserProfile {
         NodeList children = userIdNode.getChildNodes();
         for (int i=0; i<children.getLength(); i++){
             Node child = children.item(i);
-            if (child.getNodeName().equals("UserIdentifierValue")){
+            if (child.getNodeName().equals("ns1:UserIdentifierValue")){
                 this.userId = child.getTextContent();
                 return;
             }
         }
-        if (userId == null){
-            throw new WMSParseException(); //No UserId element can be found"
+        if (this.userId == null){
+            throw new WMSParseException("No UserId element can be found");
         }
     }
 
@@ -155,12 +189,12 @@ public class WMSUserProfile {
         return holds;
     }
 
-    private List<WMSRequest> parseRecentlyRecieved(List<Node> recentlyRecievedNodes) throws WMSParseException {
-        List<WMSRequest> recentlyRecieved = new ArrayList<>();
-        for (Node node : recentlyRecievedNodes) {
-            recentlyRecieved.add(new WMSRequest(new WMSNCIPElement(node)));
+    private List<WMSRequest> parseRecentlyReceived(List<Node> recentlyReceivedNodes) throws WMSParseException {
+        List<WMSRequest> recentlyReceived = new ArrayList<>();
+        for (Node node : recentlyReceivedNodes) {
+            recentlyReceived.add(new WMSRequest(new WMSNCIPElement(node)));
         }
-        return recentlyRecieved;
+        return recentlyReceived;
     }
 
     private List<WMSFine> parseFines(List<Node> fineNodes) throws WMSParseException {

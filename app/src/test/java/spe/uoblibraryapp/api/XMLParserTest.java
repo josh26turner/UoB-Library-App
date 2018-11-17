@@ -9,18 +9,18 @@ import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import static junit.framework.TestCase.fail;
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 /**
- * Tests to check the XMLResponse
+ * Tests to check the XMLParser
  */
 
-public class XMLResponseTest {
+public class XMLParserTest {
 
     private Document getXMLDocument(String xml){
-        XMLResponse parser = new XMLResponse(xml);
+        XMLParser parser = new XMLParser(xml);
         Document doc = null;
         try {
             doc = parser.parse();
