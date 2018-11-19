@@ -10,6 +10,11 @@ import java.io.IOException;
 public class NFC {
     private NfcV nfcTag;
 
+    /**
+     *
+     * @param intent - intent that called the activity
+     * @return - the tag in the book, or null
+     */
     private Tag tagFromIntent (Intent intent){
         String intentAction = intent.getAction();
 
@@ -21,6 +26,13 @@ public class NFC {
         return null;
     }
 
+    /**
+     *
+     * @param intent - intent that called the activity
+     * @throws NFCTechException - not the right type of tag
+     * @throws IntentException - tag not present in the intent
+     * @throws IOException - can't talk to the tag
+     */
     public void setNfcTag(Intent intent) throws NFCTechException, IntentException, IOException {
         Tag tag = tagFromIntent(intent);
 
@@ -45,6 +57,9 @@ public class NFC {
 
    // }
 
+    /**
+     *
+     */
     public void removeSecureSetting(){
         //NFC Transceive to turn off security
     }
