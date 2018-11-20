@@ -7,6 +7,9 @@ import android.nfc.tech.NfcV;
 
 import java.io.IOException;
 
+import static spe.uoblibraryapp.nfc.Hex.*;
+
+
 public class NFC {
     private NfcV nfcTag;
 
@@ -15,12 +18,12 @@ public class NFC {
      * @param intent - intent that called the activity
      * @return - the tag in the book, or null
      */
-    private Tag tagFromIntent (Intent intent){
+    private Tag tagFromIntent (Intent intent) {
         String intentAction = intent.getAction();
 
         if (intentAction.equals(NfcAdapter.ACTION_TECH_DISCOVERED)
                 || intentAction.equals(NfcAdapter.ACTION_TAG_DISCOVERED))
-                return (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            return (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
 
         return null;
@@ -53,14 +56,30 @@ public class NFC {
         nfcTag.connect();
     }
 
-    //public byte[] getBookID() throws IOException{
+    /**
+     *
+     * @return - the book ID
+     * @throws IOException - if the tag can't be communicated with
+     */
+    public byte[] getBookID() throws IOException {
+        byte[] commands = readMultipleBlocksCommand(2, 1);
 
-   // }
+        return nfcTag.transceive(commands);
+    }
+
+    /**
+     *
+     * @return
+     * @throws IOException
+     */
+    public byte[] getSystemInfo() throws IOException {
+        return nfcTag.transceive(SYSTEM_INFO_COMMAND);
+    }
 
     /**
      *
      */
-    public void removeSecureSetting(){
+    public void removeSecureSetting() {
         //NFC Transceive to turn off security
     }
 }
