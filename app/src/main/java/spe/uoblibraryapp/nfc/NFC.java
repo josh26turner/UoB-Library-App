@@ -11,7 +11,7 @@ import static spe.uoblibraryapp.nfc.Hex.*;
 
 
 public class NFC {
-    private NfcV nfcTag;
+    private NfcV nfcTag = null;
 
     /**
      *
@@ -72,8 +72,11 @@ public class NFC {
      * @return
      * @throws IOException
      */
-    public byte[] getSystemInfo() throws IOException {
-        return nfcTag.transceive(SYSTEM_INFO_COMMAND);
+    public byte[] getSystemInfo() throws IOException, IntentException {
+        if (nfcTag == null)
+            throw new IntentException();
+        else
+            return nfcTag.transceive(SYSTEM_INFO_COMMAND);
     }
 
     /**

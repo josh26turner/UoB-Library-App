@@ -12,6 +12,8 @@ import android.widget.Toast;
 import java.io.IOException;
 
 import spe.uoblibraryapp.nfc.NFC;
+import spe.uoblibraryapp.nfc.IntentException;
+import spe.uoblibraryapp.nfc.NFCTechException;
 
 public class HomeNFC extends AppCompatActivity {
 
@@ -37,12 +39,24 @@ public class HomeNFC extends AppCompatActivity {
                 .show();
         //write parsing here.
 
-        NFC classNFC = new NFC();
-        try{
-            txtContent.setText( classNFC.getSystemInfo().toString()  );
+        NFC nfc = new NFC();
+
+        try {
+            nfc.setNfcTag(intent);
+        } catch (NFCTechException e) {
+
+        } catch (IntentException e) {
+
+        } catch (IOException e) {
+
         }
-        catch(IOException e){
+
+        try{
+            txtContent.setText( nfc.getSystemInfo().toString()  );
+        } catch(IOException e){
             txtContent.setText( "Error: Exception Thrown" );
+        } catch (IntentException e) {
+
         }
 
 

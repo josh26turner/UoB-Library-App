@@ -13,7 +13,7 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Button buttonNFC = (Button) findViewById(R.id.btnNFC);
+        Button buttonNFC = findViewById(R.id.btnNFC);
         buttonNFC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
