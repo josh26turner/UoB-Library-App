@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "spe.uoblibraryapp"
@@ -30,3 +34,4 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation files('libs/stanford-android-lib.jar')
 }
+

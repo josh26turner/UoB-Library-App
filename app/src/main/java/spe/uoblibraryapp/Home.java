@@ -9,20 +9,19 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import spe.uoblibraryapp.api.WMSException;
+import spe.uoblibraryapp.api.ncip.WMSNCIPController;
 import spe.uoblibraryapp.api.wmsobjects.WMSBook;
 import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
+import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 public class Home extends AppCompatActivity {
 
-//    ArrayList<WMSBook> loans = new ArrayList<>();
-//    WMSUserProfile user = new WMSUserProfile();
-//    loans = user.getLoans();
-//    for(loan:loans){
-//        loanList.add(loan.getBook().getTitle());
-//    }
-
-
+    private WMSUserProfile mockUser;
+    private String userID;
+    private List<String> loanList = new ArrayList<>();
+    private WMSNCIPController mockController = new WMSNCIPController(true);
 
 
     @Override
@@ -32,12 +31,45 @@ public class Home extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        MainListAdapter mainListAdapter = new MainListAdapter(getLoanList());
+
+        setUserID("1230000");
+        //getUser();
+        //setLoans();
+
+        MainListAdapter mainListAdapter = new MainListAdapter(mockLoanList());
         recyclerView.setAdapter(mainListAdapter);
     }
 
-    public List<String> getLoanList() {
-        List<String> loanList = new ArrayList<>();
+    ////////////////////////////
+
+    public void setUserID(String s){
+        this.userID = s;
+    }
+
+    private void getUser(){
+        try {
+            mockUser = mockController.getUserDetails(userID);
+        } catch (WMSException e) {
+            e.printStackTrace();
+        } catch (WMSParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setLoans(){
+        List<WMSLoan> loans = mockUser.getLoans();
+        for(WMSLoan loan : loans){
+            this.addItem(loan.getBook().getTitle());
+        }
+    }
+
+
+    private void addItem(String s){
+        this.loanList.add(s);
+    }
+
+    public List<String> mockLoanList() {
+        //MOCK RESULT
         loanList.add("Book 1");
         loanList.add("Book 2");
         loanList.add("Book 3");
@@ -47,6 +79,7 @@ public class Home extends AppCompatActivity {
         loanList.add("Book 7");
         loanList.add("Book 8");
         loanList.add("Book 9");
+        //MOCK RESULT
         return loanList;
     }
 }
