@@ -85,7 +85,6 @@ public class HomeNFC extends AppCompatActivity {
             System.out.println(buffer);
             stringBuilder.append(buffer);
         }
-
         return stringBuilder.toString();
     }
 
