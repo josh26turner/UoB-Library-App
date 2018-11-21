@@ -58,9 +58,6 @@ public class HomeNFC extends AppCompatActivity {
         } catch (IntentException e) {
 
         }
-
-
-
     }
 
     @Override
