@@ -19,7 +19,9 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+import spe.uoblibraryapp.nfc.IntentException;
 import spe.uoblibraryapp.nfc.NFC;
+import spe.uoblibraryapp.nfc.NFCTechException;
 
 public class HomeNFC extends AppCompatActivity {
 
@@ -52,11 +54,26 @@ public class HomeNFC extends AppCompatActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        String intentAction = intent.getAction();
-        if (intentAction.equals(NfcAdapter.ACTION_TECH_DISCOVERED) || intentAction.equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
-                Tag t = (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-                bytesToHexString(t.getId());
-                txtContent.setText(bytesToHexString(t.getId()));
+        Toast.makeText(this, "NFC Intent", Toast.LENGTH_SHORT).show();
+
+        NFC nfc = new NFC();
+
+        try {
+            nfc.setNfcTag(intent);
+        } catch (NFCTechException e) {
+
+        } catch (IntentException e) {
+
+        } catch (IOException e) {
+
+        }
+
+        try{
+            txtContent.setText( nfc.getSystemInfo().toString()  );
+        } catch(IOException e){
+            txtContent.setText( "Error: Exception Thrown" );
+        } catch (IntentException e) {
+
         }
     }
 
