@@ -61,10 +61,10 @@
                     android:id="@+id/meal_tv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fontFamily="sans-serif"
                     android:gravity="center_vertical"
-                    android:textSize="20sp"
-                    android:fontFamily="sans-serif-smallcaps"
-                    android:text="Salmon"/>
+                    android:text="I like Salmon"
+                    android:textSize="20sp" />
 
             </FrameLayout>
 
