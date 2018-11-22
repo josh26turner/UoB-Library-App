@@ -2,22 +2,17 @@ package spe.uoblibraryapp;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.NfcA;
-import android.nfc.tech.NfcB;
-import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
-import android.os.Parcelable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+
+import static android.content.ContentValues.TAG;
 
 import spe.uoblibraryapp.nfc.IntentException;
 import spe.uoblibraryapp.nfc.NFC;
@@ -61,19 +56,19 @@ public class HomeNFC extends AppCompatActivity {
         try {
             nfc.setNfcTag(intent);
         } catch (NFCTechException e) {
-
+            Log.d(TAG, "Not the right NFC/RFID type");
         } catch (IntentException e) {
-
+            Log.d(TAG, "No tag in the intent");
         } catch (IOException e) {
-
+            Log.d(TAG, "Can't connect to the tag");
         }
 
         try{
-            txtContent.setText( nfc.getSystemInfo().toString()  );
+            txtContent.setText(bytesToHexString(nfc.getSystemInfo()));
         } catch(IOException e){
-            txtContent.setText( "Error: Exception Thrown" );
+            Log.d(TAG, "Can't connect to the tag");
         } catch (IntentException e) {
-
+            Log.d(TAG, "Intent not set");
         }
     }
 
@@ -102,7 +97,7 @@ public class HomeNFC extends AppCompatActivity {
             System.out.println(buffer);
             stringBuilder.append(buffer);
         }
-        return stringBuilder.toString();
+        return stringBuilder.toString().toUpperCase();
     }
 
 

@@ -14,22 +14,18 @@ class Hex {
      * @return - what was in those blocks
      * @throws NumberFormatException - if the integers aren't in range
      */
-    static byte [] readMultipleBlocksCommand(int offset, int numberOfBlocks) throws NumberFormatException{
+    static byte [] readMultipleBlocksCommand(int offset, int numberOfBlocks) throws NumberFormatException {
         return new byte[] {FLAGS, READ_MULTIPLE_BLOCKS, toByte(offset), toByte(numberOfBlocks)};
     }
 
     /**
-     * Slightly obfuscated but just sees if the int is in range and converts it
+     *
      * @param i - the number to convert
      * @return - the number in bytes
      * @throws NumberFormatException - if not between -128 and 127
      */
     private static byte toByte(int i) throws NumberFormatException{
-        int orBy = Integer.MAX_VALUE - Byte.MAX_VALUE;
-        if ((i | orBy) != 0) {
-            return (byte) i;
-        } else {
-            throw new NumberFormatException();
-        }
+        if ((i <= 127) && (i >= -128)) return (byte) i;
+        else throw new NumberFormatException();
     }
 }
