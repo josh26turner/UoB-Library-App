@@ -21,10 +21,6 @@ import java.io.IOException;
 
 import spe.uoblibraryapp.nfc.IntentException;
 import spe.uoblibraryapp.nfc.NFC;
-<<<<<<< HEAD
-import spe.uoblibraryapp.nfc.IntentException;
-=======
->>>>>>> origin/nfc
 import spe.uoblibraryapp.nfc.NFCTechException;
 
 public class HomeNFC extends AppCompatActivity {
@@ -67,7 +63,6 @@ public class HomeNFC extends AppCompatActivity {
         } catch (NFCTechException e) {
 
         } catch (IntentException e) {
-<<<<<<< HEAD
 
         } catch (IOException e) {
 
@@ -80,20 +75,6 @@ public class HomeNFC extends AppCompatActivity {
         } catch (IntentException e) {
 
         }
-=======
-
-        } catch (IOException e) {
-
-        }
-
-        try{
-            txtContent.setText( nfc.getSystemInfo().toString()  );
-        } catch(IOException e){
-            txtContent.setText( "Error: Exception Thrown" );
-        } catch (IntentException e) {
-
-        }
->>>>>>> origin/nfc
     }
 
 
