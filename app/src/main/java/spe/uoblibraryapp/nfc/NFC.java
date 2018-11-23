@@ -43,15 +43,14 @@ public class NFC {
 
         boolean techPresent = false;
 
-        for (String tech : tag.getTechList()) {
+        for (String tech : tag.getTechList())
             if (tech.equals(NfcV.class.getName())) {
                 nfcTag = NfcV.get(tag);
                 techPresent = true;
+                break;
             }
-            if (techPresent) break;
-        }
 
-        if (!techPresent) throw new NFCTechException("No ISO 15963 tag detected");
+        if (!techPresent) throw new NFCTechException("No ISO 15693 tag detected");
 
         nfcTag.connect();
     }
@@ -72,7 +71,7 @@ public class NFC {
 
     /**
      *
-     * @return
+     * @return - the tag info
      * @throws IOException - if the tag can't be communicated with
      * @throws IntentException - if the tag hasn't been set
      */
@@ -88,6 +87,7 @@ public class NFC {
      */
     public void removeSecureSetting() throws IOException, IntentException {
         if (nfcTag == null) throw new IntentException("Intent not set yet!");
+
         if (!isSecured()) {
             //NFC Transceive to turn off security
         }
