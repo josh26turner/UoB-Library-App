@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
@@ -34,6 +35,8 @@ public class HomeNFC extends AppCompatActivity {
 
         if (!(nfcAdapter != null && nfcAdapter.isEnabled())){
             Toast.makeText(this, "No NFC Detected", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
+            startActivity(i);
             finish();
         }
         else {
