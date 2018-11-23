@@ -1,5 +1,7 @@
 package spe.uoblibraryapp;
 
+import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -83,7 +85,8 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_scanBook) {
             // Handle the camera action
         } else if (id == R.id.nav_current_loans_reservations) {
-
+            Intent intent = new Intent ( getApplicationContext(), LoansActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_fines) {
 
         } else if (id == R.id.nav_history) {
