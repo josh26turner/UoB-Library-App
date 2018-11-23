@@ -33,8 +33,8 @@ public class Home extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         setUserID("1230000");
-        //getUser();
-        //setLoans();
+        getUser();
+        setLoans();
 
         MainListAdapter mainListAdapter = new MainListAdapter(mockLoanList());
         recyclerView.setAdapter(mainListAdapter);

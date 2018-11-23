@@ -3,8 +3,10 @@ package spe.uoblibraryapp.api.ncip;
 import spe.uoblibraryapp.api.WMSResponse;
 
 class MockWMSNCIPStaffService implements WMSNCIPStaffService {
+
     @Override
-    public WMSResponse check_out(String user_id, String item_id){
+    public WMSResponse checkOut(String userId, String itemId){
+        // TODO: Change item identifier value to item id, user identifiable value to user id
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                     "<ns1:NCIPMessage xmlns:ns2=\"http://oclc.org/WCL/ncip/2011/extensions\" xmlns:ns1=\"http://www.niso.org/2008/ncip\" ns1:version=\"2.0\">\n" +
                         "<ns1:CheckOutItemResponse>\n" +
@@ -61,11 +63,11 @@ class MockWMSNCIPStaffService implements WMSNCIPStaffService {
                         "</ns1:CheckOutItemResponse>\n" +
                     "</ns1:NCIPMessage>\n";
 
-        return create_response(xml);
+        return createResponse(xml);
     }
 
     @Override
-    public WMSResponse check_in(String item_id){
+    public WMSResponse checkIn(String item_id){
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
                     "<ns1:NCIPMessage xmlns:ns2=\"http://oclc.org/WCL/ncip/2011/extensions\" xmlns:ns1=\"http://www.niso.org/2008/ncip\" ns1:version=\"2.0\">\n" +
                         "<ns1:CheckInItemResponse>\n" +
@@ -84,11 +86,11 @@ class MockWMSNCIPStaffService implements WMSNCIPStaffService {
                         "</ns1:CheckInItemResponse>\n" +
                     "</ns1:NCIPMessage>\n";
 
-        return create_response(xml);
+        return createResponse(xml);
     }
     
     @Override
-    public WMSResponse request_item(){
+    public WMSResponse requestItem(){
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
                     "<ns1:NCIPMessage xmlns:ns2=\"http://oclc.org/WCL/ncip/2011/extensions\" xmlns:ns1=\"http://www.niso.org/2008/ncip\" ns1:version=\"2.0\">\n" +
                         "<ns1:RequestItemResponse>\n" +
@@ -105,11 +107,11 @@ class MockWMSNCIPStaffService implements WMSNCIPStaffService {
                         "</ns1:RequestItemResponse>\n" +
                     "</ns1:NCIPMessage>\n";
 
-        return create_response(xml);
+        return createResponse(xml);
     }
 
     @Override
-    public WMSResponse request_bibliographic(){
+    public WMSResponse requestBibliographic(){
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
         "<ns1:NCIPMessage xmlns:ns2=\"http://oclc.org/WCL/ncip/2011/extensions\" xmlns:ns1=\"http://www.niso.org/2008/ncip\" ns1:version=\"2.0\">\n" +
             "<ns1:RequestItemResponse>\n" +
@@ -126,11 +128,11 @@ class MockWMSNCIPStaffService implements WMSNCIPStaffService {
             "</ns1:RequestItemResponse>\n" +
         "</ns1:NCIPMessage>\n";
 
-        return create_response(xml);
+        return createResponse(xml);
     }
 
     @Override
-    public WMSResponse cancel_request(){
+    public WMSResponse cancelRequest(){
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
                     "<ns1:NCIPMessage xmlns:ns2=\"http://oclc.org/WCL/ncip/2011/extensions\" xmlns:ns1=\"http://www.niso.org/2008/ncip\" ns1:version=\"2.0\">\n" +
                         "<ns1:CancelRequestItemResponse>\n" +
@@ -145,11 +147,11 @@ class MockWMSNCIPStaffService implements WMSNCIPStaffService {
                         "</ns1:CancelRequestItemResponse>\n" +
                     "</ns1:NCIPMessage>\n";
 
-        return create_response(xml);
+        return createResponse(xml);
     }
 
     @Override
-    public WMSResponse cancel_bibliographic(){
+    public WMSResponse cancelBibliographic(){
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
                     "<ns1:NCIPMessage xmlns:ns2=\"http://oclc.org/WCL/ncip/2011/extensions\" xmlns:ns1=\"http://www.niso.org/2008/ncip\" ns1:version=\"2.0\">\n" +
                         "<ns1:CancelRequestItemResponse>\n" +
@@ -164,10 +166,10 @@ class MockWMSNCIPStaffService implements WMSNCIPStaffService {
                         "</ns1:CancelRequestItemResponse>\n" +
                     "</ns1:NCIPMessage>\n";
 
-        return create_response(xml);
+        return createResponse(xml);
     }
 
-    private WMSResponse create_response(String xml){
+    private WMSResponse createResponse(String xml){
         return new WMSNCIPResponse(xml);
     }
 }

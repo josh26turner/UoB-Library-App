@@ -1,6 +1,7 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
 import spe.uoblibraryapp.api.WMSException;
+import spe.uoblibraryapp.api.WMSResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPStaffService;
 
 /**
@@ -8,7 +9,7 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPStaffService;
  * @author rileyevans
  */
 public class WMSCheckout {
-    private String bookId;
+    private String itemId;
     private WMSUserProfile userProfile;
     private WMSNCIPStaffService staffService;
     private Boolean rejected;
@@ -16,16 +17,16 @@ public class WMSCheckout {
 
     /**
      *
-     * @param bookId
-     * @param userProfile
-     * @param staffService
+     * @param itemId the id of the book, read from nfc tag
+     * @param userProfile the UserProfile for the user, needed for userId
+     * @param staffService the current WMSNCIPStaffService, needed to checkout books.
      */
-    public WMSCheckout(
-            String bookId,
+    WMSCheckout(
+            String itemId,
             WMSUserProfile userProfile,
             WMSNCIPStaffService staffService
     ){
-        this.bookId = bookId;
+        this.itemId = itemId;
         this.staffService = staffService;
         this.userProfile = userProfile;
 
@@ -37,7 +38,7 @@ public class WMSCheckout {
      * @return
      */
     public WMSBook getBook(){
-        return new WMSBook(bookId);
+        return new WMSBook(itemId);
     }
 
     /**
@@ -47,11 +48,14 @@ public class WMSCheckout {
     public Boolean accept() throws WMSException{
         if (rejected) {
             // Wooooaaaaah! You cant accept a checkout after you've rejected it, make a new one. 🤬
-            throw new WMSException("You can't accept a checkout after it's been rejected");
+            throw new WMSException("You can't accept a checkout after it's been rejected.");
+        } else if (accepted){
+            throw new WMSException("Youve already accepted this checkout.");
         }
 
         this.accepted = true;
-        return null;
+        WMSResponse res = staffService.checkOut(userProfile.getUserId(), itemId);
+        return res.didFail();
     }
 
     /**
@@ -63,6 +67,8 @@ public class WMSCheckout {
             // just wait a sec and think about it... Q: can you undo a book checkout?
             // A: no you cant.
             throw new WMSException("You can't reject a checkout after it's been accepted"); // Ideally this should be throw new YouAreAnIdiotException()
+        } else if (rejected){
+            throw new WMSException("You've already rejected this checkout.");
         }
         this.rejected = true;
     }
