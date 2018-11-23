@@ -1,0 +1,11 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="item_offset">10dp</dimen>
+    <dimen name="detail_backdrop_height">250dp</dimen>
+    <dimen name="activity_horizontal_margin">64dp</dimen>
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="bottom_height">86dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="bottom_margin">46dp</dimen>
+    <dimen name="bottom_width">126dp</dimen>
+</resources>
