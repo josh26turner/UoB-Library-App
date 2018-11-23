@@ -12,8 +12,8 @@ public class WMSCheckout {
     private String itemId;
     private WMSUserProfile userProfile;
     private WMSNCIPStaffService staffService;
-    private Boolean rejected;
-    private Boolean accepted;
+    private Boolean rejected = false;
+    private Boolean accepted = false;
 
     /**
      *

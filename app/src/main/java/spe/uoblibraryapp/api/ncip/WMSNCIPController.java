@@ -21,7 +21,6 @@ public class WMSNCIPController {
     /**
      * Used to control the WMS NCIP API
      */
-    // TODO: Add methods for each api request type
     // All methods in this class will return wms objects, no XML.
 
     private WMSNCIPPatronService patronService;

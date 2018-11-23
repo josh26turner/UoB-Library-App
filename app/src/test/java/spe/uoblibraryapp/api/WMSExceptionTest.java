@@ -1,9 +1,9 @@
 package spe.uoblibraryapp.api;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for the WMS Exception
@@ -15,26 +15,27 @@ public class WMSExceptionTest {
      * if it is not initialised with a message.
      */
     @Test
-    public void testEmptyInitialisation(){
+    void testEmptyInitialisation(){
         Exception exception = new WMSException();
         assertEquals(
-                "Message is not empty when WMSException is initialised empty.",
                 "",
-                exception.getMessage()
+                exception.getMessage(),
+                "Message is not empty when WMSException is initialised empty."
         );
     }
+
 
     /**
      * This is a test to ensure that WMSException contains the message it was given when
      * it was initialised.
      */
     @Test
-    public void testInitialisation(){
+    void testInitialisation(){
         Exception exception = new WMSException("This is a test");
         assertEquals(
-                "Message is not the message set when WMSException was initialised.",
                 "This is a test",
-                exception.getMessage()
+                exception.getMessage(),
+                "Message is not the message set when WMSException was initialised."
         );
     }
 }

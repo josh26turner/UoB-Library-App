@@ -16,6 +16,7 @@ public class WMSBook {
     private String title;
     private String publisher;
     private Integer publicationDate; // TODO: Could this be changed to type Year?
+    private String bookId;
 
 
 
@@ -35,6 +36,8 @@ public class WMSBook {
 
     WMSBook(String bookId){
          // TODO: Use search service to find the book details and setup object.
+        this(); // Temporary to give values.
+        this.bookId = bookId;
     }
 
 
@@ -46,6 +49,11 @@ public class WMSBook {
         title = "Diary of a wimpy kid : dog days ";
         publisher = "New York : Amulet Books";
         publicationDate = 2007;
+        bookId = "123456789";
+    }
+
+    public String getBookId() {
+        return bookId;
     }
 
     public String getTitle(){

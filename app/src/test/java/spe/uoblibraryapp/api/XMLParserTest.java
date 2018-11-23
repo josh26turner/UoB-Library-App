@@ -1,7 +1,8 @@
 package spe.uoblibraryapp.api;
 
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -9,8 +10,8 @@ import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -35,42 +36,45 @@ public class XMLParserTest {
     }
 
     @Test
-    public void parseSomeReallyReallyBasicXml(){
+    void parseSomeReallyReallyBasicXml(){
         String xml = "<?xml version=\"1.0\"?> <test attribute=\"hello\">123</test>";
         Document doc = getXMLDocument(xml);
     }
 
     @Test
-    public void getRootElementTagTest(){
+    void getRootElementTagTest(){
         Document doc = getXMLDocument(
                 "<?xml version=\"1.0\"?> <test attribute=\"hello world\">123</test>");
         Element root = doc.getDocumentElement();
         assertEquals(
-                "The tag name does not match",
                 "test",
-                root.getTagName());
+                root.getTagName(),
+                "The tag name does not match"
+        );
     }
 
     @Test
-    public void getRootElementAttributeTest(){
+    void getRootElementAttributeTest(){
         Document doc = getXMLDocument(
                 "<?xml version=\"1.0\"?> <test attribute=\"hello world\">123</test>");
         Element root = doc.getDocumentElement();
         assertEquals(
-                "The attribute does not match",
                 "hello world",
-                root.getAttribute("attribute"));
+                root.getAttribute("attribute"),
+                "The attribute does not match"
+        );
     }
 
     @Test
-    public void getRootElementContentsTest(){
+    void getRootElementContentsTest(){
         Document doc = getXMLDocument(
                 "<?xml version=\"1.0\"?> <test attribute=\"hello world\">123</test>");
         Element root = doc.getDocumentElement();
         assertEquals(
-                "The contents does not match",
                 "123",
-                root.getTextContent());
+                root.getTextContent(),
+                "The contents does not match"
+        );
 
     }
 

@@ -1,19 +1,11 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
-import org.junit.Test;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
-import java.io.IOException;
+import org.junit.jupiter.api.Test;
 
-import javax.xml.parsers.ParserConfigurationException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
+class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
 
     // Tests for empty user profile
 
@@ -21,12 +13,12 @@ public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
      * A test to ensure that the userId is set correctly.
      */
     @Test
-    public void testEmptyUserProfileUserIdSetCorrectly(){
+    void testEmptyUserProfileUserIdSetCorrectly(){
         WMSUserProfile userProfile = createBlankUserProfile();
         assertEquals(
-                "The userId does not match the expected value",
                 "998c3f4b-765e-48b2-asdf-8bd2cf8acee9",
-                userProfile.getUserId()
+                userProfile.getUserId(),
+                "The userId does not match the expected value"
         );
     }
 
@@ -34,27 +26,27 @@ public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
      * A test to ensure that an empty user profile has no loans.
      */
     @Test
-    public void testEmptyUserProfileHasNoLoans() {
+    void testEmptyUserProfileHasNoLoans() {
         WMSUserProfile userProfile = createBlankUserProfile();
-        assertEquals("Loans are not empty for a blank UserProfile", 0, userProfile.getLoans().size());
+        assertEquals( 0, userProfile.getLoans().size(), "Loans are not empty for a blank UserProfile");
     }
 
     /**
      * A test to ensure that an empty user profile has no fines.
      */
     @Test
-    public void testEmptyUserProfileHasNoFines() {
+    void testEmptyUserProfileHasNoFines() {
         WMSUserProfile userProfile = createBlankUserProfile();
-        assertEquals("Fines are not empty for a blank UserProfile", 0, userProfile.getFines().size());
+        assertEquals(0, userProfile.getFines().size(),"Fines are not empty for a blank UserProfile");
     }
 
     /**
      * A test to ensure that an empty user profile has no holds.
      */
     @Test
-    public void testEmptyUserProfileHasNoHolds() {
+    void testEmptyUserProfileHasNoHolds() {
         WMSUserProfile userProfile = createBlankUserProfile();
-        assertEquals("Holds are not empty for a blank UserProfile", 0, userProfile.getOnHold().size());
+        assertEquals(0, userProfile.getOnHold().size(), "Holds are not empty for a blank UserProfile");
     }
 
 
@@ -64,12 +56,12 @@ public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
      * A test to ensure that the userId is set correctly.
      */
     @Test
-    public void test1LoanNoFinesNoHoldsUserProfileUserIdSetCorrectly(){
+    void test1LoanNoFinesNoHoldsUserProfileUserIdSetCorrectly(){
         WMSUserProfile userProfile = createUserProfile1LoanNoFinesNoHolds();
         assertEquals(
-                "The userId does not match the expected value",
                 "998c3f4b-765e-48b2-asdf-8bd2cf8acee9",
-                userProfile.getUserId()
+                userProfile.getUserId(),
+                "The userId does not match the expected value"
         );
     }
 
@@ -77,27 +69,27 @@ public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
      * A test to ensure that the user profile has 1 loans.
      */
     @Test
-    public void test1LoanNoFinesNoHoldsUserProfileHas1Loan() {
+    void test1LoanNoFinesNoHoldsUserProfileHas1Loan() {
         WMSUserProfile userProfile = createUserProfile1LoanNoFinesNoHolds();
-        assertEquals("Number of loans do not match", 1, userProfile.getLoans().size());
+        assertEquals(1, userProfile.getLoans().size(), "Number of loans do not match");
     }
 
     /**
      * A test to ensure that the user profile has no fines.
      */
     @Test
-    public void test1LoanNoFinesNoHoldsUserProfileHasNoFines() {
+    void test1LoanNoFinesNoHoldsUserProfileHasNoFines() {
         WMSUserProfile userProfile = createUserProfile1LoanNoFinesNoHolds();
-        assertEquals("Fines are not empty for a blank UserProfile", 0, userProfile.getFines().size());
+        assertEquals(0, userProfile.getFines().size(), "Fines are not empty for a blank UserProfile");
     }
 
     /**
      * A test to ensure that the user profile has no holds.
      */
     @Test
-    public void test1LoanNoFinesNoHoldsUserProfileHasNoHolds() {
+    void test1LoanNoFinesNoHoldsUserProfileHasNoHolds() {
         WMSUserProfile userProfile = createUserProfile1LoanNoFinesNoHolds();
-        assertEquals("Holds are not empty for a blank UserProfile", 0, userProfile.getOnHold().size());
+        assertEquals(0, userProfile.getOnHold().size(),"Holds are not empty for a blank UserProfile");
     }
 
 
@@ -107,12 +99,12 @@ public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
      * A test to ensure that the userId is set correctly.
      */
     @Test
-    public void test2LoansNoFines1HoldUserProfileUserIdSetCorrectly(){
+    void test2LoansNoFines1HoldUserProfileUserIdSetCorrectly(){
         WMSUserProfile userProfile = createUserProfile2LoansNoFines1Hold();
         assertEquals(
-                "The userId does not match the expected value",
                 "998c3f4b-765e-48b2-asdf-8bd2cf8acee9",
-                userProfile.getUserId()
+                userProfile.getUserId(),
+                "The userId does not match the expected value"
         );
     }
 
@@ -120,28 +112,32 @@ public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
      * A test to ensure that the user profile has 1 loans.
      */
     @Test
-    public void test2LoansNoFines1HoldUserProfileHas2Loans() {
+    void test2LoansNoFines1HoldUserProfileHas2Loans() {
         WMSUserProfile userProfile = createUserProfile2LoansNoFines1Hold();
-        assertEquals("Loans are not empty for a blank UserProfile", 2, userProfile.getLoans().size());
+        assertEquals(2, userProfile.getLoans().size(),"Number of loans do not match");
     }
 
     /**
      * A test to ensure that the user profile has no fines.
      */
     @Test
-    public void test2LoansNoFines1HoldUserProfileHasNoFines() {
+    void test2LoansNoFines1HoldUserProfileHasNoFines() {
         WMSUserProfile userProfile = createUserProfile2LoansNoFines1Hold();
-        assertEquals("Fines are not empty for a blank UserProfile", 0, userProfile.getFines().size());
+        assertEquals(0, userProfile.getFines().size(),"Fines are not empty for a blank UserProfile");
     }
 
     /**
      * A test to ensure that the user profile has no holds.
      */
     @Test
-    public void test2LoansNoFines1HoldUserProfileHas1Hold() {
+    void test2LoansNoFines1HoldUserProfileHas1Hold() {
         WMSUserProfile userProfile = createUserProfile2LoansNoFines1Hold();
-        assertEquals("Holds are not empty for a blank UserProfile", 1, userProfile.getOnHold().size());
+        assertEquals(1, userProfile.getOnHold().size(), "Number of holds do not match");
     }
+
+
+
+    // TODO: Add tests for Fines when we know how to parse them.
 
 
 
@@ -150,29 +146,7 @@ public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
 
     // Methods to create test WMSUserProfiles
 
-    private WMSUserProfile createUserProfile(String xml){
-        Node node = null;
-        try {
-            node = createUserNode(xml);
-        } catch (SAXException | IOException | ParserConfigurationException ex){
-            fail(ex.getMessage());
-        }
 
-        WMSNCIPServices services = getServices();
-
-        WMSUserProfile userProfile = null;
-        try {
-            userProfile = new WMSUserProfile(
-                    new WMSNCIPElement(node),
-                    services.patronService,
-                    services.staffService
-            );
-        } catch (WMSParseException ex){
-            fail(ex.getMessage());
-        }
-
-        return userProfile;
-    }
 
 
     private WMSUserProfile createUserProfile1LoanNoFinesNoHolds(){

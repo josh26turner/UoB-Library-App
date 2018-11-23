@@ -10,11 +10,13 @@ import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPPatronService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPPatronServiceFactory;
 import spe.uoblibraryapp.api.ncip.WMSNCIPStaffService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPStaffServiceFactory;
 
+import static org.junit.jupiter.api.Assertions.fail;
 import static spe.uoblibraryapp.api.XMLParser.parse;
 
 
@@ -22,12 +24,12 @@ import static spe.uoblibraryapp.api.XMLParser.parse;
  * This is not a test, it contains some setup functions for WMSUserProfile
  * that help to test it.
  */
-public class WMSUserProfileTests{
+class WMSUserProfileTests{
 
     /**
      * Creates the user node from an xml response.
      */
-    Node createUserNode(String xml) throws ParserConfigurationException, SAXException, IOException {
+    private Node createUserNode(String xml) throws ParserConfigurationException, SAXException, IOException {
         Document doc = parse(xml);
         NodeList nodeList = doc.getElementsByTagName("ns1:LookupUserResponse");
         return nodeList.item(0);
@@ -37,8 +39,8 @@ public class WMSUserProfileTests{
      * Storage class to that allows for both services to be returned.
      */
     class WMSNCIPServices{
-        public WMSNCIPStaffService staffService;
-        public WMSNCIPPatronService patronService;
+        WMSNCIPStaffService staffService;
+        WMSNCIPPatronService patronService;
         WMSNCIPServices(WMSNCIPPatronService patronService, WMSNCIPStaffService staffService){
             this.patronService = patronService;
             this.staffService = staffService;
@@ -60,5 +62,29 @@ public class WMSUserProfileTests{
                 patronServiceFactory.getService(),
                 staffServiceFactory.getService()
         );
+    }
+
+    WMSUserProfile createUserProfile(String xml){
+        Node node = null;
+        try {
+            node = createUserNode(xml);
+        } catch (SAXException | IOException | ParserConfigurationException ex){
+            fail(ex.getMessage());
+        }
+
+        WMSNCIPServices services = getServices();
+
+        WMSUserProfile userProfile = null;
+        try {
+            userProfile = new WMSUserProfile(
+                    new WMSNCIPElement(node),
+                    services.patronService,
+                    services.staffService
+            );
+        } catch (WMSParseException ex){
+            fail(ex.getMessage());
+        }
+
+        return userProfile;
     }
 }
