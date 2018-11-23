@@ -23,6 +23,6 @@ public class WMSNCIPResponse  extends XMLParser implements WMSResponse {
         } catch (Exception e){
             return true; // Make this do something.
         }
-        return null;
+        return false;
     }
 }

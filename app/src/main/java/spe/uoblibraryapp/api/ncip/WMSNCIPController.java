@@ -1,5 +1,7 @@
 package spe.uoblibraryapp.api.ncip;
 
+import android.util.Log;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -53,17 +55,30 @@ public class WMSNCIPController {
      * @throws WMSException thrown if there is an error getting
      */
     public WMSUserProfile getUserDetails(String userId) throws WMSException, WMSParseException {
+        Log.v("prob", "1");
         WMSResponse response = this.patronService.lookup_user(userId);
+        Log.v("prob", "2");
+        Log.v("testtttttt", response.toString());
+        Log.v("testtttttt", response.didFail().toString());
+        boolean test = response.didFail();
+        Log.v("prob", "2.5");
         if (response.didFail()) {
+            Log.v("prob", "thrown error");
             throw new WMSException("There was an error retrieving the User Profile");
         }
         Document doc;
+        Log.v("prob", "3");
         try {
+            Log.v("prob", "4.1: in try loop.");
             doc = response.parse();
+            Log.v("prob", "4.2: in try loop.");
         } catch (IOException | SAXException | ParserConfigurationException e){
+            Log.v("prob", "4.3: in catch loop. ERROR.");
             throw new WMSException("There was an error Parsing the WMS response");
         }
+        Log.v("prob", "5");
         Node node = doc.getElementsByTagName("ns1:LookupUserResponse").item(0);
+        Log.v("prob", "6");
         return new WMSUserProfile(new WMSNCIPElement(node), this.patronService, this.staffService);
     }
 }

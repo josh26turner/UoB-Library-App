@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -27,14 +28,18 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v("On Create", "1");
         setContentView(R.layout.activity_home);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
+        Log.v("On Create", "2");
         setUserID("1230000");
+        Log.v("On Create", "3");
         getUser();
+        Log.v("On Create", "4");
         setLoans();
+        Log.v("On Create", "5");
 
         MainListAdapter mainListAdapter = new MainListAdapter(mockLoanList());
         recyclerView.setAdapter(mainListAdapter);
@@ -48,11 +53,13 @@ public class Home extends AppCompatActivity {
 
     private void getUser(){
         try {
+            Log.v("test", "test fails here.");
             mockUser = mockController.getUserDetails(userID);
+            Log.v("test", "test after");
         } catch (WMSException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (WMSParseException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
