@@ -23,11 +23,6 @@ import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 public class LoansFragment extends android.support.v4.app.Fragment {
     private static final String TAG = "LoansFragment";
-    private WMSUserProfile mockUser;
-    private String userID;
-    private List<String> loanList = new ArrayList<>();
-    private WMSNCIPController mockController = new WMSNCIPController(true);
-
 
     @Nullable
     @Override
@@ -36,7 +31,7 @@ public class LoansFragment extends android.support.v4.app.Fragment {
 
         ListView mListView = (ListView) view.findViewById(R.id.listview);
 
-        LoanBookEntry bookOne = new LoanBookEntry("Book 1 Title", "Author Unknown", "Overdue");
+        LoanBookEntry bookOne = new LoanBookEntry("Book 1 Title", "Author 1", "Overdue");
         LoanBookEntry bookTwo = new LoanBookEntry("Book 2 Title", "Author 2", "Reservation");
         LoanBookEntry bookThree = new LoanBookEntry("Book 3 Title", "Author 3", "Loan");
 
@@ -48,43 +43,5 @@ public class LoansFragment extends android.support.v4.app.Fragment {
         LoanBookListAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
         mListView.setAdapter(adapter);
         return view;
-    }
-
-    public void setUserID(String s) {
-        this.userID = s;
-    }
-
-    private void getUser() {
-        try {
-            mockUser = mockController.getUserDetails(userID);
-        } catch (WMSException | WMSParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void setLoans() {
-        List<WMSLoan> loans = mockUser.getLoans();
-        for (WMSLoan loan : loans) {
-            this.addItem(loan.getBook().getTitle());
-        }
-    }
-
-    private void addItem(String s) {
-        this.loanList.add(s);
-    }
-
-    public List<String> mockLoanList() {
-        //MOCK RESULT
-        loanList.add("Book 1");
-        loanList.add("Book 2");
-        loanList.add("Book 3");
-        loanList.add("Book 4");
-        loanList.add("Book 5");
-        loanList.add("Book 6");
-        loanList.add("Book 7");
-        loanList.add("Book 8");
-        loanList.add("Book 9");
-        //MOCK RESULT
-        return loanList;
     }
 }
