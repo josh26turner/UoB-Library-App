@@ -22,10 +22,10 @@ import spe.uoblibraryapp.nfc.NFCTechException;
 public class HomeNFC extends AppCompatActivity {
 
 
-    TextView txtContent;
+    private TextView txtContent;
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
-    private String[][] mTechList;
+    private String[][] techList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +38,12 @@ public class HomeNFC extends AppCompatActivity {
             Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
             startActivity(i);
             finish();
-        }
-        else {
+        } else {
             txtContent = findViewById(R.id.txtContent);
             Intent pnd = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0, pnd, 0);
             // Setup a tech list for NfcV tag.
-            mTechList = new String[][]{
-                    new String[]{NfcV.class.getName()},
-            };
+            techList = new String[][]{ new String[]{NfcV.class.getName()} };
         }
     }
 
@@ -78,7 +75,7 @@ public class HomeNFC extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, mTechList);
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, techList);
         super.onResume();
     }
 
@@ -88,6 +85,11 @@ public class HomeNFC extends AppCompatActivity {
         nfcAdapter.disableForegroundDispatch(this);
     }
 
+    /**
+     * turns an array of bytes into hex representation
+     * @param src - bytes to turn into hex
+     * @return - the hex representation of the bytes as a string
+     */
     private String bytesToHexString(byte[] src) {
         StringBuilder stringBuilder = new StringBuilder("0x");
 
@@ -99,7 +101,7 @@ public class HomeNFC extends AppCompatActivity {
         for (byte aSrc : src) {
             buffer[0] = Character.forDigit((aSrc >>> 4) & 0x0F, 16);
             buffer[1] = Character.forDigit(aSrc & 0x0F, 16);
-            System.out.println(buffer);
+
             stringBuilder.append(buffer);
         }
         return stringBuilder.toString().toUpperCase();

@@ -1,11 +1,11 @@
 package spe.uoblibraryapp.nfc;
 
-class Hex {
+public class Hex {
     private static final byte GET_SYSTEM_INFO = (byte) 0x2B;
     private static final byte READ_MULTIPLE_BLOCKS = (byte) 0x23;
     private static final byte FLAGS = (byte) 0x00;
 
-    static byte [] SYSTEM_INFO_COMMAND = new byte[]{FLAGS, GET_SYSTEM_INFO};
+    public static byte [] SYSTEM_INFO_COMMAND = new byte[]{FLAGS, GET_SYSTEM_INFO};
 
     /**
      *
@@ -14,7 +14,7 @@ class Hex {
      * @return - what was in those blocks
      * @throws NumberFormatException - if the integers aren't in range
      */
-    static byte [] readMultipleBlocksCommand(int offset, int numberOfBlocks) throws NumberFormatException {
+    public static byte [] readMultipleBlocksCommand(int offset, int numberOfBlocks) throws NumberFormatException {
         return new byte[] {FLAGS, READ_MULTIPLE_BLOCKS, toByte(offset), toByte(numberOfBlocks)};
     }
 

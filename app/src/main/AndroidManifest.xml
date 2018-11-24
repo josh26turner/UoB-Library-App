@@ -23,7 +23,7 @@
         </activity>
 
         <activity android:name=".HomeNFC">
-            <intent-filter>
+            <!--><intent-filter>                                                THIS IS FOR CALLING WHEN THE APP ISN'T OPEN
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
             </intent-filter>
 
@@ -33,6 +33,9 @@
 
             <meta-data android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_tech_list" />
+
+            <meta-data android:name="android.nfc.action.TAG_DISCOVERED"
+                android:resource="@xml/nfc_tech_list" /> </!-->
         </activity>
     </application>
 

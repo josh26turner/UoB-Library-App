@@ -30,7 +30,7 @@ public class NFC {
     }
 
     /**
-     * Should be called first, turns the intent into an NfcV object
+     * Should be called first, turns the intent into an NfcV object, via a tag
      * @param intent - intent that called the activity
      * @throws NFCTechException - not the right type of tag
      * @throws IntentException - tag not present in the intent
