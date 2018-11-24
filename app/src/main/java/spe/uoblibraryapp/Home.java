@@ -108,7 +108,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         lastPage = mViewPager.getCurrentItem();
     }
 
-
     public void setViewPager(String fragmentName){
         int index;
         if(mAdapter.fragmentExists(fragmentName)) {
@@ -121,4 +120,5 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             //TODO: Think of something to return when programmer can't type correctly :)
         }
     }
+    
 }
