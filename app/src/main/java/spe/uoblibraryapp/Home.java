@@ -29,10 +29,10 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        //setContentView(R.layout.activity_home);
+        Intent in = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(in);
     }
-
-    ////////////////////////////
 
     public void setUserID(String s){
         this.userID = s;
