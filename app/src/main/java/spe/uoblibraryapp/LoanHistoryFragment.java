@@ -1,6 +1,5 @@
 package spe.uoblibraryapp;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +12,7 @@ public class LoanHistoryFragment extends android.support.v4.app.Fragment{
     private static final String TAG = "Loan History Fragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_reservations, container, false);
+        View view = inflater.inflate(R.layout.fragment_loanhistory, container, false);
         return view;
     }
 }

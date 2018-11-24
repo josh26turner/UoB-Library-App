@@ -1,11 +1,7 @@
 package spe.uoblibraryapp;
 
-import android.app.Application;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,8 +11,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String TAG = "MainActivity";
+    private CustomPagerAdapter mAdapter;
+    private ViewPager mViewPager;
+    private int lastPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +25,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -41,7 +32,13 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_current_loans_reservations);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        setupViewPager(mViewPager);
+        mViewPager.setCurrentItem(1);
+        lastPage = mViewPager.getCurrentItem();
     }
 
     @Override
@@ -50,7 +47,7 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            mViewPager.setCurrentItem(lastPage);
         }
     }
 
@@ -76,27 +73,44 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_scanBook) {
-            // Handle the camera action
+            setViewPager("Scan");
         } else if (id == R.id.nav_current_loans_reservations) {
-            Intent intent = new Intent ( getApplicationContext(), LoansActivity.class);
-            startActivity(intent);
+            setViewPager("Loans");
         } else if (id == R.id.nav_fines) {
-
-        } else if (id == R.id.nav_history) {
-
+            setViewPager("Fines");
+        } else if (id == R.id.nav_loanhistory) {
+            setViewPager("LoanHistory");
         } else if (id == R.id.nav_settings) {
-
+            setViewPager("Settings");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void setupViewPager(ViewPager viewPager){
+        mAdapter  = new CustomPagerAdapter(getSupportFragmentManager());
+        mAdapter.addFragment(new ScanFragment(), "Scan");
+        mAdapter.addFragment(new LoansFragment(), "Loans");
+        mAdapter.addFragment(new ReservationsFragment(), "Reservations");
+        mAdapter.addFragment(new FinesFragment(), "Fines");
+        mAdapter.addFragment(new LoanHistoryFragment(), "LoanHistory");
+        mAdapter.addFragment(new SettingsFragment(), "Settings");
+        viewPager.setAdapter(mAdapter);
+        lastPage = mViewPager.getCurrentItem();
+    }
+
+
+    public void setViewPager(String fragmentName){
+            if(mAdapter.fragmentExists(fragmentName))
+                mViewPager.setCurrentItem(mAdapter.getFragmentIndex(fragmentName));
+            //TODO: Think of something to return when programmer can't type correctly :)
     }
 }

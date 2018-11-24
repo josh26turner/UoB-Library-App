@@ -20,10 +20,6 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".LoansActivity"
-            android:label="@string/title_activity_loans"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

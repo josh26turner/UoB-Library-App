@@ -18,7 +18,7 @@
             android:icon="@drawable/ic_outline_book_24px"
             android:title="@string/fines" />
         <item
-            android:id="@+id/nav_history"
+            android:id="@+id/nav_loanhistory"
             android:icon="@drawable/ic_baseline_history_24px"
             android:title="@string/loan_history" />
 
