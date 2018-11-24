@@ -1,75 +1,124 @@
 package spe.uoblibraryapp;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v4.view.ViewPager;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
+public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-import spe.uoblibraryapp.api.WMSException;
-import spe.uoblibraryapp.api.ncip.WMSNCIPController;
-import spe.uoblibraryapp.api.wmsobjects.WMSBook;
-import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
-import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
-import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
-
-public class Home extends AppCompatActivity {
-
-    private WMSUserProfile mockUser;
-    private String userID;
-    private List<String> loanList = new ArrayList<>();
-    private WMSNCIPController mockController = new WMSNCIPController(true);
-
+    private static final String TAG = "MainActivity";
+    private CustomPagerAdapter mAdapter;
+    private ViewPager mViewPager;
+    private int lastPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_home);
-        Intent in = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(in);
+        setContentView(R.layout.activity_home);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_current_loans_reservations);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        setupViewPager(mViewPager);
+        mViewPager.setCurrentItem(1);
+        setTitle(mAdapter.getFragmentTitle(1));
+        lastPage = mViewPager.getCurrentItem();
     }
 
-    public void setUserID(String s){
-        this.userID = s;
-    }
-
-    private void getUser(){
-        try {
-            mockUser = mockController.getUserDetails(userID);
-        } catch (WMSException | WMSParseException e) {
-            e.printStackTrace();
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            mViewPager.setCurrentItem(lastPage);
         }
     }
 
-    private void setLoans(){
-        List<WMSLoan> loans = mockUser.getLoans();
-        for(WMSLoan loan : loans){
-            this.addItem(loan.getBook().getTitle());
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_scanBook) {
+            setViewPager("Scan A New Book");
+        } else if (id == R.id.nav_current_loans_reservations) {
+            setViewPager("Loans");
+        } else if (id == R.id.nav_fines) {
+            setViewPager("Fines");
+        } else if (id == R.id.nav_loanhistory) {
+            setViewPager("Loans History");
+        } else if (id == R.id.nav_settings) {
+            setViewPager("Settings");
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private void setupViewPager(ViewPager viewPager){
+        mAdapter  = new CustomPagerAdapter(getSupportFragmentManager());
+        mAdapter.addFragment(new ScanFragment(), "Scan A New Book");
+        mAdapter.addFragment(new LoansFragment(), "Loans");
+        mAdapter.addFragment(new ReservationsFragment(), "Reservations");
+        mAdapter.addFragment(new FinesFragment(), "Fines");
+        mAdapter.addFragment(new LoanHistoryFragment(), "Loans History");
+        mAdapter.addFragment(new SettingsFragment(), "Settings");
+        viewPager.setAdapter(mAdapter);
+        lastPage = mViewPager.getCurrentItem();
     }
 
 
-    private void addItem(String s){
-        this.loanList.add(s);
-    }
-
-    public List<String> mockLoanList() {
-        //MOCK RESULT
-        loanList.add("Book 1");
-        loanList.add("Book 2");
-        loanList.add("Book 3");
-        loanList.add("Book 4");
-        loanList.add("Book 5");
-        loanList.add("Book 6");
-        loanList.add("Book 7");
-        loanList.add("Book 8");
-        loanList.add("Book 9");
-        //MOCK RESULT
-        return loanList;
+    public void setViewPager(String fragmentName){
+        int index;
+        if(mAdapter.fragmentExists(fragmentName)) {
+            index = mAdapter.getFragmentIndex(fragmentName);
+            //Show Appropriate Title
+            setTitle(fragmentName);
+            mViewPager.setCurrentItem(index);
+        }
+        else{
+            //TODO: Think of something to return when programmer can't type correctly :)
+        }
     }
 }
