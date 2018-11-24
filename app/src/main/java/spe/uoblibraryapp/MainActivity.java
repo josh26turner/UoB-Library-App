@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
         mViewPager.setCurrentItem(1);
+        setTitle(mAdapter.getFragmentTitle(1));
         lastPage = mViewPager.getCurrentItem();
     }
 
@@ -79,13 +80,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_scanBook) {
-            setViewPager("Scan");
+            setViewPager("Scan A New Book");
         } else if (id == R.id.nav_current_loans_reservations) {
             setViewPager("Loans");
         } else if (id == R.id.nav_fines) {
             setViewPager("Fines");
         } else if (id == R.id.nav_loanhistory) {
-            setViewPager("LoanHistory");
+            setViewPager("Loans History");
         } else if (id == R.id.nav_settings) {
             setViewPager("Settings");
         }
@@ -97,11 +98,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setupViewPager(ViewPager viewPager){
         mAdapter  = new CustomPagerAdapter(getSupportFragmentManager());
-        mAdapter.addFragment(new ScanFragment(), "Scan");
+        mAdapter.addFragment(new ScanFragment(), "Scan A New Book");
         mAdapter.addFragment(new LoansFragment(), "Loans");
         mAdapter.addFragment(new ReservationsFragment(), "Reservations");
         mAdapter.addFragment(new FinesFragment(), "Fines");
-        mAdapter.addFragment(new LoanHistoryFragment(), "LoanHistory");
+        mAdapter.addFragment(new LoanHistoryFragment(), "Loans History");
         mAdapter.addFragment(new SettingsFragment(), "Settings");
         viewPager.setAdapter(mAdapter);
         lastPage = mViewPager.getCurrentItem();
@@ -109,8 +110,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public void setViewPager(String fragmentName){
-            if(mAdapter.fragmentExists(fragmentName))
-                mViewPager.setCurrentItem(mAdapter.getFragmentIndex(fragmentName));
-            //TODO: Think of something to return when programmer can't type correctly :)
+        int index;
+            if(mAdapter.fragmentExists(fragmentName)) {
+                index = mAdapter.getFragmentIndex(fragmentName);
+                //Show Appropriate Title
+                setTitle(fragmentName);
+                mViewPager.setCurrentItem(index);
+            }
+            else{
+                //TODO: Think of something to return when programmer can't type correctly :)
+            }
     }
 }
