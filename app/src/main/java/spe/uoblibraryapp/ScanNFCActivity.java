@@ -13,14 +13,12 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
-import static android.content.ContentValues.TAG;
-
 import spe.uoblibraryapp.nfc.IntentException;
 import spe.uoblibraryapp.nfc.NFC;
 import spe.uoblibraryapp.nfc.NFCTechException;
 
-public class HomeNFC extends AppCompatActivity {
-
+public class ScanNFCActivity extends AppCompatActivity {
+    private static final String TAG = "Scan NFC Fragment";
 
     private TextView txtContent;
     private NfcAdapter nfcAdapter;
@@ -53,7 +51,6 @@ public class HomeNFC extends AppCompatActivity {
 
         try {
             NFC nfc = new NFC(intent);
-
             try{
                 String s = bytesToHexString(nfc.getBookID());
                 txtContent.setText(s);
@@ -73,7 +70,6 @@ public class HomeNFC extends AppCompatActivity {
 
 
     }
-
 
     @Override
     protected void onResume() {
@@ -108,6 +104,5 @@ public class HomeNFC extends AppCompatActivity {
         }
         return stringBuilder.toString().toUpperCase();
     }
-
 
 }

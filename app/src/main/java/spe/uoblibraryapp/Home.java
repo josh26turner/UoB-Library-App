@@ -1,5 +1,6 @@
 package spe.uoblibraryapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
@@ -38,8 +39,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
-        mViewPager.setCurrentItem(1);
-        setTitle(mAdapter.getFragmentTitle(1));
+        mViewPager.setCurrentItem(0);
+        setTitle(mAdapter.getFragmentTitle(0));
         lastPage = mViewPager.getCurrentItem();
     }
 
@@ -81,7 +82,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         int id = item.getItemId();
 
         if (id == R.id.nav_scanBook) {
-            setViewPager("Scan A New Book");
+            //start activity here.
+            Intent NFCActivity = new Intent(getApplicationContext(), ScanNFCActivity.class);
+            startActivity(NFCActivity);
         } else if (id == R.id.nav_current_loans_reservations) {
             setViewPager("Loans");
         } else if (id == R.id.nav_fines) {
@@ -99,7 +102,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private void setupViewPager(ViewPager viewPager){
         mAdapter  = new CustomPagerAdapter(getSupportFragmentManager());
-        mAdapter.addFragment(new ScanFragment(), "Scan A New Book");
         mAdapter.addFragment(new LoansFragment(), "Loans");
         mAdapter.addFragment(new ReservationsFragment(), "Reservations");
         mAdapter.addFragment(new FinesFragment(), "Fines");
