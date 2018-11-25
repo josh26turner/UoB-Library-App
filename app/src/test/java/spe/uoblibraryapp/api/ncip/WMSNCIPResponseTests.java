@@ -1,18 +1,19 @@
 package spe.uoblibraryapp.api.ncip;
 
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import spe.uoblibraryapp.api.WMSResponse;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class WMSNCIPResponseTests {
+import static org.junit.Assert.assertNotNull;
+
+public class WMSNCIPResponseTests {
 
     @Test
-    void testDidFailResponseIsNotNull(){
+    public void testDidFailResponseIsNotNull(){
         WMSResponse res = createWMSNCIPResponse();
-        assertNotNull(res.didFail(), "didFail cannot be null");
+        assertNotNull( "didFail cannot be null",res.didFail());
     }
 
     WMSResponse createWMSNCIPResponse(){

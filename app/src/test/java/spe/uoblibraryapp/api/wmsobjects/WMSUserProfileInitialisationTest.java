@@ -1,11 +1,11 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
-class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
+public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
 
     // Tests for empty user profile
 
@@ -13,12 +13,12 @@ class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
      * A test to ensure that the userId is set correctly.
      */
     @Test
-    void testEmptyUserProfileUserIdSetCorrectly(){
+    public void testEmptyUserProfileUserIdSetCorrectly(){
         WMSUserProfile userProfile = createBlankUserProfile();
         assertEquals(
+                "The userId does not match the expected value",
                 "998c3f4b-765e-48b2-asdf-8bd2cf8acee9",
-                userProfile.getUserId(),
-                "The userId does not match the expected value"
+                userProfile.getUserId()
         );
     }
 
@@ -26,27 +26,27 @@ class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
      * A test to ensure that an empty user profile has no loans.
      */
     @Test
-    void testEmptyUserProfileHasNoLoans() {
+    public void testEmptyUserProfileHasNoLoans() {
         WMSUserProfile userProfile = createBlankUserProfile();
-        assertEquals( 0, userProfile.getLoans().size(), "Loans are not empty for a blank UserProfile");
+        assertEquals( "Loans are not empty for a blank UserProfile",0, userProfile.getLoans().size());
     }
 
     /**
      * A test to ensure that an empty user profile has no fines.
      */
     @Test
-    void testEmptyUserProfileHasNoFines() {
+    public void testEmptyUserProfileHasNoFines() {
         WMSUserProfile userProfile = createBlankUserProfile();
-        assertEquals(0, userProfile.getFines().size(),"Fines are not empty for a blank UserProfile");
+        assertEquals("Fines are not empty for a blank UserProfile",0, userProfile.getFines().size());
     }
 
     /**
      * A test to ensure that an empty user profile has no holds.
      */
     @Test
-    void testEmptyUserProfileHasNoHolds() {
+    public void testEmptyUserProfileHasNoHolds() {
         WMSUserProfile userProfile = createBlankUserProfile();
-        assertEquals(0, userProfile.getOnHold().size(), "Holds are not empty for a blank UserProfile");
+        assertEquals("Holds are not empty for a blank UserProfile",0, userProfile.getOnHold().size());
     }
 
 
@@ -56,12 +56,12 @@ class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
      * A test to ensure that the userId is set correctly.
      */
     @Test
-    void test1LoanNoFinesNoHoldsUserProfileUserIdSetCorrectly(){
+    public void test1LoanNoFinesNoHoldsUserProfileUserIdSetCorrectly(){
         WMSUserProfile userProfile = createUserProfile1LoanNoFinesNoHolds();
         assertEquals(
+                "The userId does not match the expected value",
                 "998c3f4b-765e-48b2-asdf-8bd2cf8acee9",
-                userProfile.getUserId(),
-                "The userId does not match the expected value"
+                userProfile.getUserId()
         );
     }
 
@@ -69,27 +69,27 @@ class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
      * A test to ensure that the user profile has 1 loans.
      */
     @Test
-    void test1LoanNoFinesNoHoldsUserProfileHas1Loan() {
+    public void test1LoanNoFinesNoHoldsUserProfileHas1Loan() {
         WMSUserProfile userProfile = createUserProfile1LoanNoFinesNoHolds();
-        assertEquals(1, userProfile.getLoans().size(), "Number of loans do not match");
+        assertEquals("Number of loans do not match",1, userProfile.getLoans().size());
     }
 
     /**
      * A test to ensure that the user profile has no fines.
      */
     @Test
-    void test1LoanNoFinesNoHoldsUserProfileHasNoFines() {
+    public void test1LoanNoFinesNoHoldsUserProfileHasNoFines() {
         WMSUserProfile userProfile = createUserProfile1LoanNoFinesNoHolds();
-        assertEquals(0, userProfile.getFines().size(), "Fines are not empty for a blank UserProfile");
+        assertEquals("Fines are not empty for a blank UserProfile",0, userProfile.getFines().size());
     }
 
     /**
      * A test to ensure that the user profile has no holds.
      */
     @Test
-    void test1LoanNoFinesNoHoldsUserProfileHasNoHolds() {
+    public void test1LoanNoFinesNoHoldsUserProfileHasNoHolds() {
         WMSUserProfile userProfile = createUserProfile1LoanNoFinesNoHolds();
-        assertEquals(0, userProfile.getOnHold().size(),"Holds are not empty for a blank UserProfile");
+        assertEquals("Holds are not empty for a blank UserProfile",0, userProfile.getOnHold().size());
     }
 
 
@@ -99,12 +99,12 @@ class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
      * A test to ensure that the userId is set correctly.
      */
     @Test
-    void test2LoansNoFines1HoldUserProfileUserIdSetCorrectly(){
+    public void test2LoansNoFines1HoldUserProfileUserIdSetCorrectly(){
         WMSUserProfile userProfile = createUserProfile2LoansNoFines1Hold();
         assertEquals(
+                "The userId does not match the expected value",
                 "998c3f4b-765e-48b2-asdf-8bd2cf8acee9",
-                userProfile.getUserId(),
-                "The userId does not match the expected value"
+                userProfile.getUserId()
         );
     }
 
@@ -112,27 +112,27 @@ class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
      * A test to ensure that the user profile has 1 loans.
      */
     @Test
-    void test2LoansNoFines1HoldUserProfileHas2Loans() {
+    public void test2LoansNoFines1HoldUserProfileHas2Loans() {
         WMSUserProfile userProfile = createUserProfile2LoansNoFines1Hold();
-        assertEquals(2, userProfile.getLoans().size(),"Number of loans do not match");
+        assertEquals("Number of loans do not match",2, userProfile.getLoans().size());
     }
 
     /**
      * A test to ensure that the user profile has no fines.
      */
     @Test
-    void test2LoansNoFines1HoldUserProfileHasNoFines() {
+    public void test2LoansNoFines1HoldUserProfileHasNoFines() {
         WMSUserProfile userProfile = createUserProfile2LoansNoFines1Hold();
-        assertEquals(0, userProfile.getFines().size(),"Fines are not empty for a blank UserProfile");
+        assertEquals("Fines are not empty for a blank UserProfile",0, userProfile.getFines().size());
     }
 
     /**
      * A test to ensure that the user profile has no holds.
      */
     @Test
-    void test2LoansNoFines1HoldUserProfileHas1Hold() {
+    public void test2LoansNoFines1HoldUserProfileHas1Hold() {
         WMSUserProfile userProfile = createUserProfile2LoansNoFines1Hold();
-        assertEquals(1, userProfile.getOnHold().size(), "Number of holds do not match");
+        assertEquals( "Number of holds do not match",1, userProfile.getOnHold().size());
     }
 
 
