@@ -13,6 +13,10 @@ import static spe.uoblibraryapp.nfc.Hex.*;
 public class NFC {
     private NfcV nfcTag = null;
 
+    public NFC(Intent intent) throws NFCTechException, IntentException, IOException {
+        setNfcTag(intent);
+    }
+
     /**
      * Turns the intent into a tag
      * @param intent - intent that called the activity
@@ -36,7 +40,7 @@ public class NFC {
      * @throws IntentException - tag not present in the intent
      * @throws IOException - can't talk to the tag
      */
-    public void setNfcTag(Intent intent) throws NFCTechException, IntentException, IOException {
+    private void setNfcTag(Intent intent) throws NFCTechException, IntentException, IOException {
         Tag tag = tagFromIntent(intent);
 
         if (tag == null) throw new IntentException("No tag in intent");
@@ -64,7 +68,7 @@ public class NFC {
     public byte[] getBookID() throws IOException, IntentException {
         if (nfcTag == null) throw new IntentException("Intent not set yet!");
 
-        byte[] commands = readMultipleBlocksCommand(2, 1);
+        byte[] commands = readMultipleBlocksCommand(0, 8);
 
         return nfcTag.transceive(commands);
     }

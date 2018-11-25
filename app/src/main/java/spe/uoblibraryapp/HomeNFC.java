@@ -51,10 +51,18 @@ public class HomeNFC extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         Toast.makeText(this, "NFC Intent", Toast.LENGTH_SHORT).show();
 
-        NFC nfc = new NFC();
-
         try {
-            nfc.setNfcTag(intent);
+            NFC nfc = new NFC(intent);
+
+            try{
+                String s = bytesToHexString(nfc.getBookID());
+                txtContent.setText(s);
+                Log.d(TAG, s);
+            } catch(IOException e){
+                Log.d(TAG, "Can't connect to the tag");
+            } catch (IntentException e) {
+                Log.d(TAG, "Intent not set");
+            }
         } catch (NFCTechException e) {
             Log.d(TAG, "Not the right NFC/RFID type");
         } catch (IntentException e) {
@@ -63,13 +71,7 @@ public class HomeNFC extends AppCompatActivity {
             Log.d(TAG, "Can't connect to the tag");
         }
 
-        try{
-            txtContent.setText(bytesToHexString(nfc.getSystemInfo()));
-        } catch(IOException e){
-            Log.d(TAG, "Can't connect to the tag");
-        } catch (IntentException e) {
-            Log.d(TAG, "Intent not set");
-        }
+
     }
 
 
