@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ReservationsFragment extends android.support.v4.app.Fragment{
+public class FragmentReservations extends android.support.v4.app.Fragment{
 
     private static final String TAG = "LoansFragment";
 
