@@ -1,5 +1,6 @@
 package spe.uoblibraryapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
@@ -11,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ActivityHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
     private CustomPagerAdapter mAdapter;
@@ -38,8 +39,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
-        mViewPager.setCurrentItem(1);
-        setTitle(mAdapter.getFragmentTitle(1));
+        mViewPager.setCurrentItem(0);
+        setTitle(mAdapter.getFragmentTitle(0));
         lastPage = mViewPager.getCurrentItem();
     }
 
@@ -81,7 +82,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         int id = item.getItemId();
 
         if (id == R.id.nav_scanBook) {
-            setViewPager("Scan A New Book");
+            //start activity here.
+            Intent NFCActivity = new Intent(getApplicationContext(), ActivityScanNFC.class);
+            startActivity(NFCActivity);
         } else if (id == R.id.nav_current_loans_reservations) {
             setViewPager("Loans");
         } else if (id == R.id.nav_fines) {
@@ -99,12 +102,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private void setupViewPager(ViewPager viewPager){
         mAdapter  = new CustomPagerAdapter(getSupportFragmentManager());
-        mAdapter.addFragment(new ScanFragment(), "Scan A New Book");
-        mAdapter.addFragment(new LoansFragment(), "Loans");
-        mAdapter.addFragment(new ReservationsFragment(), "Reservations");
-        mAdapter.addFragment(new FinesFragment(), "Fines");
-        mAdapter.addFragment(new LoanHistoryFragment(), "Loans History");
-        mAdapter.addFragment(new SettingsFragment(), "Settings");
+        mAdapter.addFragment(new FragmentLoans(), "Loans");
+        mAdapter.addFragment(new FragmentReservations(), "Reservations");
+        mAdapter.addFragment(new FragmentFines(), "Fines");
+        mAdapter.addFragment(new FragmentLoanHistory(), "Loans History");
+        mAdapter.addFragment(new FragmentSettings(), "Settings");
         viewPager.setAdapter(mAdapter);
         lastPage = mViewPager.getCurrentItem();
     }
