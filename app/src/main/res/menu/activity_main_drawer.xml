@@ -18,18 +18,18 @@
             android:icon="@drawable/ic_outline_book_24px"
             android:title="@string/fines" />
         <item
-            android:id="@+id/nav_loanhistory"
+            android:id="@+id/nav_loan_history"
             android:icon="@drawable/ic_baseline_history_24px"
             android:title="@string/loan_history" />
 
     </group>
 
-    <item android:title="@string/options">
+    <item android:title="@string/_options">
         <menu>
             <item
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_outline_settings_24px"
-                android:title="@string/settings" />
+                android:title="@string/_settings" />
         </menu>
     </item>
 

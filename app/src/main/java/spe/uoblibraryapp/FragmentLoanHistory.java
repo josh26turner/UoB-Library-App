@@ -12,7 +12,7 @@ public class FragmentLoanHistory extends android.support.v4.app.Fragment{
     private static final String TAG = "Loan History Fragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_loanhistory, container, false);
+        View view = inflater.inflate(R.layout.fragment_loan_history, container, false);
         return view;
     }
 }

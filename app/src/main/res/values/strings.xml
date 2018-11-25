@@ -1,30 +1,28 @@
 <resources>
+    <!-- DO NOT TOUCH THIS SECTION, REQUIRED throughout the UI.-->
     <string name="app_name">UoB Library App</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-    <string name="button">Button</string>
-    <string name="current_loans">Current Loans</string>
-    <string name="reservations">Reservations</string>
-    <string name="tools">Tools</string>
-    <string name="loan_history">Loan History</string>
-    <string name="fines">FINES</string>
-    <string name="settings">Settings</string>
-    <string name="options">Options</string>
-    <string name="borrow_book">Borrow Book</string>
-    <string name="title_activity_settings">Settings</string>
+    <!-- END OF REQUIRED SECTION -->
 
-
+    <!-- DO NOT TOUCH THIS SECTION, REQUIRED for the Main Drawer.-->
     <string name="scan_a_new_book">Scan a New Book</string>
     <string name="loans_and_reservations">Loans &amp; Reservations</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="current_loans">Current Loans</string>
+    <string name="reservations">Reservations</string>
+    <string name="fines">Fines</string>
+    <string name="loan_history">Loan History</string>
+    <string name="_options">Options</string>
+    <string name="_settings">Settings</string>
+    <!-- END OF REQUIRED SECTION -->
 
+    <!-- Used for login only.-->
+    <string name="hint_username">Enter UoB Email Here</string>
+    <string name="hint_password">Password</string>
+    <!-- END OF SECTION -->
 
-    <string name="title_activity_main">Main Activity</string>
-    <string name="title_activity_loans">LoansActivity</string>
-    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>
