@@ -102,11 +102,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private void setupViewPager(ViewPager viewPager){
         mAdapter  = new CustomPagerAdapter(getSupportFragmentManager());
-        mAdapter.addFragment(new LoansFragment(), "Loans");
-        mAdapter.addFragment(new ReservationsFragment(), "Reservations");
-        mAdapter.addFragment(new FinesFragment(), "Fines");
-        mAdapter.addFragment(new LoanHistoryFragment(), "Loans History");
-        mAdapter.addFragment(new SettingsFragment(), "Settings");
+        mAdapter.addFragment(new FragmentLoans(), "Loans");
+        mAdapter.addFragment(new FragmentReservations(), "Reservations");
+        mAdapter.addFragment(new FragmentFines(), "Fines");
+        mAdapter.addFragment(new FragmentLoanHistory(), "Loans History");
+        mAdapter.addFragment(new FragmentSettings(), "Settings");
         viewPager.setAdapter(mAdapter);
         lastPage = mViewPager.getCurrentItem();
     }
