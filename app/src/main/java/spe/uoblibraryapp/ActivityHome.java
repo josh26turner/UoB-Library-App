@@ -1,5 +1,6 @@
 package spe.uoblibraryapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -7,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -49,8 +51,9 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            mViewPager.setCurrentItem(lastPage);
+        }
+        else {
+            //TODO: Exit prompt.
         }
     }
 
@@ -89,7 +92,7 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
             setViewPager("Loans");
         } else if (id == R.id.nav_fines) {
             setViewPager("Fines");
-        } else if (id == R.id.nav_loanhistory) {
+        } else if (id == R.id.nav_loan_history) {
             setViewPager("Loans History");
         } else if (id == R.id.nav_settings) {
             setViewPager("Settings");
@@ -122,6 +125,24 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         else{
             //TODO: Think of something to return when programmer can't type correctly :)
         }
+    }
+
+    private boolean confirmDialog(Context context){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setMessage("Write your message here.");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Yes",
+                (dialog, id) -> dialog.cancel());
+
+        builder1.setNegativeButton(
+                "No",
+                (dialog, id) -> dialog.cancel());
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+        return false;
     }
     
 }
