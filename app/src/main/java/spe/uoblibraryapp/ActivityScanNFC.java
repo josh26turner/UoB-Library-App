@@ -17,7 +17,7 @@ import spe.uoblibraryapp.nfc.IntentException;
 import spe.uoblibraryapp.nfc.NFC;
 import spe.uoblibraryapp.nfc.NFCTechException;
 
-public class ScanNFCActivity extends AppCompatActivity {
+public class ActivityScanNFC extends AppCompatActivity {
     private static final String TAG = "Scan NFC Fragment";
 
     private TextView txtContent;

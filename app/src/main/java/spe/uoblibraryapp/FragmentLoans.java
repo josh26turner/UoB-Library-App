@@ -18,7 +18,7 @@ import spe.uoblibraryapp.api.wmsobjects.WMSRequest;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 
-public class LoansFragment extends android.support.v4.app.Fragment {
+public class FragmentLoans extends android.support.v4.app.Fragment {
     private static final String TAG = "LoansFragment";
 
     @Nullable
