@@ -1,18 +1,17 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import spe.uoblibraryapp.api.WMSException;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.fail;
 
 
-class WMSCheckoutTests extends WMSUserProfileTests {
+public class WMSCheckoutTests extends WMSUserProfileTests {
 
     @Test
-    void testDoubleAcceptThrows(){
+    public void testDoubleAcceptThrows(){
         WMSCheckout checkout = createCheckout();
         try {
             checkout.accept();
@@ -23,17 +22,17 @@ class WMSCheckoutTests extends WMSUserProfileTests {
 
 
     @Test
-    void testDoubleRejectThrows(){
+    public void testDoubleRejectThrows(){
 
     }
 
     @Test
-    void testRejectThenAcceptThrows(){
+    public void testRejectThenAcceptThrows(){
 
     }
 
     @Test
-    void testAcceptThenRejectThrows(){
+    public void testAcceptThenRejectThrows(){
 
     }
 

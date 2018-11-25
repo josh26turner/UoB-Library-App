@@ -1,7 +1,6 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -16,7 +15,7 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPPatronServiceFactory;
 import spe.uoblibraryapp.api.ncip.WMSNCIPStaffService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPStaffServiceFactory;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.fail;
 import static spe.uoblibraryapp.api.XMLParser.parse;
 
 
