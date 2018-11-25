@@ -12,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ActivityHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
     private CustomPagerAdapter mAdapter;
@@ -83,7 +83,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         if (id == R.id.nav_scanBook) {
             //start activity here.
-            Intent NFCActivity = new Intent(getApplicationContext(), ScanNFCActivity.class);
+            Intent NFCActivity = new Intent(getApplicationContext(), ActivityScanNFC.class);
             startActivity(NFCActivity);
         } else if (id == R.id.nav_current_loans_reservations) {
             setViewPager("Loans");
