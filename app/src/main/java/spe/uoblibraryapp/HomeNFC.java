@@ -55,7 +55,7 @@ public class HomeNFC extends AppCompatActivity {
             NFC nfc = new NFC(intent);
 
             try{
-                String s = bytesToHexString(nfc.getBookID());
+                String s = bytesToHexString(nfc.getSystemInfo());
                 txtContent.setText(s);
                 Log.d(TAG, s);
             } catch(IOException e){
