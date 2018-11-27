@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Home"
+            android:name=".ActivityHome"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ScanNFCActivity">
+        <activity android:name=".ActivityScanNFC">
             <!--><intent-filter>                                                THIS IS FOR CALLING WHEN THE APP ISN'T OPEN
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
             </intent-filter>

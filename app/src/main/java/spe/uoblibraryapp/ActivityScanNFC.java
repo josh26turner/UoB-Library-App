@@ -20,7 +20,8 @@ import spe.uoblibraryapp.nfc.NFCTechException;
 public class ActivityScanNFC extends AppCompatActivity {
     private static final String TAG = "Scan NFC Fragment";
 
-    private TextView txtContent;
+    private TextView txtContentUID;
+    private TextView txtContentSysInfo;
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
     private String[][] techList;
@@ -37,7 +38,9 @@ public class ActivityScanNFC extends AppCompatActivity {
             startActivity(i);
             finish();
         } else {
-            txtContent = findViewById(R.id.txtContent);
+            txtContentUID = findViewById(R.id.txtContentUID);
+            txtContentSysInfo = findViewById(R.id.txtContentSysInfo);
+
             Intent pnd = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0, pnd, 0);
             // Setup a tech list for NfcV tag.
@@ -52,9 +55,12 @@ public class ActivityScanNFC extends AppCompatActivity {
         try {
             NFC nfc = new NFC(intent);
             try{
-                String s = bytesToHexString(nfc.getBookID());
-                txtContent.setText(s);
-                Log.d(TAG, s);
+                String UID = bytesToHexString(nfc.getBookID());
+                String sysInfo = bytesToHexString(nfc.getSystemInfo());
+                txtContentUID.setText(UID);
+                txtContentSysInfo.setText(sysInfo);
+                Log.d(TAG, UID);
+                Log.d(TAG, sysInfo);
             } catch(IOException e){
                 Log.d(TAG, "Can't connect to the tag");
             } catch (IntentException e) {
