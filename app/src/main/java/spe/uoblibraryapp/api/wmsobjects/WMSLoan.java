@@ -70,7 +70,8 @@ public class WMSLoan {
      * @throws ParseException Throws if the date fails to parse
      */
     private Date parseDate(String strDate) throws ParseException{
-        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DDTHH:mm:ssZ");
+        strDate = strDate.replace("T", "").replace("Z", "");
+        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD-HH:mm:ss");
         return format.parse(strDate);
     }
 
