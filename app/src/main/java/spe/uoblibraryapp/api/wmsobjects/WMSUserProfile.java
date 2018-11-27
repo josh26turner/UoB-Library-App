@@ -176,7 +176,7 @@ public class WMSUserProfile {
     private List<WMSLoan> parseLoans(List<Node> loanNodes) throws WMSParseException {
         List<WMSLoan> loans = new ArrayList<>();
         for (Node loan : loanNodes){
-            loans.add(new WMSLoan(new WMSNCIPElement(loan)));
+            loans.add(new WMSLoan(new WMSNCIPElement(loan), patronService, staffService));
         }
         return loans;
     }
