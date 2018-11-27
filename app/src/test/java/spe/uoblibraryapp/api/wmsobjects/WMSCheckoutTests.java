@@ -1,7 +1,9 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import spe.uoblibraryapp.api.WMSException;
 
@@ -10,30 +12,45 @@ import static org.junit.Assert.fail;
 
 public class WMSCheckoutTests extends WMSUserProfileTests {
 
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+
     @Test
-    public void testDoubleAcceptThrows(){
+    public void testDoubleAcceptThrows() throws WMSException{
         WMSCheckout checkout = createCheckout();
-        try {
-            checkout.accept();
-        } catch (WMSException e){
-            fail("Should not fail after first accept");
-        }
+        checkout.accept();
+        exceptionRule.expect(WMSException.class);
+        exceptionRule.expectMessage("Checkout has already been accepted");
+        checkout.accept();
     }
 
 
     @Test
-    public void testDoubleRejectThrows(){
-
+    public void testDoubleRejectThrows() throws WMSException{
+        WMSCheckout checkout = createCheckout();
+        checkout.reject();
+        exceptionRule.expect(WMSException.class);
+        exceptionRule.expectMessage("Checkout has already been rejected");
+        checkout.reject();
     }
 
     @Test
-    public void testRejectThenAcceptThrows(){
-
+    public void testRejectThenAcceptThrows() throws WMSException{
+        WMSCheckout checkout = createCheckout();
+        checkout.reject();
+        exceptionRule.expect(WMSException.class);
+        exceptionRule.expectMessage("You can't accept a checkout after it's been rejected");
+        checkout.accept();
     }
 
     @Test
-    public void testAcceptThenRejectThrows(){
-
+    public void testAcceptThenRejectThrows() throws WMSException{
+        WMSCheckout checkout = createCheckout();
+        checkout.accept();
+        exceptionRule.expect(WMSException.class);
+        exceptionRule.expectMessage("You can't reject a checkout after it's been accepted");
+        checkout.reject();
     }
 
 

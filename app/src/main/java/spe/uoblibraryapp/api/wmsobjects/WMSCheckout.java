@@ -48,9 +48,9 @@ public class WMSCheckout {
     public Boolean accept() throws WMSException{
         if (rejected) {
             // Wooooaaaaah! You cant accept a checkout after you've rejected it, make a new one. 🤬
-            throw new WMSException("You can't accept a checkout after it's been rejected.");
+            throw new WMSException("You can't accept a checkout after it's been rejected");
         } else if (accepted){
-            throw new WMSException("Youve already accepted this checkout.");
+            throw new WMSException("Checkout has already been accepted");
         }
 
         this.accepted = true;
@@ -68,7 +68,7 @@ public class WMSCheckout {
             // A: no you cant.
             throw new WMSException("You can't reject a checkout after it's been accepted"); // Ideally this should be throw new YouAreAnIdiotException()
         } else if (rejected){
-            throw new WMSException("You've already rejected this checkout.");
+            throw new WMSException("Checkout has already been rejected");
         }
         this.rejected = true;
     }
