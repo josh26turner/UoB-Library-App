@@ -17,13 +17,13 @@ class MockWMSNCIPPatronService implements WMSNCIPPatronService {
                 "            <ns1:CirculationStatus ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/circulationstatus.scm\">On Loan</ns1:CirculationStatus>\n" +
                 "            <ns1:LoanedItemCountValue>1</ns1:LoanedItemCountValue>\n" +
                 "        </ns1:LoanedItemsCount>\n" +
-                "        <ns1:LoanedItem>\n" +
+                "        <ns1:LoanedItem>\n" + // Done (Thucydides thingy)
                 "            <ns1:ItemId>\n" +
                 "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
-                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7734</ns1:ItemIdentifierValue>\n" +
+                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7731</ns1:ItemIdentifierValue>\n" +
                 "            </ns1:ItemId>\n" +
                 "            <ns1:ReminderLevel>0</ns1:ReminderLevel>\n" +
-                "            <ns1:DateDue>2014-03-22T03:59:59Z</ns1:DateDue>\n" +
+                "            <ns1:DateDue>2018-12-01T16:20:53Z</ns1:DateDue>\n" +
                 "            <ns1:Amount>\n" +
                 "                <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
                 "                <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
@@ -31,7 +31,7 @@ class MockWMSNCIPPatronService implements WMSNCIPPatronService {
                 "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
                 "            <ns1:Ext>\n" +
                 "                <ns1:RenewalCount>1</ns1:RenewalCount>\n" +
-                "                <ns1:DateCheckedOut>2014-02-21T16:20:53Z</ns1:DateCheckedOut>\n" +
+                "                <ns1:DateCheckedOut>2018-11-24T16:20:53Z</ns1:DateCheckedOut>\n" +
                 "                <ns1:BibliographicDescription>\n" +
                 "                    <ns1:Author>Shanske, Darien,</ns1:Author>\n" +
                 "                    <ns1:BibliographicRecordId>\n" +
@@ -41,6 +41,174 @@ class MockWMSNCIPPatronService implements WMSNCIPPatronService {
                 "                    <ns1:PublicationDate>2007</ns1:PublicationDate>\n" +
                 "                    <ns1:Publisher>New York : Cambridge University Press,</ns1:Publisher>\n" +
                 "                    <ns1:Title>Thucydides and the philosophical origins of history /</ns1:Title>\n" +
+                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
+                "                </ns1:BibliographicDescription>\n" +
+                "            </ns1:Ext>\n" +
+                "        </ns1:LoanedItem>\n" +
+                "        <ns1:LoanedItem>\n" + // Done (Ethical python hacking)
+                "            <ns1:ItemId>\n" +
+                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
+                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7732</ns1:ItemIdentifierValue>\n" +
+                "            </ns1:ItemId>\n" +
+                "            <ns1:ReminderLevel>0</ns1:ReminderLevel>\n" +
+                "            <ns1:DateDue>2018-12-01T16:20:53Z</ns1:DateDue>\n" +
+                "            <ns1:Amount>\n" +
+                "                <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
+                "                <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
+                "            </ns1:Amount>\n" +
+                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
+                "            <ns1:Ext>\n" +
+                "                <ns1:RenewalCount>1</ns1:RenewalCount>\n" +
+                "                <ns1:DateCheckedOut>2018-11-24T16:20:53Z</ns1:DateCheckedOut>\n" +
+                "                <ns1:BibliographicDescription>\n" +
+                "                    <ns1:Author>Sanjib, Sinha</ns1:Author>\n" +
+                "                    <ns1:BibliographicRecordId>\n" +
+                "                        <ns1:BibliographicRecordIdentifier>967844934</ns1:BibliographicRecordIdentifier>\n" +
+                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
+                "                    </ns1:BibliographicRecordId>\n" +
+                "                    <ns1:PublicationDate>2017</ns1:PublicationDate>\n" +
+                "                    <ns1:Publisher>[United States] : Apress, 2017.</ns1:Publisher>\n" +
+                "                    <ns1:Title>Beginning ethical hacking with Python</ns1:Title>\n" +
+                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
+                "                </ns1:BibliographicDescription>\n" +
+                "            </ns1:Ext>\n" +
+                "        </ns1:LoanedItem>\n" +
+                "        <ns1:LoanedItem>\n" + // Done (MrBean)
+                "            <ns1:ItemId>\n" +
+                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
+                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7733</ns1:ItemIdentifierValue>\n" +
+                "            </ns1:ItemId>\n" +
+                "            <ns1:ReminderLevel>0</ns1:ReminderLevel>\n" +
+                "            <ns1:DateDue>2018-12-04T12:00:00Z</ns1:DateDue>\n" +
+                "            <ns1:Amount>\n" +
+                "                <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
+                "                <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
+                "            </ns1:Amount>\n" +
+                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
+                "            <ns1:Ext>\n" +
+                "                <ns1:RenewalCount>3</ns1:RenewalCount>\n" +
+                "                <ns1:DateCheckedOut>2018-11-18T12:00:00Z</ns1:DateCheckedOut>\n" +
+                "                <ns1:BibliographicDescription>\n" +
+                "                    <ns1:Author>Mr Bean</ns1:Author>\n" +
+                "                    <ns1:BibliographicRecordId>\n" +
+                "                        <ns1:BibliographicRecordIdentifier>824081697</ns1:BibliographicRecordIdentifier>\n" +
+                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
+                "                    </ns1:BibliographicRecordId>\n" +
+                "                    <ns1:PublicationDate>2011</ns1:PublicationDate>\n" +
+                "                    <ns1:Publisher>[Place of publication not identified] : Penguin Elt,</ns1:Publisher>\n" +
+                "                    <ns1:Title>Mr Bean in town.</ns1:Title>\n" +
+                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
+                "                </ns1:BibliographicDescription>\n" +
+                "            </ns1:Ext>\n" +
+                "        </ns1:LoanedItem>\n" +
+                "        <ns1:LoanedItem>\n" + // Done (The Ordinary life and extraordinary death of Josh Turner)
+                "            <ns1:ItemId>\n" +
+                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
+                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7734</ns1:ItemIdentifierValue>\n" +
+                "            </ns1:ItemId>\n" +
+                "            <ns1:ReminderLevel>0</ns1:ReminderLevel>\n" +
+                "            <ns1:DateDue>2018-12-20T12:00:00Z</ns1:DateDue>\n" +
+                "            <ns1:Amount>\n" +
+                "                <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
+                "                <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
+                "            </ns1:Amount>\n" +
+                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
+                "            <ns1:Ext>\n" +
+                "                <ns1:RenewalCount>1</ns1:RenewalCount>\n" +
+                "                <ns1:DateCheckedOut>2018-11-28T16:20:53Z</ns1:DateCheckedOut>\n" +
+                "                <ns1:BibliographicDescription>\n" +
+                "                    <ns1:Author>David Treciak</ns1:Author>\n" +
+                "                    <ns1:BibliographicRecordId>\n" +
+                "                        <ns1:BibliographicRecordIdentifier>746834975</ns1:BibliographicRecordIdentifier>\n" +
+                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
+                "                    </ns1:BibliographicRecordId>\n" +
+                "                    <ns1:PublicationDate>2007</ns1:PublicationDate>\n" +
+                "                    <ns1:Publisher>Torrance, CA : Amberlin Press,</ns1:Publisher>\n" +
+                "                    <ns1:Title>The Ordinary life and extraordinary death of Josh Turner</ns1:Title>\n" +
+                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
+                "                </ns1:BibliographicDescription>\n" +
+                "            </ns1:Ext>\n" +
+                "        </ns1:LoanedItem>\n" +
+                "        <ns1:LoanedItem>\n" + // Done (Jerry)
+                "            <ns1:ItemId>\n" +
+                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
+                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7735</ns1:ItemIdentifierValue>\n" +
+                "            </ns1:ItemId>\n" +
+                "            <ns1:ReminderLevel>0</ns1:ReminderLevel>\n" +
+                "            <ns1:DateDue>2018-12-13T03:59:59Z</ns1:DateDue>\n" +
+                "            <ns1:Amount>\n" +
+                "                <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
+                "                <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
+                "            </ns1:Amount>\n" +
+                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
+                "            <ns1:Ext>\n" +
+                "                <ns1:RenewalCount>1</ns1:RenewalCount>\n" +
+                "                <ns1:DateCheckedOut>2018-11-21T16:20:53Z</ns1:DateCheckedOut>\n" +
+                "                <ns1:BibliographicDescription>\n" +
+                "                    <ns1:Author>Ursula Dubosarsky; Patricia Mullins</ns1:Author>\n" +
+                "                    <ns1:BibliographicRecordId>\n" +
+                "                        <ns1:BibliographicRecordIdentifier>244005849</ns1:BibliographicRecordIdentifier>\n" +
+                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
+                "                    </ns1:BibliographicRecordId>\n" +
+                "                    <ns1:PublicationDate>2008</ns1:PublicationDate>\n" +
+                "                    <ns1:Publisher>Camberwell, Vic. : Penguin,</ns1:Publisher>\n" +
+                "                    <ns1:Title>Jerry</ns1:Title>\n" +
+                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
+                "                </ns1:BibliographicDescription>\n" +
+                "            </ns1:Ext>\n" +
+                "        </ns1:LoanedItem>\n" +
+                "        <ns1:LoanedItem>\n" + // Done (Ana's Arrow : [a crime novel])
+                "            <ns1:ItemId>\n" +
+                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
+                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7736</ns1:ItemIdentifierValue>\n" +
+                "            </ns1:ItemId>\n" +
+                "            <ns1:ReminderLevel>0</ns1:ReminderLevel>\n" +
+                "            <ns1:DateDue>2018-12-23T03:59:59Z</ns1:DateDue>\n" +
+                "            <ns1:Amount>\n" +
+                "                <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
+                "                <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
+                "            </ns1:Amount>\n" +
+                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
+                "            <ns1:Ext>\n" +
+                "                <ns1:RenewalCount>1</ns1:RenewalCount>\n" +
+                "                <ns1:DateCheckedOut>2018-11-16T16:20:53Z</ns1:DateCheckedOut>\n" +
+                "                <ns1:BibliographicDescription>\n" +
+                "                    <ns1:Author>Riley Evans</ns1:Author>\n" +
+                "                    <ns1:BibliographicRecordId>\n" +
+                "                        <ns1:BibliographicRecordIdentifier>435709750</ns1:BibliographicRecordIdentifier>\n" +
+                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
+                "                    </ns1:BibliographicRecordId>\n" +
+                "                    <ns1:PublicationDate>2007</ns1:PublicationDate>\n" +
+                "                    <ns1:Publisher>[Concordia, KS] : Storywright Books,</ns1:Publisher>\n" +
+                "                    <ns1:Title>Ana's Arrows : [a crime novel]</ns1:Title>\n" +
+                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
+                "                </ns1:BibliographicDescription>\n" +
+                "            </ns1:Ext>\n" +
+                "        </ns1:LoanedItem>\n" +
+                "        <ns1:LoanedItem>\n" + // doing (Hr + coursemate, 1-term access.)
+                "            <ns1:ItemId>\n" +
+                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
+                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7737</ns1:ItemIdentifierValue>\n" +
+                "            </ns1:ItemId>\n" +
+                "            <ns1:ReminderLevel>0</ns1:ReminderLevel>\n" +
+                "            <ns1:DateDue>2018-12-15T03:59:59Z</ns1:DateDue>\n" +
+                "            <ns1:Amount>\n" +
+                "                <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
+                "                <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
+                "            </ns1:Amount>\n" +
+                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
+                "            <ns1:Ext>\n" +
+                "                <ns1:RenewalCount>1</ns1:RenewalCount>\n" +
+                "                <ns1:DateCheckedOut>2018-11-21T16:20:53Z</ns1:DateCheckedOut>\n" +
+                "                <ns1:BibliographicDescription>\n" +
+                "                    <ns1:Author>Angelo Denisi</ns1:Author>\n" +
+                "                    <ns1:BibliographicRecordId>\n" +
+                "                        <ns1:BibliographicRecordIdentifier>950431405</ns1:BibliographicRecordIdentifier>\n" +
+                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
+                "                    </ns1:BibliographicRecordId>\n" +
+                "                    <ns1:PublicationDate>2015</ns1:PublicationDate>\n" +
+                "                    <ns1:Publisher>[Place of publication not identified] : South-Western,</ns1:Publisher>\n" +
+                "                    <ns1:Title>Hr + coursemate, 1-term access.</ns1:Title>\n" +
                 "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
                 "                </ns1:BibliographicDescription>\n" +
                 "            </ns1:Ext>\n" +
