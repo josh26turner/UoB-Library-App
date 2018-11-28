@@ -44,6 +44,10 @@ public class WMSBook {
 
         // TODO: Run some checks on elem to ensure it is correct and then extract the data.
         Node element = elemHolder.getElem();
+
+        if (!element.getNodeName().equals("ns1:BibliographicDescription")){
+            throw new WMSParseException("WMSBook needs a <ns1:BibliographicDescription> Node");
+        }
         // TODO: Extract book details from element and setup object.
 
         parseElement(element);
@@ -59,7 +63,7 @@ public class WMSBook {
     /**
      * DO NOT USE THIS ONE, IT WILL BE DELETED IN BETA BUILD
      */
-    WMSBook(){
+    private WMSBook(){
         // TODO: THIS IS ONLY TEMPORARY SO IT WORKS FOR JERRY
         title = "Diary of a wimpy kid : dog days ";
         publisher = "New York : Amulet Books";

@@ -100,6 +100,7 @@ public class WMSUserProfile {
      * could be called when the user refreshes home page
      */
     public void refresh() throws WMSException, WMSParseException{
+        // TODO: Return bool which states if any data has changed.
         WMSResponse response = patronService.lookup_user(this.userId);
 
         if (response.didFail()) {
