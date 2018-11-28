@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,11 @@ public class ActivityScanNFC extends AppCompatActivity {
 
     private TextView txtContentUID;
     private TextView txtContentSysInfo;
+    private TextView txtBarcode;
+
+    private Button on;
+    private Button off;
+
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
     private String[][] techList;
@@ -40,6 +46,10 @@ public class ActivityScanNFC extends AppCompatActivity {
         } else {
             txtContentUID = findViewById(R.id.txtContentUID);
             txtContentSysInfo = findViewById(R.id.txtContentSysInfo);
+            txtBarcode = findViewById(R.id.Barcode);
+
+            on = findViewById(R.id.button);
+            off = findViewById(R.id.button2);
 
             Intent pnd = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0, pnd, 0);
@@ -48,6 +58,11 @@ public class ActivityScanNFC extends AppCompatActivity {
         }
     }
 
+    /**
+     * Called when an intent gets parsed to the activity,
+     * hopefully an NFC tag.
+     * @param intent - an intent sent to the activity, hopefully a tag
+     */
     @Override
     protected void onNewIntent(Intent intent) {
         Toast.makeText(this, "NFC Intent", Toast.LENGTH_SHORT).show();
@@ -55,22 +70,64 @@ public class ActivityScanNFC extends AppCompatActivity {
         try {
             NFC nfc = new NFC(intent);
             try{
-                String UID = bytesToHexString(nfc.getBookID());
+                byte[] bytes = nfc.getBookID();
                 String sysInfo = bytesToHexString(nfc.getSystemInfo());
+
+                String barcode = new String(bytes, 4, 17);
+                String UID = bytesToHexString(bytes);
+
                 txtContentUID.setText(UID);
                 txtContentSysInfo.setText(sysInfo);
+                txtBarcode.setText(barcode);
+
+                ActivityScanNFC thisClass = this;
+
+                on.setOnClickListener(v -> {
+                    try {
+                        nfc.putSecureSetting();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "Can't connect to tag.");
+                        Toast.makeText(thisClass, "Can't connect to tag.", Toast.LENGTH_SHORT).show();
+                    } catch (IntentException e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "Tag not set yet.");
+                        Toast.makeText(thisClass, "Tag not set yet.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                off.setOnClickListener(v -> {
+                    try {
+                        nfc.removeSecureSetting();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "Can't connect to tag.");
+                        Toast.makeText(thisClass, "Can't connect to tag.", Toast.LENGTH_SHORT).show();
+                    } catch (IntentException e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "Tag not set yet.");
+                        Toast.makeText(thisClass, "Tag not set yet.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 Log.d(TAG, UID);
                 Log.d(TAG, sysInfo);
+                Log.d(TAG, barcode);
             } catch(IOException e){
+                e.printStackTrace();
                 Log.d(TAG, "Can't connect to the tag");
             } catch (IntentException e) {
+                e.printStackTrace();
                 Log.d(TAG, "Intent not set");
             }
         } catch (NFCTechException e) {
+            e.printStackTrace();
             Log.d(TAG, "Not the right NFC/RFID type");
         } catch (IntentException e) {
+            e.printStackTrace();
             Log.d(TAG, "No tag in the intent");
         } catch (IOException e) {
+            e.printStackTrace();
             Log.d(TAG, "Can't connect to the tag");
         }
 
@@ -108,7 +165,7 @@ public class ActivityScanNFC extends AppCompatActivity {
 
             stringBuilder.append(buffer);
         }
-        return stringBuilder.toString().toUpperCase();
+        return stringBuilder.toString().toUpperCase().replace('X','x');
     }
 
 }

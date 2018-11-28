@@ -4,7 +4,12 @@ public class Hex {
     private static final byte GET_SYSTEM_INFO = (byte) 0x2B;
     private static final byte READ_MULTIPLE_BLOCKS = (byte) 0x23;
     private static final byte FLAGS = (byte) 0x00;
+    private static final byte WRITE_AFI = (byte) 0x27;
+    static final byte AFI_CHECKED_IN = (byte) 0xDA;
+    static final byte AFI_CHECKED_OUT = (byte) 0xC2;
 
+    public static final byte [] SET_SECURITY_OFF = new byte[]{FLAGS, WRITE_AFI, AFI_CHECKED_OUT};
+    public static final byte [] SET_SECURITY_ON = new byte[]{FLAGS, WRITE_AFI, AFI_CHECKED_IN};
     public static byte [] SYSTEM_INFO_COMMAND = new byte[]{FLAGS, GET_SYSTEM_INFO};
 
     /**
