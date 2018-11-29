@@ -72,27 +72,21 @@ public class ActivityScanNFC extends AppCompatActivity {
             try{
                 byte[] bytes = nfc.getBookID();
                 String sysInfo = bytesToHexString(nfc.getSystemInfo());
-
-                String barcode = new String(bytes, 4, 17);
                 String UID = bytesToHexString(bytes);
 
                 txtContentUID.setText(UID);
                 txtContentSysInfo.setText(sysInfo);
-                txtBarcode.setText(barcode);
 
                 ActivityScanNFC thisClass = this;
 
                 on.setOnClickListener(v -> {
                     try {
+                        Log.d(TAG, "SECURE ONNNNNNNN");
                         nfc.putSecureSetting();
                     } catch (IOException e) {
                         e.printStackTrace();
                         Log.d(TAG, "Can't connect to tag.");
                         Toast.makeText(thisClass, "Can't connect to tag.", Toast.LENGTH_SHORT).show();
-                    } catch (IntentException e) {
-                        e.printStackTrace();
-                        Log.d(TAG, "Tag not set yet.");
-                        Toast.makeText(thisClass, "Tag not set yet.", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -103,22 +97,20 @@ public class ActivityScanNFC extends AppCompatActivity {
                         e.printStackTrace();
                         Log.d(TAG, "Can't connect to tag.");
                         Toast.makeText(thisClass, "Can't connect to tag.", Toast.LENGTH_SHORT).show();
-                    } catch (IntentException e) {
-                        e.printStackTrace();
-                        Log.d(TAG, "Tag not set yet.");
-                        Toast.makeText(thisClass, "Tag not set yet.", Toast.LENGTH_SHORT).show();
                     }
                 });
 
                 Log.d(TAG, UID);
                 Log.d(TAG, sysInfo);
-                Log.d(TAG, barcode);
+
+                if (bytes.length >= 4 + 17) {
+                    String barcode = new String(bytes, 4, 17);
+                    txtBarcode.setText(barcode);
+                    Log.d(TAG, barcode);
+                }
             } catch(IOException e){
                 e.printStackTrace();
                 Log.d(TAG, "Can't connect to the tag");
-            } catch (IntentException e) {
-                e.printStackTrace();
-                Log.d(TAG, "Intent not set");
             }
         } catch (NFCTechException e) {
             e.printStackTrace();
@@ -130,8 +122,6 @@ public class ActivityScanNFC extends AppCompatActivity {
             e.printStackTrace();
             Log.d(TAG, "Can't connect to the tag");
         }
-
-
     }
 
     @Override
