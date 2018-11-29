@@ -54,10 +54,9 @@ public class WMSBookTests {
     @Test
     public void testGetPublicationDate(){
         WMSBook book = createSimpleBook();
-        Integer year = 2007;
         assertEquals(
                 "The publication date does not match",
-                year,
+                (Integer) 2007,
                 book.getPublicationDate()
         );
     }
@@ -95,8 +94,7 @@ public class WMSBookTests {
     @Test
     public void testParserGetPublicationDate() throws WMSParseException{
         WMSBook book = createParsedBook();
-        Integer year = 2009;
-        assertEquals("Published date does not match", year , book.getPublicationDate());
+        assertEquals("Published date does not match", (Integer) 2009 , book.getPublicationDate());
     }
 
     @Test
