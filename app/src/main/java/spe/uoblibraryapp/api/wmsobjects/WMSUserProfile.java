@@ -31,7 +31,13 @@ public class WMSUserProfile {
     private WMSNCIPStaffService staffService;
 
 
-
+    /**
+     * Constructor
+     * @param elemHolder This contains the node to parse
+     * @param patronService The patron service
+     * @param staffService The staff service
+     * @throws WMSParseException Thrown if there was an error parsing the node
+     */
     public WMSUserProfile(
             WMSNCIPElement elemHolder,
             WMSNCIPPatronService patronService,
@@ -43,79 +49,21 @@ public class WMSUserProfile {
         this.staffService = staffService;
 
 
-        // TODO: Run some checks on elem to ensure it is correct.
         Node node = elemHolder.getElem();
 
         // Check the node contains the correct data, before parsing.
 
-
-
+        if (!node.getNodeName().equals("ns1:LookupUserResponse")){
+            throw new WMSParseException("WMSUserProfile requires a <ns1:LookupUserResponse> Node");
+        }
 
         // Parse the node into all the attributes associated with the user.
         this.parseNode(node);
     }
 
-    /**
-     * Gets a users fines
-     * @return Returns a list of all fines the user has.
-     */
-    public List<WMSFine> getFines(){
-        return this.fines;
-    }
-
-    /**
-     * Gets all books a user has on loan.
-     * @return Returns a list of all loans the user has
-     */
-    public List<WMSLoan> getLoans(){
-        return this.loans;
-    }
-
-    /**
-     * Gets all requests that the user has made with are on hold.
-     * @return Returns a list of requests
-     */
-    public List<WMSRequest> getOnHold(){
-        return this.onHold;
-    }
-
-    /**
-     * Gets all requests the the user has recently made, and not actioned yet by the library.
-     * @return Returns a list of requests
-     */
-    public List<WMSRequest> getRecentlyReceived(){
-        return this.recentlyReceived;
-    }
 
 
-    public String getUserId(){ return this.userId; }
-
-    public WMSCheckout checkoutBook(String bookId){
-        // TODO use staff service to make checkout request.
-        return new WMSCheckout(bookId, this, staffService);
-    }
-
-    /**
-     * This will refresh the data contained in the UserProfile,
-     * could be called when the user refreshes home page
-     */
-    public void refresh() throws WMSException, WMSParseException{
-        // TODO: Return bool which states if any data has changed.
-        WMSResponse response = patronService.lookup_user(this.userId);
-
-        if (response.didFail()) {
-            throw new WMSException("There was an error retrieving the User Profile");
-        }
-        Document doc;
-        try {
-            doc = response.parse();
-        } catch (IOException | SAXException | ParserConfigurationException e){
-            throw new WMSException("There was an error Parsing the WMS response");
-        }
-        Node node = doc.getElementsByTagName("ns1:LookupUserResponse").item(0);
-
-        parseNode(node);
-    }
+    // Parsers for nodes
 
     private void parseNode(Node node) throws WMSParseException {
         List<Node> loanNodes = new ArrayList<>();
@@ -206,4 +154,82 @@ public class WMSUserProfile {
         return fines;
     }
 
+
+
+
+    // Getters & other methods for UI people
+
+    /**
+     * Gets a users fines
+     * @return Returns a list of all fines the user has.
+     */
+    public List<WMSFine> getFines(){
+        return this.fines;
+    }
+
+    /**
+     * Gets all books a user has on loan.
+     * @return Returns a list of all loans the user has
+     */
+    public List<WMSLoan> getLoans(){
+        return this.loans;
+    }
+
+    /**
+     * Gets all requests that the user has made with are on hold.
+     * @return Returns a list of requests
+     */
+    public List<WMSRequest> getOnHold(){
+        return this.onHold;
+    }
+
+    /**
+     * Gets all requests the the user has recently made, and not actioned yet by the library.
+     * @return Returns a list of requests
+     */
+    public List<WMSRequest> getRecentlyReceived(){
+        return this.recentlyReceived;
+    }
+
+    /**
+     * Gets the userId
+     * @return the userId
+     */
+    public String getUserId(){
+        return this.userId;
+    }
+
+    /**
+     * This will create a checkout request
+     * Note: This will not action a checkout, to action checkout.accept is required.
+     * @param itemId This is the ID read off the NFC tag.
+     * @return A checkout object to process the transaction.
+     */
+    public WMSCheckout checkoutBook(String itemId){
+        return new WMSCheckout(itemId, this, staffService);
+    }
+
+    /**
+     * This will refresh the data contained in the UserProfile,
+     * could be called when the user refreshes home page
+     * @throws WMSException Thrown if there was an error communication with WMS
+     * @throws WMSParseException thrown if the response fails to parse
+     */
+    public void refresh() throws WMSException, WMSParseException{
+        // TODO: Return bool which states if any data has changed.
+        WMSResponse response = patronService.lookup_user(this.userId);
+
+        if (response.didFail()) {
+            throw new WMSException("There was an error retrieving the User Profile");
+        }
+        Document doc;
+        try {
+            doc = response.parse();
+        } catch (IOException | SAXException | ParserConfigurationException e){
+            throw new WMSException("There was an error Parsing the WMS response");
+        }
+        Node node = doc.getElementsByTagName("ns1:LookupUserResponse").item(0);
+
+        parseNode(node);
+    }
 }
