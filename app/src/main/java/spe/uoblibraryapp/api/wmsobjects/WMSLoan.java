@@ -8,8 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
-import spe.uoblibraryapp.api.ncip.WMSNCIPPatronService;
-import spe.uoblibraryapp.api.ncip.WMSNCIPStaffService;
 
 
 /**
@@ -26,25 +24,13 @@ public class WMSLoan {
     private Integer reminderLevel;
     private String mediumType;
 
-    // Store NCIP services
-    private WMSNCIPPatronService patronService;
-    private WMSNCIPStaffService staffService;
 
     /**
      * Constructor
      * @param elemHolder This contains the node information
-     * @param patronService This is the patron service
-     * @param staffService This is the staff service
      * @throws WMSParseException throws if the node fails to parse
      */
-    WMSLoan(
-            WMSNCIPElement elemHolder,
-            WMSNCIPPatronService patronService,
-            WMSNCIPStaffService staffService
-    ) throws WMSParseException{
-
-        this.patronService = patronService;
-        this.staffService = staffService;
+    WMSLoan(WMSNCIPElement elemHolder) throws WMSParseException{
 
         // Get Node.
         Node element = elemHolder.getElem();
@@ -71,7 +57,7 @@ public class WMSLoan {
      */
     private Date parseDate(String strDate) throws ParseException{
         strDate = strDate.replace("T", "-").replace("Z", "");
-        SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD-HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
         return format.parse(strDate);
     }
 
@@ -103,7 +89,7 @@ public class WMSLoan {
                 case "ns1:ReminderLevel":
                     reminderLevel = Integer.valueOf(child.getTextContent());
                     break;
-                case "ns1:DueDate":
+                case "ns1:DateDue":
                     dueDate = parseDate(child.getTextContent());
                     break;
                 case "ns1:MediumType":
@@ -119,6 +105,7 @@ public class WMSLoan {
                                 break;
                             case "ns1:DateCheckedOut":
                                 checkedOutDate = parseDate(childsChild.getTextContent());
+                                System.out.print(childsChild.getTextContent());
                                 break;
                             case "ns1:BibliographicDescription":
                                 book = new WMSBook(new WMSNCIPElement(childsChild));

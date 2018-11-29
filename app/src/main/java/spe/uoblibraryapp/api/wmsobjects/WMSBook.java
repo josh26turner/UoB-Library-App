@@ -50,7 +50,7 @@ public class WMSBook {
 
     /**
      * Constructor
-     * DO NOT USE THIS ONE, IT WILL BE DELETED IN BETA BUILD
+     * DO NOT USE THIS ONE, only used for testing.
      */
     private WMSBook(){
         // TODO: THIS IS ONLY TEMPORARY SO IT WORKS FOR JERRY
