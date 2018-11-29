@@ -3,6 +3,7 @@ package spe.uoblibraryapp.api.wmsobjects;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import spe.uoblibraryapp.api.collection.WMSCollectionManagementElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPPatronService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPStaffService;
@@ -36,6 +37,10 @@ public class WMSBook {
         parseNCIPElement(element);
     }
 
+    public WMSBook(WMSCollectionManagementElement elemHolder) {
+        this("testing");
+    }
+
     /**
      * Constructor
      * This will create a book from the oclc number
@@ -46,6 +51,8 @@ public class WMSBook {
         this(); // Temporary to give values.
         this.bookId = bookId;
     }
+
+
 
 
     /**
