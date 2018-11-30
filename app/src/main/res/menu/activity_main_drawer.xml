@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_scanBook"
+            android:icon="@drawable/ic_outline_camera_alt_24px"
+            android:title="@string/scan_a_new_book" />
+        <item
+            android:id="@+id/nav_current_loans_reservations"
+            android:icon="@drawable/ic_outline_library_books_24px"
+            android:title="@string/loans_and_reservations" />
+
+        <item
+            android:id="@+id/nav_fines"
+            android:icon="@drawable/ic_outline_book_24px"
+            android:title="@string/fines" />
+        <item
+            android:id="@+id/nav_loan_history"
+            android:icon="@drawable/ic_baseline_history_24px"
+            android:title="@string/loan_history" />
+
+    </group>
+
+    <item android:title="@string/_options">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_outline_settings_24px"
+                android:title="@string/_settings" />
+        </menu>
+    </item>
+
+</menu>

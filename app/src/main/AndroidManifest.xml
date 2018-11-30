@@ -11,18 +11,17 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".Home">
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ActivityHome"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".HomeNFC">
+        <activity android:name=".ActivityScanNFC">
             <!--><intent-filter>                                                THIS IS FOR CALLING WHEN THE APP ISN'T OPEN
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
             </intent-filter>

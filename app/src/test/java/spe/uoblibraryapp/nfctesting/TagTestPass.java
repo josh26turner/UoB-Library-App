@@ -13,11 +13,10 @@ public class TagTestPass {
 
     public static Tag mockTag() {
         Class tagClass = Tag.class;
-
         Method createMock;
 
         try {
-            createMock = tagClass.getMethod("createMockTag", byte[].class, int[].class, Bundle[].class);
+            createMock = Tag.class.getMethod("createMockTag", byte[].class, int[].class, Bundle[].class);
             Bundle nfcvBundle = new Bundle();
             nfcvBundle.putByteArray(EXTRA_NFC_V_DSFID, new byte[]{(byte) 0x01, (byte) 0x02});
             nfcvBundle.putByteArray(EXTRA_NFC_V_RESP_FLAGS, new byte[]{(byte) 0x00});

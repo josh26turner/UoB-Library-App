@@ -11,8 +11,18 @@ import static spe.uoblibraryapp.nfc.Hex.*;
 
 
 public class NFC {
-    private NfcV nfcTag = null;
+    private NfcV nfcTag;
+    private byte [] tagID;
+    private byte [] systemInformation;
+    private byte [] userBlocks;
 
+    /**
+     * The constructor for the class, always called with an intent.
+     * @param intent - the intent with the tag
+     * @throws NFCTechException - not the right type of tag
+     * @throws IntentException - not the right type of intent
+     * @throws IOException - can't communicate with the tag
+     */
     public NFC(Intent intent) throws NFCTechException, IntentException, IOException {
         setNfcTag(intent);
     }
@@ -21,16 +31,19 @@ public class NFC {
      * Turns the intent into a tag
      * @param intent - intent that called the activity
      * @return - the tag in the book, or null
+     * @throws IntentException - if there's no tag in the intent
      */
-    private Tag tagFromIntent (Intent intent) {
+    private Tag tagFromIntent (Intent intent) throws IntentException {
+        if (intent == null) throw new IntentException("Null pointer");
+
         String intentAction = intent.getAction();
 
-        if (intentAction.equals(NfcAdapter.ACTION_TECH_DISCOVERED)
-                || intentAction.equals(NfcAdapter.ACTION_TAG_DISCOVERED))
-            return (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+        if (intentAction != null)
+            if (intentAction.equals(NfcAdapter.ACTION_TECH_DISCOVERED)
+                    || intentAction.equals(NfcAdapter.ACTION_TAG_DISCOVERED))
+                return (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
-
-        return null;
+        throw new IntentException("No tag in intent");
     }
 
     /**
@@ -43,7 +56,7 @@ public class NFC {
     private void setNfcTag(Intent intent) throws NFCTechException, IntentException, IOException {
         Tag tag = tagFromIntent(intent);
 
-        if (tag == null) throw new IntentException("No tag in intent");
+        tagID = tag.getId();
 
         boolean techPresent = false;
 
@@ -57,53 +70,73 @@ public class NFC {
         if (!techPresent) throw new NFCTechException("No ISO 15693 tag detected");
 
         nfcTag.connect();
+
+        userBlocks = readMultipleBlocks(4);
+        systemInformation = getSystemInfo();
+
+        nfcTag.close();
+    }
+
+    /**
+     * Get system information
+     * @return - the information stored about the tag
+     */
+    public byte[] getSystemInformation() {
+        return systemInformation;
+    }
+
+    /**
+     * Converts the parts of the user blocks to the form printed on the barcode
+     * @return - the printed version of the barcode
+     */
+    public String getBarcode() {
+
+        if (userBlocks.length >= 3) {
+            return new String(userBlocks, 2, userBlocks.length - 2);
+        } else return "";
     }
 
     /**
      * Reads the bytes in the tag which are the book's UID
      * @return - the book ID
      * @throws IOException - if the tag can't be communicated with
-     * @throws IntentException - if the tag hasn't been set
      */
-    public byte[] getBookID() throws IOException, IntentException {
-        if (nfcTag == null) throw new IntentException("Intent not set yet!");
+    private byte[] readMultipleBlocks(int numberOfBlocks) throws IOException {
+        byte[] returnValue = new byte[4 * numberOfBlocks];
 
-        byte[] commands = readMultipleBlocksCommand(0, 8);
+        for (int i = 0; i < numberOfBlocks; i++) {
+            byte[] block = nfcTag.transceive(readSingleBlockCommand(i, tagID));
 
-        return nfcTag.transceive(commands);
+            if (block[0] != (byte) 0x00) throw new IOException();
+
+            System.arraycopy(block, 1, returnValue, 4 * i, block.length - 1);
+        }
+
+        return returnValue;
     }
 
     /**
      *
      * @return - the tag info
      * @throws IOException - if the tag can't be communicated with
-     * @throws IntentException - if the tag hasn't been set
      */
-    public byte[] getSystemInfo() throws IOException, IntentException {
-        if (nfcTag == null) throw new IntentException("Intent not set yet!");
-        else return nfcTag.transceive(SYSTEM_INFO_COMMAND);
+    private byte[] getSystemInfo() throws IOException {
+        return nfcTag.transceive(getSystemInfoCommand(tagID));
+    }
+
+    /**
+     *  Makes the alarmSYSTEM_INFO_COMMAND
+     * @throws IOException - if the tag can't be communicated with
+     */
+    public void removeSecureSetting() throws IOException {
+        nfcTag.transceive(setSecurityOff(tagID));
     }
 
     /**
      *
      * @throws IOException - if the tag can't be communicated with
-     * @throws IntentException - if the tag hasn't been set
      */
-    public void removeSecureSetting() throws IOException, IntentException {
-        if (nfcTag == null) throw new IntentException("Intent not set yet!");
-
-        if (!isSecured()) {
-            //NFC Transceive to turn off security
-        }
-    }
-
-    /**
-     * Reads the tag to see if security is on or off
-     * @return - if the security is on return true
-     * @throws IOException - if the tag can't be communicated with
-     */
-    private boolean isSecured() throws IOException{
-        //Read the security block
-        return false; //For now
+    public void putSecureSetting() throws IOException {
+        nfcTag.transceive(setSecurityOn(tagID));
     }
 }
