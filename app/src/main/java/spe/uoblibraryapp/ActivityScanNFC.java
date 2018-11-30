@@ -21,12 +21,8 @@ import spe.uoblibraryapp.nfc.NFCTechException;
 public class ActivityScanNFC extends AppCompatActivity {
     private static final String TAG = "Scan NFC Fragment";
 
-    private TextView txtContentUID;
     private TextView txtContentSysInfo;
     private TextView txtBarcode;
-
-    private Button on;
-    private Button off;
 
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
@@ -39,17 +35,13 @@ public class ActivityScanNFC extends AppCompatActivity {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         if (!(nfcAdapter != null && nfcAdapter.isEnabled())){
-            Toast.makeText(this, "No NFC Detected", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "No NFC Detected", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
             startActivity(i);
             finish();
         } else {
-            txtContentUID = findViewById(R.id.txtContentUID);
             txtContentSysInfo = findViewById(R.id.txtContentSysInfo);
             txtBarcode = findViewById(R.id.Barcode);
-
-            on = findViewById(R.id.button);
-            off = findViewById(R.id.button2);
 
             Intent pnd = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0, pnd, 0);
@@ -69,49 +61,12 @@ public class ActivityScanNFC extends AppCompatActivity {
 
         try {
             NFC nfc = new NFC(intent);
-            try{
-                byte[] bytes = nfc.getBookID();
-                String sysInfo = bytesToHexString(nfc.getSystemInfo());
-                String UID = bytesToHexString(bytes);
+            String sysInfo = bytesToHexString(nfc.getSystemInformation());
+            txtContentSysInfo.setText(sysInfo.substring(24, 26));
+            Log.d(TAG, sysInfo);
 
-                txtContentUID.setText(UID);
-                txtContentSysInfo.setText(sysInfo);
+            txtBarcode.setText(nfc.getBarcode());
 
-                ActivityScanNFC thisClass = this;
-
-                on.setOnClickListener(v -> {
-                    try {
-                        Log.d(TAG, "SECURE ONNNNNNNN");
-                        nfc.putSecureSetting();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Log.d(TAG, "Can't connect to tag.");
-                        Toast.makeText(thisClass, "Can't connect to tag.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                off.setOnClickListener(v -> {
-                    try {
-                        nfc.removeSecureSetting();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Log.d(TAG, "Can't connect to tag.");
-                        Toast.makeText(thisClass, "Can't connect to tag.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                Log.d(TAG, UID);
-                Log.d(TAG, sysInfo);
-
-                if (bytes.length >= 4 + 17) {
-                    String barcode = new String(bytes, 4, 17);
-                    txtBarcode.setText(barcode);
-                    Log.d(TAG, barcode);
-                }
-            } catch(IOException e){
-                e.printStackTrace();
-                Log.d(TAG, "Can't connect to the tag");
-            }
         } catch (NFCTechException e) {
             e.printStackTrace();
             Log.d(TAG, "Not the right NFC/RFID type");
