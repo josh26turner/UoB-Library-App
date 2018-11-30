@@ -12,9 +12,6 @@ import static spe.uoblibraryapp.nfc.Hex.*;
 
 public class NFC {
     private NfcV nfcTag;
-    private byte [] tagID;
-    private byte [] systemInformation;
-    private byte [] userBlocks;
 
     /**
      * The constructor for the class, always called with an intent.
@@ -56,8 +53,6 @@ public class NFC {
     private void setNfcTag(Intent intent) throws NFCTechException, IntentException, IOException {
         Tag tag = tagFromIntent(intent);
 
-        tagID = tag.getId();
-
         boolean techPresent = false;
 
         for (String tech : tag.getTechList())
@@ -70,30 +65,6 @@ public class NFC {
         if (!techPresent) throw new NFCTechException("No ISO 15693 tag detected");
 
         nfcTag.connect();
-
-        userBlocks = readMultipleBlocks(4);
-        systemInformation = getSystemInfo();
-
-        nfcTag.close();
-    }
-
-    /**
-     * Get system information
-     * @return - the information stored about the tag
-     */
-    public byte[] getSystemInformation() {
-        return systemInformation;
-    }
-
-    /**
-     * Converts the parts of the user blocks to the form printed on the barcode
-     * @return - the printed version of the barcode
-     */
-    public String getBarcode() {
-
-        if (userBlocks.length >= 3) {
-            return new String(userBlocks, 2, userBlocks.length - 2);
-        } else return "";
     }
 
     /**
@@ -101,18 +72,10 @@ public class NFC {
      * @return - the book ID
      * @throws IOException - if the tag can't be communicated with
      */
-    private byte[] readMultipleBlocks(int numberOfBlocks) throws IOException {
-        byte[] returnValue = new byte[4 * numberOfBlocks];
+    public byte[] getBookID() throws IOException {
+        byte[] commands = readMultipleBlocksCommand(0, 8);
 
-        for (int i = 0; i < numberOfBlocks; i++) {
-            byte[] block = nfcTag.transceive(readSingleBlockCommand(i, tagID));
-
-            if (block[0] != (byte) 0x00) throw new IOException();
-
-            System.arraycopy(block, 1, returnValue, 4 * i, block.length - 1);
-        }
-
-        return returnValue;
+        return nfcTag.transceive(commands);
     }
 
     /**
@@ -120,16 +83,16 @@ public class NFC {
      * @return - the tag info
      * @throws IOException - if the tag can't be communicated with
      */
-    private byte[] getSystemInfo() throws IOException {
-        return nfcTag.transceive(getSystemInfoCommand(tagID));
+    public byte[] getSystemInfo() throws IOException {
+        return nfcTag.transceive(SYSTEM_INFO_COMMAND);
     }
 
     /**
-     *  Makes the alarmSYSTEM_INFO_COMMAND
+     *  Makes the alarm
      * @throws IOException - if the tag can't be communicated with
      */
     public void removeSecureSetting() throws IOException {
-        nfcTag.transceive(setSecurityOff(tagID));
+        nfcTag.transceive(SET_SECURITY_OFF);
     }
 
     /**
@@ -137,6 +100,6 @@ public class NFC {
      * @throws IOException - if the tag can't be communicated with
      */
     public void putSecureSetting() throws IOException {
-        nfcTag.transceive(setSecurityOn(tagID));
+        nfcTag.transceive(SET_SECURITY_ON);
     }
 }
