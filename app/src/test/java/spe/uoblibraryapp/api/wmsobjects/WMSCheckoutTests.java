@@ -7,7 +7,6 @@ import org.junit.rules.ExpectedException;
 
 import spe.uoblibraryapp.api.WMSException;
 
-import static org.junit.Assert.fail;
 
 
 public class WMSCheckoutTests extends WMSUserProfileTests {

@@ -33,7 +33,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         try {
             WMSUserProfile userProfile = wmsncipController.getUserDetails("0");
             for (WMSLoan loan : userProfile.getLoans()){
-                bookList.add(new LoanBookEntry(loan.getBook().getTitle(), loan.getBook().getPublisher(), "Loan"));
+                bookList.add(new LoanBookEntry(loan.getBook().getTitle(), loan.getBook().getAuthor(), "Loan"));
             }
         }
         catch (WMSException e)
