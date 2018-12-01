@@ -2,6 +2,7 @@ package spe.uoblibraryapp.api.wmsobjects;
 
 import spe.uoblibraryapp.api.WMSException;
 import spe.uoblibraryapp.api.WMSResponse;
+import spe.uoblibraryapp.api.collection.WMSCollectionManagementController;
 import spe.uoblibraryapp.api.ncip.WMSNCIPStaffService;
 
 /**
@@ -14,6 +15,7 @@ public class WMSCheckout {
     private WMSNCIPStaffService staffService;
     private Boolean rejected = false;
     private Boolean accepted = false;
+    private WMSBook book;
 
     /**
      *
@@ -30,6 +32,8 @@ public class WMSCheckout {
         this.staffService = staffService;
         this.userProfile = userProfile;
 
+        WMSCollectionManagementController collManage = new WMSCollectionManagementController();
+        this.book = collManage.lookupBook(itemId);
 
     }
 
@@ -38,7 +42,7 @@ public class WMSCheckout {
      * @return
      */
     public WMSBook getBook(){
-        return new WMSBook(itemId);
+        return this.book;
     }
 
     /**
