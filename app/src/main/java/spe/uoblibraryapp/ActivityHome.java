@@ -166,23 +166,4 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
             //TODO: Think of something to return when programmer can't type correctly :)
         }
     }
-
-    private boolean confirmDialog(Context context){
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-        builder1.setMessage("Write your message here.");
-        builder1.setCancelable(true);
-
-        builder1.setPositiveButton(
-                "Yes",
-                (dialog, id) -> dialog.cancel());
-
-        builder1.setNegativeButton(
-                "No",
-                (dialog, id) -> dialog.cancel());
-
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-        return false;
-    }
-    
 }
