@@ -1,40 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="100">
-
-    <TextView
-        android:id="@+id/txtTitle"
-        android:layout_width="437dp"
-        android:layout_height="60dp"
-        android:layout_weight="66.6"
-        android:gravity="center"
-        android:text="Text1" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="33.3">
+    android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/txtTitle"
             android:layout_width="match_parent"
-            android:text="Text2"
-            android:gravity="center"
-            android:layout_height="30dp"
-            android:id="@+id/txtStatus"
-            android:layout_weight="66.6"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:gravity="left|center"
+            android:textSize="18dp"
+            android:textStyle="normal"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Text1" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="7dp"
+        android:layout_weight="30">
 
         <TextView
             android:layout_width="match_parent"
             android:text="Text3"
-            android:gravity="center"
+            android:textStyle="italic"
+            android:gravity="center|left"
             android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
             android:id="@+id/txtAuthor"
-            android:layout_weight="66.6"/>
+            android:layout_weight="30"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Text2"
+            android:gravity="right|center"
+            android:layout_height="30dp"
+            android:layout_marginRight="15dp"
+            android:id="@+id/txtStatus"
+            android:layout_weight="70"/>
 
     </LinearLayout>
+
+
 
 </LinearLayout>

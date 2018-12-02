@@ -28,20 +28,20 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Toolbar toolbar = (Toolbar) $(R.id.toolbar);
+        Toolbar toolbar = $(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) $(R.id.drawer_layout);
+        DrawerLayout drawer = $(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) $(R.id.nav_view);
+        NavigationView navigationView = $(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_current_loans_reservations);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mViewPager = (ViewPager) $(R.id.container);
+        mViewPager = $(R.id.container);
 
         //This is the new page change listener to fix action bar title not changing on horizontally swiping through pages
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -87,7 +87,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) $(R.id.drawer_layout);
+        DrawerLayout drawer = $(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
@@ -137,7 +137,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
             setViewPager("Settings");
         }
 
-        DrawerLayout drawer = (DrawerLayout) $(R.id.drawer_layout);
+        DrawerLayout drawer = $(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

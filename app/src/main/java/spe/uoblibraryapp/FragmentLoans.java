@@ -26,7 +26,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_loans, container, false);
 
-        ListView mListView = (ListView) view.findViewById(R.id.listview);
+        ListView mListView = view.findViewById(R.id.listview);
         WMSNCIPController wmsncipController = new WMSNCIPController();
         ArrayList<LoanBookEntry> bookList = new ArrayList<>();
 
