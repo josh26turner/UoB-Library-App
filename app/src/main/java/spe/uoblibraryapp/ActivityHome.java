@@ -14,7 +14,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class ActivityHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import stanford.androidlib.SimpleActivity;
+
+public class ActivityHome extends SimpleActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
     private CustomPagerAdapter mAdapter;
@@ -26,20 +28,57 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) $(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) $(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) $(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_current_loans_reservations);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) $(R.id.container);
+
+        //This is the new page change listener to fix action bar title not changing on horizontally swiping through pages
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mViewPager.setCurrentItem(position);
+                switch(position) {
+                    case 0:
+                        getSupportActionBar().setTitle("Current Loans");
+                        break;
+                    case 1:
+                        getSupportActionBar().setTitle("Reservations");
+                        break;
+                    case 2:
+                        getSupportActionBar().setTitle("Fines");
+                        break;
+                    case 3:
+                        getSupportActionBar().setTitle("History");
+                        break;
+                    case 4:
+                        getSupportActionBar().setTitle("App Settings");
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
         setupViewPager(mViewPager);
         mViewPager.setCurrentItem(0);
         setTitle(mAdapter.getFragmentTitle(0));
@@ -48,7 +87,7 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) $(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
@@ -98,7 +137,7 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
             setViewPager("Settings");
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) $(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

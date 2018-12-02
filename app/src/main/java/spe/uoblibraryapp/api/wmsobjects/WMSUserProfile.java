@@ -215,6 +215,7 @@ public class WMSUserProfile {
      * @throws WMSException Thrown if there was an error communication with WMS
      * @throws WMSParseException thrown if the response fails to parse
      */
+
     public void refresh() throws WMSException, WMSParseException{
         // TODO: Return bool which states if any data has changed.
         WMSResponse response = patronService.lookup_user(this.userId);
