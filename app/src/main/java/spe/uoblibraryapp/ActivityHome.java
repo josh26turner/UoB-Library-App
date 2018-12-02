@@ -53,6 +53,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
             @Override
             public void onPageSelected(int position) {
                 mViewPager.setCurrentItem(position);
+                navigationView.getMenu().getItem(position).setChecked(true);
                 switch(position) {
                     case 0:
                         getSupportActionBar().setTitle("Current Loans");
