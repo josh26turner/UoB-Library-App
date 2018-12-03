@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="71dp"
-        android:background="@drawable/ic_nfc_alpha" />
+        android:background="@drawable/contactless" />
 
     <TextView
         android:id="@+id/textView2"
@@ -23,7 +23,8 @@
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="62dp"
-        android:text="Hold Phone Next to Book" />
+        android:text="Hold Your Phone Close to Book"
+        android:textColor="@android:color/black" />
 
     <Button
         android:id="@+id/btnProblemReport2"
@@ -33,11 +34,12 @@
         android:layout_below="@+id/textView2"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="110dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginTop="109dp"
+        android:layout_marginEnd="113dp"
         android:layout_marginBottom="0dp"
-        android:textSize="12sp"
-        android:text="Problems Scanning?" />
+        android:text="Problems Scanning?"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/btnNFC"
