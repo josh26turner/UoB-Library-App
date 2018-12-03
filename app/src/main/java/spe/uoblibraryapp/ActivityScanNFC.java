@@ -47,7 +47,7 @@ public class ActivityScanNFC extends AppCompatActivity {
             pendingIntent = PendingIntent.getActivity(this, 0, pnd, 0);
             // Setup a tech list for NfcV tag.
             techList = new String[][]{ new String[]{NfcV.class.getName()} };
-            confirmScreen(txtBarcode.getText().toString());
+
         }
     }
 
@@ -67,6 +67,7 @@ public class ActivityScanNFC extends AppCompatActivity {
             Log.d(TAG, sysInfo);
 
             txtBarcode.setText(nfc.getBarcode());
+            confirmScreen(txtBarcode.getText().toString());
 
         } catch (NFCTechException e) {
             e.printStackTrace();
@@ -119,5 +120,4 @@ public class ActivityScanNFC extends AppCompatActivity {
         myIntent.putExtra("key", code); //Optional parameters
         ActivityScanNFC.this.startActivity(myIntent);
     }
-
 }
