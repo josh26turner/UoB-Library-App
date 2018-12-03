@@ -182,4 +182,8 @@ public class WMSLoan {
     public String getMediumType() {
         return this.mediumType;
     }
+
+    public Boolean isOverdue() {
+        return this.dueDate.before(new Date());
+    }
 }
