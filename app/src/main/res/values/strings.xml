@@ -24,5 +24,9 @@
     <string name="hint_password">Password</string>
     <!-- END OF SECTION -->
 
+    <string-array name="color_array">
+        <item>Pink</item>
+        <item>Green</item>
+    </string-array>
 
 </resources>

@@ -2,13 +2,14 @@ package spe.uoblibraryapp;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
 
 
-public class CustomPagerAdapter extends FragmentStatePagerAdapter{
+public class CustomPagerAdapter extends FragmentStatePagerAdapter {
 
     private final List<Fragment> mFragmentList= new ArrayList<>();
     private final List<String> mFragmentTitleList= new ArrayList<>(); //not required but helpful to have.
@@ -21,6 +22,7 @@ public class CustomPagerAdapter extends FragmentStatePagerAdapter{
     public Fragment getItem(int position) {
         return mFragmentList.get(position);
     }
+
     @Override
     public int getCount() {
         return mFragmentList.size();
@@ -43,5 +45,6 @@ public class CustomPagerAdapter extends FragmentStatePagerAdapter{
     public String getFragmentTitle(int position){
         return mFragmentTitleList.get(position);
     }
+
 
 }
