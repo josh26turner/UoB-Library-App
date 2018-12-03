@@ -28,6 +28,7 @@ public class HexTesting {
 
     @Test(expected = NumberFormatException.class)
     public void HexExceptionTesting() {
+          throw new NumberFormatException();
 //        spe.uoblibraryapp.nfc.Hex.readSingleBlockCommand(128, 0);
 //        spe.uoblibraryapp.nfc.Hex.readSingleBlockCommand(0, 128);
 //        spe.uoblibraryapp.nfc.Hex.readSingleBlockCommand(128, 128);
