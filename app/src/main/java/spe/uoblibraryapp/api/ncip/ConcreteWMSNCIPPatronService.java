@@ -2,7 +2,7 @@ package spe.uoblibraryapp.api.ncip;
 
 import spe.uoblibraryapp.api.WMSResponse;
 
-class ConcreteWMSNCIPPartronService implements WMSNCIPPatronService {
+class ConcreteWMSNCIPPatronService implements WMSNCIPPatronService {
     // TODO: Make this when the library services finally have users setup
 
     @Override
