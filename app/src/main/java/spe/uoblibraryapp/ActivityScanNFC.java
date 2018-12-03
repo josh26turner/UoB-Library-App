@@ -66,6 +66,7 @@ public class ActivityScanNFC extends AppCompatActivity {
             Log.d(TAG, sysInfo);
 
             txtBarcode.setText(nfc.getBarcode());
+            confirmScreen(nfc);
 
         } catch (NFCTechException e) {
             e.printStackTrace();
@@ -111,6 +112,12 @@ public class ActivityScanNFC extends AppCompatActivity {
             stringBuilder.append(buffer);
         }
         return stringBuilder.toString().toUpperCase().replace('X','x');
+    }
+
+    private void confirmScreen(NFC nfc){
+        Intent myIntent = new Intent(ActivityScanNFC.this, ActivityConfirm.class);
+        myIntent.putExtra("key", nfc.getBarcode()); //Optional parameters
+        ActivityScanNFC.this.startActivity(myIntent);
     }
 
 }

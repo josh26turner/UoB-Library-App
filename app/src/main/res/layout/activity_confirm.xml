@@ -5,7 +5,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="70dp"
         android:layout_height="150dp"
         android:src="@drawable/book_1"/>
 
@@ -22,6 +22,7 @@
 
 
     <TextView
+        android:id="@+id/book_name_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Book Name"
@@ -32,21 +33,35 @@
         android:textAlignment="center"
         android:layout_marginTop="30dp"/>
 
+    <TextView
+        android:id="@+id/book_author_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Author Name"
+        android:textSize="14dp"
+        android:fontFamily="sans-serif"
+        android:textStyle="italic"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="35dp">
 
 
         <Button
+
+            android:id="@+id/borrow_button"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:text="Borrow"
-            android:textSize="20dp"
-            android:layout_marginRight="10dp"/>
+            android:textSize="20dp" />
 
         <Button
             android:layout_width="120dp"
