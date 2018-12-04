@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.NfcV;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -12,9 +13,10 @@ import static spe.uoblibraryapp.nfc.Hex.*;
 
 public class NFC {
     private NfcV nfcTag;
-    private byte [] tagID;
-    private byte [] systemInformation;
-    private byte [] userBlocks;
+    private byte []
+            tagID,
+            systemInformation,
+            userBlocks;
 
     /**
      * The constructor for the class, always called with an intent.
@@ -71,6 +73,7 @@ public class NFC {
 
         nfcTag.connect();
 
+        //putSecureSetting();
         userBlocks = readMultipleBlocks(4);
         systemInformation = getSystemInfo();
 
@@ -130,13 +133,37 @@ public class NFC {
      */
     public void removeSecureSetting() throws IOException {
         nfcTag.transceive(setSecurityOff(tagID));
+        //nfcTag.transceive(lockAFI(tagID));
     }
 
     /**
      *
      * @throws IOException - if the tag can't be communicated with
      */
-    public void putSecureSetting() throws IOException {
-        nfcTag.transceive(setSecurityOn(tagID));
+    private void putSecureSetting() throws IOException {
+        Log.d("NFC", bytesToHexString(nfcTag.transceive(setSecurityOn(tagID))));
+        //Log.d("NFC", bytesToHexString(nfcTag.transceive(lockAFI(tagID))));
+    }
+
+    /**
+     * turns an array of bytes into hex representation
+     * @param src - bytes to turn into hex
+     * @return - the hex representation of the bytes as a string
+     */
+    private String bytesToHexString(byte[] src) {
+        StringBuilder stringBuilder = new StringBuilder("0x");
+
+        if (src == null || src.length <= 0) {
+            return null;
+        }
+        char[] buffer = new char[2];
+
+        for (byte aSrc : src) {
+            buffer[0] = Character.forDigit((aSrc >>> 4) & 0x0F, 16);
+            buffer[1] = Character.forDigit(aSrc & 0x0F, 16);
+
+            stringBuilder.append(buffer);
+        }
+        return stringBuilder.toString().toUpperCase().replace('X','x');
     }
 }
