@@ -93,6 +93,11 @@ public class ActivityScanNFC extends AppCompatActivity {
         nfcAdapter.disableForegroundDispatch(this);
     }
 
+    public void onBackPressed(){
+        Intent intent = new Intent(ActivityScanNFC.this, ActivityHome.class);
+        startActivity(intent);
+    }
+
     /**
      * turns an array of bytes into hex representation
      * @param src - bytes to turn into hex

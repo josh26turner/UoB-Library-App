@@ -14,6 +14,11 @@
             android:title="@string/loans_and_reservations" />
 
         <item
+            android:id="@+id/nav_reservations"
+            android:icon="@drawable/ic_outline_library_books_24px"
+            android:title="Reservations" />
+
+        <item
             android:id="@+id/nav_fines"
             android:icon="@drawable/ic_outline_book_24px"
             android:title="@string/fines" />

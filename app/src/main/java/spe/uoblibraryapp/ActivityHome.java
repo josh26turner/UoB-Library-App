@@ -56,18 +56,21 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
                 navigationView.getMenu().getItem(position).setChecked(true);
                 switch(position) {
                     case 0:
-                        getSupportActionBar().setTitle("Current Loans");
+                        getSupportActionBar().setTitle("Scan New Book");
                         break;
                     case 1:
-                        getSupportActionBar().setTitle("Reservations");
+                        getSupportActionBar().setTitle("Loans");
                         break;
                     case 2:
-                        getSupportActionBar().setTitle("Fines");
+                        getSupportActionBar().setTitle("Reservations");
                         break;
                     case 3:
-                        getSupportActionBar().setTitle("History");
+                        getSupportActionBar().setTitle("Fines");
                         break;
                     case 4:
+                        getSupportActionBar().setTitle("History");
+                        break;
+                    case 5:
                         getSupportActionBar().setTitle("App Settings");
                         break;
                 }
@@ -126,10 +129,11 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
 
         if (id == R.id.nav_scanBook) {
             //start activity here.
-            Intent NFCActivity = new Intent(getApplicationContext(), ActivityScanNFC.class);
-            startActivity(NFCActivity);
+            setViewPager("Scan New Book");
         } else if (id == R.id.nav_current_loans_reservations) {
             setViewPager("Loans");
+        } else if (id == R.id.nav_reservations) {
+            setViewPager("Reservations");
         } else if (id == R.id.nav_fines) {
             setViewPager("Fines");
         } else if (id == R.id.nav_loan_history) {
@@ -145,6 +149,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
 
     private void setupViewPager(ViewPager viewPager){
         mAdapter  = new CustomPagerAdapter(getSupportFragmentManager());
+        mAdapter.addFragment(new FragmentScan(), "Scan New Book");
         mAdapter.addFragment(new FragmentLoans(), "Loans");
         mAdapter.addFragment(new FragmentReservations(), "Reservations");
         mAdapter.addFragment(new FragmentFines(), "Fines");
