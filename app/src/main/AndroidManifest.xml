@@ -18,6 +18,10 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity
+            android:name=".ActivitySignIn">
+        </activity>
+
         <activity android:name=".Splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,6 +45,7 @@
             <meta-data android:name="android.nfc.action.TAG_DISCOVERED"
                 android:resource="@xml/nfc_tech_list" /> </!-->
         </activity>
+
         <activity android:name=".ActivityConfirm">
             <!--><intent-filter>                                                THIS IS FOR CALLING WHEN THE APP ISN'T OPEN
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />

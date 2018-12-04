@@ -30,4 +30,13 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"/>
 
+    <Button
+        android:id="@+id/goto_signin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:text="Sign In"
+        android:layout_marginTop="20dp"/>
+
 </LinearLayout>
