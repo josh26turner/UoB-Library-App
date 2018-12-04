@@ -5,7 +5,7 @@ import spe.uoblibraryapp.api.wmsobjects.WMSBook;
 
 public class WMSCollectionManagementController {
 
-    WMSCollectionManagementService service;
+    private WMSCollectionManagementService service;
 
     public WMSCollectionManagementController (){
         this(false);

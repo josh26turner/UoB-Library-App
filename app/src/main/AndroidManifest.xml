@@ -12,16 +12,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".ActivityHome"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity android:name=".Splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity android:name=".ActivityScanNFC">
+            <!--><intent-filter>                                                THIS IS FOR CALLING WHEN THE APP ISN'T OPEN
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.nfc.action.TAG_DISCOVERED"/>
+            </intent-filter>
+
+            <meta-data android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_list" />
+
+            <meta-data android:name="android.nfc.action.TAG_DISCOVERED"
+                android:resource="@xml/nfc_tech_list" /> </!-->
+        </activity>
+        <activity android:name=".ActivityConfirm">
             <!--><intent-filter>                                                THIS IS FOR CALLING WHEN THE APP ISN'T OPEN
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
             </intent-filter>

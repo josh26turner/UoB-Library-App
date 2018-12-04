@@ -10,7 +10,7 @@
 
     <!-- DO NOT TOUCH THIS SECTION, REQUIRED for the Main Drawer.-->
     <string name="scan_a_new_book">Scan a New Book</string>
-    <string name="loans_and_reservations">Loans &amp; Reservations</string>
+    <string name="loans_and_reservations">Loans</string>
     <string name="current_loans">Current Loans</string>
     <string name="reservations">Reservations</string>
     <string name="fines">Fines</string>
