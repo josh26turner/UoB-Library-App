@@ -27,15 +27,11 @@
             android:icon="@drawable/ic_baseline_history_24px"
             android:title="@string/loan_history" />
 
-    </group>
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_outline_settings_24px"
+            android:title="@string/_settings" />
 
-    <item android:title="@string/_options">
-        <menu>
-            <item
-                android:id="@+id/nav_settings"
-                android:icon="@drawable/ic_outline_settings_24px"
-                android:title="@string/_settings" />
-        </menu>
-    </item>
+    </group>
 
 </menu>
