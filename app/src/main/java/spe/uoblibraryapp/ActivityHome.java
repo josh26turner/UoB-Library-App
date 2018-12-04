@@ -84,7 +84,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
 
 
         setupViewPager(mViewPager);
-        mViewPager.setCurrentItem(0);
+        mViewPager.setCurrentItem(1);
         setTitle(mAdapter.getFragmentTitle(0));
         lastPage = mViewPager.getCurrentItem();
     }
