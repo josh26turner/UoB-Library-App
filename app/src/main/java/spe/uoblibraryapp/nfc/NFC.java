@@ -27,6 +27,14 @@ public class NFC {
      */
     public NFC(Intent intent) throws NFCTechException, IntentException, IOException {
         setNfcTag(intent);
+
+        nfcTag.connect();
+
+        //removeSecureSetting();
+        userBlocks = readMultipleBlocks(4);
+        systemInformation = getSystemInfo();
+
+        nfcTag.close();
     }
 
     /**
@@ -70,14 +78,6 @@ public class NFC {
             }
 
         if (!techPresent) throw new NFCTechException("No ISO 15693 tag detected");
-
-        nfcTag.connect();
-
-        //putSecureSetting();
-        userBlocks = readMultipleBlocks(4);
-        systemInformation = getSystemInfo();
-
-        nfcTag.close();
     }
 
     /**
@@ -128,7 +128,7 @@ public class NFC {
     }
 
     /**
-     *  Makes the alarmSYSTEM_INFO_COMMAND
+     * Stops the alarm going off if you take a book through
      * @throws IOException - if the tag can't be communicated with
      */
     public void removeSecureSetting() throws IOException {
@@ -137,7 +137,7 @@ public class NFC {
     }
 
     /**
-     *
+     * Makes the alarm go off if you take a book through
      * @throws IOException - if the tag can't be communicated with
      */
     private void putSecureSetting() throws IOException {
