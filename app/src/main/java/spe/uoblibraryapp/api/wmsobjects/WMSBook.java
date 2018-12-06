@@ -46,10 +46,21 @@ public class WMSBook {
      * This will create a book from the oclc number
      * @param bookId The OCLC number for a book
      */
-    WMSBook(String bookId){
+    public WMSBook(String bookId){
          // TODO: Use search service to find the book details and setup object.
-        this(); // Temporary to give values.
-        this.bookId = bookId;
+        if (bookId.equals("1050042221")){
+            title = "Pevsner's architectural glossary";
+            publisher = "New Haven, Conn. Yale University Press 2016";
+            publicationDate = 2016;
+            this.bookId = "1050042221";
+            author = "Nikolaus Pevsner";
+        } else {
+            title = "Diary of a wimpy kid : dog days";
+            publisher = "New York : Amulet Books";
+            publicationDate = 2007;
+            this.bookId = "123456789";
+            author = "Shanske, Darien,";
+        }
     }
 
 
@@ -116,7 +127,7 @@ public class WMSBook {
      * @return The OCLC Number
      */
     public String getBookId() {
-        return bookId;
+        return this.bookId;
     }
 
     /**

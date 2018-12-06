@@ -22,6 +22,11 @@ public class WMSCollectionManagementController {
         // TODO:2 Make request using service
         // TODO:3 put response into WMSCollectionManagerElement
         WMSResponse res = service.readResource("test123");
-        return new WMSBook(new WMSCollectionManagementElement());
+//        return new WMSBook(new WMSCollectionManagementElement());
+        if (itemId.equals("151319076")) {
+            return new WMSBook("1050042221");
+        } else{
+            return new WMSBook(new WMSCollectionManagementElement());
+        }
     }
 }
