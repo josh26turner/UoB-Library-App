@@ -23,8 +23,8 @@ public class WMSUserProfile {
 
 
     private List<WMSLoan> loans;
-    private List<WMSRequest> onHold;
-    private List<WMSRequest> recentlyReceived;
+    private List<WMSHold> onHold;
+    private List<WMSHold> recentlyReceived;
     private List<WMSFine> fines;
 
     private WMSNCIPPatronService patronService;
@@ -130,18 +130,18 @@ public class WMSUserProfile {
         return loans;
     }
 
-    private List<WMSRequest> parseHolds(List<Node> holdNodes) throws WMSParseException {
-        List<WMSRequest> holds = new ArrayList<>();
+    private List<WMSHold> parseHolds(List<Node> holdNodes) throws WMSParseException {
+        List<WMSHold> holds = new ArrayList<>();
         for (Node node : holdNodes){
-            holds.add(new WMSRequest(new WMSNCIPElement(node)));
+            holds.add(new WMSHold(new WMSNCIPElement(node)));
         }
         return holds;
     }
 
-    private List<WMSRequest> parseRecentlyReceived(List<Node> recentlyReceivedNodes) throws WMSParseException {
-        List<WMSRequest> recentlyReceived = new ArrayList<>();
+    private List<WMSHold> parseRecentlyReceived(List<Node> recentlyReceivedNodes) throws WMSParseException {
+        List<WMSHold> recentlyReceived = new ArrayList<>();
         for (Node node : recentlyReceivedNodes) {
-            recentlyReceived.add(new WMSRequest(new WMSNCIPElement(node)));
+            recentlyReceived.add(new WMSHold(new WMSNCIPElement(node)));
         }
         return recentlyReceived;
     }
@@ -179,7 +179,7 @@ public class WMSUserProfile {
      * Gets all requests that the user has made with are on hold.
      * @return Returns a list of requests
      */
-    public List<WMSRequest> getOnHold(){
+    public List<WMSHold> getOnHold(){
         return this.onHold;
     }
 
@@ -187,7 +187,7 @@ public class WMSUserProfile {
      * Gets all requests the the user has recently made, and not actioned yet by the library.
      * @return Returns a list of requests
      */
-    public List<WMSRequest> getRecentlyReceived(){
+    public List<WMSHold> getRecentlyReceived(){
         return this.recentlyReceived;
     }
 

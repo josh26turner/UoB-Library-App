@@ -10,6 +10,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import static java.lang.Thread.sleep;
+
 public class Splashscreen extends AppCompatActivity {
 
     public void onAttachedToWindow() {

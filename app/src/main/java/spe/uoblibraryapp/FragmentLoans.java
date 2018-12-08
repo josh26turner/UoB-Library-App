@@ -25,7 +25,6 @@ import spe.uoblibraryapp.api.WMSException;
 import spe.uoblibraryapp.api.ncip.WMSNCIPController;
 import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
-import spe.uoblibraryapp.api.wmsobjects.WMSRequest;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 import stanford.androidlib.SimpleActivity;
 

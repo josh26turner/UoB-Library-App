@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_gravity="center"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/login_splash">
 
 
@@ -33,9 +33,9 @@
         android:inputType="textEmailAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
         android:layout_marginBottom="4dp"
         android:textSize="16dp"
         android:hint="@string/hint_username" />
@@ -45,10 +45,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="18dp"
         android:textSize="16dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="18dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif"
         android:hint="@string/hint_password"/>
+
+    <Button
+        android:id="@+id/signin_butt"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="30dp"
+        android:alpha="0.8"
+        android:text="Sign In"
+        android:textSize="20dp"
+        android:textStyle="normal" />
 </LinearLayout>
