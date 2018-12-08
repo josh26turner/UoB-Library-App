@@ -77,8 +77,8 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
 
         LoanBookListAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
         mListView.setAdapter(adapter);
-       // ListView listview = view.findViewById(R.id.listview);
-        //listview.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
+        ListView listview = view.findViewById(R.id.listview);
+        listview.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
 
 
 

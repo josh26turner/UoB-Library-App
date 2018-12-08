@@ -11,11 +11,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import spe.uoblibraryapp.api.WMSException;
-import spe.uoblibraryapp.api.ncip.WMSNCIPController;
-import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
-import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
-
 public class LoanBookListAdapter extends ArrayAdapter<LoanBookEntry> {
 
     private Context mContext;
@@ -55,9 +50,7 @@ public class LoanBookListAdapter extends ArrayAdapter<LoanBookEntry> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: DO STUFF HERE.
-                //TODO: DO STUFF HERE.
-                //TODO: DO STUFF HERE.
+                Toast.makeText(getContext(), title, Toast.LENGTH_SHORT).show();
             }
         });
 
