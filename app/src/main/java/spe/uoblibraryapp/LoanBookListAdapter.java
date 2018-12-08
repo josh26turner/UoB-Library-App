@@ -1,13 +1,20 @@
 package spe.uoblibraryapp;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import spe.uoblibraryapp.api.WMSException;
+import spe.uoblibraryapp.api.ncip.WMSNCIPController;
+import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
+import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 public class LoanBookListAdapter extends ArrayAdapter<LoanBookEntry> {
 
@@ -25,19 +32,38 @@ public class LoanBookListAdapter extends ArrayAdapter<LoanBookEntry> {
 
         String title = getItem(position).getTitle();
         String author = getItem(position).getAuthor();
-        String status = getItem(position).getStatus();
+        BookStatus status = getItem(position).getStatus();
 
         LoanBookEntry book = new LoanBookEntry( title, author, status);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false );
-
         TextView textViewTitle = convertView.findViewById(R.id.txtTitle);
         TextView textViewAuthor = convertView.findViewById(R.id.txtAuthor);
         TextView textViewStatus = convertView.findViewById(R.id.txtStatus);
         textViewTitle.setText(title);
         textViewAuthor.setText(author);
-        textViewStatus.setText(status);
+        textViewStatus.setText(status.toString());
+
+        if (status == BookStatus.OVERDUE)
+            textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorOverdue));
+
+        else if (status == BookStatus.RESERVATION)
+            textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorReservation));
+        else
+            textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorLoan));
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: DO STUFF HERE.
+                //TODO: DO STUFF HERE.
+                //TODO: DO STUFF HERE.
+            }
+        });
+
 
         return convertView;
     }
+
+
 }
