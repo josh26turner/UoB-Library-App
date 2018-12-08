@@ -7,7 +7,9 @@ import org.w3c.dom.NodeList;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 
@@ -95,7 +97,6 @@ public class WMSHold {
                         switch(childsChild.getNodeName()){
                             case "ns1:BibliographicDescription":
                                 book = new WMSBook(new WMSNCIPElement(childsChild));
-                                agencyId = childsChild.getTextContent();
                                 break;
                             case "ns1:EarliestDateNeeded":
                                 earliestDateNeeded = parseDate(childsChild.getTextContent());
