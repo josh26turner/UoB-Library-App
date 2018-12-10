@@ -6,13 +6,11 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPPatronService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPStaffService;
 
-public class WMSFine {
+public class WMSRequest {
 
-
-    public WMSFine(WMSNCIPElement elemHolder) throws WMSParseException{
+    public WMSRequest(WMSNCIPElement elemHolder) throws WMSParseException{
 
         // TODO: Run some checks on elem to ensure it is correct and then extract the data.
         Node element = elemHolder.getElem();
     }
-
 }
