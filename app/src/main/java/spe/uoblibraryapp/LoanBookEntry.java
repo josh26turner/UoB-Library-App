@@ -1,13 +1,11 @@
 package spe.uoblibraryapp;
 
-
-
 public class LoanBookEntry {
     private String title;
     private String author;
-    private BookStatus status;
+    private String status;
 
-    public LoanBookEntry(String title, String author, BookStatus status ){
+    public LoanBookEntry(String title, String author, String status ){
         this.title = title;
         this.author = author;
         this.status = status;
@@ -25,7 +23,7 @@ public class LoanBookEntry {
     public void setAuthor(){
         this.author= author;
     }
-    public BookStatus getStatus(){
+    public String getStatus(){
         return status;
     }
     public void setStatus(){
