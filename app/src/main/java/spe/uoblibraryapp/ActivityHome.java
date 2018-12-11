@@ -27,7 +27,8 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        Intent in = new Intent(getApplicationContext(), ActivitySignIn.class);
+        startActivity(in);
         Toolbar toolbar = $(R.id.toolbar);
         setSupportActionBar(toolbar);
 
