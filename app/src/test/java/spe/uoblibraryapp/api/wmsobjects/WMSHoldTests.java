@@ -19,10 +19,10 @@ import static spe.uoblibraryapp.api.XMLParser.parse;
 public class WMSHoldTests {
 
     @Test
-    public void testRequestIDParsed() throws WMSParseException{
+    public void testRequestIdParsed() throws WMSParseException{
         WMSHold hold = createParsedHold();
         assertEquals(
-                "Request Id does not match",
+                "RequestId does not match",
                 "be5aa3d8-e143-414f-a1af-5a6c88dc3b5d",
                 hold.getRequestId()
         );
