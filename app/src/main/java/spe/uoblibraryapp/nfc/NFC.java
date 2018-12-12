@@ -31,7 +31,8 @@ public class NFC {
         nfcTag.connect();
 
         //removeSecureSetting();
-        userBlocks = readMultipleBlocks(4);
+        //putSecureSetting();
+        userBlocks = readMultipleBlocks(5);
         systemInformation = getSystemInfo();
 
         nfcTag.close();
@@ -93,10 +94,13 @@ public class NFC {
      * @return - the printed version of the barcode
      */
     public String getBarcode() {
-
         if (userBlocks.length >= 3) {
             return new String(userBlocks, 2, userBlocks.length - 2);
         } else return "";
+    }
+
+    public byte[] getUserBlocks() {
+        return userBlocks;
     }
 
     /**

@@ -63,10 +63,11 @@ public class ActivityScanNFC extends AppCompatActivity {
             NFC nfc = new NFC(intent);
             String sysInfo = bytesToHexString(nfc.getSystemInformation());
             txtContentSysInfo.setText(sysInfo.substring(24, 26));
-            Log.d(TAG, sysInfo);
+            //Log.d(TAG, sysInfo);
 
+            Log.d(TAG, bytesToHexString(nfc.getUserBlocks()));
             txtBarcode.setText(nfc.getBarcode());
-            confirmScreen(txtBarcode.getText().toString());
+            //confirmScreen(txtBarcode.getText().toString());
 
         } catch (NFCTechException e) {
             e.printStackTrace();

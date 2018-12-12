@@ -17,7 +17,7 @@ class Hex {
             FLAGS = (byte) 0x20,
             WRITE_AFI = (byte) 0x27,
             AFI_CHECKED_OUT = (byte) 0xC2,
-            AFI_CHECKED_IN = (byte) 0xDA,
+            AFI_CHECKED_IN = (byte) 0x07,//0xDA
             LOCK_AFI = (byte) 0x28;
 
     /**
