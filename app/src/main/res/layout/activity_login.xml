@@ -37,7 +37,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Refresh Token:"
+            />
         <TextView
             android:id = "@+id/txtRefreshToken"
             android:layout_width="match_parent"
@@ -51,6 +55,11 @@
             android:textStyle="normal"
             android:textColor="@color/colorPrimaryDark"
             android:layout_marginRight="4dp"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Token Expiry:"
+        />
         <TextView
             android:id = "@+id/txtRefreshTokenExpiry"
             android:layout_width="match_parent"

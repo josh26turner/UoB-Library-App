@@ -38,8 +38,6 @@ public class ActivitySignIn extends SimpleActivity {
                 }
             }
         });
-
-
     }
 
     private void processAuthorisationString(String s){

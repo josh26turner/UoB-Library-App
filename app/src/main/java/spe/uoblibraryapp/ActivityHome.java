@@ -18,10 +18,9 @@ import stanford.androidlib.SimpleActivity;
 
 public class ActivityHome extends SimpleActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = "MainActivity";
-    private CustomPagerAdapter mAdapter;
+    private static final String TAG = "Home-Activity";
+    private FragmentCustomPagerAdapter mAdapter;
     private ViewPager mViewPager;
-    private int lastPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +79,6 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         setupViewPager(mViewPager);
         mViewPager.setCurrentItem(1);
         setTitle(mAdapter.getFragmentTitle(0));
-        lastPage = mViewPager.getCurrentItem();
     }
 
     @Override
@@ -139,19 +137,17 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
     }
 
     private void setupViewPager(ViewPager viewPager){
-        mAdapter  = new CustomPagerAdapter(getSupportFragmentManager());
+        mAdapter  = new FragmentCustomPagerAdapter(getSupportFragmentManager());
         mAdapter.addFragment(new FragmentScan(), "Scan New Book");
         mAdapter.addFragment(new FragmentLoans(), "Loans");
         mAdapter.addFragment(new FragmentFines(), "Fines");
         mAdapter.addFragment(new FragmentSettings(), "Settings");
         viewPager.setAdapter(mAdapter);
-        lastPage = mViewPager.getCurrentItem();
     }
 
     public void setViewPager(String fragmentName){
-        int index;
         if(mAdapter.fragmentExists(fragmentName)) {
-            index = mAdapter.getFragmentIndex(fragmentName);
+            int index = mAdapter.getFragmentIndex(fragmentName);
             //Show Appropriate Title
             setTitle(fragmentName);
             mViewPager.setCurrentItem(index);
