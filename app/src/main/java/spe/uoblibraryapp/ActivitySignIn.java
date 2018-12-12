@@ -21,6 +21,7 @@ public class ActivitySignIn extends SimpleActivity {
         setContentView(R.layout.activity_login);
 
         getSupportActionBar().setTitle("Single Sign On");
+
         WebView mywebview = findViewById(R.id.loginWebView);
         mywebview.getSettings().setJavaScriptEnabled(true);
         mywebview.getSettings().setLoadWithOverviewMode(true);
