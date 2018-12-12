@@ -3,88 +3,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_gravity="center"
-    android:layout_height="match_parent"
-    android:background="@drawable/login_splash">
+    android:layout_height="match_parent">
 
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Single Sign-On"
-        android:textAlignment="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:textSize="14dp"
-        android:fontFamily="sans-serif"
-        android:textStyle="normal"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_marginRight="4dp"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center|top"
-        android:layout_marginBottom="10dp"
-        android:src="@drawable/login_logo" />
 
     <WebView
         android:id="@+id/loginWebView"
         android:layout_width="match_parent"
-        android:layout_height="202dp"
-        />
+        android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Refresh Token:"
-            />
-        <TextView
-            android:id = "@+id/txtRefreshToken"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textAlignment="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="14dp"
-            android:fontFamily="sans-serif"
-            android:textStyle="normal"
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_marginRight="4dp"/>
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Token Expiry:"
-        />
-        <TextView
-            android:id = "@+id/txtRefreshTokenExpiry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textAlignment="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="14dp"
-            android:fontFamily="sans-serif"
-            android:textStyle="normal"
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_marginRight="4dp"/>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/signin_butt"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="278dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_marginTop="30dp"
-        android:alpha="0.8"
-        android:text="Sign In"
-        android:textSize="20dp"
-        android:textStyle="normal" />
 </LinearLayout>
