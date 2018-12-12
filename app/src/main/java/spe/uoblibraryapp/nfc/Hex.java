@@ -12,13 +12,12 @@ class Hex {
      * Defining the hexadecimal values for the commands that are  used here
      */
     private static final byte
-            GET_SYSTEM_INFO = (byte) 0x2B,
-            READ_SINGLE_BLOCK = (byte) 0x20,
-            FLAGS = (byte) 0x20,
-            WRITE_AFI = (byte) 0x27,
-            AFI_CHECKED_OUT = (byte) 0xC2,
-            AFI_CHECKED_IN = (byte) 0x07,//0xDA
-            LOCK_AFI = (byte) 0x28;
+            GET_SYSTEM_INFO     = (byte) 0x2B,
+            READ_SINGLE_BLOCK   = (byte) 0x20,
+            FLAGS               = (byte) 0x20,
+            WRITE_AFI           = (byte) 0x27,
+            AFI_CHECKED_OUT     = (byte) 0xC2,
+            AFI_CHECKED_IN      = (byte) 0x07;//0xDA - for new books ?
 
     /**
      *
@@ -27,15 +26,6 @@ class Hex {
      */
     static byte[] setSecurityOff(byte[] id) {
         return addressedCommand(WRITE_AFI, AFI_CHECKED_OUT, id);
-    }
-
-    /**
-     * Locks the AFI byte
-     * @param id - the tag ID
-     * @return - an addressed command for locking the AFI
-     */
-    static byte[] lockAFI(byte[] id) {
-        return addressedCommand(LOCK_AFI, id);
     }
 
     /**

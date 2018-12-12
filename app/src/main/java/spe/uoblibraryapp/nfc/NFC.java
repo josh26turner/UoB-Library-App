@@ -7,6 +7,7 @@ import android.nfc.tech.NfcV;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static spe.uoblibraryapp.nfc.Hex.*;
 
@@ -95,12 +96,13 @@ public class NFC {
      */
     public String getBarcode() {
         if (userBlocks.length >= 3) {
-            return new String(userBlocks, 2, userBlocks.length - 2);
+            if ((userBlocks[0] == 0x04) && (userBlocks[1] == 0x11))
+                return new String(userBlocks, 2, userBlocks.length - 2);
+            else if ((userBlocks[0] == 0x11) && (userBlocks[1] == 0x04))
+                return Integer.toString(sum(Arrays.copyOfRange(userBlocks, 2, 6)));
+            else
+                return "";
         } else return "";
-    }
-
-    public byte[] getUserBlocks() {
-        return userBlocks;
     }
 
     /**
@@ -169,5 +171,20 @@ public class NFC {
             stringBuilder.append(buffer);
         }
         return stringBuilder.toString().toUpperCase().replace('X','x');
+    }
+
+    /**
+     * Takes a list of bytes and returns the decimal integer form of them concatenated
+     * E.g. sum({0x11, 0x11}) = 0x1111 = 4369
+     * @param bytes - the bytes to transform into number form
+     * @return - the int value of all the hex digits
+     */
+    private int sum(byte[] bytes){
+        int sum = 0, len = bytes.length;
+        for (int i = 0; i < len; i++){
+            System.out.println(len - i - 1);
+            sum += (bytes[i] & 0xFF) * Math.pow(256,len - i - 1);
+        }
+        return sum;
     }
 }
