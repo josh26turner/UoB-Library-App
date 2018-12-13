@@ -1,12 +1,11 @@
 package spe.uoblibraryapp.nfc;
 
+/**
+ * This sets values for the ISO 15693 commands,
+ * as detailed in http://www.ti.com/lit/an/sloa141/sloa141.pdf
+ * It provides simple to use and easy reading commands for transmission to NfcV tags
+ */
 class Hex {
-
-    /*
-     * This sets values for the ISO 15693 commands,
-     * as detailed in http://www.ti.com/lit/an/sloa141/sloa141.pdf
-     * It provides simple to use and easy reading commands for transmission to NfcV tags
-     */
 
     /**
      * Defining the hexadecimal values for the commands that are  used here

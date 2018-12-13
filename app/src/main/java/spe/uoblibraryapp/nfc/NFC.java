@@ -4,14 +4,15 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.NfcV;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.Arrays;
 
 import static spe.uoblibraryapp.nfc.Hex.*;
 
-
+/**
+ * Provides a simple class to read and write to NfcV tags in the University of Bristol library
+ */
 public class NFC {
     private NfcV nfcTag;
     private byte []
@@ -32,7 +33,6 @@ public class NFC {
         nfcTag.connect();
 
         //removeSecureSetting();
-        //putSecureSetting();
         userBlocks = readMultipleBlocks(5);
         systemInformation = getSystemInfo();
 
@@ -139,7 +139,6 @@ public class NFC {
      */
     public void removeSecureSetting() throws IOException {
         nfcTag.transceive(setSecurityOff(tagID));
-        //nfcTag.transceive(lockAFI(tagID));
     }
 
     /**
@@ -147,30 +146,7 @@ public class NFC {
      * @throws IOException - if the tag can't be communicated with
      */
     private void putSecureSetting() throws IOException {
-        Log.d("NFC", bytesToHexString(nfcTag.transceive(setSecurityOn(tagID))));
-        //Log.d("NFC", bytesToHexString(nfcTag.transceive(lockAFI(tagID))));
-    }
-
-    /**
-     * turns an array of bytes into hex representation
-     * @param src - bytes to turn into hex
-     * @return - the hex representation of the bytes as a string
-     */
-    private String bytesToHexString(byte[] src) {
-        StringBuilder stringBuilder = new StringBuilder("0x");
-
-        if (src == null || src.length <= 0) {
-            return null;
-        }
-        char[] buffer = new char[2];
-
-        for (byte aSrc : src) {
-            buffer[0] = Character.forDigit((aSrc >>> 4) & 0x0F, 16);
-            buffer[1] = Character.forDigit(aSrc & 0x0F, 16);
-
-            stringBuilder.append(buffer);
-        }
-        return stringBuilder.toString().toUpperCase().replace('X','x');
+        nfcTag.transceive(setSecurityOn(tagID));
     }
 
     /**
@@ -181,10 +157,9 @@ public class NFC {
      */
     private int sum(byte[] bytes){
         int sum = 0, len = bytes.length;
-        for (int i = 0; i < len; i++){
-            System.out.println(len - i - 1);
+        for (int i = 0; i < len; i++)
             sum += (bytes[i] & 0xFF) * Math.pow(256,len - i - 1);
-        }
+
         return sum;
     }
 }
