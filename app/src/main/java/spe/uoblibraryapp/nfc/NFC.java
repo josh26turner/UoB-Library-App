@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.NfcV;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.Arrays;
