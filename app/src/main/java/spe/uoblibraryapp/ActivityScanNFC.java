@@ -67,6 +67,8 @@ public class ActivityScanNFC extends AppCompatActivity {
             txtBarcode.setText(nfc.getBarcode());
             //confirmScreen(txtBarcode.getText().toString());
 
+            Log.d(TAG, bytesToHexString(nfc.getUserBlocks()));
+
         } catch (NFCTechException e) {
             e.printStackTrace();
             Log.d(TAG, "Not the right NFC/RFID type");

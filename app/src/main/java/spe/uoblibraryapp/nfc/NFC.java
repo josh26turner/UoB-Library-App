@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.NfcV;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -98,8 +99,12 @@ public class NFC {
         if (userBlocks.length >= 3) {
             if ((userBlocks[0] == 0x04) && (userBlocks[1] == 0x11))
                 return new String(userBlocks, 2, userBlocks.length - 2);
+
             else if ((userBlocks[0] == 0x11) && (userBlocks[1] == 0x04))
                 return Integer.toString(sum(Arrays.copyOfRange(userBlocks, 2, 6)));
+
+            else if ((userBlocks[0] == 0x41) && (userBlocks[1] == 0x08))
+                return xCheck(Arrays.copyOfRange(userBlocks, 2, 10));
             else
                 return "";
         } else return "";
@@ -161,5 +166,34 @@ public class NFC {
             sum += (bytes[i] & 0xFF) * Math.pow(256,len - i - 1);
 
         return sum;
+    }
+
+    public byte[] getUserBlocks() {
+        return userBlocks;
+    }
+
+    /**
+     * For converting barcodes that end in X
+     * @param bytes - the tag bytes
+     * @return - the barcode
+     */
+    private String xCheck(byte[] bytes) {
+        StringBuilder barcode = new StringBuilder();
+
+        for (int i = 0; i < 6; i += 3){
+            barcode.append(((0xFF & bytes[i]) - 0xC3) / 4);
+
+            barcode.append(((0xFF & bytes[i+1]) & 0xF0) >> 4);
+
+            barcode.append((((((0xFF & bytes[i+1]) & 0x0F) << 4) + (((0xFF & bytes[i+2]) & 0xF0) >> 4)) - 0xC3) / 4);
+
+            barcode.append((0xFF & bytes[i+2]) & 0x0F);
+        }
+
+        barcode.append(((0xFF & bytes[6]) - 0xC1) / 4);
+
+        barcode.append('X');
+
+        return barcode.toString();
     }
 }
