@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+import spe.uoblibraryapp.nfc.BarcodeException;
 import spe.uoblibraryapp.nfc.IntentException;
 import spe.uoblibraryapp.nfc.NFC;
 import spe.uoblibraryapp.nfc.NFCTechException;
@@ -76,6 +77,9 @@ public class ActivityScanNFC extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
             Log.d(TAG, "Can't connect to the tag");
+        } catch (BarcodeException e) {
+            e.printStackTrace();
+            Log.d(TAG, "There was a problem with the tag");
         }
     }
 

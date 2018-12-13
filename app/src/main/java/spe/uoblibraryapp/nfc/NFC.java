@@ -93,7 +93,7 @@ public class NFC {
      * Converts the parts of the user blocks to the form printed on the barcode
      * @return - the printed version of the barcode
      */
-    public String getBarcode() {
+    public String getBarcode() throws BarcodeException {
         if (userBlocks.length >= 3) {
             if ((userBlocks[0] == 0x04) && (userBlocks[1] == 0x11))
                 return new String(userBlocks, 2, userBlocks.length - 2);
@@ -103,9 +103,9 @@ public class NFC {
 
             else if ((userBlocks[0] == 0x41) && (userBlocks[1] == 0x08))
                 return xCheck(Arrays.copyOfRange(userBlocks, 2, 10));
-            else
-                return "";
-        } else return "";
+
+            else throw new BarcodeException("This is a new tag");
+        } else throw new BarcodeException("Error in the tag or reading the tag");
     }
 
     /**
