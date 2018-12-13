@@ -6,15 +6,19 @@ import android.nfc.Tag;
 import android.nfc.tech.NfcV;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static spe.uoblibraryapp.nfc.Hex.*;
 
-
+/**
+ * Provides a simple class to read and write to NfcV tags in the University of Bristol library
+ */
 public class NFC {
     private NfcV nfcTag;
-    private byte [] tagID;
-    private byte [] systemInformation;
-    private byte [] userBlocks;
+    private byte []
+            tagID,
+            systemInformation,
+            userBlocks;
 
     /**
      * The constructor for the class, always called with an intent.
@@ -25,6 +29,14 @@ public class NFC {
      */
     public NFC(Intent intent) throws NFCTechException, IntentException, IOException {
         setNfcTag(intent);
+
+        nfcTag.connect();
+
+        //removeSecureSetting(); REMOVE THE `//` AT THE START OF THE LINE WHEN RELEASING!!!!!
+        userBlocks = readMultipleBlocks(5);
+        systemInformation = getSystemInfo();
+
+        nfcTag.close();
     }
 
     /**
@@ -51,9 +63,8 @@ public class NFC {
      * @param intent - intent that called the activity
      * @throws NFCTechException - not the right type of tag
      * @throws IntentException - tag not present in the intent
-     * @throws IOException - can't talk to the tag
      */
-    private void setNfcTag(Intent intent) throws NFCTechException, IntentException, IOException {
+    private void setNfcTag(Intent intent) throws NFCTechException, IntentException {
         Tag tag = tagFromIntent(intent);
 
         tagID = tag.getId();
@@ -68,13 +79,6 @@ public class NFC {
             }
 
         if (!techPresent) throw new NFCTechException("No ISO 15693 tag detected");
-
-        nfcTag.connect();
-
-        userBlocks = readMultipleBlocks(4);
-        systemInformation = getSystemInfo();
-
-        nfcTag.close();
     }
 
     /**
@@ -89,11 +93,19 @@ public class NFC {
      * Converts the parts of the user blocks to the form printed on the barcode
      * @return - the printed version of the barcode
      */
-    public String getBarcode() {
-
+    public String getBarcode() throws BarcodeException {
         if (userBlocks.length >= 3) {
-            return new String(userBlocks, 2, userBlocks.length - 2);
-        } else return "";
+            if ((userBlocks[0] == 0x04) && (userBlocks[1] == 0x11))
+                return new String(userBlocks, 2, userBlocks.length - 2);
+
+            else if ((userBlocks[0] == 0x11) && (userBlocks[1] == 0x04))
+                return Integer.toString(sum(Arrays.copyOfRange(userBlocks, 2, 6)));
+
+            else if ((userBlocks[0] == 0x41) && (userBlocks[1] == 0x08))
+                return xCheck(Arrays.copyOfRange(userBlocks, 2, 10));
+
+            else throw new BarcodeException("This is a new tag");
+        } else throw new BarcodeException("Error in the tag or reading the tag");
     }
 
     /**
@@ -125,7 +137,7 @@ public class NFC {
     }
 
     /**
-     *  Makes the alarmSYSTEM_INFO_COMMAND
+     * Stops the alarm going off if you take a book through
      * @throws IOException - if the tag can't be communicated with
      */
     public void removeSecureSetting() throws IOException {
@@ -133,10 +145,49 @@ public class NFC {
     }
 
     /**
-     *
+     * Makes the alarm go off if you take a book through
      * @throws IOException - if the tag can't be communicated with
      */
-    public void putSecureSetting() throws IOException {
+    private void putSecureSetting() throws IOException {
         nfcTag.transceive(setSecurityOn(tagID));
+    }
+
+    /**
+     * Takes a list of bytes and returns the decimal integer form of them concatenated
+     * E.g. sum({0x11, 0x11}) = 0x1111 = 4369
+     * @param bytes - the bytes to transform into number form
+     * @return - the int value of all the hex digits
+     */
+    private int sum(byte[] bytes){
+        int sum = 0, len = bytes.length;
+        for (int i = 0; i < len; i++)
+            sum += (bytes[i] & 0xFF) * Math.pow(256,len - i - 1);
+
+        return sum;
+    }
+
+    /**
+     * For converting barcodes that end in X
+     * @param bytes - the tag bytes
+     * @return - the barcode
+     */
+    private String xCheck(byte[] bytes) {
+        StringBuilder barcode = new StringBuilder();
+
+        for (int i = 0; i < 6; i += 3){
+            barcode.append(((0xFF & bytes[i]) - 0xC3) / 4);
+
+            barcode.append(((0xFF & bytes[i+1]) & 0xF0) >> 4);
+
+            barcode.append((((((0xFF & bytes[i+1]) & 0x0F) << 4) + (((0xFF & bytes[i+2]) & 0xF0) >> 4)) - 0xC3) / 4);
+
+            barcode.append((0xFF & bytes[i+2]) & 0x0F);
+        }
+
+        barcode.append(((0xFF & bytes[6]) - 0xC1) / 4);
+
+        barcode.append('X');
+
+        return barcode.toString();
     }
 }
