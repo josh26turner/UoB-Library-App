@@ -105,7 +105,6 @@ public class WMSLoan {
                                 break;
                             case "ns1:DateCheckedOut":
                                 checkedOutDate = parseDate(childsChild.getTextContent());
-                                System.out.print(childsChild.getTextContent());
                                 break;
                             case "ns1:BibliographicDescription":
                                 book = new WMSBook(new WMSNCIPElement(childsChild));
@@ -116,6 +115,8 @@ public class WMSLoan {
             }
         }
     }
+
+
 
     // Getters for UI people to use
 
