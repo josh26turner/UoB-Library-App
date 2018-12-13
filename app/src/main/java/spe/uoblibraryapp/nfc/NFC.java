@@ -33,7 +33,7 @@ public class NFC {
 
         nfcTag.connect();
 
-        //removeSecureSetting();
+        //removeSecureSetting(); REMOVE THE `//` AT THE START OF THE LINE WHEN RELEASING!!!!!
         userBlocks = readMultipleBlocks(5);
         systemInformation = getSystemInfo();
 
@@ -64,9 +64,8 @@ public class NFC {
      * @param intent - intent that called the activity
      * @throws NFCTechException - not the right type of tag
      * @throws IntentException - tag not present in the intent
-     * @throws IOException - can't talk to the tag
      */
-    private void setNfcTag(Intent intent) throws NFCTechException, IntentException, IOException {
+    private void setNfcTag(Intent intent) throws NFCTechException, IntentException {
         Tag tag = tagFromIntent(intent);
 
         tagID = tag.getId();
@@ -166,10 +165,6 @@ public class NFC {
             sum += (bytes[i] & 0xFF) * Math.pow(256,len - i - 1);
 
         return sum;
-    }
-
-    public byte[] getUserBlocks() {
-        return userBlocks;
     }
 
     /**
