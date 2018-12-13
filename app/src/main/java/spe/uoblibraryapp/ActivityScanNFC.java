@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 
+import spe.uoblibraryapp.nfc.BarcodeException;
 import spe.uoblibraryapp.nfc.IntentException;
 import spe.uoblibraryapp.nfc.NFC;
 import spe.uoblibraryapp.nfc.NFCTechException;
@@ -64,10 +64,9 @@ public class ActivityScanNFC extends AppCompatActivity {
             NFC nfc = new NFC(intent);
             String sysInfo = bytesToHexString(nfc.getSystemInformation());
             txtContentSysInfo.setText(sysInfo.substring(24, 26));
-            Log.d(TAG, sysInfo);
 
             txtBarcode.setText(nfc.getBarcode());
-            confirmScreen(txtBarcode.getText().toString());
+            //confirmScreen(txtBarcode.getText().toString());
 
         } catch (NFCTechException e) {
             e.printStackTrace();
@@ -78,6 +77,9 @@ public class ActivityScanNFC extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
             Log.d(TAG, "Can't connect to the tag");
+        } catch (BarcodeException e) {
+            e.printStackTrace();
+            Log.d(TAG, "There was a problem with the tag");
         }
     }
 
