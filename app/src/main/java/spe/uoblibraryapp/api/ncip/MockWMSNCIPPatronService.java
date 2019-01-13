@@ -185,7 +185,7 @@ class MockWMSNCIPPatronService implements WMSNCIPPatronService {
                 "                </ns1:BibliographicDescription>\n" +
                 "            </ns1:Ext>\n" +
                 "        </ns1:LoanedItem>\n" +
-                "        <ns1:LoanedItem>\n" + // doing (Hr + coursemate, 1-term access.)
+                "        <ns1:LoanedItem>\n" + // Done (Hr + coursemate, 1-term access.)
                 "            <ns1:ItemId>\n" +
                 "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
                 "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7737</ns1:ItemIdentifierValue>\n" +
@@ -215,20 +215,20 @@ class MockWMSNCIPPatronService implements WMSNCIPPatronService {
                 "        </ns1:LoanedItem>\n" +
                 "        <ns1:RequestedItemsCount>\n" +
                 "            <ns1:CirculationStatus ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/circulationstatus.scm\">Recently Received</ns1:CirculationStatus>\n" +
-                "            <ns1:RequestedItemCountValue>1</ns1:RequestedItemCountValue>\n" +
+                "            <ns1:RequestedItemCountValue>6</ns1:RequestedItemCountValue>\n" +
                 "        </ns1:RequestedItemsCount>\n" +
                 "        <ns1:RequestedItemsCount>\n" +
                 "            <ns1:CirculationStatus ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/circulationstatus.scm\">On Hold</ns1:CirculationStatus>\n" +
                 "            <ns1:RequestedItemCountValue>0</ns1:RequestedItemCountValue>\n" +
                 "        </ns1:RequestedItemsCount>\n" +
-                "        <ns1:RequestedItem>\n" +
+                "        <ns1:RequestedItem>\n" + // Done (Diary of a wimpy kid)
                 "            <ns1:RequestId>\n" +
                 "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
                 "                <ns1:RequestIdentifierValue>be5aa3d8-e143-414f-a1af-5a6c88dc3b5d</ns1:RequestIdentifierValue>\n" +
                 "            </ns1:RequestId>\n" +
                 "            <ns1:RequestType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requesttype/requesttype.scm\">Hold</ns1:RequestType>\n" +
-                "            <ns1:RequestStatusType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requeststatustype/requeststatustype.scm\">In Process</ns1:RequestStatusType>\n" +
-                "            <ns1:DatePlaced>2014-02-21T16:48:14Z</ns1:DatePlaced>\n" +
+                "            <ns1:RequestStatusType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requeststatustype/requeststatustype.scm\">Available For Pickup</ns1:RequestStatusType>\n" +
+                "            <ns1:DatePlaced>2018-12-18T16:48:14Z</ns1:DatePlaced>\n" +
                 "            <ns1:PickupLocation>129055</ns1:PickupLocation>\n" +
                 "            <ns1:HoldQueuePosition>1</ns1:HoldQueuePosition>\n" +
                 "            <ns1:Title>Diary of a wimpy kid : dog days /</ns1:Title>\n" +
@@ -243,6 +243,151 @@ class MockWMSNCIPPatronService implements WMSNCIPPatronService {
                 "                    <ns1:PublicationDate>2009</ns1:PublicationDate>\n" +
                 "                    <ns1:Publisher>New York : Amulet Books,</ns1:Publisher>\n" +
                 "                    <ns1:Title>Diary of a wimpy kid : dog days /</ns1:Title>\n" +
+                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
+                "                </ns1:BibliographicDescription>\n" +
+                "                <ns1:EarliestDateNeeded>2018-12-18T16:48:40.230Z</ns1:EarliestDateNeeded>\n" +
+                "                <ns1:HoldQueueLength>1</ns1:HoldQueueLength>\n" +
+                "                <ns1:NeedBeforeDate>2038-12-18T16:48:40.230Z</ns1:NeedBeforeDate>\n" +
+                "            </ns1:Ext>\n" +
+                "        </ns1:RequestedItem>\n" +
+                "        <ns1:RequestedItem>\n" + // Done
+                "            <ns1:RequestId>\n" +
+                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
+                "                <ns1:RequestIdentifierValue>be5aa3d8-e143-414f-a1af-5a6c88dc3b5d</ns1:RequestIdentifierValue>\n" +
+                "            </ns1:RequestId>\n" +
+                "            <ns1:RequestType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requesttype/requesttype.scm\">Hold</ns1:RequestType>\n" +
+                "            <ns1:RequestStatusType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requeststatustype/requeststatustype.scm\">In Process</ns1:RequestStatusType>\n" +
+                "            <ns1:DatePlaced>2018-12-15T16:48:14Z</ns1:DatePlaced>\n" +
+                "            <ns1:PickupLocation>129055</ns1:PickupLocation>\n" +
+                "            <ns1:HoldQueuePosition>2</ns1:HoldQueuePosition>\n" +
+                "            <ns1:Title>Doodling for academics : a coloring and activity book</ns1:Title>\n" +
+                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
+                "            <ns1:Ext>\n" +
+                "                <ns1:BibliographicDescription>\n" +
+                "                    <ns1:Author>text by Julie Schumacher ; illustrations by Lauren Nassef.</ns1:Author>\n" +
+                "                    <ns1:BibliographicRecordId>\n" +
+                "                        <ns1:BibliographicRecordIdentifier>959276078</ns1:BibliographicRecordIdentifier>\n" +
+                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
+                "                    </ns1:BibliographicRecordId>\n" +
+                "                    <ns1:PublicationDate>2009</ns1:PublicationDate>\n" +
+                "                    <ns1:Publisher>New York : Amulet Books,</ns1:Publisher>\n" +
+                "                    <ns1:Title>Doodling for academics : a coloring and activity book</ns1:Title>\n" +
+                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
+                "                </ns1:BibliographicDescription>\n" +
+                "                <ns1:EarliestDateNeeded>2019-01-15T16:48:40.230Z</ns1:EarliestDateNeeded>\n" +
+                "                <ns1:HoldQueueLength>1</ns1:HoldQueueLength>\n" +
+                "                <ns1:NeedBeforeDate>2034-02-21T16:48:40.230Z</ns1:NeedBeforeDate>\n" +
+                "            </ns1:Ext>\n" +
+                "        </ns1:RequestedItem>\n" +
+                "        <ns1:RequestedItem>\n" + // Done
+                "            <ns1:RequestId>\n" +
+                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
+                "                <ns1:RequestIdentifierValue>be5aa3d8-e143-414f-a1af-5a6c88dc3b5d</ns1:RequestIdentifierValue>\n" +
+                "            </ns1:RequestId>\n" +
+                "            <ns1:RequestType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requesttype/requesttype.scm\">Hold</ns1:RequestType>\n" +
+                "            <ns1:RequestStatusType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requeststatustype/requeststatustype.scm\">In Process</ns1:RequestStatusType>\n" +
+                "            <ns1:DatePlaced>2018-12-19T16:48:14Z</ns1:DatePlaced>\n" +
+                "            <ns1:PickupLocation>129055</ns1:PickupLocation>\n" +
+                "            <ns1:HoldQueuePosition>1</ns1:HoldQueuePosition>\n" +
+                "            <ns1:Title>Harry Potter and the Deathly Hallows</ns1:Title>\n" +
+                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
+                "            <ns1:Ext>\n" +
+                "                <ns1:BibliographicDescription>\n" +
+                "                    <ns1:Author>Kinney, Jeff.</ns1:Author>\n" +
+                "                    <ns1:BibliographicRecordId>\n" +
+                "                        <ns1:BibliographicRecordIdentifier>883463367</ns1:BibliographicRecordIdentifier>\n" +
+                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
+                "                    </ns1:BibliographicRecordId>\n" +
+                "                    <ns1:PublicationDate>2009</ns1:PublicationDate>\n" +
+                "                    <ns1:Publisher>New York : Amulet Books,</ns1:Publisher>\n" +
+                "                    <ns1:Title>Harry Potter and the Deathly Hallows</ns1:Title>\n" +
+                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
+                "                </ns1:BibliographicDescription>\n" +
+                "                <ns1:EarliestDateNeeded>2019-01-10T16:48:40.230Z</ns1:EarliestDateNeeded>\n" +
+                "                <ns1:HoldQueueLength>1</ns1:HoldQueueLength>\n" +
+                "                <ns1:NeedBeforeDate>2034-02-21T16:48:40.230Z</ns1:NeedBeforeDate>\n" +
+                "            </ns1:Ext>\n" +
+                "        </ns1:RequestedItem>\n" +
+                "        <ns1:RequestedItem>\n" + // Done
+                "            <ns1:RequestId>\n" +
+                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
+                "                <ns1:RequestIdentifierValue>be5aa3d8-e143-414f-a1af-5a6c88dc3b5d</ns1:RequestIdentifierValue>\n" +
+                "            </ns1:RequestId>\n" +
+                "            <ns1:RequestType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requesttype/requesttype.scm\">Hold</ns1:RequestType>\n" +
+                "            <ns1:RequestStatusType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requeststatustype/requeststatustype.scm\">In Process</ns1:RequestStatusType>\n" +
+                "            <ns1:DatePlaced>2018-12-19T16:48:14Z</ns1:DatePlaced>\n" +
+                "            <ns1:PickupLocation>129055</ns1:PickupLocation>\n" +
+                "            <ns1:HoldQueuePosition>1</ns1:HoldQueuePosition>\n" +
+                "            <ns1:Title>The curious incident of the dog in the night-time</ns1:Title>\n" +
+                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
+                "            <ns1:Ext>\n" +
+                "                <ns1:BibliographicDescription>\n" +
+                "                    <ns1:Author>Kinney, Jeff.</ns1:Author>\n" +
+                "                    <ns1:BibliographicRecordId>\n" +
+                "                        <ns1:BibliographicRecordIdentifier>881018455</ns1:BibliographicRecordIdentifier>\n" +
+                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
+                "                    </ns1:BibliographicRecordId>\n" +
+                "                    <ns1:PublicationDate>2009</ns1:PublicationDate>\n" +
+                "                    <ns1:Publisher>New York : Amulet Books,</ns1:Publisher>\n" +
+                "                    <ns1:Title>The curious incident of the dog in the night-time</ns1:Title>\n" +
+                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
+                "                </ns1:BibliographicDescription>\n" +
+                "                <ns1:EarliestDateNeeded>2019-02-21T16:48:40.230Z</ns1:EarliestDateNeeded>\n" +
+                "                <ns1:HoldQueueLength>1</ns1:HoldQueueLength>\n" +
+                "                <ns1:NeedBeforeDate>2034-02-21T16:48:40.230Z</ns1:NeedBeforeDate>\n" +
+                "            </ns1:Ext>\n" +
+                "        </ns1:RequestedItem>\n" +
+                "        <ns1:RequestedItem>\n" + // Done
+                "            <ns1:RequestId>\n" +
+                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
+                "                <ns1:RequestIdentifierValue>be5aa3d8-e143-414f-a1af-5a6c88dc3b5d</ns1:RequestIdentifierValue>\n" +
+                "            </ns1:RequestId>\n" +
+                "            <ns1:RequestType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requesttype/requesttype.scm\">Hold</ns1:RequestType>\n" +
+                "            <ns1:RequestStatusType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requeststatustype/requeststatustype.scm\">In Process</ns1:RequestStatusType>\n" +
+                "            <ns1:DatePlaced>2018-12-04T16:48:14Z</ns1:DatePlaced>\n" +
+                "            <ns1:PickupLocation>129055</ns1:PickupLocation>\n" +
+                "            <ns1:HoldQueuePosition>1</ns1:HoldQueuePosition>\n" +
+                "            <ns1:Title>Bristol</ns1:Title>\n" +
+                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
+                "            <ns1:Ext>\n" +
+                "                <ns1:BibliographicDescription>\n" +
+                "                    <ns1:Author>Kinney, Jeff.</ns1:Author>\n" +
+                "                    <ns1:BibliographicRecordId>\n" +
+                "                        <ns1:BibliographicRecordIdentifier>54400197</ns1:BibliographicRecordIdentifier>\n" +
+                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
+                "                    </ns1:BibliographicRecordId>\n" +
+                "                    <ns1:PublicationDate>2009</ns1:PublicationDate>\n" +
+                "                    <ns1:Publisher>New York : Amulet Books,</ns1:Publisher>\n" +
+                "                    <ns1:Title>Bristol</ns1:Title>\n" +
+                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
+                "                </ns1:BibliographicDescription>\n" +
+                "                <ns1:EarliestDateNeeded>2018-12-04T16:48:40.230Z</ns1:EarliestDateNeeded>\n" +
+                "                <ns1:HoldQueueLength>1</ns1:HoldQueueLength>\n" +
+                "                <ns1:NeedBeforeDate>2034-02-21T16:48:40.230Z</ns1:NeedBeforeDate>\n" +
+                "            </ns1:Ext>\n" +
+                "        </ns1:RequestedItem>\n" +
+                "        <ns1:RequestedItem>\n" + // D
+                "            <ns1:RequestId>\n" +
+                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
+                "                <ns1:RequestIdentifierValue>be5aa3d8-e143-414f-a1af-5a6c88dc3b5d</ns1:RequestIdentifierValue>\n" +
+                "            </ns1:RequestId>\n" +
+                "            <ns1:RequestType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requesttype/requesttype.scm\">Hold</ns1:RequestType>\n" +
+                "            <ns1:RequestStatusType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requeststatustype/requeststatustype.scm\">In Process</ns1:RequestStatusType>\n" +
+                "            <ns1:DatePlaced>2018-12-12T16:48:14Z</ns1:DatePlaced>\n" +
+                "            <ns1:PickupLocation>129055</ns1:PickupLocation>\n" +
+                "            <ns1:HoldQueuePosition>1</ns1:HoldQueuePosition>\n" +
+                "            <ns1:Title>To engineer is human : the role of failure in successful design</ns1:Title>\n" +
+                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
+                "            <ns1:Ext>\n" +
+                "                <ns1:BibliographicDescription>\n" +
+                "                    <ns1:Author>Kinney, Jeff.</ns1:Author>\n" +
+                "                    <ns1:BibliographicRecordId>\n" +
+                "                        <ns1:BibliographicRecordIdentifier>11623617</ns1:BibliographicRecordIdentifier>\n" +
+                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
+                "                    </ns1:BibliographicRecordId>\n" +
+                "                    <ns1:PublicationDate>2009</ns1:PublicationDate>\n" +
+                "                    <ns1:Publisher>New York : Amulet Books,</ns1:Publisher>\n" +
+                "                    <ns1:Title>To engineer is human : the role of failure in successful design</ns1:Title>\n" +
                 "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
                 "                </ns1:BibliographicDescription>\n" +
                 "                <ns1:EarliestDateNeeded>2014-02-21T16:48:40.230Z</ns1:EarliestDateNeeded>\n" +
