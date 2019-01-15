@@ -1,5 +1,7 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
+import android.support.annotation.VisibleForTesting;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -38,6 +40,10 @@ public class WMSUserProfile {
      * @param staffService The staff service
      * @throws WMSParseException Thrown if there was an error parsing the node
      */
+
+
+
+    @VisibleForTesting
     public WMSUserProfile(
             WMSNCIPElement elemHolder,
             WMSNCIPPatronService patronService,
