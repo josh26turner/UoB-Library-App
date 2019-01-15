@@ -39,4 +39,52 @@
         android:text="Sign In"
         android:layout_marginTop="20dp"/>
 
+    <TextView
+        android:id="@+id/RefreshTokenLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RefreshToken" />
+
+    <TextView
+        android:id="@+id/RefreshToken"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/ExpiryDateLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RefreshExpiry" />
+
+    <TextView
+        android:id="@+id/RefreshExpiryDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/expiryDateLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="AccessExpiryDate" />
+
+    <TextView
+        android:id="@+id/AccessTokenExpiry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/refreshTokenLabel2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="AccessToken" />
+
+    <TextView
+        android:id="@+id/AccessToken"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
 </LinearLayout>

@@ -1,6 +1,8 @@
 package spe.uoblibraryapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,26 @@ public class FragmentSettings extends android.support.v4.app.Fragment{
             }
         });
 
+        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        View.OnClickListener onclick;
+        if (1==2) { // TODO Thingy
+            onclick = new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), ActivitySignIn.class);
+                    startActivity(intent);
+                }
+            };
+        } else{
+            onclick = new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), ActivitySignIn.class);
+                    startActivity(intent);
+                }
+            };
+        }
+
         Button butt = v.findViewById(R.id.goto_signin);
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,8 +72,25 @@ public class FragmentSettings extends android.support.v4.app.Fragment{
                 startActivity(intent);
             }
         });
-
         return v;
+
+
+    }
+
+    @Override
+    public void onResume(){
+        TextView refreshToken = getView().findViewById(R.id.RefreshToken);
+        TextView refreshExpiryDate = getView().findViewById(R.id.RefreshExpiryDate);
+        TextView accessToken = getView().findViewById(R.id.AccessToken);
+        TextView accessExpiryDate = getView().findViewById(R.id.AccessTokenExpiry);
+
+        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        refreshExpiryDate.setText(pref.getString("refreshTokenExpiry", "default"));
+        refreshToken.setText(pref.getString("refreshToken", "default"));
+        accessExpiryDate.setText(pref.getString("authorisationTokenExpiry", "default"));
+        accessToken.setText(pref.getString("authorisationToken", "default"));
+
+        super.onResume();
     }
 
 
