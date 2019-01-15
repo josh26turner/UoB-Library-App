@@ -18,10 +18,9 @@ import stanford.androidlib.SimpleActivity;
 
 public class ActivityHome extends SimpleActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = "MainActivity";
-    private CustomPagerAdapter mAdapter;
+    private static final String TAG = "Home-Activity";
+    private FragmentCustomPagerAdapter mAdapter;
     private ViewPager mViewPager;
-    private int lastPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +61,9 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
                         getSupportActionBar().setTitle("Loans");
                         break;
                     case 2:
-                        getSupportActionBar().setTitle("Reservations");
-                        break;
-                    case 3:
                         getSupportActionBar().setTitle("Fines");
                         break;
-                    case 4:
-                        getSupportActionBar().setTitle("History");
-                        break;
-                    case 5:
+                    case 3:
                         getSupportActionBar().setTitle("App Settings");
                         break;
                 }
@@ -86,7 +79,6 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         setupViewPager(mViewPager);
         mViewPager.setCurrentItem(1);
         setTitle(mAdapter.getFragmentTitle(0));
-        lastPage = mViewPager.getCurrentItem();
     }
 
     @Override
@@ -132,12 +124,9 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
             setViewPager("Scan New Book");
         } else if (id == R.id.nav_current_loans_reservations) {
             setViewPager("Loans");
-        } else if (id == R.id.nav_reservations) {
-            setViewPager("Reservations");
+
         } else if (id == R.id.nav_fines) {
             setViewPager("Fines");
-        } else if (id == R.id.nav_loan_history) {
-            setViewPager("Loans History");
         } else if (id == R.id.nav_settings) {
             setViewPager("Settings");
         }
@@ -148,21 +137,17 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
     }
 
     private void setupViewPager(ViewPager viewPager){
-        mAdapter  = new CustomPagerAdapter(getSupportFragmentManager());
+        mAdapter  = new FragmentCustomPagerAdapter(getSupportFragmentManager());
         mAdapter.addFragment(new FragmentScan(), "Scan New Book");
         mAdapter.addFragment(new FragmentLoans(), "Loans");
-        mAdapter.addFragment(new FragmentReservations(), "Reservations");
         mAdapter.addFragment(new FragmentFines(), "Fines");
-        mAdapter.addFragment(new FragmentLoanHistory(), "Loans History");
         mAdapter.addFragment(new FragmentSettings(), "Settings");
         viewPager.setAdapter(mAdapter);
-        lastPage = mViewPager.getCurrentItem();
     }
 
     public void setViewPager(String fragmentName){
-        int index;
         if(mAdapter.fragmentExists(fragmentName)) {
-            index = mAdapter.getFragmentIndex(fragmentName);
+            int index = mAdapter.getFragmentIndex(fragmentName);
             //Show Appropriate Title
             setTitle(fragmentName);
             mViewPager.setCurrentItem(index);

@@ -11,7 +11,7 @@ public class WMSNCIPStaffServiceFactory {
         } else{
             // Should return ConcreteWMSNCIPStaffService once we have access to
             // the api and it is implemented.
-            return new MockWMSNCIPStaffService();
+            return new ConcreteWMSNCIPStaffService();
         }
     }
 

@@ -1,1 +1,1 @@
-include ':app', ':material-login'
+include ':app'

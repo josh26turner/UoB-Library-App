@@ -11,7 +11,7 @@ public class WMSNCIPPatronServiceFactory {
         } else{
             // Should return ConcreteWMSNCIPPatronService once we have access to
             // the api and it is implemented.
-            return new MockWMSNCIPPatronService();
+            return new ConcreteWMSNCIPPatronService();
         }
     }
 

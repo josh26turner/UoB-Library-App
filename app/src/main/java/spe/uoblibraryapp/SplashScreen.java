@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 import static java.lang.Thread.sleep;
 
-public class Splashscreen extends AppCompatActivity {
+public class SplashScreen extends AppCompatActivity {
 
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -25,7 +25,7 @@ public class Splashscreen extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splashscreen);
+        setContentView(R.layout.activity_splash_screen);
         StartAnimations();
     }
 
@@ -51,15 +51,15 @@ public class Splashscreen extends AppCompatActivity {
                         sleep(100);
                         waited += 100;
                     }
-                    Intent intent = new Intent(Splashscreen.this,
+                    Intent intent = new Intent(SplashScreen.this,
                             ActivityHome.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
-                    Splashscreen.this.finish();
+                    SplashScreen.this.finish();
                 } catch (InterruptedException e) {
 
                 } finally {
-                    Splashscreen.this.finish();
+                    SplashScreen.this.finish();
                 }
 
             }

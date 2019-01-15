@@ -9,12 +9,12 @@ import java.util.List;
 
 
 
-public class CustomPagerAdapter extends FragmentStatePagerAdapter {
+public class FragmentCustomPagerAdapter extends FragmentStatePagerAdapter {
 
     private final List<Fragment> mFragmentList= new ArrayList<>();
     private final List<String> mFragmentTitleList= new ArrayList<>(); //not required but helpful to have.
 
-    public CustomPagerAdapter(FragmentManager fm){
+    public FragmentCustomPagerAdapter(FragmentManager fm){
         super(fm);
     }
 
