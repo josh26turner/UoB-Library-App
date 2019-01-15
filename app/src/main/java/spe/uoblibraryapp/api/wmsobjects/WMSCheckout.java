@@ -2,7 +2,6 @@ package spe.uoblibraryapp.api.wmsobjects;
 
 import spe.uoblibraryapp.api.WMSException;
 import spe.uoblibraryapp.api.WMSResponse;
-import spe.uoblibraryapp.api.collection.WMSCollectionManagementController;
 import spe.uoblibraryapp.api.ncip.WMSNCIPStaffService;
 
 /**
@@ -31,10 +30,8 @@ public class WMSCheckout {
         this.itemId = itemId;
         this.staffService = staffService;
         this.userProfile = userProfile;
-
-        WMSCollectionManagementController collManage = new WMSCollectionManagementController();
-        this.book = collManage.lookupBook(itemId);
-
+        // TODO: Could possibly get book by doing a diff of userprofile before and after checkout if we need to show it?
+        this.book = null;
     }
 
     /**
