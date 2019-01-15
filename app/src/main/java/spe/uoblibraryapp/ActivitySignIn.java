@@ -35,6 +35,7 @@ public class ActivitySignIn extends SimpleActivity {
                 if (URL == null || URL.startsWith("http://") || URL.startsWith("https://"))
                     return false;
                 else {
+                    // TODO need to change this... never actually checks if the url received is the url expected.
                     if (!isAuthorisationDenied(URL)) {
                         processAuthorisationString(URL);
                         /*Successful*/
@@ -59,6 +60,8 @@ public class ActivitySignIn extends SimpleActivity {
         return s.contains("uoblibrary://authenticate#error");
     }
     private void processAuthorisationString(String s){
+
+        // TODO: Could this be a loop? store is a hash table, that way its future proof if they change the order of url arguments
         int startOfToken = s.indexOf("access_token=") + 13;
         int endOfToken = s.indexOf("&principalID=");
         String authorisationToken = s.substring(startOfToken, endOfToken);
