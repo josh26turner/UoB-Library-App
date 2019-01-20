@@ -1,17 +1,19 @@
 package spe.uoblibraryapp.api.ncip;
 
+import spe.uoblibraryapp.api.WMSException;
 import spe.uoblibraryapp.api.WMSResponse;
+import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 
 class MockWMSNCIPPatronService implements WMSNCIPPatronService {
 
     @Override
-    public WMSResponse lookup_user(String user_id){
+    public void lookup_user() throws WMSException, WMSParseException {
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
                 "<ns1:NCIPMessage xmlns:ns1=\"http://www.niso.org/2008/ncip\" xmlns=\"http://oclc.org/WCL/ncip/2011/extensions\" xmlns:ns3=\"http://www.oclc.org/ncip/usernote/2012\">\n" +
                 "    <ns1:LookupUserResponse>\n" +
                 "        <ns1:UserId>\n" +
                 "            <ns1:UserIdentifierType>EIDM</ns1:UserIdentifierType>\n" +
-                "            <ns1:UserIdentifierValue>" + user_id + "</ns1:UserIdentifierValue>\n" +
+                "            <ns1:UserIdentifierValue>0000" + "</ns1:UserIdentifierValue>\n" + // Insert userid here
                 "        </ns1:UserId>\n" +
                 "        <ns1:LoanedItemsCount>\n" +
                 "            <ns1:CirculationStatus ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/circulationstatus.scm\">On Loan</ns1:CirculationStatus>\n" +
@@ -410,7 +412,6 @@ class MockWMSNCIPPatronService implements WMSNCIPPatronService {
                 "        </ns1:Ext>\n" +
                 "    </ns1:LookupUserResponse>\n" +
                 "</ns1:NCIPMessage>\n";
-        return create_response(xml);
     }
 
     @Override

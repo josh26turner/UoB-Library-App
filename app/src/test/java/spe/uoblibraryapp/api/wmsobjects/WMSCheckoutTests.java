@@ -59,7 +59,7 @@ public class WMSCheckoutTests extends WMSUserProfileTests {
 
 
     private WMSCheckout createCheckout(){
-        return new WMSCheckout("123456789", getUserProfile(), getServices().staffService);
+        return new WMSCheckout("123456789", getUserProfile());
     }
 
 

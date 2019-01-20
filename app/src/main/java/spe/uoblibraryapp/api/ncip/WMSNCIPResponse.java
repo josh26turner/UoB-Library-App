@@ -7,7 +7,7 @@ import spe.uoblibraryapp.api.XMLParser;
 
 public class WMSNCIPResponse  extends XMLParser implements WMSResponse {
     private String xml;
-    WMSNCIPResponse(String xml){
+    public WMSNCIPResponse(String xml){
         super(xml);
         this.xml = xml;
     }

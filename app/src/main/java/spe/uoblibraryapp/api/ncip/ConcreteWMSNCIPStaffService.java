@@ -1,11 +1,15 @@
 package spe.uoblibraryapp.api.ncip;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
+
 import spe.uoblibraryapp.api.WMSResponse;
 
-class ConcreteWMSNCIPStaffService implements WMSNCIPStaffService {
+public class ConcreteWMSNCIPStaffService extends JobIntentService implements WMSNCIPStaffService {
 
     @Override
-    public WMSResponse checkOut(String userId, String itemId){
+    public WMSResponse checkOut(String itemId){
         // TODO: Change item identifier value to item id, user identifiable value to user id
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                 "<ns1:NCIPMessage xmlns:ns2=\"http://oclc.org/WCL/ncip/2011/extensions\" xmlns:ns1=\"http://www.niso.org/2008/ncip\" ns1:version=\"2.0\">\n" +
@@ -146,7 +150,6 @@ class ConcreteWMSNCIPStaffService implements WMSNCIPStaffService {
                 "</ns1:UserId>\n" +
                 "</ns1:CancelRequestItemResponse>\n" +
                 "</ns1:NCIPMessage>\n";
-
         return createResponse(xml);
     }
 
@@ -171,5 +174,10 @@ class ConcreteWMSNCIPStaffService implements WMSNCIPStaffService {
 
     private WMSResponse createResponse(String xml){
         return new WMSNCIPResponse(xml);
+    }
+
+    @Override
+    protected void onHandleWork(@NonNull Intent intent) {
+
     }
 }

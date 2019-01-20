@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
-import spe.uoblibraryapp.api.wmsobjects.WMSBook;
 import stanford.androidlib.SimpleActivity;
 
 public class ActivityConfirm extends SimpleActivity {
@@ -19,11 +17,6 @@ public class ActivityConfirm extends SimpleActivity {
         Intent intent = getIntent();
         String barcode = intent.getStringExtra("key");
         mBarcode = barcode;
-
-//        TextView tv_1 = $TV(R.id.book_name_confirm);
-//        tv_1.setText(toBorrow.getTitle());
-//        TextView tv_2 = $TV(R.id.book_author_confirm);
-//        tv_2.setText(toBorrow.getAuthor());
 
 
         Button butt = $B(R.id.borrow_button);

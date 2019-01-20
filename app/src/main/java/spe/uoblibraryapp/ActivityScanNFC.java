@@ -19,7 +19,7 @@ import spe.uoblibraryapp.nfc.NFC;
 import spe.uoblibraryapp.nfc.NFCTechException;
 
 public class ActivityScanNFC extends AppCompatActivity {
-    private static final String TAG = "Scan NFC Fragment";
+    private static final String TAG = "Scan NFC Activity";
 
     private TextView txtContentSysInfo;
     private TextView txtBarcode;
@@ -120,11 +120,5 @@ public class ActivityScanNFC extends AppCompatActivity {
             stringBuilder.append(buffer);
         }
         return stringBuilder.toString().toUpperCase().replace('X','x');
-    }
-
-    private void confirmScreen(String code){
-        Intent myIntent = new Intent(ActivityScanNFC.this, ActivityConfirm.class);
-        myIntent.putExtra("key", code); //Optional parameters
-        ActivityScanNFC.this.startActivity(myIntent);
     }
 }

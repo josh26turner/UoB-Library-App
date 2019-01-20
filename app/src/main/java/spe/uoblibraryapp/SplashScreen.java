@@ -14,6 +14,9 @@ import static java.lang.Thread.sleep;
 
 public class SplashScreen extends AppCompatActivity {
 
+    // TODO: If not logged in then open sign in activity rather than home
+    // TODO: Could we trigger api calls and then only move on once they have recieved a response?
+
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         Window window = getWindow();

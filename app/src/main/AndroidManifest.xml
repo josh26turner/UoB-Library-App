@@ -17,27 +17,25 @@
 
         <activity
             android:name=".ActivityHome"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-
-        <activity
-            android:name=".ActivitySignIn">
-
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" android:exported="true"/>
+        <activity android:name=".ActivitySignIn"/>
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ActivityScanNFC">
-        </activity>
-
-        <activity android:name=".ActivityConfirm">
-        </activity>
+        <activity android:name=".ActivityScanNFC"/>
+        <activity android:name=".ActivityConfirm"/>
+        <service
+            android:name="spe.uoblibraryapp.api.ncip.ConcreteWMSNCIPPatronService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name="spe.uoblibraryapp.api.ncip.ConcreteWMSNCIPStaffService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name="spe.uoblibraryapp.api.ncip.AuthService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

@@ -3,9 +3,8 @@ package spe.uoblibraryapp.api.ncip;
 import spe.uoblibraryapp.api.WMSResponse;
 
 class MockWMSNCIPStaffService implements WMSNCIPStaffService {
-
     @Override
-    public WMSResponse checkOut(String userId, String itemId){
+    public WMSResponse checkOut(String itemId){
         // TODO: Change item identifier value to item id, user identifiable value to user id
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
                     "<ns1:NCIPMessage xmlns:ns2=\"http://oclc.org/WCL/ncip/2011/extensions\" xmlns:ns1=\"http://www.niso.org/2008/ncip\" ns1:version=\"2.0\">\n" +

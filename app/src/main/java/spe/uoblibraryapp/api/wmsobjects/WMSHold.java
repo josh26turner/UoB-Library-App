@@ -1,15 +1,11 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
-import android.util.Log;
-
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 

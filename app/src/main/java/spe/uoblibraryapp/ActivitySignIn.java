@@ -3,12 +3,9 @@ package spe.uoblibraryapp;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import stanford.androidlib.SimpleActivity;
@@ -42,8 +39,7 @@ public class ActivitySignIn extends SimpleActivity {
                         Toast.makeText(getApplicationContext(), "Sign In Successful", Toast.LENGTH_SHORT).show();
                         finish();
                         return true;
-                    }
-                    else {
+                    } else {
                         /*User Denied Request*/
                         Toast.makeText(getApplicationContext(), "Authentication Failed", Toast.LENGTH_SHORT).show();
                         finish();
@@ -53,12 +49,12 @@ public class ActivitySignIn extends SimpleActivity {
                 }
             }
         });
-
     }
 
     private boolean isAuthorisationDenied(String s){
         return s.contains("uoblibrary://authenticate#error");
     }
+
     private void processAuthorisationString(String s){
 
         // TODO: Could this be a loop? store is a hash table, that way its future proof if they change the order of url arguments
@@ -89,15 +85,5 @@ public class ActivitySignIn extends SimpleActivity {
         pref.edit().putString("principalID", principalID).apply();
         pref.edit().putString("refreshToken", refreshToken).apply();
         pref.edit().putString("refreshTokenExpiry", refreshTokenExpiry).apply();
-        /*
-
-          String tag = "STRING PROCESSING";
-          Log.i(tag, "Access Token: " + authorisationToken);
-          Log.i(tag, "Principal ID: " + principalID);
-          Log.i(tag, "Auth Expires At: " + authorisationTokenExpiry);
-          Log.i(tag, "Refresh Token: " + refreshToken);
-          Log.i(tag, "Refresh Expires At: " + refreshTokenExpiry);
-
-        */
     }
 }

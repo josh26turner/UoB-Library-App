@@ -1,271 +1,131 @@
 package spe.uoblibraryapp.api.ncip;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
+
+import spe.uoblibraryapp.FragmentLoans;
+import spe.uoblibraryapp.api.IntentActions;
 import spe.uoblibraryapp.api.WMSResponse;
 
-class ConcreteWMSNCIPPatronService implements WMSNCIPPatronService {
+
+public class ConcreteWMSNCIPPatronService extends JobIntentService implements WMSNCIPPatronService {
+    String TAG = "ConcreteWMSNCIPPatronService";
+
+    private WorkQueue workQueue;
+    private MyBroadCastReceiver myBroadCastReceiver;
+
 
     @Override
-    public WMSResponse lookup_user(String user_id){
-        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-                "<ns1:NCIPMessage xmlns:ns1=\"http://www.niso.org/2008/ncip\" xmlns=\"http://oclc.org/WCL/ncip/2011/extensions\" xmlns:ns3=\"http://www.oclc.org/ncip/usernote/2012\">\n" +
-                "    <ns1:LookupUserResponse>\n" +
-                "        <ns1:UserId>\n" +
-                "            <ns1:UserIdentifierType>EIDM</ns1:UserIdentifierType>\n" +
-                "            <ns1:UserIdentifierValue>" + user_id + "</ns1:UserIdentifierValue>\n" +
-                "        </ns1:UserId>\n" +
-                "        <ns1:LoanedItemsCount>\n" +
-                "            <ns1:CirculationStatus ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/circulationstatus.scm\">On Loan</ns1:CirculationStatus>\n" +
-                "            <ns1:LoanedItemCountValue>1</ns1:LoanedItemCountValue>\n" +
-                "        </ns1:LoanedItemsCount>\n" +
-                "        <ns1:LoanedItem>\n" + // Done (Thucydides thingy)
-                "            <ns1:ItemId>\n" +
-                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
-                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7731</ns1:ItemIdentifierValue>\n" +
-                "            </ns1:ItemId>\n" +
-                "            <ns1:ReminderLevel>0</ns1:ReminderLevel>\n" +
-                "            <ns1:DateDue>2018-12-01T16:20:53Z</ns1:DateDue>\n" +
-                "            <ns1:Amount>\n" +
-                "                <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
-                "                <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
-                "            </ns1:Amount>\n" +
-                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
-                "            <ns1:Ext>\n" +
-                "                <ns1:RenewalCount>1</ns1:RenewalCount>\n" +
-                "                <ns1:DateCheckedOut>2018-11-24T16:20:53Z</ns1:DateCheckedOut>\n" +
-                "                <ns1:BibliographicDescription>\n" +
-                "                    <ns1:Author>Shanske, Darien,</ns1:Author>\n" +
-                "                    <ns1:BibliographicRecordId>\n" +
-                "                        <ns1:BibliographicRecordIdentifier>62789926</ns1:BibliographicRecordIdentifier>\n" +
-                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
-                "                    </ns1:BibliographicRecordId>\n" +
-                "                    <ns1:PublicationDate>2007</ns1:PublicationDate>\n" +
-                "                    <ns1:Publisher>New York : Cambridge University Press,</ns1:Publisher>\n" +
-                "                    <ns1:Title>Thucydides and the philosophical origins of history /</ns1:Title>\n" +
-                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
-                "                </ns1:BibliographicDescription>\n" +
-                "            </ns1:Ext>\n" +
-                "        </ns1:LoanedItem>\n" +
-                "        <ns1:LoanedItem>\n" + // Done (Ethical python hacking)
-                "            <ns1:ItemId>\n" +
-                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
-                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7732</ns1:ItemIdentifierValue>\n" +
-                "            </ns1:ItemId>\n" +
-                "            <ns1:ReminderLevel>0</ns1:ReminderLevel>\n" +
-                "            <ns1:DateDue>2018-12-01T16:20:53Z</ns1:DateDue>\n" +
-                "            <ns1:Amount>\n" +
-                "                <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
-                "                <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
-                "            </ns1:Amount>\n" +
-                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
-                "            <ns1:Ext>\n" +
-                "                <ns1:RenewalCount>1</ns1:RenewalCount>\n" +
-                "                <ns1:DateCheckedOut>2018-11-24T16:20:53Z</ns1:DateCheckedOut>\n" +
-                "                <ns1:BibliographicDescription>\n" +
-                "                    <ns1:Author>Sanjib, Sinha</ns1:Author>\n" +
-                "                    <ns1:BibliographicRecordId>\n" +
-                "                        <ns1:BibliographicRecordIdentifier>967844934</ns1:BibliographicRecordIdentifier>\n" +
-                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
-                "                    </ns1:BibliographicRecordId>\n" +
-                "                    <ns1:PublicationDate>2017</ns1:PublicationDate>\n" +
-                "                    <ns1:Publisher>[United States] : Apress, 2017.</ns1:Publisher>\n" +
-                "                    <ns1:Title>Beginning ethical hacking with Python</ns1:Title>\n" +
-                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
-                "                </ns1:BibliographicDescription>\n" +
-                "            </ns1:Ext>\n" +
-                "        </ns1:LoanedItem>\n" +
-                "        <ns1:LoanedItem>\n" + // Done (MrBean)
-                "            <ns1:ItemId>\n" +
-                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
-                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7733</ns1:ItemIdentifierValue>\n" +
-                "            </ns1:ItemId>\n" +
-                "            <ns1:ReminderLevel>0</ns1:ReminderLevel>\n" +
-                "            <ns1:DateDue>2018-12-04T12:00:00Z</ns1:DateDue>\n" +
-                "            <ns1:Amount>\n" +
-                "                <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
-                "                <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
-                "            </ns1:Amount>\n" +
-                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
-                "            <ns1:Ext>\n" +
-                "                <ns1:RenewalCount>3</ns1:RenewalCount>\n" +
-                "                <ns1:DateCheckedOut>2018-11-18T12:00:00Z</ns1:DateCheckedOut>\n" +
-                "                <ns1:BibliographicDescription>\n" +
-                "                    <ns1:Author>Mr Bean</ns1:Author>\n" +
-                "                    <ns1:BibliographicRecordId>\n" +
-                "                        <ns1:BibliographicRecordIdentifier>824081697</ns1:BibliographicRecordIdentifier>\n" +
-                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
-                "                    </ns1:BibliographicRecordId>\n" +
-                "                    <ns1:PublicationDate>2011</ns1:PublicationDate>\n" +
-                "                    <ns1:Publisher>[Place of publication not identified] : Penguin Elt,</ns1:Publisher>\n" +
-                "                    <ns1:Title>Mr Bean in town.</ns1:Title>\n" +
-                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
-                "                </ns1:BibliographicDescription>\n" +
-                "            </ns1:Ext>\n" +
-                "        </ns1:LoanedItem>\n" +
-                "        <ns1:LoanedItem>\n" + // Done (The Ordinary life and extraordinary death of Josh Turner)
-                "            <ns1:ItemId>\n" +
-                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
-                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7734</ns1:ItemIdentifierValue>\n" +
-                "            </ns1:ItemId>\n" +
-                "            <ns1:ReminderLevel>0</ns1:ReminderLevel>\n" +
-                "            <ns1:DateDue>2018-12-20T12:00:00Z</ns1:DateDue>\n" +
-                "            <ns1:Amount>\n" +
-                "                <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
-                "                <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
-                "            </ns1:Amount>\n" +
-                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
-                "            <ns1:Ext>\n" +
-                "                <ns1:RenewalCount>1</ns1:RenewalCount>\n" +
-                "                <ns1:DateCheckedOut>2018-11-28T16:20:53Z</ns1:DateCheckedOut>\n" +
-                "                <ns1:BibliographicDescription>\n" +
-                "                    <ns1:Author>David Treciak</ns1:Author>\n" +
-                "                    <ns1:BibliographicRecordId>\n" +
-                "                        <ns1:BibliographicRecordIdentifier>746834975</ns1:BibliographicRecordIdentifier>\n" +
-                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
-                "                    </ns1:BibliographicRecordId>\n" +
-                "                    <ns1:PublicationDate>2007</ns1:PublicationDate>\n" +
-                "                    <ns1:Publisher>Torrance, CA : Amberlin Press,</ns1:Publisher>\n" +
-                "                    <ns1:Title>The Ordinary life and extraordinary death of Josh Turner</ns1:Title>\n" +
-                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
-                "                </ns1:BibliographicDescription>\n" +
-                "            </ns1:Ext>\n" +
-                "        </ns1:LoanedItem>\n" +
-                "        <ns1:LoanedItem>\n" + // Done (Jerry)
-                "            <ns1:ItemId>\n" +
-                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
-                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7735</ns1:ItemIdentifierValue>\n" +
-                "            </ns1:ItemId>\n" +
-                "            <ns1:ReminderLevel>0</ns1:ReminderLevel>\n" +
-                "            <ns1:DateDue>2018-12-13T03:59:59Z</ns1:DateDue>\n" +
-                "            <ns1:Amount>\n" +
-                "                <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
-                "                <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
-                "            </ns1:Amount>\n" +
-                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
-                "            <ns1:Ext>\n" +
-                "                <ns1:RenewalCount>1</ns1:RenewalCount>\n" +
-                "                <ns1:DateCheckedOut>2018-11-21T16:20:53Z</ns1:DateCheckedOut>\n" +
-                "                <ns1:BibliographicDescription>\n" +
-                "                    <ns1:Author>Ursula Dubosarsky; Patricia Mullins</ns1:Author>\n" +
-                "                    <ns1:BibliographicRecordId>\n" +
-                "                        <ns1:BibliographicRecordIdentifier>244005849</ns1:BibliographicRecordIdentifier>\n" +
-                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
-                "                    </ns1:BibliographicRecordId>\n" +
-                "                    <ns1:PublicationDate>2008</ns1:PublicationDate>\n" +
-                "                    <ns1:Publisher>Camberwell, Vic. : Penguin,</ns1:Publisher>\n" +
-                "                    <ns1:Title>Jerry</ns1:Title>\n" +
-                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
-                "                </ns1:BibliographicDescription>\n" +
-                "            </ns1:Ext>\n" +
-                "        </ns1:LoanedItem>\n" +
-                "        <ns1:LoanedItem>\n" + // Done (Ana's Arrow : [a crime novel])
-                "            <ns1:ItemId>\n" +
-                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
-                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7736</ns1:ItemIdentifierValue>\n" +
-                "            </ns1:ItemId>\n" +
-                "            <ns1:ReminderLevel>0</ns1:ReminderLevel>\n" +
-                "            <ns1:DateDue>2018-12-23T03:59:59Z</ns1:DateDue>\n" +
-                "            <ns1:Amount>\n" +
-                "                <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
-                "                <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
-                "            </ns1:Amount>\n" +
-                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
-                "            <ns1:Ext>\n" +
-                "                <ns1:RenewalCount>1</ns1:RenewalCount>\n" +
-                "                <ns1:DateCheckedOut>2018-11-16T16:20:53Z</ns1:DateCheckedOut>\n" +
-                "                <ns1:BibliographicDescription>\n" +
-                "                    <ns1:Author>Riley Evans</ns1:Author>\n" +
-                "                    <ns1:BibliographicRecordId>\n" +
-                "                        <ns1:BibliographicRecordIdentifier>435709750</ns1:BibliographicRecordIdentifier>\n" +
-                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
-                "                    </ns1:BibliographicRecordId>\n" +
-                "                    <ns1:PublicationDate>2007</ns1:PublicationDate>\n" +
-                "                    <ns1:Publisher>[Concordia, KS] : Storywright Books,</ns1:Publisher>\n" +
-                "                    <ns1:Title>Ana's Arrows : [a crime novel]</ns1:Title>\n" +
-                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
-                "                </ns1:BibliographicDescription>\n" +
-                "            </ns1:Ext>\n" +
-                "        </ns1:LoanedItem>\n" +
-                "        <ns1:LoanedItem>\n" + // doing (Hr + coursemate, 1-term access.)
-                "            <ns1:ItemId>\n" +
-                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
-                "                <ns1:ItemIdentifierValue>eec21bc3-6af3-4b9f-ac1c-1066c95e7737</ns1:ItemIdentifierValue>\n" +
-                "            </ns1:ItemId>\n" +
-                "            <ns1:ReminderLevel>0</ns1:ReminderLevel>\n" +
-                "            <ns1:DateDue>2018-12-15T03:59:59Z</ns1:DateDue>\n" +
-                "            <ns1:Amount>\n" +
-                "                <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
-                "                <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
-                "            </ns1:Amount>\n" +
-                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
-                "            <ns1:Ext>\n" +
-                "                <ns1:RenewalCount>1</ns1:RenewalCount>\n" +
-                "                <ns1:DateCheckedOut>2018-11-21T16:20:53Z</ns1:DateCheckedOut>\n" +
-                "                <ns1:BibliographicDescription>\n" +
-                "                    <ns1:Author>Angelo Denisi</ns1:Author>\n" +
-                "                    <ns1:BibliographicRecordId>\n" +
-                "                        <ns1:BibliographicRecordIdentifier>950431405</ns1:BibliographicRecordIdentifier>\n" +
-                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
-                "                    </ns1:BibliographicRecordId>\n" +
-                "                    <ns1:PublicationDate>2015</ns1:PublicationDate>\n" +
-                "                    <ns1:Publisher>[Place of publication not identified] : South-Western,</ns1:Publisher>\n" +
-                "                    <ns1:Title>Hr + coursemate, 1-term access.</ns1:Title>\n" +
-                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
-                "                </ns1:BibliographicDescription>\n" +
-                "            </ns1:Ext>\n" +
-                "        </ns1:LoanedItem>\n" +
-                "        <ns1:RequestedItemsCount>\n" +
-                "            <ns1:CirculationStatus ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/circulationstatus.scm\">Recently Received</ns1:CirculationStatus>\n" +
-                "            <ns1:RequestedItemCountValue>1</ns1:RequestedItemCountValue>\n" +
-                "        </ns1:RequestedItemsCount>\n" +
-                "        <ns1:RequestedItemsCount>\n" +
-                "            <ns1:CirculationStatus ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/circulationstatus.scm\">On Hold</ns1:CirculationStatus>\n" +
-                "            <ns1:RequestedItemCountValue>0</ns1:RequestedItemCountValue>\n" +
-                "        </ns1:RequestedItemsCount>\n" +
-                "        <ns1:RequestedItem>\n" +
-                "            <ns1:RequestId>\n" +
-                "                <ns1:AgencyId ns1:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">128807</ns1:AgencyId>\n" +
-                "                <ns1:RequestIdentifierValue>be5aa3d8-e143-414f-a1af-5a6c88dc3b5d</ns1:RequestIdentifierValue>\n" +
-                "            </ns1:RequestId>\n" +
-                "            <ns1:RequestType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requesttype/requesttype.scm\">Hold</ns1:RequestType>\n" +
-                "            <ns1:RequestStatusType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requeststatustype/requeststatustype.scm\">In Process</ns1:RequestStatusType>\n" +
-                "            <ns1:DatePlaced>2014-02-21T16:48:14Z</ns1:DatePlaced>\n" +
-                "            <ns1:PickupLocation>129055</ns1:PickupLocation>\n" +
-                "            <ns1:HoldQueuePosition>1</ns1:HoldQueuePosition>\n" +
-                "            <ns1:Title>Diary of a wimpy kid : dog days /</ns1:Title>\n" +
-                "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
-                "            <ns1:Ext>\n" +
-                "                <ns1:BibliographicDescription>\n" +
-                "                    <ns1:Author>Kinney, Jeff.</ns1:Author>\n" +
-                "                    <ns1:BibliographicRecordId>\n" +
-                "                        <ns1:BibliographicRecordIdentifier>317923541</ns1:BibliographicRecordIdentifier>\n" +
-                "                        <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
-                "                    </ns1:BibliographicRecordId>\n" +
-                "                    <ns1:PublicationDate>2009</ns1:PublicationDate>\n" +
-                "                    <ns1:Publisher>New York : Amulet Books,</ns1:Publisher>\n" +
-                "                    <ns1:Title>Diary of a wimpy kid : dog days /</ns1:Title>\n" +
-                "                    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
-                "                </ns1:BibliographicDescription>\n" +
-                "                <ns1:EarliestDateNeeded>2014-02-21T16:48:40.230Z</ns1:EarliestDateNeeded>\n" +
-                "                <ns1:HoldQueueLength>1</ns1:HoldQueueLength>\n" +
-                "                <ns1:NeedBeforeDate>2034-02-21T16:48:40.230Z</ns1:NeedBeforeDate>\n" +
-                "            </ns1:Ext>\n" +
-                "        </ns1:RequestedItem>\n" +
-                "        <ns1:Ext>\n" +
-                "            <UserFiscalAccountSummary>\n" +
-                "                <ChargesCount>0</ChargesCount>\n" +
-                "                <ns1:AccountBalance>\n" +
-                "                    <ns1:CurrencyCode ns1:Scheme=\"http://www.bsi-global.com/Technical+Information/Publications/_Publications/tig90x.doc\">USD</ns1:CurrencyCode>\n" +
-                "                    <ns1:MonetaryValue>0</ns1:MonetaryValue>\n" +
-                "                </ns1:AccountBalance>\n" +
-                "            </UserFiscalAccountSummary>\n" +
-                "            <SubsequentElementControl>\n" +
-                "                <ElementType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/elementtype.scm\">Requested Item</ElementType>\n" +
-                "                <NextElement>1</NextElement>\n" +
-                "            </SubsequentElementControl>\n" +
-                "        </ns1:Ext>\n" +
-                "    </ns1:LookupUserResponse>\n" +
-                "</ns1:NCIPMessage>\n";
-        return create_response(xml);
+    public void lookup_user(){
+        SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
+        String accessToken = prefs.getString("authorisationToken", "");
+
+        String url = "https://bub.share.worldcat.org/ncip/circ-patron";
+        String requestBody = "<NCIPMessage xmlns=\"http://www.niso.org/2008/ncip\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:ncip=\"http://www.niso.org/2008/ncip\" xmlns:ns2=\"http://oclc.org/WCL/ncip/2011/extensions\" xsi:schemaLocation=\"http://www.niso.org/2008/ncip http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\" ncip:version=\"http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\">\n" +
+                "<LookupUser>\n" +
+                "<InitiationHeader>\n" +
+                "<FromAgencyId>\n" +
+                "<AgencyId ncip:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">132607</AgencyId>\n" +
+                "</FromAgencyId>\n" +
+                "<ToAgencyId>\n" +
+                "<AgencyId ncip:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">132607</AgencyId>\n" +
+                "</ToAgencyId>\n" +
+                "<ApplicationProfileType ncip:Scheme=\"http://oclc.org/ncip/schemes/application-profile/wcl.scm\">Version 2011</ApplicationProfileType>\n" +
+                "</InitiationHeader>\n" +
+                "<UserId>\n" +
+                "<UserIdentifierValue>" + prefs.getString("principalID", "") + "</UserIdentifierValue>\n" +
+                "</UserId>\n" +
+                "<LoanedItemsDesired/>\n" +
+                "<RequestedItemsDesired/>\n" +
+                "<UserFiscalAccountDesired/>\n" +
+                "<Ext>\n" +
+                "<ns2:ResponseElementControl>\n" +
+                "<ns2:ElementType ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/elementtype.scm\">Account Details</ns2:ElementType>\n" +
+                "<ns2:StartElement>1</ns2:StartElement>\n" +
+                "<ns2:MaximumCount>10</ns2:MaximumCount>\n" +
+                "<ns2:SortField ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/accountdetailselementtype.scm\">Accrual Date</ns2:SortField>\n" +
+                "<ns2:SortOrderType ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/sortordertype.scm\">Ascending</ns2:SortOrderType>\n" +
+                "</ns2:ResponseElementControl>\n" +
+                "<ns2:ResponseElementControl>\n" +
+                "<ns2:ElementType ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/elementtype.scm\">Loaned Item</ns2:ElementType>\n" +
+                "<ns2:StartElement>1</ns2:StartElement>\n" +
+                "<ns2:MaximumCount>10</ns2:MaximumCount>\n" +
+                "<ns2:SortField ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/loaneditemelementtype.scm\">Date Due</ns2:SortField>\n" +
+                "<ns2:SortOrderType ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/sortordertype.scm\">Ascending</ns2:SortOrderType>\n" +
+                "</ns2:ResponseElementControl>\n" +
+                "<ns2:ResponseElementControl>\n" +
+                "<ns2:ElementType ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/elementtype.scm\">Requested Item</ns2:ElementType>\n" +
+                "<ns2:StartElement>1</ns2:StartElement>\n" +
+                "<ns2:MaximumCount>10</ns2:MaximumCount>\n" +
+                "<ns2:SortField ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/requesteditemelementtype.scm\">Date Placed</ns2:SortField>\n" +
+                "<ns2:SortOrderType ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/sortordertype.scm\">Ascending</ns2:SortOrderType>\n" +
+                "</ns2:ResponseElementControl>\n" +
+                "</Ext>\n" +
+                "</LookupUser>\n" +
+                "</NCIPMessage>";
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.start();
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String xml) {
+                Log.d(TAG, "HTTP request Actioned");
+
+                Intent broadcastIntent = new Intent(FragmentLoans.BROADCAST_ACTION);
+                broadcastIntent.putExtra("xml", xml);
+
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
+                Log.d(TAG, "Broadcast Intent Sent");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "ERRROOOOORRRRR");
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + accessToken);
+                return headers;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/xml";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try{
+                    return requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e){
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+        queue.add(request);
     }
 
     @Override
@@ -429,5 +289,72 @@ class ConcreteWMSNCIPPatronService implements WMSNCIPPatronService {
 
     private WMSResponse create_response(String xml){
         return new WMSNCIPResponse(xml);
+    }
+
+
+    @Override
+    protected void onHandleWork(@NonNull Intent intent) {
+        if (IntentActions.ACCESS_TOKEN_GENERATED.equals(intent.getAction())){
+            Log.d(TAG, "token generated intent recieved");
+            while (!workQueue.isEmpty()) {
+                String action = workQueue.get();
+                if (IntentActions.LOOKUP_USER.equals(action)) {
+                    lookup_user();
+                } else {
+                    Log.e(TAG, "Intent received has no valid action");
+                }
+            }
+        }else {
+            Log.d(TAG, "Intent recieved");
+            workQueue.add(intent.getAction());
+            Log.d(TAG, "action added to work queue");
+            Intent getAccessTokenIntent = new Intent(IntentActions.ACCESS_TOKEN_NEEDED);
+            AuthService.enqueueWork(this, AuthService.class, 1001, getAccessTokenIntent);
+            Log.d(TAG, "Access Token requested");
+        }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        workQueue = WorkQueue.getInstance();
+        myBroadCastReceiver = new MyBroadCastReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(IntentActions.ACCESS_TOKEN_GENERATED);
+        // Add other intents here...
+        LocalBroadcastManager.getInstance(this).registerReceiver(myBroadCastReceiver, intentFilter);
+        Log.d(TAG, "reciever registered");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(myBroadCastReceiver);
+        // TODO: Empty the queue?
+    }
+
+    class MyBroadCastReceiver extends BroadcastReceiver
+    {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try
+            {
+                Log.d(TAG, "onReceive() called");
+
+                while (!workQueue.isEmpty()) {
+                    String action = workQueue.get();
+                    if (IntentActions.LOOKUP_USER.equals(action)) {
+                        lookup_user();
+                    } else {
+                        Log.e(TAG, "Intent received has no valid action");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+            }
+
+        }
     }
 }

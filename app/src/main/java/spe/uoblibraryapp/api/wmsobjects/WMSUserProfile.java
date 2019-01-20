@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import spe.uoblibraryapp.api.AuthenticationNeededException;
 import spe.uoblibraryapp.api.WMSException;
 import spe.uoblibraryapp.api.WMSResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
@@ -29,30 +30,19 @@ public class WMSUserProfile {
     private List<WMSHold> recentlyReceived;
     private List<WMSFine> fines;
 
-    private WMSNCIPPatronService patronService;
-    private WMSNCIPStaffService staffService;
 
 
     /**
      * Constructor
      * @param elemHolder This contains the node to parse
-     * @param patronService The patron service
-     * @param staffService The staff service
+//     * @param patronService The patron service
+//     * @param staffService The staff service
      * @throws WMSParseException Thrown if there was an error parsing the node
      */
-
-
-
-    @VisibleForTesting
     public WMSUserProfile(
-            WMSNCIPElement elemHolder,
-            WMSNCIPPatronService patronService,
-            WMSNCIPStaffService staffService
+            WMSNCIPElement elemHolder
     ) throws WMSParseException{
 
-        // Save Services
-        this.patronService = patronService;
-        this.staffService = staffService;
 
 
         Node node = elemHolder.getElem();
@@ -212,31 +202,7 @@ public class WMSUserProfile {
      * @return A checkout object to process the transaction.
      */
     public WMSCheckout checkoutBook(String itemId){
-        return new WMSCheckout(itemId, this, staffService);
+        return new WMSCheckout(itemId, this);//, staffService);
     }
 
-    /**
-     * This will refresh the data contained in the UserProfile,
-     * could be called when the user refreshes home page
-     * @throws WMSException Thrown if there was an error communication with WMS
-     * @throws WMSParseException thrown if the response fails to parse
-     */
-
-    public void refresh() throws WMSException, WMSParseException{
-        // TODO: Return bool which states if any data has changed.
-        WMSResponse response = patronService.lookup_user(this.userId);
-
-        if (response.didFail()) {
-            throw new WMSException("There was an error retrieving the User Profile");
-        }
-        Document doc;
-        try {
-            doc = response.parse();
-        } catch (IOException | SAXException | ParserConfigurationException e){
-            throw new WMSException("There was an error Parsing the WMS response");
-        }
-        Node node = doc.getElementsByTagName("ns1:LookupUserResponse").item(0);
-
-        parseNode(node);
-    }
 }

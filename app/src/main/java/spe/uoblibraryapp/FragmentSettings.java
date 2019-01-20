@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,31 +46,13 @@ public class FragmentSettings extends android.support.v4.app.Fragment{
         });
 
         SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-        View.OnClickListener onclick;
-        if (1==2) { // TODO Thingy
-            onclick = new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(), ActivitySignIn.class);
-                    startActivity(intent);
-                }
-            };
-        } else{
-            onclick = new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(), ActivitySignIn.class);
-                    startActivity(intent);
-                }
-            };
-        }
-
         Button butt = v.findViewById(R.id.goto_signin);
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ActivitySignIn.class);
-                startActivity(intent);
+                Toast.makeText(getContext(), "Needs Changing to sign out",Toast.LENGTH_LONG);
+//                Intent intent = new Intent(getActivity(), ActivitySignIn.class);
+//                startActivity(intent);
             }
         });
         return v;
