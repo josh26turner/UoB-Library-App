@@ -8,12 +8,14 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -28,6 +30,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import spe.uoblibraryapp.ActivitySignIn;
+import spe.uoblibraryapp.SplashScreen;
 import spe.uoblibraryapp.api.AuthenticationNeededException;
 import spe.uoblibraryapp.api.IntentActions;
 
@@ -97,7 +100,6 @@ public class AuthService extends JobIntentService {
             ConcreteWMSNCIPPatronService.enqueueWork(getApplicationContext(), ConcreteWMSNCIPPatronService.class, 1000, accessTokenGeneratedIntent);
             Log.d(TAG, "Access Token Broadcasted");
         }
-
     }
 
     void requestNewAccessToken() throws ParseException, AuthenticationNeededException, AuthenticationRequestFailedException {
@@ -151,6 +153,33 @@ public class AuthService extends JobIntentService {
 
 
     void logout(){
+
+        String url = "https://authn.sd00.worldcat.org/oauth2/revoke?refresh_token="
+                + tokens.getString("refreshToken", "");
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.start();
+        StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                tokens.edit().clear().apply();
+                startActivity(new Intent(getApplicationContext(), SplashScreen.class));
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO: CRY )`:
+            }
+        });
+        Log.d(TAG , "Adding request");
+        queue.add(request);
+
+        Log.d(TAG, "Stopping queue");
+
+
+
+
+
+
         Log.d(TAG, "Logout intent recieved");
     }
 }

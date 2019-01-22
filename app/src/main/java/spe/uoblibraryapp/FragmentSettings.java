@@ -19,6 +19,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import spe.uoblibraryapp.api.IntentActions;
+import spe.uoblibraryapp.api.ncip.AuthService;
+
 public class FragmentSettings extends android.support.v4.app.Fragment{
 
     private static final String TAG = "Settings Fragment";
@@ -50,9 +53,7 @@ public class FragmentSettings extends android.support.v4.app.Fragment{
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Needs Changing to sign out",Toast.LENGTH_LONG);
-//                Intent intent = new Intent(getActivity(), ActivitySignIn.class);
-//                startActivity(intent);
+                AuthService.enqueueWork(getContext(), AuthService.class, 1001, new Intent(IntentActions.AUTH_LOGOUT));
             }
         });
         return v;
