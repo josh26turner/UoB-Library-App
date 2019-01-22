@@ -2,7 +2,11 @@ package spe.uoblibraryapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -12,6 +16,9 @@ import stanford.androidlib.SimpleActivity;
 
 
 public class ActivitySignIn extends SimpleActivity {
+
+    private static String TAG = "SignIn";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +27,12 @@ public class ActivitySignIn extends SimpleActivity {
         getSupportActionBar().setTitle("Single Sign On");
 
         WebView mywebview = findViewById(R.id.loginWebView);
+
+        // Clear all user cache previously store, this will force the user to login again.
+        mywebview.clearCache(true);
+        mywebview.clearHistory();
+        clearCookies(this);
+
         mywebview.getSettings().setJavaScriptEnabled(true);
         mywebview.getSettings().setLoadWithOverviewMode(true);
         mywebview.getSettings().setUseWideViewPort(true);
@@ -40,6 +53,8 @@ public class ActivitySignIn extends SimpleActivity {
                         finish();
                         return true;
                     } else {
+
+                        // TODO redirect user to start of activity rather than finish it.
                         /*User Denied Request*/
                         Toast.makeText(getApplicationContext(), "Authentication Failed", Toast.LENGTH_SHORT).show();
                         finish();
@@ -49,6 +64,15 @@ public class ActivitySignIn extends SimpleActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+
+        // Dont do anything when back button is pressed?
+
+        // TODO could we change back button to work with webview?
     }
 
     private boolean isAuthorisationDenied(String s){
@@ -85,5 +109,11 @@ public class ActivitySignIn extends SimpleActivity {
         pref.edit().putString("principalID", principalID).apply();
         pref.edit().putString("refreshToken", refreshToken).apply();
         pref.edit().putString("refreshTokenExpiry", refreshTokenExpiry).apply();
+    }
+
+    public static void clearCookies(Context context)
+    {
+        CookieManager.getInstance().removeAllCookies(null);
+        CookieManager.getInstance().flush();
     }
 }

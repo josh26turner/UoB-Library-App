@@ -35,16 +35,20 @@ public class SplashScreen extends AppCompatActivity {
     private void StartAnimations() {
         Animation loadAnimation = AnimationUtils.loadAnimation(this, R.anim.alpha_anim);
         loadAnimation.reset();
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.lin_lay);
+        LinearLayout linearLayout = findViewById(R.id.lin_lay);
         linearLayout.clearAnimation();
         linearLayout.startAnimation(loadAnimation);
 
         loadAnimation = AnimationUtils.loadAnimation(this, R.anim.translate_anim);
         loadAnimation.reset();
-        ImageView imageView = (ImageView) findViewById(R.id.splash);
+        ImageView imageView = findViewById(R.id.splash);
         imageView.clearAnimation();
         imageView.startAnimation(loadAnimation);
 
+
+
+
+        // TODO: Rather than wait here, trigger load for FragmentLoans when received then startActivity
         splashTread = new Thread() {
             @Override
             public void run() {
