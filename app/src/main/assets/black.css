@@ -1,0 +1,398 @@
+body {
+    font: 18px / 1.2 'Arial Unicode MS', Arial, Verdana, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center
+
+}
+
+.wayf-title {
+    font-size: 120%;
+    margin: 110px 0 0;
+    padding: 0;
+    font-weight: bold;
+    text-shadow: 0 1px 0 #fff
+}
+
+.wayf-body .wms-alert {
+    margin: .5em 0 0
+}
+
+.wayf-prompt, .wayf-hints div {
+    padding: .5em 0
+}
+
+.wayf-body button {
+    padding: .5em 1em
+}
+
+div.wayf-hints {
+    color: #455560;
+    background: rgba(251, 251, 251, 0.4);
+    margin: 1.5em -0.5em 0;
+    padding: 0 .5em .5em;
+    border-radius: 3px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.85)
+}
+
+.institution-id {
+    font-size: small;
+    padding: 1em 0 1em 0;
+    text-align: center
+}
+
+#top-err {
+    color: #c00;
+    text-align: left
+}
+
+#welcome {
+    text-align: left;
+    font-size: medium;
+    font-weight: bold
+}
+
+.indicator {
+    color: red;
+    font-weight: bold;
+    font-size: 116%;
+    line-height: normal
+}
+
+.sign-in {
+    font-size: 85%;
+    padding: 1em 2em 1em 0;
+    text-align: right
+}
+
+#signIn, .uic-simple-form-box {
+    width: 720px;
+    padding: 1.5em;
+    margin: 2em auto 8em;
+    box-shadow: 0 5px 13px 2px rgba(0, 0, 0, 0.16);
+    border: 1px solid #fff;
+    border-radius: 8px;
+    background: #ef0565 url(../images/splashscreen-bg.png) center -40px no-repeat
+}
+
+#signInChoiceHeader {
+    width: 720px;
+    font-size: 60px;
+    padding: 10px 25px;
+    border-radius: 8px 8px 0 0;
+    background: #eee9e6;
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    font-family: sans-serif;
+    color: #000;
+    font-weight: normal;
+    text-transform: capitalize;
+}
+
+
+#signInChoice {
+    width: 720px;
+    padding: 2em 24px 0px;
+    font-size: 50px;
+    margin: 2em auto 8em;
+    box-shadow: 0 5px 13px 2px rgba(0, 0, 0, 0.16);
+    border: 1px solid #fff;
+    border-radius: 8px;
+    position: relative;
+}
+
+input[name=rememberChoice]{display:none;}
+p:nth-of-type(5){display:none}
+hr:nth-of-type(1){display: none}
+
+#signInChoice button {
+    display: block;
+    margin: .5em .1em;
+    font-size: 45px;
+    padding: .5em 1em;
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word
+}
+
+.uic-simple-form-box.accountInfo, .uic-simple-form-box.accountSuccess {
+    width: 700px
+}
+
+.signin-title {
+    font-size: 15px;
+    padding: auto 5px 3px;
+    color: #8f99a0
+}
+
+#signin fieldset, #signin hr {
+    border: 1px solid #ccc
+}
+
+#signIn label, .uic-simple-form-box label {
+    clear: left;
+    display: block;
+    float: left;
+    margin: 5px;
+    padding-top: .4em;
+    width: 118px;
+    color: #455560;
+    font-size: 90%;
+    font-weight: bold;
+    white-space: nowrap
+}
+
+.uic-simple-form-box label {
+    width: 200px
+}
+
+#signIn input, .uic-simple-form-box input {
+    margin: 5px;
+    padding: 3px;
+    width: 210px
+}
+
+.submit-wrapper {
+    float: right;
+    margin: auto 5px;
+    width: 62%
+}
+
+.uic-form-back {
+    text-align: center;
+    margin: 3px
+}
+
+.top-note, .footer-legal {
+    font-size: 85%;
+    text-align: left
+}
+
+div.hd {
+    margin-bottom: 3px
+}
+
+div.ft {
+    padding: 3px 10px;
+    overflow: hidden
+}
+
+.footer-legal-content {
+    margin-left: 3px;
+    padding: 1em 0 1em 2em
+}
+
+.footer-legal-content p {
+    margin-bottom: 3px;
+    margin-top: 3px
+}
+
+a:link {
+    color: #034ea2
+}
+
+a:hover {
+    color: #f60
+}
+
+a.forgot {
+    font-size: 11px
+}
+
+input[type="text"], input[type="password"], textarea {
+    background: #fff;
+    border: 1px solid;
+    border-color: #666 #b4b4b4 #b4b4b4 #666;
+    min-height: 18px
+}
+
+button, input[type="submit"], input[type="reset"] {
+    margin: 0;
+    overflow: visible;
+    color: #036;
+    cursor: pointer;
+    font-weight: normal;
+    background: url("../images/uic-mini-sprite.png") repeat-x scroll 0 0 #eed;
+    min-height: 18px;
+    padding: 1px .3em;
+    border: 1px solid #909aa0;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+button:hover, input[type="submit"]:hover, input[type="reset"]:hover {
+    color: #c63;
+    background-color: #f9f9ff;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.3)
+}
+
+button:active, input[type="submit"]:active, input[type="reset"]:active {
+    background-color: #eed;
+    border-color: #7c868c;
+}
+
+button[disabled], button[disabled]:active {
+    color: #c8c8c8 !important;
+    background: #f0f0f0;
+    border-color: #c8c8c8 !important;
+    cursor: default
+}
+
+.uic-error {
+    color: #c00;
+    font-size: small
+}
+
+.uic-success {
+    color: #0c0
+}
+
+#signIn #ac-input {
+    width: 452px;
+    margin-left: 0
+}
+
+.wayf-ac .yui3-aclist {
+    min-width: 45em
+}
+
+.wayf-ac .yui3-aclist-item {
+    overflow: hidden
+}
+
+.wayf-ac .yui3-aclist-item span {
+    overflow: hidden;
+    min-height: 1.3em;
+    padding: .25em 1em;
+    _border-top: 1px solid transparent
+}
+
+.wayf-ac .yui3-aclist-item .col1 {
+    float: left;
+    width: 4em;
+    padding-left: .2em;
+    border-right: 1px solid #ccc
+}
+
+.wayf-ac .yui3-aclist-item .col2 {
+    float: left;
+    width: 6em;
+    border-right: 1px solid #ccc
+}
+
+.wayf-ac .yui3-aclist-item .col3 {
+    padding-right: .2em
+}
+
+.wayf-ac .yui3-aclist-item-hover span.col1, .wayf-ac .yui3-aclist-item-hover span.col2 {
+    border-color: #92b1ff;
+    _border-top: 1px solid transparent
+}
+
+.yui3-aclist-content {
+    display: inline-block;
+    overflow: auto;
+    max-height: 300px
+}
+
+.wms-alert {
+    border: 1px solid;
+    background: url("../images/alert-sprite.png") 0 -480px repeat-x;
+    clear: both;
+    display: block;
+    min-height: 24px;
+    position: relative;
+    margin: 0 0 6px 0;
+    padding: 5px 10px 5px 34px;
+    text-align: left;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px
+}
+
+.wms-alert p.msg {
+    overflow: hidden
+}
+
+.wms-alert-icon {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    height: 16px;
+    width: 16px;
+    background: url("../images/alert-sprite.png") 100px no-repeat
+}
+
+.wms-alert p, .wms-alert li {
+    font-size: 90%
+}
+
+.wms-alert p {
+    margin: 0 0 4px 0;
+    padding: 0;
+    line-height: 1.2em
+}
+
+.wms-alert p.first {
+    font-weight: bold
+}
+
+.wms-alert ul {
+    margin: 2px 0 0 26px;
+    padding: 0
+}
+
+.wms-alert ul li {
+    margin: 0;
+    padding: 0;
+    list-style: disc outside
+}
+
+.wms-alert.wms-message-confirm {
+    border-color: #79b876;
+    color: #2d6929;
+    background-color: #f5faf5
+}
+
+.wms-alert.wms-message-confirm .wms-alert-icon {
+    background-position: 0 0
+}
+
+.wms-alert.wms-message-error {
+    border-color: #e30e17;
+    color: #e30e17;
+    background-color: #fef4f5
+}
+
+.wms-alert.wms-message-error .wms-alert-icon {
+    background-position: 0 -48px
+}
+
+.wms-alert.wms-message-warning {
+    border-color: #ff9f4c;
+    color: #994500;
+    background-color: #fff8f2
+}
+
+.wms-alert.wms-message-warning .wms-alert-icon {
+    background-position: 0 -144px
+}
+
+.wms-alert.wms-message-info {
+    border-color: #63a0cb;
+    color: #155c8f;
+    background-color: #f4f8fb
+}
+
+.wms-alert.wms-message-info .wms-alert-icon {
+    background-position: 0 -96px
+}
+
+
+
+
+
