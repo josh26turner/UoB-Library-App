@@ -7,12 +7,15 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -49,6 +52,17 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         view = inflater.inflate(R.layout.fragment_loans, container, false);
 
         myBroadCastReceiver = new MyBroadCastReceiver();
+
+        FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast toast = Toast.makeText(getContext(), "Scan New Book", Toast.LENGTH_SHORT);
+                toast.show();
+                Intent NFCActivity = new Intent(getActivity(), ActivityScanNFC.class);
+                startActivity(NFCActivity);
+            }
+        });
 
         return view;
     }
