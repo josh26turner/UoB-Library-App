@@ -1,5 +1,6 @@
 package spe.uoblibraryapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
@@ -10,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import spe.uoblibraryapp.api.IntentActions;
+import spe.uoblibraryapp.api.ncip.AuthService;
 import stanford.androidlib.SimpleActivity;
 
 public class ActivityHome extends SimpleActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -103,7 +106,9 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            //Action bar logout
+            AuthService.enqueueWork(this, AuthService.class, 1001, new Intent(IntentActions.AUTH_LOGOUT));
             return true;
         }
 

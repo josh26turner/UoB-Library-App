@@ -67,12 +67,14 @@ public class FragmentSettings extends android.support.v4.app.Fragment{
         TextView refreshExpiryDate = getView().findViewById(R.id.RefreshExpiryDate);
         TextView accessToken = getView().findViewById(R.id.AccessToken);
         TextView accessExpiryDate = getView().findViewById(R.id.AccessTokenExpiry);
+        TextView principalID = getView().findViewById(R.id.princID);
 
         SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         refreshExpiryDate.setText(pref.getString("refreshTokenExpiry", "default"));
         refreshToken.setText(pref.getString("refreshToken", "default"));
         accessExpiryDate.setText(pref.getString("authorisationTokenExpiry", "default"));
         accessToken.setText(pref.getString("authorisationToken", "default"));
+        principalID.setText(pref.getString("principalID", "default"));
 
         super.onResume();
     }
