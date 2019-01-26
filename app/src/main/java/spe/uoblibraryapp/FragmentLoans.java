@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -24,7 +23,9 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -38,6 +39,7 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.wmsobjects.WMSHold;
 import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
+import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 
@@ -45,7 +47,11 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     private static final String TAG = "LoansFragment";
     public static final String BROADCAST_ACTION = "spe.uoblibraryapp.api.RESPONSE";
     private MyBroadCastReceiver myBroadCastReceiver;
+    private boolean refreshing;
+    private Date lastRefresh;
+    private String lastResponse;
     View view;
+
 
     @Nullable
     @Override
@@ -71,13 +77,11 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         swipeRefreshLoans.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                /*Pull to Refresh list*/
+                // Pull to Refresh list
                 swipeRefreshLoans.setRefreshing(true);
                 Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
                 ConcreteWMSNCIPPatronService.enqueueWork(getContext(), ConcreteWMSNCIPPatronService.class, 1000, getUserProfileIntent);
-                swipeRefreshLoans.setRefreshing(false);
-                Toast toast = Toast.makeText(getContext(), "Loans Updated", Toast.LENGTH_SHORT);
-                toast.show();
+                refreshing = true;
             }
         });
 
@@ -88,10 +92,33 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     public void onResume() {
         super.onResume();
         registerMyReceiver();
-        /*Refresh list here*/
-        Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
-        ConcreteWMSNCIPPatronService.enqueueWork(getContext(), ConcreteWMSNCIPPatronService.class, 1000, getUserProfileIntent);
-        Log.e(TAG, "Intent queued");
+        // Refresh list here if fragment resumes and it hasn't been refreshed in 10 minutes
+        if (lastRefresh != null){
+            GregorianCalendar cal = new GregorianCalendar();
+            cal.setTime(lastRefresh);
+            cal.add(Calendar.MINUTE, 10);
+            if (!lastRefresh.before(cal.getTime())) {
+                SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
+                swipeRefreshLoans.setRefreshing(true);
+                Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
+                ConcreteWMSNCIPPatronService.enqueueWork(getContext(), ConcreteWMSNCIPPatronService.class, 1000, getUserProfileIntent);
+                refreshing = true;
+                Log.e(TAG, "Intent queued");
+            } else{
+                try {
+                    fillListView(parseUserProfileResponse(lastResponse));
+                } catch (Exception ex){
+                    ex.printStackTrace();
+                }
+            }
+        } else{
+            SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
+            swipeRefreshLoans.setRefreshing(true);
+            Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
+            ConcreteWMSNCIPPatronService.enqueueWork(getContext(), ConcreteWMSNCIPPatronService.class, 1000, getUserProfileIntent);
+            refreshing = true;
+            Log.e(TAG, "Intent queued");
+        }
     }
 
     // If we want thumbnails this gives us an image link https://www.googleapis.com/books/v1/volumes?q=isbn:9780226467047
@@ -154,6 +181,23 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(myBroadCastReceiver);
     }
 
+    private WMSUserProfile parseUserProfileResponse(String xml) throws WMSException, WMSParseException { ;
+        WMSResponse response = new WMSNCIPResponse(xml);
+
+        if (response.didFail()) {
+            throw new WMSException("There was an error retrieving the User Profile");
+        }
+        Document doc;
+        try {
+            doc = response.parse();
+        } catch (IOException | SAXException | ParserConfigurationException e){
+            throw new WMSException("There was an error Parsing the WMS response");
+        }
+        Node node = doc.getElementsByTagName("ns1:LookupUserResponse").item(0);
+        return new WMSUserProfile(new WMSNCIPElement(node));
+    }
+
+
     class MyBroadCastReceiver extends BroadcastReceiver
     {
         @Override
@@ -163,19 +207,18 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
 
                 String xml = intent.getStringExtra("xml");
 
-                WMSResponse response = new WMSNCIPResponse(xml);
+                WMSUserProfile userProfile = parseUserProfileResponse(xml);
 
-                if (response.didFail()) {
-                    throw new WMSException("There was an error retrieving the User Profile");
+                fillListView(userProfile);
+                if (refreshing) {
+                    SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
+                    swipeRefreshLoans.setRefreshing(false);
+                    Toast toast = Toast.makeText(getContext(), "Loans Updated", Toast.LENGTH_SHORT);
+                    toast.show();
+                    refreshing = false;
+                    lastRefresh = new Date();
                 }
-                Document doc;
-                try {
-                    doc = response.parse();
-                } catch (IOException | SAXException | ParserConfigurationException e){
-                    throw new WMSException("There was an error Parsing the WMS response");
-                }
-                Node node = doc.getElementsByTagName("ns1:LookupUserResponse").item(0);
-                fillListView(new WMSUserProfile(new WMSNCIPElement(node)));
+                lastResponse = xml;
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

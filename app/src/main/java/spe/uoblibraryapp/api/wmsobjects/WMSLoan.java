@@ -46,6 +46,10 @@ public class WMSLoan {
         } catch (ParseException e){
             throw new WMSParseException(e.getMessage());
         }
+
+        // TODO make WMS Availability request to check the status of the book.
+        // TODO Can a standard user use the availability service
+        // If so then can we join the two keys so the user only has to authenticate once? Ask David.
     }
 
 
@@ -183,6 +187,8 @@ public class WMSLoan {
     public String getMediumType() {
         return this.mediumType;
     }
+
+
 
     /**
      * Gets renewal status, if the book can be renewed
