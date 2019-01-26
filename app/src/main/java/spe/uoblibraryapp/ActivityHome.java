@@ -10,10 +10,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import spe.uoblibraryapp.api.IntentActions;
 import spe.uoblibraryapp.api.ncip.AuthService;
+import spe.uoblibraryapp.api.ncip.ConcreteWMSNCIPPatronService;
 import stanford.androidlib.SimpleActivity;
+
+import static java.security.AccessController.getContext;
 
 public class ActivityHome extends SimpleActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -105,11 +109,17 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        /*Action bar menu options*/
         if (id == R.id.action_logout) {
             //Action bar logout
             AuthService.enqueueWork(this, AuthService.class, 1001, new Intent(IntentActions.AUTH_LOGOUT));
             return true;
+        }
+        if (id == R.id.action_refresh) {
+            Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
+            ConcreteWMSNCIPPatronService.enqueueWork(this, ConcreteWMSNCIPPatronService.class, 1000, getUserProfileIntent);
+            Toast toast = Toast.makeText(this, "Loans Updated", Toast.LENGTH_SHORT);
+            toast.show();
         }
 
         return super.onOptionsItemSelected(item);

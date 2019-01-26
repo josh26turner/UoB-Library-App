@@ -23,7 +23,7 @@ public class WMSLoan {
     private Integer renewalCount;
     private Integer reminderLevel;
     private String mediumType;
-
+    private Boolean isRenewable;
 
     /**
      * Constructor
@@ -183,6 +183,12 @@ public class WMSLoan {
     public String getMediumType() {
         return this.mediumType;
     }
+
+    /**
+     * Gets renewal status, if the book can be renewed
+     * @return if can be renewed
+     */
+    public Boolean getRenewalStatus() {return this.isRenewable;}
 
     public Boolean isOverdue() {
         return this.dueDate.before(new Date());

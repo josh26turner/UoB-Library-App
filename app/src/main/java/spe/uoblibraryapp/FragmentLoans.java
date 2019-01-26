@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
 
         myBroadCastReceiver = new MyBroadCastReceiver();
 
+        /*Floating action button*/
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +66,21 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
             }
         });
 
+        /*Swipe to Refresh*/
+        SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
+        swipeRefreshLoans.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                /*Pull to Refresh list*/
+                swipeRefreshLoans.setRefreshing(true);
+                Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
+                ConcreteWMSNCIPPatronService.enqueueWork(getContext(), ConcreteWMSNCIPPatronService.class, 1000, getUserProfileIntent);
+                swipeRefreshLoans.setRefreshing(false);
+                Toast toast = Toast.makeText(getContext(), "Loans Updated", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+
         return view;
     }
 
@@ -71,6 +88,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     public void onResume() {
         super.onResume();
         registerMyReceiver();
+        /*Refresh list here*/
         Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
         ConcreteWMSNCIPPatronService.enqueueWork(getContext(), ConcreteWMSNCIPPatronService.class, 1000, getUserProfileIntent);
         Log.e(TAG, "Intent queued");
