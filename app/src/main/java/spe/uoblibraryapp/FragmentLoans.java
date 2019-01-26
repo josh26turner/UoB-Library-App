@@ -60,7 +60,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
 
         myBroadCastReceiver = new MyBroadCastReceiver();
 
-        /*Floating action button*/
+        // Floating action button
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +72,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
             }
         });
 
-        /*Swipe to Refresh*/
+        // Swipe to Refresh
         SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
         swipeRefreshLoans.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -128,28 +128,28 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         ArrayList<LoanBookEntry> bookList = new ArrayList<>();
         Queue<LoanBookEntry> bookQueue = new LinkedList<>();
 
-        /* Overdue here */
+        // Overdue here
         Date date = new Date();
         for (WMSLoan loan : userProfile.getLoans()) {
             if (loan.getDueDate().before(date)) {
-                //add to list-view -> item overdue.
+                // Add to list-view -> item overdue.
                 bookList.add(new LoanBookEntry(loan.getBook().getTitle(), loan.getBook().getAuthor(), BookStatus.OVERDUE));
             } else {
-                //push to queue for re-entry later.
+                // Push to queue for re-entry later.
                 bookQueue.add(new LoanBookEntry(loan.getBook().getTitle(), loan.getBook().getAuthor(), BookStatus.LOAN));
             }
         }
 
-        /* Reservations here */
+        // Reservations here
         ArrayList<WMSHold> reserveQueueList = new ArrayList<>();
         for (WMSHold hold : reserveQueueList)
             bookList.add(new LoanBookEntry(hold.getBook().getTitle(), hold.getBook().getAuthor(), BookStatus.RESERVATION));
-        /* Sample Reservations */
+        // Sample Reservations
         bookList.add(new LoanBookEntry("Test Reservation 1", "Test Author 1", BookStatus.RESERVATION));
         bookList.add(new LoanBookEntry("Test Reservation 2", "Test Author 2", BookStatus.RESERVATION));
         bookList.add(new LoanBookEntry("Test Reservation 3", "Test Author 3", BookStatus.RESERVATION));
 
-        /*Loans added here */
+        // Loans added here
         for (LoanBookEntry entry : bookQueue)
             bookList.add(entry);
 

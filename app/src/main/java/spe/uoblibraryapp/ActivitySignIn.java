@@ -2,12 +2,17 @@ package spe.uoblibraryapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
+import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.InputStream;
@@ -18,11 +23,15 @@ import stanford.androidlib.SimpleActivity;
 public class ActivitySignIn extends SimpleActivity {
 
     private static String TAG = "SignIn";
+    private ProgressBar pBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        pBar = findProgressBar(R.id.loginProgressBar);
 
         getSupportActionBar().setTitle("Single Sign On");
 
@@ -31,12 +40,21 @@ public class ActivitySignIn extends SimpleActivity {
         // Clear all user cache previously store, this will force the user to login again.
         mywebview.clearCache(true);
         mywebview.clearHistory();
-        clearCookies(this);
+        clearCookies();
 
         mywebview.getSettings().setJavaScriptEnabled(true);
         mywebview.getSettings().setLoadWithOverviewMode(true);
         mywebview.getSettings().setUseWideViewPort(true);
         mywebview.getSettings().setSupportZoom(true);
+
+        mywebview.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                pBar.setProgress(newProgress);
+                super.onProgressChanged(view, newProgress);
+            }
+        });
+
         mywebview.setInitialScale(1);
         mywebview.loadUrl("https://authn.sd00.worldcat.org/oauth2/authorizeCode?client_id=LRQvSrRL1pjZCy8R0AyQpL45QtYvJs6SpjKSF2EmqzmVc0mpIhE85ahM2m4XbByK9qMhl9IcX8fOeOet&authenticatingInstitutionId=132607&contextInstitutionId=132607&redirect_uri=uoblibrary%3A%2F%2Fauthenticate&response_type=token&scope=WMS_NCIP%20refresh_token");
         mywebview.setWebViewClient(new WebViewClient() {
@@ -49,32 +67,39 @@ public class ActivitySignIn extends SimpleActivity {
                     // TODO need to change this... never actually checks if the url received is the url expected.
                     if (!isAuthorisationDenied(URL)) {
                         processAuthorisationString(URL);
-                        /*Successful*/
+                         // Successful
                         Toast.makeText(getApplicationContext(), "Sign In Successful", Toast.LENGTH_SHORT).show();
                         finish();
                         return true;
                     } else {
 
                         // TODO redirect user to start of activity rather than finish it.
-                        /*User Denied Request*/
+                        // User Denied Request
                         Toast.makeText(getApplicationContext(), "Authentication Failed", Toast.LENGTH_SHORT).show();
                         finish();
-                        //I guess try again...
+                        //I guess try again... // TODO Are we sure? if it fails repeatedly then the view constantly opens/closes forever. :/
                         return true;
                     }
                 }
             }
 
+
             @Override
             public void onPageFinished(WebView view, String url) {
-
-
-                // Inject CSS when page is done loading
-                injectCSS(view);
-
+                Log.e(TAG, url);
+                if (url.equals("https://authn.sd02.worldcat.org/wayf/metaauth-ui/cmnd/protocol/samlpost"))
+                    // Inject CSS when page is done loading
+                    injectCSS(view);
+                pBar.setVisibility(View.INVISIBLE);
                 super.onPageFinished(view, url);
             }
 
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                pBar.setVisibility(View.VISIBLE);
+            }
         });
     }
 
@@ -124,7 +149,7 @@ public class ActivitySignIn extends SimpleActivity {
         pref.edit().putString("refreshTokenExpiry", refreshTokenExpiry).apply();
     }
 
-    public static void clearCookies(Context context) {
+    public static void clearCookies() {
         CookieManager.getInstance().removeAllCookies(null);
         CookieManager.getInstance().flush();
     }
