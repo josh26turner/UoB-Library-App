@@ -14,10 +14,8 @@ import android.widget.Toast;
 
 import spe.uoblibraryapp.api.IntentActions;
 import spe.uoblibraryapp.api.ncip.AuthService;
-import spe.uoblibraryapp.api.ncip.ConcreteWMSNCIPPatronService;
+import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import stanford.androidlib.SimpleActivity;
-
-import static java.security.AccessController.getContext;
 
 public class ActivityHome extends SimpleActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -117,7 +115,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         }
         if (id == R.id.action_refresh) {
             Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
-            ConcreteWMSNCIPPatronService.enqueueWork(this, ConcreteWMSNCIPPatronService.class, 1000, getUserProfileIntent);
+            WMSNCIPService.enqueueWork(this, WMSNCIPService.class, 1000, getUserProfileIntent);
             Toast toast = Toast.makeText(this, "Loans Updated", Toast.LENGTH_SHORT);
             toast.show();
         }

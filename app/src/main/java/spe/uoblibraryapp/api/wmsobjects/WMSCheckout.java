@@ -13,19 +13,20 @@ public class WMSCheckout {
     private WMSBook book;
     private WMSUserProfile userProfile;
 
+    // TODO: Change this class to represent a checkout response. Stores due date and a WMSBook.
+
+
+
     /**
      *
      * @param itemId the id of the book, read from nfc tag
      * @param userProfile the UserProfile for the user, needed for userId
-//     * @param staffService the current WMSNCIPStaffService, needed to checkout books.
      */
     WMSCheckout(
             String itemId,
-            WMSUserProfile userProfile//,
-//            WMSNCIPStaffService staffService
+            WMSUserProfile userProfile
     ){
         this.itemId = itemId;
-//        this.staffService = staffService;
         this.userProfile = userProfile;
         // TODO: Could possibly get book by doing a diff of userprofile before and after checkout if we need to show it?
         this.book = null;

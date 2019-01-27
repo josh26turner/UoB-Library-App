@@ -4,8 +4,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
-import spe.uoblibraryapp.api.ncip.WMSNCIPPatronService;
-import spe.uoblibraryapp.api.ncip.WMSNCIPStaffService;
 
 /**
  * This represents a book, not a physical copy of a book.

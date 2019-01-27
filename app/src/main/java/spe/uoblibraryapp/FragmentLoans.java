@@ -34,7 +34,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import spe.uoblibraryapp.api.IntentActions;
 import spe.uoblibraryapp.api.WMSException;
 import spe.uoblibraryapp.api.WMSResponse;
-import spe.uoblibraryapp.api.ncip.ConcreteWMSNCIPPatronService;
+import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.wmsobjects.WMSHold;
@@ -45,7 +45,6 @@ import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 public class FragmentLoans extends android.support.v4.app.Fragment {
     private static final String TAG = "LoansFragment";
-    public static final String BROADCAST_ACTION = "spe.uoblibraryapp.api.RESPONSE";
     private MyBroadCastReceiver myBroadCastReceiver;
     private boolean refreshing;
     private Date lastRefresh;
@@ -80,7 +79,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
                 // Pull to Refresh list
                 swipeRefreshLoans.setRefreshing(true);
                 Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
-                ConcreteWMSNCIPPatronService.enqueueWork(getContext(), ConcreteWMSNCIPPatronService.class, 1000, getUserProfileIntent);
+                WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
                 refreshing = true;
             }
         });
@@ -101,7 +100,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
                 SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
                 swipeRefreshLoans.setRefreshing(true);
                 Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
-                ConcreteWMSNCIPPatronService.enqueueWork(getContext(), ConcreteWMSNCIPPatronService.class, 1000, getUserProfileIntent);
+                WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
                 refreshing = true;
                 Log.e(TAG, "Intent queued");
             } else{
@@ -115,7 +114,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
             SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
             swipeRefreshLoans.setRefreshing(true);
             Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
-            ConcreteWMSNCIPPatronService.enqueueWork(getContext(), ConcreteWMSNCIPPatronService.class, 1000, getUserProfileIntent);
+            WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
             refreshing = true;
             Log.e(TAG, "Intent queued");
         }
@@ -166,7 +165,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     private void registerMyReceiver() {
         try {
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(BROADCAST_ACTION);
+            intentFilter.addAction(IntentActions.USER_PROFILE_RESPONSE);
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver,  intentFilter);
             Log.d(TAG, "Reciever Registered");
         } catch (Exception ex) {

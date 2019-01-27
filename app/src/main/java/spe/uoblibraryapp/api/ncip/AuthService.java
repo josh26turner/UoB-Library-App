@@ -95,7 +95,7 @@ public class AuthService extends JobIntentService {
 
             Intent accessTokenGeneratedIntent = new Intent(IntentActions.ACCESS_TOKEN_GENERATED);
             accessTokenGeneratedIntent.putExtra("token", accessToken);
-            ConcreteWMSNCIPPatronService.enqueueWork(getApplicationContext(), ConcreteWMSNCIPPatronService.class, 1000, accessTokenGeneratedIntent);
+            WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, accessTokenGeneratedIntent);
             Log.d(TAG, "Access Token Broadcasted");
         }
     }
@@ -130,7 +130,7 @@ public class AuthService extends JobIntentService {
 
                     Intent accessTokenGeneratedIntent = new Intent(IntentActions.ACCESS_TOKEN_GENERATED);
                     accessTokenGeneratedIntent.putExtra("token", accessToken);
-                    ConcreteWMSNCIPPatronService.enqueueWork(getApplicationContext(), ConcreteWMSNCIPPatronService.class, 1000, accessTokenGeneratedIntent);
+                    WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, accessTokenGeneratedIntent);
 
 //                    sendBroadcast(accessTokenGeneratedIntent);
 

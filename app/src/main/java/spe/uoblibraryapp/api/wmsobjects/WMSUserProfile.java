@@ -1,24 +1,12 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
-import android.support.annotation.VisibleForTesting;
-
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import spe.uoblibraryapp.api.AuthenticationNeededException;
-import spe.uoblibraryapp.api.WMSException;
-import spe.uoblibraryapp.api.WMSResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
-import spe.uoblibraryapp.api.ncip.WMSNCIPStaffService;
-import spe.uoblibraryapp.api.ncip.WMSNCIPPatronService;
 
 public class WMSUserProfile {
 
