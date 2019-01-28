@@ -1,6 +1,7 @@
 package spe.uoblibraryapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,12 +58,19 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
                 try {
                     int waited = 0;
-                    while (waited < 3500) {
+                    while (waited < 1500) {
                         sleep(100);
                         waited += 100;
                     }
-                    Intent intent = new Intent(SplashScreen.this,
-                            ActivityHome.class);
+                    Intent intent;
+                    SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
+                    if (prefs.getString("principalID", "").equals("")) {
+                        intent = new Intent(SplashScreen.this,
+                                ActivitySignIn.class);
+                    } else{
+                        intent = new Intent(SplashScreen.this,
+                                ActivityHome.class);
+                    }
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     SplashScreen.this.finish();
