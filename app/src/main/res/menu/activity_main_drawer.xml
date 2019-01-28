@@ -14,9 +14,9 @@
             android:title="@string/loans_and_reservations" />
 
         <item
-            android:id="@+id/nav_fines"
+            android:id="@+id/nav_reservations"
             android:icon="@drawable/ic_outline_book_24px"
-            android:title="@string/fines" />
+            android:title="@string/reservations" />
 
         <item
             android:id="@+id/nav_settings"

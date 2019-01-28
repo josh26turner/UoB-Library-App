@@ -162,4 +162,7 @@ public class WMSHold {
         return this.needBeforeDate;
     }
 
+    //TODO: Implement collection state getter
+    public Boolean isReadyToCollect() {return true;}
+
 }
