@@ -183,14 +183,4 @@ public class WMSUserProfile {
         return this.userId;
     }
 
-    /**
-     * This will create a checkout request
-     * Note: This will not action a checkout, to action checkout.accept is required.
-     * @param itemId This is the ID read off the NFC tag.
-     * @return A checkout object to process the transaction.
-     */
-    public WMSCheckout checkoutBook(String itemId){
-        return new WMSCheckout(itemId, this);//, staffService);
-    }
-
 }

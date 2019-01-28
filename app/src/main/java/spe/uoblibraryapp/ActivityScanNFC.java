@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+import spe.uoblibraryapp.api.IntentActions;
+import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.nfc.BarcodeException;
 import spe.uoblibraryapp.nfc.IntentException;
 import spe.uoblibraryapp.nfc.NFC;
@@ -54,19 +56,29 @@ public class ActivityScanNFC extends AppCompatActivity {
     /**
      * Called when an intent gets parsed to the activity,
      * hopefully an NFC tag.
-     * @param intent - an intent sent to the activity, hopefully a tag
+     * @param scanIntent - an intent sent to the activity, hopefully a tag
      */
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(Intent scanIntent) {
         Toast.makeText(this, "NFC Intent", Toast.LENGTH_SHORT).show();
 
         try {
-            NFC nfc = new NFC(intent);
+            NFC nfc = new NFC(scanIntent);
             String sysInfo = bytesToHexString(nfc.getSystemInformation());
             txtContentSysInfo.setText(sysInfo.substring(24, 26));
 
             txtBarcode.setText(nfc.getBarcode());
             //confirmScreen(txtBarcode.getText().toString());
+
+
+            // TODO Change to loading screen.
+
+            // TODO enqueue intent on WMSNCIPService with itemId
+
+            Intent checkoutIntent = new Intent(IntentActions.CHECKOUT_BOOK);
+            checkoutIntent.putExtra("itemId", nfc.getBarcode());
+            WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
+
 
         } catch (NFCTechException e) {
             e.printStackTrace();

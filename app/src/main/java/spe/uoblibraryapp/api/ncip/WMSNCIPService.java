@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import spe.uoblibraryapp.ActivityConfirm;
 import spe.uoblibraryapp.api.IntentActions;
 
 
@@ -150,6 +151,7 @@ public class WMSNCIPService extends JobIntentService{
                 "</CheckOutItem>\n" +
                 "</NCIPMessage>";
 
+
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.start();
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -157,11 +159,11 @@ public class WMSNCIPService extends JobIntentService{
             public void onResponse(String xml) {
                 Log.d(TAG, "HTTP request Actioned");
 
-                Intent broadcastIntent = new Intent(IntentActions.BOOK_CHECK_OUT_RESPONSE);
-                broadcastIntent.putExtra("xml", xml);
+                Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
+                confirmIntent.putExtra("xml" ,xml);
+                confirmIntent.setAction(IntentActions.BOOK_CHECK_OUT_RESPONSE);
+                startActivity(confirmIntent);
 
-                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
-                Log.d(TAG, "Broadcast Intent Sent");
             }
         }, new Response.ErrorListener() {
             @Override
