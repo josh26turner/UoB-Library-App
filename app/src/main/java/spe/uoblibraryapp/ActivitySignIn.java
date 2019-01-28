@@ -22,7 +22,7 @@ import stanford.androidlib.SimpleActivity;
 
 public class ActivitySignIn extends SimpleActivity {
 
-    private static String TAG = "SignIn";
+    private String TAG = "SignIn";
     private ProgressBar pBar;
 
 
@@ -90,7 +90,8 @@ public class ActivitySignIn extends SimpleActivity {
                 if (url.equals("https://authn.sd02.worldcat.org/wayf/metaauth-ui/cmnd/protocol/samlpost"))
                     // Inject CSS when page is done loading
                     injectCSS(view);
-                pBar.setVisibility(View.INVISIBLE);
+                pBar.setVisibility(View.GONE);
+
                 super.onPageFinished(view, url);
             }
 
@@ -149,7 +150,7 @@ public class ActivitySignIn extends SimpleActivity {
         pref.edit().putString("refreshTokenExpiry", refreshTokenExpiry).apply();
     }
 
-    public static void clearCookies() {
+    public void clearCookies() {
         CookieManager.getInstance().removeAllCookies(null);
         CookieManager.getInstance().flush();
     }
