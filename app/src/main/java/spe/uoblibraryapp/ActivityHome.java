@@ -2,6 +2,7 @@ package spe.uoblibraryapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import spe.uoblibraryapp.api.IntentActions;
@@ -62,7 +64,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
                         getSupportActionBar().setTitle("Loans");
                         break;
                     case 2:
-                        getSupportActionBar().setTitle("Fines");
+                        getSupportActionBar().setTitle("Reservations");
                         break;
                     case 3:
                         getSupportActionBar().setTitle("App Settings");
@@ -80,6 +82,19 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         setupViewPager(mViewPager);
         mViewPager.setCurrentItem(1);
         setTitle(mAdapter.getFragmentTitle(0));
+
+
+        // Floating action button
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast toast = Toast.makeText(ActivityHome.this, "Scan New Book", Toast.LENGTH_SHORT);
+                toast.show();
+                Intent NFCActivity = new Intent(ActivityHome.this, ActivityScanNFC.class);
+                startActivity(NFCActivity);
+            }
+        });
     }
 
     @Override
@@ -134,8 +149,8 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         } else if (id == R.id.nav_current_loans_reservations) {
             setViewPager("Loans");
 
-        } else if (id == R.id.nav_fines) {
-            setViewPager("Fines");
+        } else if (id == R.id.nav_reservations) {
+            setViewPager("Reservations");
         } else if (id == R.id.nav_settings) {
             setViewPager("Settings");
         }
@@ -149,7 +164,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         mAdapter  = new FragmentCustomPagerAdapter(getSupportFragmentManager());
         mAdapter.addFragment(new FragmentScan(), "Scan New Book");
         mAdapter.addFragment(new FragmentLoans(), "Loans");
-        mAdapter.addFragment(new FragmentFines(), "Fines");
+        mAdapter.addFragment(new FragmentReservation(), "Reservation");
         mAdapter.addFragment(new FragmentSettings(), "Settings");
         viewPager.setAdapter(mAdapter);
     }

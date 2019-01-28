@@ -38,13 +38,12 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.wmsobjects.WMSHold;
-import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 
-public class FragmentLoans extends android.support.v4.app.Fragment {
-    private static final String TAG = "LoansFragment";
+public class FragmentReservation extends android.support.v4.app.Fragment {
+    private static final String TAG = "ReservationFragment";
     private MyBroadCastReceiver myBroadCastReceiver;
     private boolean refreshing;
     private Date lastRefresh;
@@ -55,19 +54,17 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_loans, container, false);
+        view = inflater.inflate(R.layout.fragment_reservations, container, false);
 
         myBroadCastReceiver = new MyBroadCastReceiver();
 
-
-
         // Swipe to Refresh
-        SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
-        swipeRefreshLoans.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh2);
+        swipeRefreshResv.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 // Pull to Refresh list
-                swipeRefreshLoans.setRefreshing(true);
+                swipeRefreshResv.setRefreshing(true);
                 Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
                 WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
                 refreshing = true;
@@ -87,8 +84,8 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
             cal.setTime(lastRefresh);
             cal.add(Calendar.MINUTE, 10);
             if (!lastRefresh.before(cal.getTime())) {
-                SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
-                swipeRefreshLoans.setRefreshing(true);
+                SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh2);
+                swipeRefreshResv.setRefreshing(true);
                 Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
                 WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
                 refreshing = true;
@@ -101,8 +98,8 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
                 }
             }
         } else{
-            SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
-            swipeRefreshLoans.setRefreshing(true);
+            SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh2);
+            swipeRefreshResv.setRefreshing(true);
             Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
             WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
             refreshing = true;
@@ -110,44 +107,34 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         }
     }
 
-    // If we want thumbnails this gives us an image link https://www.googleapis.com/books/v1/volumes?q=isbn:9780226467047
 
     public void fillListView(WMSUserProfile userProfile) {
-        ListView mListView = view.findViewById(R.id.listview);
-        ArrayList<LoanBookEntry> bookList = new ArrayList<>();
-        Queue<LoanBookEntry> bookQueue = new LinkedList<>();
+        ListView mListView = view.findViewById(R.id.listview2);
+        ArrayList<ResvBookEntry> bookList = new ArrayList<>();
+        Queue<ResvBookEntry> bookQueue = new LinkedList<>();
 
-        // Overdue here
-        Date date = new Date();
-        for (WMSLoan loan : userProfile.getLoans()) {
-            if (loan.getDueDate().before(date)) {
-                // Add to list-view -> item overdue.
-                bookList.add(new LoanBookEntry(loan.getBook().getTitle(), loan.getBook().getAuthor(), BookStatus.OVERDUE));
-            } else {
-                // Push to queue for re-entry later.
-                bookQueue.add(new LoanBookEntry(loan.getBook().getTitle(), loan.getBook().getAuthor(), BookStatus.LOAN));
-            }
-        }
 
         // Reservations here
         ArrayList<WMSHold> reserveQueueList = new ArrayList<>();
-        for (WMSHold hold : reserveQueueList)
-            bookList.add(new LoanBookEntry(hold.getBook().getTitle(), hold.getBook().getAuthor(), BookStatus.RESERVATION));
-        // Sample Reservations
-        //bookList.add(new LoanBookEntry("Test Reservation 2", "Test Author 2", BookStatus.RESERVATION));
-        //bookList.add(new LoanBookEntry("Test Reservation 3", "Test Author 3", BookStatus.RESERVATION));
-        //bookList.add(new LoanBookEntry("Test Reservation 1", "Test Author 1", BookStatus.RESERVATION));
+        for (WMSHold hold : userProfile.getOnHold())
+            bookList.add(new ResvBookEntry (hold.getBook().getTitle(),
+                                            hold.getBook().getAuthor(),
+                                            hold.getHoldQueuePosition(),
+                                            hold.getHoldQueueLength(),
+                                            hold.getPickupLocation(),
+                                            hold.isReadyToCollect()));
 
-        // Loans added here
-        for (LoanBookEntry entry : bookQueue)
+
+        // Reservation added here
+        for (ResvBookEntry entry : bookQueue)
             bookList.add(entry);
 
-        LoanBookListAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
+        ResvBookListAdapter adapter = new ResvBookListAdapter(getContext(), R.layout.adapter_view_layout_resv, bookList);
         mListView.setAdapter(adapter);
 
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
-
     }
+
 
     /**
      * This method is responsible to register an action to BroadCastReceiver
@@ -163,6 +150,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         }
 
     }
+
 
     @Override
     public void onPause() {
@@ -200,10 +188,10 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
 
                 fillListView(userProfile);
                 if (refreshing) {
-                    SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
-                    swipeRefreshLoans.setRefreshing(false);
-                    Toast toast = Toast.makeText(getContext(), "Loans Updated", Toast.LENGTH_SHORT);
-                    toast.show();
+                    SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh2);
+                    swipeRefreshResv.setRefreshing(false);
+//                    Toast toast = Toast.makeText(getContext(), "Reservations Updated", Toast.LENGTH_SHORT);
+//                    toast.show();
                     refreshing = false;
                     lastRefresh = new Date();
                 }
