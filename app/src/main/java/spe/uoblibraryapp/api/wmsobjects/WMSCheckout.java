@@ -69,7 +69,7 @@ public class WMSCheckout {
                     for (int j=0; j<childsChildren.getLength(); j++){
                         Node childsChild = childsChildren.item(j);
                         if (childsChild.getNodeName().equals("ns1:BibliographicDescription")){
-                            book = new WMSBook(new WMSNCIPElement(child));
+                            book = new WMSBook(new WMSNCIPElement(childsChild));
                         }
                     }
                     break;

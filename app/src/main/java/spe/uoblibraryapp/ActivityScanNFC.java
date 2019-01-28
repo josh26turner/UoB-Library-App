@@ -65,20 +65,23 @@ public class ActivityScanNFC extends AppCompatActivity {
         try {
             NFC nfc = new NFC(scanIntent);
             String sysInfo = bytesToHexString(nfc.getSystemInformation());
+
+
+            // TODO Denis -> Change screen to show the book has been scanned and is now loading.
+
             txtContentSysInfo.setText(sysInfo.substring(24, 26));
-
             txtBarcode.setText(nfc.getBarcode());
-            //confirmScreen(txtBarcode.getText().toString());
+
+            // TODO End
 
 
-            // TODO Change to loading screen.
-
-            // TODO enqueue intent on WMSNCIPService with itemId
-
+            // Send intent to WMSNCIPService with itemId
             Intent checkoutIntent = new Intent(IntentActions.CHECKOUT_BOOK);
             checkoutIntent.putExtra("itemId", nfc.getBarcode());
             WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
 
+
+            // When checkout is complete the confirm activity is started by the WMSNCIPService.
 
         } catch (NFCTechException e) {
             e.printStackTrace();

@@ -23,7 +23,6 @@ public class FragmentScan extends android.support.v4.app.Fragment {
             startActivity(NFCActivity);
             }
         });
-
         return view;
     }
 }
