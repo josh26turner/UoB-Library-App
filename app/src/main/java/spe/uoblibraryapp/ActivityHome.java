@@ -150,7 +150,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
             setViewPager("Loans");
 
         } else if (id == R.id.nav_reservations) {
-            setViewPager("Reservations");
+            setViewPager("Reservation");
         } else if (id == R.id.nav_settings) {
             setViewPager("Settings");
         }

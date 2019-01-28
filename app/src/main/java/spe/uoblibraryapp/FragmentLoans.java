@@ -129,14 +129,8 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
             }
         }
 
-        // Reservations here
-        ArrayList<WMSHold> reserveQueueList = new ArrayList<>();
-        for (WMSHold hold : reserveQueueList)
-            bookList.add(new LoanBookEntry(hold.getBook().getTitle(), hold.getBook().getAuthor(), BookStatus.RESERVATION));
-        // Sample Reservations
-        //bookList.add(new LoanBookEntry("Test Reservation 2", "Test Author 2", BookStatus.RESERVATION));
-        //bookList.add(new LoanBookEntry("Test Reservation 3", "Test Author 3", BookStatus.RESERVATION));
-        //bookList.add(new LoanBookEntry("Test Reservation 1", "Test Author 1", BookStatus.RESERVATION));
+        //Testing Loans
+        bookList.add(new LoanBookEntry("The amazing Jezza", "Jerry Kress", BookStatus.LOAN));
 
         // Loans added here
         for (LoanBookEntry entry : bookQueue)
