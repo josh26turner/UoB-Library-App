@@ -58,15 +58,12 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
                 navigationView.getMenu().getItem(position).setChecked(true);
                 switch(position) {
                     case 0:
-                        getSupportActionBar().setTitle("Scan New Book");
-                        break;
-                    case 1:
                         getSupportActionBar().setTitle("Loans");
                         break;
-                    case 2:
+                    case 1:
                         getSupportActionBar().setTitle("Reservations");
                         break;
-                    case 3:
+                    case 2:
                         getSupportActionBar().setTitle("App Settings");
                         break;
                 }
@@ -143,10 +140,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_scanBook) {
-            //start activity here.
-            setViewPager("Scan New Book");
-        } else if (id == R.id.nav_current_loans_reservations) {
+        if (id == R.id.nav_current_loans_reservations) {
             setViewPager("Loans");
         } else if (id == R.id.nav_reservations) {
             setViewPager("Reservation");
@@ -161,7 +155,6 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
 
     private void setupViewPager(ViewPager viewPager){
         mAdapter  = new FragmentCustomPagerAdapter(getSupportFragmentManager());
-        mAdapter.addFragment(new FragmentScan(), "Scan New Book");
         mAdapter.addFragment(new FragmentLoans(), "Loans");
         mAdapter.addFragment(new FragmentReservation(), "Reservation");
         mAdapter.addFragment(new FragmentSettings(), "Settings");

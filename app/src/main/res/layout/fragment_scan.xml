@@ -4,42 +4,5 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="fill_parent">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="71dp"
-        android:background="@drawable/nfc_2" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="62dp"
-        android:layout_gravity="center"
-        android:text="Hold Your Phone Close to Book"
-        android:textColor="@android:color/black" />
-
-    <Button
-        android:id="@+id/btnScan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-
-        android:text="Scan" />
-
-    <Button
-        android:id="@+id/btnProblemReport2"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="0dp"
-        android:text="Problems Scanning?"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="12sp" />
 </LinearLayout>

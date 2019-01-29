@@ -5,10 +5,6 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_scanBook"
-            android:icon="@drawable/ic_outline_camera_alt_24px"
-            android:title="@string/scan_a_new_book" />
-        <item
             android:id="@+id/nav_current_loans_reservations"
             android:icon="@drawable/ic_outline_library_books_24px"
             android:title="@string/loans_and_reservations" />

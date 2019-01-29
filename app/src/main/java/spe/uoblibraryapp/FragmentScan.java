@@ -16,13 +16,13 @@ public class FragmentScan extends android.support.v4.app.Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scan, container, false);
-        Button butt = view.findViewById(R.id.btnScan);
-        butt.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-            Intent NFCActivity = new Intent(getActivity(), ActivityScanNFC.class);
-            startActivity(NFCActivity);
-            }
-        });
+//        Button butt = view.findViewById(R.id.btnScan);
+//        butt.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//            Intent NFCActivity = new Intent(getActivity(), ActivityScanNFC.class);
+//            startActivity(NFCActivity);
+//            }
+//        });
         return view;
     }
 }
