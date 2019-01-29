@@ -1,5 +1,7 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
+import android.util.Log;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -10,6 +12,8 @@ import java.util.Date;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 
 public class WMSHold {
+
+    private static final String TAG = "WMSBook";
 
     private String requestId;
     private String agencyId;
@@ -135,6 +139,28 @@ public class WMSHold {
     }
 
     public String getPickupLocation(){
+        switch (this.pickupLocation){
+            case "119059":
+                return "Queens Building Library";
+            case "119036":
+                return "Arts and Social Sciences Library";
+            case "119038":
+                return "Biological Sciences Library";
+            case "119045":
+                return "Chemistry Library";
+            case "119049":
+                return "Education Library";
+            case "119054":
+                return "Medical Library";
+            case "119058":
+                return "Physics Library";
+            case "119060":
+                return "Veterinary Sciences Library";
+            case "119061":
+                return "Wills Memorial Library";
+        }
+
+
         return this.pickupLocation;
     }
 
@@ -163,6 +189,9 @@ public class WMSHold {
     }
 
     //TODO: Implement collection state getter
-    public Boolean isReadyToCollect() {return true;}
+    public Boolean isReadyToCollect() {
+        return this.requestStatusType.equals("Available For Pickup");
+//        return true;
+    }
 
 }

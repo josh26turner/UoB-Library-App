@@ -57,22 +57,6 @@ public class WMSBook {
     }
 
 
-
-
-    /**
-     * Constructor
-     * DO NOT USE THIS ONE, only used for testing.
-     */
-    private WMSBook(){
-        // TODO: THIS IS ONLY TEMPORARY SO IT WORKS FOR JERRY
-        title = "Diary of a wimpy kid : dog days";
-        publisher = "New York : Amulet Books";
-        publicationDate = 2007;
-        bookId = "123456789";
-        author = "Shanske, Darien,";
-    }
-
-
     // Parsers
 
     /**

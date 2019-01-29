@@ -33,8 +33,9 @@ public class ResvBookListAdapter extends ArrayAdapter<ResvBookEntry> {
         Integer len = getItem(position).getQueueLength();
         String loc = getItem(position).getCollectLocation();
         Boolean ready = getItem(position).getCollectReady();
+//        String requestStatusType = getItem(position).getRequestStatusType();
 
-        ResvBookEntry book = new ResvBookEntry(title, author, pos, len, loc, ready);
+//        ResvBookEntry book = new ResvBookEntry(title, author, pos, len, loc, ready, requestStatusType);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false );
         TextView resTitle = convertView.findViewById(R.id.res_title);
@@ -50,11 +51,13 @@ public class ResvBookListAdapter extends ArrayAdapter<ResvBookEntry> {
         res_len.setText(len.toString());
         res_loc.setText(loc);
 
+
+        res_ready.setText(getItem(position).getRequestStatusType());
         if(ready == Boolean.TRUE){
-            res_ready.setText("Ready for Collection");
+//            res_ready.setText("Ready for Collection");
             res_ready.setTextColor(ContextCompat.getColor(getContext(), R.color.colorLoan));
         } else {
-            res_ready.setText("In Queue");
+//            res_ready.setText("In Queue");
             res_ready.setTextColor(ContextCompat.getColor(getContext(), R.color.colorReservation));
         }
 

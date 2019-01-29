@@ -29,7 +29,7 @@ public class LoanBookListAdapter extends ArrayAdapter<LoanBookEntry> {
         String author = getItem(position).getAuthor();
         BookStatus status = getItem(position).getStatus();
 
-        LoanBookEntry book = new LoanBookEntry( title, author, status);
+//        LoanBookEntry book = new LoanBookEntry( title, author, status);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false );
         TextView textViewTitle = convertView.findViewById(R.id.txtTitle);

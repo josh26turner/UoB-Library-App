@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -122,10 +121,11 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                                             hold.getHoldQueuePosition(),
                                             hold.getHoldQueueLength(),
                                             hold.getPickupLocation(),
-                                            hold.isReadyToCollect()));
+                                            hold.isReadyToCollect(),
+                                            hold.getRequestStatusType()));
 
         //Testing Reservations
-        bookList.add(new ResvBookEntry("The amazing Jezza", "Jerry Kress", 1, 5, "Wills Memorial", Boolean.TRUE));
+        bookList.add(new ResvBookEntry("The amazing Jezza", "Jerry Kress", 1, 5, "Wills Memorial", Boolean.TRUE, "Available for Collection"));
 
         // Reservation added here
         for (ResvBookEntry entry : bookQueue)

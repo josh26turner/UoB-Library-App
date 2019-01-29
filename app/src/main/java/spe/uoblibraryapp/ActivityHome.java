@@ -148,7 +148,6 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
             setViewPager("Scan New Book");
         } else if (id == R.id.nav_current_loans_reservations) {
             setViewPager("Loans");
-
         } else if (id == R.id.nav_reservations) {
             setViewPager("Reservation");
         } else if (id == R.id.nav_settings) {

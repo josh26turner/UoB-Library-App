@@ -7,14 +7,24 @@ public class ResvBookEntry {
     private Integer queueLength;
     private String collectLocation;
     private Boolean collectReady;
+    private String requestStatusType;
 
-    public ResvBookEntry(String title, String author, Integer pos, Integer len, String loc, Boolean collectReady){
+    public ResvBookEntry(
+            String title,
+            String author,
+            Integer pos,
+            Integer len,
+            String loc,
+            Boolean collectReady,
+            String requestStatusType
+            ){
         this.title = title;
         this.author = author;
         this.queuePos = pos;
         this.queueLength = len;
         this.collectLocation = loc;
         this.collectReady = collectReady;
+        this.requestStatusType = requestStatusType;
     }
 
     public String getTitle(){
@@ -40,4 +50,6 @@ public class ResvBookEntry {
     public Boolean getCollectReady(){
         return this.collectReady;
     }
+
+    public String getRequestStatusType() { return this.requestStatusType; }
 }
