@@ -124,6 +124,8 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                                             hold.getPickupLocation(),
                                             hold.isReadyToCollect()));
 
+        //Testing Reservations
+        bookList.add(new ResvBookEntry("The amazing Jezza", "Jerry Kress", 1, 5, "Wills Memorial", Boolean.TRUE));
 
         // Reservation added here
         for (ResvBookEntry entry : bookQueue)
@@ -190,8 +192,8 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                 if (refreshing) {
                     SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh2);
                     swipeRefreshResv.setRefreshing(false);
-//                    Toast toast = Toast.makeText(getContext(), "Reservations Updated", Toast.LENGTH_SHORT);
-//                    toast.show();
+                    Toast toast = Toast.makeText(getContext(), "Reservations Updated", Toast.LENGTH_SHORT);
+                    toast.show();
                     refreshing = false;
                     lastRefresh = new Date();
                 }
