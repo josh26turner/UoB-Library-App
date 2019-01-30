@@ -46,17 +46,17 @@ public class AuthService extends JobIntentService {
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
-        if(IntentActions.ACCESS_TOKEN_NEEDED.equals(intent.getAction())){
+        if (IntentActions.ACCESS_TOKEN_NEEDED.equals(intent.getAction())) {
             try {
                 getAccessToken();
-            } catch (Exception e){
+            } catch (Exception e) {
                 Log.e(TAG, "Sending auth error", e);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(IntentActions.AUTH_ERROR));
             }
-        }else if (IntentActions.AUTH_LOGOUT.equals(intent.getAction())){
+        } else if (IntentActions.AUTH_LOGOUT.equals(intent.getAction())) {
             try {
                 logout();
-            } catch (Exception e){
+            } catch (Exception e) {
                 Log.e(TAG, "Sending auth error", e);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(IntentActions.AUTH_ERROR));
             }
@@ -65,15 +65,17 @@ public class AuthService extends JobIntentService {
 
     /**
      * To parse WMS dates into Java Dates
+     *
      * @param strDate this is a date from WMS
      * @return This returns the Java Date object from the parsed date
      * @throws ParseException Throws if the date fails to parse
      */
-    private Date parseDate(String strDate) throws ParseException{
+    private Date parseDate(String strDate) throws ParseException {
 //        strDate = strDate.replace(" ", " ");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         return format.parse(strDate);
     }
+
     public static Date addDays(Date date, int days) {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(date);
@@ -82,15 +84,15 @@ public class AuthService extends JobIntentService {
     }
 
     void getAccessToken() throws ParseException, AuthenticationNeededException, AuthenticationRequestFailedException {
-        String accessTokenExpiry = tokens.getString("authorisationTokenExpiry","");
-        if (accessTokenExpiry.equals("")){
+        String accessTokenExpiry = tokens.getString("authorisationTokenExpiry", "");
+        if (accessTokenExpiry.equals("")) {
             startActivity(new Intent(this, ActivitySignIn.class));
             return;
         }
         String accessToken;
-        if (parseDate(accessTokenExpiry).before(new Date())){
+        if (parseDate(accessTokenExpiry).before(new Date())) {
             requestNewAccessToken();
-        } else{
+        } else {
             accessToken = tokens.getString("authorisationToken", "");
 
             Intent accessTokenGeneratedIntent = new Intent(IntentActions.ACCESS_TOKEN_GENERATED);
@@ -102,7 +104,7 @@ public class AuthService extends JobIntentService {
 
     void requestNewAccessToken() throws ParseException, AuthenticationNeededException, AuthenticationRequestFailedException {
         String refreshTokenExpiry = tokens.getString("refreshTokenExpiry", "");
-        if (addDays(parseDate(refreshTokenExpiry), -1).before(new Date())){  // Subtracting 1 day to allow for a good overlap period between two active refresh tokens.
+        if (addDays(parseDate(refreshTokenExpiry), -1).before(new Date())) {  // Subtracting 1 day to allow for a good overlap period between two active refresh tokens.
             // TODO: Start receiver, wait for authentication, then broadcast intent ACCESS_TOKEN_GENERATED. Then stop receiver.
             startActivity(new Intent(this, ActivitySignIn.class));
         } else {
@@ -142,7 +144,7 @@ public class AuthService extends JobIntentService {
                     Log.e(TAG, "ERROR in response");
                 }
             });
-            Log.d(TAG , "Adding request");
+            Log.d(TAG, "Adding request");
             queue.add(request);
 
             Log.d(TAG, "Stopping queue");
@@ -150,7 +152,7 @@ public class AuthService extends JobIntentService {
     }
 
 
-    void logout(){
+    void logout() {
 
         String url = "https://authn.sd00.worldcat.org/oauth2/revoke?refresh_token="
                 + tokens.getString("refreshToken", "");
@@ -168,14 +170,10 @@ public class AuthService extends JobIntentService {
                 // TODO: CRY )`:
             }
         });
-        Log.d(TAG , "Adding request");
+        Log.d(TAG, "Adding request");
         queue.add(request);
 
         Log.d(TAG, "Stopping queue");
-
-
-
-
 
 
         Log.d(TAG, "Logout intent recieved");

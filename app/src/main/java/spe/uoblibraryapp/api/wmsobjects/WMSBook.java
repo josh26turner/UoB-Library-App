@@ -78,7 +78,7 @@ public class WMSBook {
                     publisher = child.getTextContent();
                     break;
                 case "ns1:Title":
-                    title = child.getTextContent();
+                    title = child.getTextContent().replace("/", "");
                     break;
                 case "ns1:BibliographicRecordId":
                     NodeList childsChildren = child.getChildNodes();

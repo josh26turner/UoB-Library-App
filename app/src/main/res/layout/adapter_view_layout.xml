@@ -25,14 +25,14 @@
         android:layout_weight="30">
 
         <TextView
-            android:layout_width="match_parent"
-            android:text="Text3"
-            android:textStyle="italic"
-            android:gravity="center|left"
+            android:id="@+id/txtAuthor"
+            android:layout_width="320dp"
             android:layout_height="30dp"
             android:layout_marginLeft="15dp"
-            android:id="@+id/txtAuthor"
-            android:layout_weight="30"/>
+            android:layout_weight="30"
+            android:gravity="center|left"
+            android:text="Text3"
+            android:textStyle="italic" />
 
         <TextView
             android:layout_width="match_parent"

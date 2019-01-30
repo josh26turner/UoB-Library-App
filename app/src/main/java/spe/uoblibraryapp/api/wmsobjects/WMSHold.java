@@ -46,6 +46,22 @@ public class WMSHold {
         }
     }
 
+
+    public WMSHold(){
+        requestId = "1234567890";
+        agencyId = "132607";
+        requestType = "Hold";
+        requestStatusType = "In Process";
+        datePlaced = new Date();
+        pickupLocation = "119061";
+        mediumType = "Book";
+        holdQueuePosition = 1;
+        holdQueueLength = 3;
+        earliestDateNeeded = new Date();
+        needBeforeDate = new Date();
+        book = new WMSBook("1234567890");
+    }
+
     private Date parseDate(String strDate) throws ParseException{
         strDate = strDate.replace("T", "-").replace("Z", "");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");

@@ -5,7 +5,9 @@ import org.w3c.dom.NodeList;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 
@@ -50,6 +52,23 @@ public class WMSLoan {
         // TODO make WMS Availability request to check the status of the book.
         // TODO Can a standard user use the availability service
         // If so then can we join the two keys so the user only has to authenticate once? Ask David.
+    }
+
+
+    /**
+     * Just for testing.
+     */
+    public WMSLoan(){
+        this.itemId = "123456789X";
+        this.agencyId = "132607";
+        this.book = new WMSBook(itemId);
+        this.dueDate = new Date();
+        this.checkedOutDate = new Date();
+        this.renewalCount = 0;
+        this.reminderLevel = 0;
+        this.mediumType = "Book";
+        this.isRenewable = true;
+
     }
 
 
@@ -189,14 +208,19 @@ public class WMSLoan {
     }
 
 
-
     /**
      * Gets renewal status, if the book can be renewed
      * @return if can be renewed
      */
-    public Boolean getRenewalStatus() {return this.isRenewable;}
+    public Boolean getIsRenewable() {
+        return false;
+//        return this.isRenewable;
+    }
 
     public Boolean isOverdue() {
-        return this.dueDate.before(new Date());
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(dueDate);
+        cal.add(Calendar.DATE, 1);
+        return cal.getTime().before(new Date());
     }
 }

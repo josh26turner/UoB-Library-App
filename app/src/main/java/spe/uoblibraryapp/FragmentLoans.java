@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -114,33 +115,14 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
 
     public void fillListView(WMSUserProfile userProfile) {
         ListView mListView = view.findViewById(R.id.listview);
-        ArrayList<LoanBookEntry> bookList = new ArrayList<>();
-        Queue<LoanBookEntry> bookQueue = new LinkedList<>();
+        List<WMSLoan> bookList = userProfile.getLoans();
 
-        // Overdue here
-        Date date = new Date();
-        for (WMSLoan loan : userProfile.getLoans()) {
-            if (loan.getDueDate().before(date)) {
-                // Add to list-view -> item overdue.
-                bookList.add(new LoanBookEntry(loan.getBook().getTitle(), loan.getBook().getAuthor(), BookStatus.OVERDUE));
-            } else {
-                // Push to queue for re-entry later.
-                bookQueue.add(new LoanBookEntry(loan.getBook().getTitle(), loan.getBook().getAuthor(), BookStatus.LOAN));
-            }
-        }
-
-        //Testing Loans
-        bookList.add(new LoanBookEntry("The amazing Jezza", "Jerry Kress", BookStatus.LOAN));
-
-        // Loans added here
-        for (LoanBookEntry entry : bookQueue)
-            bookList.add(entry);
+        bookList.add(new WMSLoan()); // Just for testing
 
         LoanBookListAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
         mListView.setAdapter(adapter);
 
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
-
     }
 
     /**

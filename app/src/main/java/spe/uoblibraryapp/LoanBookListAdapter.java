@@ -9,14 +9,20 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-public class LoanBookListAdapter extends ArrayAdapter<LoanBookEntry> {
+import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
+
+public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
 
     private Context mContext;
     int mResource;
 
-    public LoanBookListAdapter(Context context, int resource, ArrayList<LoanBookEntry> objects){
+    public LoanBookListAdapter(Context context, int resource, List<WMSLoan> objects){
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
@@ -25,11 +31,16 @@ public class LoanBookListAdapter extends ArrayAdapter<LoanBookEntry> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        String title = getItem(position).getTitle();
-        String author = getItem(position).getAuthor();
-        BookStatus status = getItem(position).getStatus();
+        String title = getItem(position).getBook().getTitle();
+        String author = getItem(position).getBook().getAuthor();
+        Boolean overdue = getItem(position).isOverdue();
+        Boolean willAutoRenew = getItem(position).getIsRenewable();
+        Date dueDate = getItem(position).getDueDate();
 
-//        LoanBookEntry book = new LoanBookEntry( title, author, status);
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String strDueDate = dateFormat.format(dueDate);
+
+
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false );
         TextView textViewTitle = convertView.findViewById(R.id.txtTitle);
@@ -37,15 +48,20 @@ public class LoanBookListAdapter extends ArrayAdapter<LoanBookEntry> {
         TextView textViewStatus = convertView.findViewById(R.id.txtStatus);
         textViewTitle.setText(title);
         textViewAuthor.setText(author);
-        textViewStatus.setText(status.toString());
 
-        if (status == BookStatus.OVERDUE)
+
+
+
+        if (overdue) {
             textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorOverdue));
-
-        else if (status == BookStatus.RESERVATION)
+            textViewStatus.setText("Overdue");
+        } else if (!willAutoRenew) {
             textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorReservation));
-        else
+            textViewStatus.setText("Due: " + strDueDate);
+        } else {
             textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorLoan));
+            textViewStatus.setText("Will renew");
+        }
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
