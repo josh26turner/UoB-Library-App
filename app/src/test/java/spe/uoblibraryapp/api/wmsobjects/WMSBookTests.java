@@ -82,7 +82,7 @@ public class WMSBookTests {
     @Test
     public void testParserGetTitle() throws WMSParseException{
         WMSBook book = createParsedBook();
-        assertEquals("Title does not match", "Diary of a wimpy kid : dog days /" , book.getTitle());
+        assertEquals("Title does not match", "Diary of a wimpy kid : dog days " , book.getTitle());
     }
 
     @Test
