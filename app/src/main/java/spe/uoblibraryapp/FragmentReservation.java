@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -109,27 +110,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
 
     public void fillListView(WMSUserProfile userProfile) {
         ListView mListView = view.findViewById(R.id.listview2);
-        ArrayList<ResvBookEntry> bookList = new ArrayList<>();
-        Queue<ResvBookEntry> bookQueue = new LinkedList<>();
-
-
-        // Reservations here
-        ArrayList<WMSHold> reserveQueueList = new ArrayList<>();
-        for (WMSHold hold : userProfile.getOnHold())
-            bookList.add(new ResvBookEntry (hold.getBook().getTitle(),
-                                            hold.getBook().getAuthor(),
-                                            hold.getHoldQueuePosition(),
-                                            hold.getHoldQueueLength(),
-                                            hold.getPickupLocation(),
-                                            hold.isReadyToCollect(),
-                                            hold.getRequestStatusType()));
-
-        //Testing Reservations
-        bookList.add(new ResvBookEntry("The amazing Jezza", "Jerry Kress", 1, 5, "Wills Memorial", Boolean.TRUE, "Available for Collection"));
-
-        // Reservation added here
-        for (ResvBookEntry entry : bookQueue)
-            bookList.add(entry);
+        List<WMSHold> bookList = userProfile.getOnHold();
 
         ResvBookListAdapter adapter = new ResvBookListAdapter(getContext(), R.layout.adapter_view_layout_resv, bookList);
         mListView.setAdapter(adapter);

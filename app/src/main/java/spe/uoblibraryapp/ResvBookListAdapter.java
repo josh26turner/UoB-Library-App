@@ -12,13 +12,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ResvBookListAdapter extends ArrayAdapter<ResvBookEntry> {
+import spe.uoblibraryapp.api.wmsobjects.WMSHold;
+
+public class ResvBookListAdapter extends ArrayAdapter<WMSHold> {
 
     private Context mContext;
     int mResource;
 
-    public ResvBookListAdapter(Context context, int resource, ArrayList<ResvBookEntry> objects){
+    public ResvBookListAdapter(Context context, int resource, List<WMSHold> objects){
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
@@ -27,15 +30,14 @@ public class ResvBookListAdapter extends ArrayAdapter<ResvBookEntry> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        String title = getItem(position).getTitle();
-        String author = getItem(position).getAuthor();
-        Integer pos = getItem(position).getQueuePos();
-        Integer len = getItem(position).getQueueLength();
-        String loc = getItem(position).getCollectLocation();
-        Boolean ready = getItem(position).getCollectReady();
-//        String requestStatusType = getItem(position).getRequestStatusType();
+        String title = getItem(position).getBook().getTitle();
+        String author = getItem(position).getBook().getAuthor();
+        Integer pos = getItem(position).getHoldQueuePosition();
+        Integer len = getItem(position).getHoldQueueLength();
+        String loc = getItem(position).getPickupLocation();
+        Boolean ready = getItem(position).isReadyToCollect();
 
-//        ResvBookEntry book = new ResvBookEntry(title, author, pos, len, loc, ready, requestStatusType);
+
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false );
         TextView resTitle = convertView.findViewById(R.id.res_title);
