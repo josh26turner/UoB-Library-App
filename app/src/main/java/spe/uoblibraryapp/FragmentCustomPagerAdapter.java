@@ -34,9 +34,7 @@ public class FragmentCustomPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     public boolean fragmentExists(String fragmentName){
-        if (mFragmentTitleList.contains(fragmentName))
-            return true;
-        return false;
+        return mFragmentTitleList.contains(fragmentName);
     }
 
     public int getFragmentIndex(String fragmentName){

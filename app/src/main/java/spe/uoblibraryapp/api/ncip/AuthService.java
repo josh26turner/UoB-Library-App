@@ -102,7 +102,7 @@ public class AuthService extends JobIntentService {
         }
     }
 
-    void requestNewAccessToken() throws ParseException, AuthenticationNeededException, AuthenticationRequestFailedException {
+    void requestNewAccessToken() throws ParseException {
         String refreshTokenExpiry = tokens.getString("refreshTokenExpiry", "");
         if (addDays(parseDate(refreshTokenExpiry), -1).before(new Date())) {  // Subtracting 1 day to allow for a good overlap period between two active refresh tokens.
             // TODO: Start receiver, wait for authentication, then broadcast intent ACCESS_TOKEN_GENERATED. Then stop receiver.

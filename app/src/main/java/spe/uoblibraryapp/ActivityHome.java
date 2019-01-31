@@ -128,8 +128,6 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         if (id == R.id.action_refresh) {
             Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
             WMSNCIPService.enqueueWork(this, WMSNCIPService.class, 1000, getUserProfileIntent);
-            Toast toast = Toast.makeText(this, "Loans Updated", Toast.LENGTH_SHORT);
-            toast.show();
         }
 
         return super.onOptionsItemSelected(item);

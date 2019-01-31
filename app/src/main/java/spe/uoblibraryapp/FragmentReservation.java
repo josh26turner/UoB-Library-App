@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -22,21 +21,16 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import spe.uoblibraryapp.api.IntentActions;
 import spe.uoblibraryapp.api.WMSException;
 import spe.uoblibraryapp.api.WMSResponse;
-import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
+import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.api.wmsobjects.WMSHold;
 import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
@@ -45,10 +39,8 @@ import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 public class FragmentReservation extends android.support.v4.app.Fragment {
     private static final String TAG = "ReservationFragment";
     private MyBroadCastReceiver myBroadCastReceiver;
-    private boolean refreshing;
-    private Date lastRefresh;
-    private String lastResponse;
     View view;
+    private CacheManager cacheManager;
 
 
     @Nullable
@@ -57,6 +49,8 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         view = inflater.inflate(R.layout.fragment_reservations, container, false);
 
         myBroadCastReceiver = new MyBroadCastReceiver();
+
+        cacheManager = CacheManager.getInstance();
 
         // Swipe to Refresh
         SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh2);
@@ -67,7 +61,6 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                 swipeRefreshResv.setRefreshing(true);
                 Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
                 WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
-                refreshing = true;
             }
         });
 
@@ -79,38 +72,21 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         super.onResume();
         registerMyReceiver();
         // Refresh list here if fragment resumes and it hasn't been refreshed in 10 minutes
-        if (lastRefresh != null){
-            GregorianCalendar cal = new GregorianCalendar();
-            cal.setTime(lastRefresh);
-            cal.add(Calendar.MINUTE, 10);
-            if (!lastRefresh.before(cal.getTime())) {
-                SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh2);
-                swipeRefreshResv.setRefreshing(true);
-                Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
-                WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
-                refreshing = true;
-                Log.e(TAG, "Intent queued");
-            } else{
-                try {
-                    fillListView(parseUserProfileResponse(lastResponse));
-                } catch (Exception ex){
-                    ex.printStackTrace();
-                }
-            }
-        } else{
+        if (cacheManager.isExpired()) {
             SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh2);
             swipeRefreshResv.setRefreshing(true);
             Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
             WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
-            refreshing = true;
-            Log.e(TAG, "Intent queued");
+        } else {
+            fillListView(cacheManager.getUserProfile());
         }
+
     }
 
 
     public void fillListView(WMSUserProfile userProfile) {
         ListView mListView = view.findViewById(R.id.listview2);
-        List<WMSHold> bookList = userProfile.getOnHold();
+        List<WMSHold> bookList = new ArrayList<>(userProfile.getOnHold());
 
         bookList.add(new WMSHold());
 
@@ -124,12 +100,12 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
 
     /**
      * This method is responsible to register an action to BroadCastReceiver
-     * */
+     */
     private void registerMyReceiver() {
         try {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(IntentActions.USER_PROFILE_RESPONSE);
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver,  intentFilter);
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver, intentFilter);
             Log.d(TAG, "Reciever Registered");
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -144,7 +120,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(myBroadCastReceiver);
     }
 
-    private WMSUserProfile parseUserProfileResponse(String xml) throws WMSException, WMSParseException { ;
+    private WMSUserProfile parseUserProfileResponse(String xml) throws WMSException, WMSParseException {
         WMSResponse response = new WMSNCIPResponse(xml);
 
         if (response.didFail()) {
@@ -153,7 +129,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         Document doc;
         try {
             doc = response.parse();
-        } catch (IOException | SAXException | ParserConfigurationException e){
+        } catch (IOException | SAXException | ParserConfigurationException e) {
             throw new WMSException("There was an error Parsing the WMS response");
         }
         Node node = doc.getElementsByTagName("ns1:LookupUserResponse").item(0);
@@ -161,8 +137,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
     }
 
 
-    class MyBroadCastReceiver extends BroadcastReceiver
-    {
+    class MyBroadCastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
@@ -173,15 +148,11 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                 WMSUserProfile userProfile = parseUserProfileResponse(xml);
 
                 fillListView(userProfile);
-                if (refreshing) {
-                    SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh2);
-                    swipeRefreshResv.setRefreshing(false);
-                    Toast toast = Toast.makeText(getContext(), "Reservations Updated", Toast.LENGTH_SHORT);
-                    toast.show();
-                    refreshing = false;
-                    lastRefresh = new Date();
-                }
-                lastResponse = xml;
+
+                SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh2);
+                swipeRefreshResv.setRefreshing(false);
+
+                cacheManager.setUserProfile(userProfile);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

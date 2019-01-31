@@ -17,6 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -98,7 +99,7 @@ public class WMSNCIPService extends JobIntentService{
             }
         }){
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + accessToken);
                 return headers;
@@ -110,13 +111,8 @@ public class WMSNCIPService extends JobIntentService{
             }
 
             @Override
-            public byte[] getBody() throws AuthFailureError {
-                try{
-                    return requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException e){
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                    return null;
-                }
+            public byte[] getBody() {
+                return requestBody.getBytes(StandardCharsets.UTF_8);
             }
         };
         queue.add(request);
@@ -172,7 +168,7 @@ public class WMSNCIPService extends JobIntentService{
             }
         }){
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + accessToken);
                 return headers;
@@ -184,13 +180,8 @@ public class WMSNCIPService extends JobIntentService{
             }
 
             @Override
-            public byte[] getBody() throws AuthFailureError {
-                try{
-                    return requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException e){
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                    return null;
-                }
+            public byte[] getBody() {
+                return requestBody.getBytes(StandardCharsets.UTF_8);
             }
         };
         queue.add(request);

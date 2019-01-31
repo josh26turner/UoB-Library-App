@@ -32,7 +32,7 @@ public class FragmentSettings extends android.support.v4.app.Fragment{
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
         String [] values =  {"Pink","Green"};
-        Spinner spinner = (Spinner) v.findViewById(R.id.spinner_theme);
+        Spinner spinner = v.findViewById(R.id.spinner_theme);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(adapter);
