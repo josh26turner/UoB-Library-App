@@ -7,16 +7,13 @@ import android.support.v4.app.JobIntentService;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,13 +22,13 @@ import spe.uoblibraryapp.ActivityConfirm;
 import spe.uoblibraryapp.api.IntentActions;
 
 
-public class WMSNCIPService extends JobIntentService{
-    String TAG = "WMSNCIPService";
+public class WMSNCIPService extends JobIntentService {
+    private static final String TAG = "WMSNCIPService";
 
     private WorkQueue workQueue;
 
 
-    public void lookupUser(){
+    public void lookupUser() {
         SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
         String accessToken = prefs.getString("authorisationToken", "");
 
@@ -97,7 +94,7 @@ public class WMSNCIPService extends JobIntentService{
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "ERRROOOOORRRRR");
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
@@ -118,7 +115,7 @@ public class WMSNCIPService extends JobIntentService{
         queue.add(request);
     }
 
-    private void checkoutBook(String itemId){
+    private void checkoutBook(String itemId) {
         SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
         String accessToken = prefs.getString("authorisationToken", "");
 
@@ -156,7 +153,7 @@ public class WMSNCIPService extends JobIntentService{
                 Log.d(TAG, "HTTP request Actioned");
 
                 Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
-                confirmIntent.putExtra("xml" ,xml);
+                confirmIntent.putExtra("xml", xml);
                 confirmIntent.setAction(IntentActions.BOOK_CHECK_OUT_RESPONSE);
                 startActivity(confirmIntent);
 
@@ -166,7 +163,7 @@ public class WMSNCIPService extends JobIntentService{
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "ERRROOOOORRRRR");
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
@@ -187,7 +184,7 @@ public class WMSNCIPService extends JobIntentService{
         queue.add(request);
     }
 
-    private void mockCheckOutBook(String itemId){
+    private void mockCheckOutBook() {
         SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
         String response = "<ns1:NCIPMessage xmlns:ns2=\"http://oclc.org/WCL/ncip/2011/extensions\" xmlns:ns1=\"http://www.niso.org/2008/ncip\" ns1:version=\"2.0\">\n" +
                 "<ns1:CheckOutItemResponse>\n" +
@@ -197,7 +194,7 @@ public class WMSNCIPService extends JobIntentService{
                 "</ns1:ItemId>\n" +
                 "<ns1:UserId>\n" +
                 "<ns1:AgencyId>132607</ns1:AgencyId>\n" +
-                "<ns1:UserIdentifierValue>" + prefs.getString("principalID", "")+ "</ns1:UserIdentifierValue>\n" +
+                "<ns1:UserIdentifierValue>" + prefs.getString("principalID", "") + "</ns1:UserIdentifierValue>\n" +
                 "</ns1:UserId>\n" +
                 "<ns1:DateDue>2019-02-04T23:59:59Z</ns1:DateDue>\n" +
                 "<ns1:RenewalCount>1</ns1:RenewalCount>\n" +
@@ -220,7 +217,7 @@ public class WMSNCIPService extends JobIntentService{
 
         try {
             Thread.sleep(1500);
-        } catch( InterruptedException ex){
+        } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
         Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
@@ -232,21 +229,21 @@ public class WMSNCIPService extends JobIntentService{
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
-        if (IntentActions.ACCESS_TOKEN_GENERATED.equals(intent.getAction())){
+        if (IntentActions.ACCESS_TOKEN_GENERATED.equals(intent.getAction())) {
             Log.d(TAG, "token generated intent recieved");
             while (!workQueue.isEmpty()) {
                 String action = workQueue.get();
                 if (IntentActions.LOOKUP_USER.equals(action)) {
                     lookupUser();
                 } else if (IntentActions.CHECKOUT_BOOK.equals((action))) {
-                    String itemId = intent.getStringExtra("itemId");
-                    mockCheckOutBook(itemId); // Comment this out once the server is live
+//                    String itemId = intent.getStringExtra("itemId"); // Use this
+                    mockCheckOutBook(); // Comment this out once the server is live
 //                    checkoutBook(itemId); // And use this one
                 } else {
                     Log.e(TAG, "Intent received has no valid action");
                 }
             }
-        }else {
+        } else {
             Log.d(TAG, "Intent recieved");
             workQueue.add(intent.getAction());
             Log.d(TAG, "action added to work queue");

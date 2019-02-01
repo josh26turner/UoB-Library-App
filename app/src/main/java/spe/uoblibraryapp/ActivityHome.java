@@ -3,9 +3,9 @@ package spe.uoblibraryapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -56,7 +56,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
             public void onPageSelected(int position) {
                 mViewPager.setCurrentItem(position);
                 navigationView.getMenu().getItem(position).setChecked(true);
-                switch(position) {
+                switch (position) {
                     case 0:
                         getSupportActionBar().setTitle("Loans");
                         break;
@@ -65,6 +65,8 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
                         break;
                     case 2:
                         getSupportActionBar().setTitle("App Settings");
+                        break;
+                    default:
                         break;
                 }
             }
@@ -99,8 +101,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         DrawerLayout drawer = $(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else {
+        } else {
             //TODO: Exit prompt.
         }
     }
@@ -151,15 +152,15 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         return true;
     }
 
-    private void setupViewPager(ViewPager viewPager){
-        mAdapter  = new FragmentCustomPagerAdapter(getSupportFragmentManager());
+    private void setupViewPager(ViewPager viewPager) {
+        mAdapter = new FragmentCustomPagerAdapter(getSupportFragmentManager());
         mAdapter.addFragment(new FragmentLoans(), "Loans");
         mAdapter.addFragment(new FragmentReservation(), "Reservation");
         mAdapter.addFragment(new FragmentSettings(), "Settings");
         viewPager.setAdapter(mAdapter);
     }
 
-    public void setViewPager(String fragmentName){
+    public void setViewPager(String fragmentName) {
         int index = mAdapter.getFragmentIndex(fragmentName);
 
         //Show Appropriate Title

@@ -7,16 +7,12 @@ import java.util.GregorianCalendar;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 public class CacheManager {
+    private WMSUserProfile userProfile;
+    private Date dateAccessed;
     private static final CacheManager ourInstance = new CacheManager();
 
     public static CacheManager getInstance() {
         return ourInstance;
-    }
-
-    private WMSUserProfile userProfile;
-    private Date dateAccessed;
-
-    private CacheManager() {
     }
 
     WMSUserProfile getUserProfile() {

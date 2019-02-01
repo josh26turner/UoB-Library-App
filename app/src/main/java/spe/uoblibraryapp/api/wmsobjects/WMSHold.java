@@ -1,7 +1,5 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
-import android.util.Log;
-
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -29,25 +27,25 @@ public class WMSHold {
     private WMSBook book;
 
 
-    WMSHold(WMSNCIPElement elemHolder) throws WMSParseException{
+    WMSHold(WMSNCIPElement elemHolder) throws WMSParseException {
 
         // TODO: Run some checks on elem to ensure it is correct and then extract the data.
         Node element = elemHolder.getElem();
 
-        if (!element.getNodeName().equals("ns1:RequestedItem")){
+        if (!element.getNodeName().equals("ns1:RequestedItem")) {
             throw new WMSParseException("Node is not correct loan node");
         }
 
         // Parse the node
         try {
             parseNode(element);
-        } catch (ParseException e){
+        } catch (ParseException e) {
             throw new WMSParseException(e.getMessage());
         }
     }
 
 
-    public WMSHold(){
+    public WMSHold() {
         requestId = "1234567890";
         agencyId = "132607";
         requestType = "Hold";
@@ -62,28 +60,30 @@ public class WMSHold {
         book = new WMSBook("1234567890");
     }
 
-    private Date parseDate(String strDate) throws ParseException{
-        strDate = strDate.replace("T", "-").replace("Z", "");
+    private Date parseDate(String strDate) throws ParseException {
+        String replacedStrDate = strDate.replace("T", "-").replace("Z", "");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
-        return format.parse(strDate);
+        return format.parse(replacedStrDate);
     }
 
 
-    private void parseNode(Node node) throws ParseException, WMSParseException{
+    private void parseNode(Node node) throws ParseException, WMSParseException {
         NodeList children = node.getChildNodes();
-        for (int i=0; i<children.getLength(); i++){
+        for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            switch(child.getNodeName()){
+            switch (child.getNodeName()) {
                 case "ns1:RequestId":
                     NodeList childsChildren = child.getChildNodes();
-                    for (int j=0; j<childsChildren.getLength(); j++){
+                    for (int j = 0; j < childsChildren.getLength(); j++) {
                         Node childsChild = childsChildren.item(j);
-                        switch(childsChild.getNodeName()){
+                        switch (childsChild.getNodeName()) {
                             case "ns1:AgencyId":
                                 agencyId = childsChild.getTextContent();
                                 break;
                             case "ns1:RequestIdentifierValue":
                                 requestId = childsChild.getTextContent();
+                                break;
+                            default:
                                 break;
                         }
                     }
@@ -108,9 +108,9 @@ public class WMSHold {
                     break;
                 case "ns1:Ext":
                     NodeList childsChildren2 = child.getChildNodes();
-                    for (int j=0; j<childsChildren2.getLength(); j++){
+                    for (int j = 0; j < childsChildren2.getLength(); j++) {
                         Node childsChild = childsChildren2.item(j);
-                        switch(childsChild.getNodeName()){
+                        switch (childsChild.getNodeName()) {
                             case "ns1:BibliographicDescription":
                                 book = new WMSBook(new WMSNCIPElement(childsChild));
                                 break;
@@ -123,39 +123,42 @@ public class WMSHold {
                             case "ns1:NeedBeforeDate":
                                 needBeforeDate = parseDate(childsChild.getTextContent());
                                 break;
+                            default:
+                                break;
                         }
                     }
+                    break;
+                default:
                     break;
             }
         }
     }
 
 
-
     // Getters for UI people
 
-    public String getRequestId(){
+    public String getRequestId() {
         return this.requestId;
     }
 
-    public String getAgencyId(){
+    public String getAgencyId() {
         return this.agencyId;
     }
 
-    public String getRequestType(){
+    public String getRequestType() {
         return this.requestType;
     }
 
-    public String getRequestStatusType(){
+    public String getRequestStatusType() {
         return this.requestStatusType;
     }
 
-    public Date getDatePlaced(){
+    public Date getDatePlaced() {
         return this.datePlaced;
     }
 
-    public String getPickupLocation(){
-        switch (this.pickupLocation){
+    public String getPickupLocation() {
+        switch (this.pickupLocation) {
             case "119059":
                 return "Queens Building Library";
             case "119036":
@@ -174,33 +177,32 @@ public class WMSHold {
                 return "Veterinary Sciences Library";
             case "119061":
                 return "Wills Memorial Library";
+            default:
+                return this.pickupLocation;
         }
-
-
-        return this.pickupLocation;
     }
 
-    public Integer getHoldQueuePosition(){
+    public Integer getHoldQueuePosition() {
         return this.holdQueuePosition;
     }
 
-    public String getMediumType(){
+    public String getMediumType() {
         return this.mediumType;
     }
 
-    public WMSBook getBook(){
+    public WMSBook getBook() {
         return this.book;
     }
 
-    public Date getEarliestDateNeeded(){
+    public Date getEarliestDateNeeded() {
         return this.earliestDateNeeded;
     }
 
-    public Integer getHoldQueueLength(){
+    public Integer getHoldQueueLength() {
         return this.holdQueueLength;
     }
 
-    public Date getNeedBeforeDate(){
+    public Date getNeedBeforeDate() {
         return this.needBeforeDate;
     }
 
