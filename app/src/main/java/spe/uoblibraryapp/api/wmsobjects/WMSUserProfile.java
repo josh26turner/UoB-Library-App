@@ -130,7 +130,7 @@ public class WMSUserProfile {
         return recentlyReceived;
     }
 
-    private List<WMSFine> parseFines(List<Node> fineNodes) throws WMSParseException {
+    private List<WMSFine> parseFines(List<Node> fineNodes) {
         List<WMSFine> fines = new ArrayList<>();
         for (Node node : fineNodes) {
             fines.add(new WMSFine(new WMSNCIPElement(node)));

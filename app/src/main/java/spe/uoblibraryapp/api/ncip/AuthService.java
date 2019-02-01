@@ -29,6 +29,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import spe.uoblibraryapp.ActivitySignIn;
+import spe.uoblibraryapp.CacheManager;
 import spe.uoblibraryapp.SplashScreen;
 import spe.uoblibraryapp.api.AuthenticationNeededException;
 import spe.uoblibraryapp.api.IntentActions;
@@ -83,7 +84,7 @@ public class AuthService extends JobIntentService {
         return cal.getTime();
     }
 
-    void getAccessToken() throws ParseException, AuthenticationNeededException, AuthenticationRequestFailedException {
+    void getAccessToken() throws ParseException {
         String accessTokenExpiry = tokens.getString("authorisationTokenExpiry", "");
         if (accessTokenExpiry.equals("")) {
             startActivity(new Intent(this, ActivitySignIn.class));
@@ -162,6 +163,8 @@ public class AuthService extends JobIntentService {
             @Override
             public void onResponse(String response) {
                 tokens.edit().clear().apply();
+                CacheManager cacheManager = CacheManager.getInstance();
+                cacheManager.invalidateCache();
                 startActivity(new Intent(getApplicationContext(), SplashScreen.class));
             }
         }, new Response.ErrorListener() {

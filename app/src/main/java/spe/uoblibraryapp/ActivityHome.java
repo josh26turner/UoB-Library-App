@@ -160,13 +160,10 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
     }
 
     public void setViewPager(String fragmentName){
-        if(mAdapter.fragmentExists(fragmentName)) {
-            int index = mAdapter.getFragmentIndex(fragmentName);
-            //Show Appropriate Title
-            setTitle(fragmentName);
-            mViewPager.setCurrentItem(index);
-        } else{
-            //TODO: Think of something to return when programmer can't type correctly :)
-        }
+        int index = mAdapter.getFragmentIndex(fragmentName);
+
+        //Show Appropriate Title
+        setTitle(fragmentName);
+        mViewPager.setCurrentItem(index);
     }
 }

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import spe.uoblibraryapp.api.IntentActions;
 import spe.uoblibraryapp.api.ncip.AuthService;
 
-public class FragmentSettings extends android.support.v4.app.Fragment{
+public class FragmentSettings extends android.support.v4.app.Fragment {
 
     private static final String TAG = "Settings Fragment";
 
@@ -31,7 +25,7 @@ public class FragmentSettings extends android.support.v4.app.Fragment{
 
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        String [] values =  {"Pink","Green"};
+        String[] values = {"Pink", "Green"};
         Spinner spinner = v.findViewById(R.id.spinner_theme);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
@@ -62,7 +56,7 @@ public class FragmentSettings extends android.support.v4.app.Fragment{
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         TextView refreshToken = getView().findViewById(R.id.RefreshToken);
         TextView refreshExpiryDate = getView().findViewById(R.id.RefreshExpiryDate);
         TextView accessToken = getView().findViewById(R.id.AccessToken);
@@ -78,7 +72,6 @@ public class FragmentSettings extends android.support.v4.app.Fragment{
 
         super.onResume();
     }
-
 
 
 }

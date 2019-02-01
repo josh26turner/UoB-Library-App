@@ -19,16 +19,16 @@ public class CacheManager {
     private CacheManager() {
     }
 
-    public WMSUserProfile getUserProfile() {
+    WMSUserProfile getUserProfile() {
         return userProfile;
     }
 
-    public void setUserProfile(WMSUserProfile userProfile){
+    void setUserProfile(WMSUserProfile userProfile){
         this.userProfile = userProfile;
         this.dateAccessed = new Date();
     }
 
-    public Boolean isExpired(){
+    Boolean isExpired(){
         if (userProfile == null){
             return true;
         }
@@ -37,6 +37,11 @@ public class CacheManager {
         cal.setTime(dateAccessed);
         cal.add(Calendar.MINUTE, 10);
         return cal.getTime().before(new Date());
+    }
+
+    public void invalidateCache(){
+        this.userProfile = null;
+        this.dateAccessed = null;
     }
 
 }
