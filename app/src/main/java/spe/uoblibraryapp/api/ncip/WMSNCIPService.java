@@ -11,8 +11,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -119,34 +123,28 @@ public class WMSNCIPService extends JobIntentService {
         SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
         String accessToken = prefs.getString("authorisationToken", "");
 
-        String url = "https://circ.{datacenter}.worldcat.org/ncip";
-        String requestBody = "<NCIPMessage xmlns=\"http://www.niso.org/2008/ncip\" xmlns:ncip=\"http://www.niso.org/2008/ncip\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ncip:version=\"http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\" xsi:schemaLocation=\"http://www.niso.org/2008/ncip http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\">\n" +
-                "<CheckOutItem>\n" +
-                "<InitiationHeader>\n" +
-                "<FromAgencyId>\n" +
-                "<AgencyId ncip:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">132607</AgencyId>\n" +
-                "</FromAgencyId>\n" +
-                "<ToAgencyId>\n" +
-                "<AgencyId>132607</AgencyId>\n" +
-                "</ToAgencyId>\n" +
-                "<ApplicationProfileType ncip:Scheme=\"http://oclc.org/ncip/schemes/application-profile/platform.scm\">Version 2011</ApplicationProfileType>\n" +
-                "</InitiationHeader>\n" +
-                "<UserId>\n" +
-                "<AgencyId>132607</AgencyId>\n" +
-                "<UserIdentifierValue>" + prefs.getString("principalID", "") + "</UserIdentifierValue>\n" +
-                "</UserId>\n" +
-                "<ItemId>\n" +
-                "<AgencyId>132607</AgencyId>\n" +
-                "<ItemIdentifierValue>" + itemId + "</ItemIdentifierValue>\n" +
-                "</ItemId>\n" +
-                "<ItemElementType>Bibliographic Description</ItemElementType>\n" +
-                "<ItemElementType>Circulation Status</ItemElementType>\n" +
-                "</CheckOutItem>\n" +
-                "</NCIPMessage>";
-
+        JSONObject object = new JSONObject();
+        try {
+            object.put("userId", prefs.getString("principalID", ""));
+            object.put("accessToken", accessToken);
+            object.put("itemId", itemId);
+        } catch (JSONException ex){
+            ex.printStackTrace();
+        }
 
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.start();
+
+
+        String url = "http://132.145.54.223/checkout";
+
+        String requestBody = "<CheckoutBookRequest>" +
+                "<userId>" + prefs.getString("principalID", "") + "</userId>" +
+                "<accessToken>" + accessToken + "</accessToken>" +
+                "<itemId>" + itemId + "</itemId>" +
+                "</CheckoutBookRequest>";
+
+
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String xml) {
@@ -164,13 +162,6 @@ public class WMSNCIPService extends JobIntentService {
                 Log.e(TAG, "ERRROOOOORRRRR");
             }
         }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + accessToken);
-                return headers;
-            }
-
             @Override
             public String getBodyContentType() {
                 return "application/xml";
