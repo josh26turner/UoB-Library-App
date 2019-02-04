@@ -3,7 +3,6 @@ package spe.uoblibraryapp.api.ncip;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
 import android.support.v4.content.LocalBroadcastManager;
@@ -22,7 +21,6 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -31,7 +29,6 @@ import java.util.Locale;
 import spe.uoblibraryapp.ActivitySignIn;
 import spe.uoblibraryapp.CacheManager;
 import spe.uoblibraryapp.SplashScreen;
-import spe.uoblibraryapp.api.AuthenticationNeededException;
 import spe.uoblibraryapp.api.IntentActions;
 
 public class AuthService extends JobIntentService {
@@ -84,9 +81,9 @@ public class AuthService extends JobIntentService {
         return cal.getTime();
     }
 
-    void getAccessToken() throws ParseException {
+    private void getAccessToken() throws ParseException {
         String accessTokenExpiry = tokens.getString("authorisationTokenExpiry", "");
-        if (accessTokenExpiry.equals("")) {
+        if ("".equals(accessTokenExpiry)) {
             startActivity(new Intent(this, ActivitySignIn.class));
             return;
         }
@@ -103,7 +100,7 @@ public class AuthService extends JobIntentService {
         }
     }
 
-    void requestNewAccessToken() throws ParseException {
+    private void requestNewAccessToken() throws ParseException {
         String refreshTokenExpiry = tokens.getString("refreshTokenExpiry", "");
         if (addDays(parseDate(refreshTokenExpiry), -1).before(new Date())) {  // Subtracting 1 day to allow for a good overlap period between two active refresh tokens.
             // TODO: Start receiver, wait for authentication, then broadcast intent ACCESS_TOKEN_GENERATED. Then stop receiver.
@@ -153,7 +150,7 @@ public class AuthService extends JobIntentService {
     }
 
 
-    void logout() {
+    private void logout() {
 
         String url = "https://authn.sd00.worldcat.org/oauth2/revoke?refresh_token="
                 + tokens.getString("refreshToken", "");

@@ -1,8 +1,6 @@
 package spe.uoblibraryapp;
 
 import android.content.Context;
-import android.content.RestrictionEntry;
-import android.support.annotation.StringDef;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import spe.uoblibraryapp.api.wmsobjects.WMSHold;
@@ -19,9 +16,9 @@ import spe.uoblibraryapp.api.wmsobjects.WMSHold;
 public class ResvBookListAdapter extends ArrayAdapter<WMSHold> {
 
     private Context mContext;
-    int mResource;
+    private int mResource;
 
-    public ResvBookListAdapter(Context context, int resource, List<WMSHold> objects){
+    public ResvBookListAdapter(Context context, int resource, List<WMSHold> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
@@ -39,7 +36,7 @@ public class ResvBookListAdapter extends ArrayAdapter<WMSHold> {
 
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        convertView = inflater.inflate(mResource, parent, false );
+        convertView = inflater.inflate(mResource, parent, false);
         TextView resTitle = convertView.findViewById(R.id.res_title);
         TextView resAuthor = convertView.findViewById(R.id.res_author);
         TextView res_pos = convertView.findViewById(R.id.res_pos);
@@ -55,7 +52,7 @@ public class ResvBookListAdapter extends ArrayAdapter<WMSHold> {
 
 
         res_ready.setText(getItem(position).getRequestStatusType());
-        if(ready == Boolean.TRUE){
+        if (ready == Boolean.TRUE) {
 //            res_ready.setText("Ready for Collection");
             res_ready.setTextColor(ContextCompat.getColor(getContext(), R.color.colorLoan));
         } else {
