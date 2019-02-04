@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Document;
@@ -57,14 +59,11 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
 
         // Swipe to Refresh
         SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
-        swipeRefreshLoans.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Pull to Refresh list
-                swipeRefreshLoans.setRefreshing(true);
-                Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
-                WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
-            }
+        swipeRefreshLoans.setOnRefreshListener(() -> {
+            // Pull to Refresh list
+            swipeRefreshLoans.setRefreshing(true);
+            Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
+            WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
         });
 
 
@@ -103,22 +102,32 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         } else {
             fillListView(cacheManager.getUserProfile());
         }
-
-
     }
 
     // If we want thumbnails this gives us an image link https://www.googleapis.com/books/v1/volumes?q=isbn:9780226467047
 
     public void fillListView(WMSUserProfile userProfile) {
         ListView mListView = view.findViewById(R.id.listview);
-//        List<WMSLoan> bookList = userProfile.getLoans();
         List<WMSLoan> bookList = new ArrayList<>(userProfile.getLoans());
         bookList.add(new WMSLoan()); // Just for testing
+
 
         LoanBookListAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
         mListView.setAdapter(adapter);
 
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
+
+        updateDash(bookList);
+    }
+
+    private void updateDash(List<WMSLoan> bookList){
+        //Update Dashboard
+        TextView loan_dash_description = view.findViewById(R.id.loan_dash_description);
+        loan_dash_description.setText("You have borrowed "
+                + bookList.size()
+                + " out of 40 books. The first book is due on "
+                + bookList.get(0).getDueDate()
+                + ".");
     }
 
     /**
