@@ -13,7 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -60,6 +64,27 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
                 swipeRefreshLoans.setRefreshing(true);
                 Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
                 WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
+            }
+        });
+
+
+        //Spinner creation
+        Spinner spinner = view.findViewById(R.id.loan_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.loan_spinner, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Toast toast = Toast.makeText(getContext(), "Sorting by "+ spinner.getSelectedItem().toString(), Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 

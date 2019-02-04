@@ -29,4 +29,11 @@
         <item>Green</item>
     </string-array>
 
+    <string-array name="loan_spinner">
+        <item>name: A-Z</item>
+        <item>name: Z-A</item>
+        <item>earliest due</item>
+        <item>last due</item>
+    </string-array>
+
 </resources>
