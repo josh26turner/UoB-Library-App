@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -64,6 +65,8 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             }
         });
 
+
+
         return view;
     }
 
@@ -81,6 +84,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             fillListView(cacheManager.getUserProfile());
         }
 
+
     }
 
 
@@ -95,7 +99,28 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         mListView.setAdapter(adapter);
 
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
+
+        //Updating Reservation Dashboard
+        Log.d(TAG, "Updating Reservation Dash");
+        TextView tv = view.findViewById(R.id.resv_dash_description);
+        tv.setText(   "You have "
+                + cacheManager.getUserProfile().getOnHold().size()
+                + " reservations, "
+                + readyCollectCount(cacheManager.getUserProfile())
+                + " of which are ready to collect.");
     }
+
+    public int readyCollectCount(WMSUserProfile profile){
+        int c = 0;
+        int i = 0;
+        List<WMSHold> holds = profile.getOnHold();
+        for(i=0; i < holds.size(); i++){
+            if(holds.get(i).isReadyToCollect())
+                c++;
+        }
+        return c;
+    }
+
 
 
     /**
