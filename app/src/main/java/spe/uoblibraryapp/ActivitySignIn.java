@@ -69,14 +69,14 @@ public class ActivitySignIn extends SimpleActivity {
                         processAuthorisationString(URL);
                          // Successful
                         Toast.makeText(getApplicationContext(), "Sign In Successful", Toast.LENGTH_SHORT).show();
-                        finish();
+//                        finish();
                         return true;
                     } else {
 
                         // TODO redirect user to start of activity rather than finish it.
                         // User Denied Request
                         Toast.makeText(getApplicationContext(), "Authentication Failed", Toast.LENGTH_SHORT).show();
-                        finish();
+//                        finish();
                         //I guess try again... // TODO Are we sure? if it fails repeatedly then the view constantly opens/closes forever. :/
                         return true;
                     }

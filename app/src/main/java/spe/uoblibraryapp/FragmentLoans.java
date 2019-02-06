@@ -114,7 +114,10 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing
-
+        bookList.add(new WMSLoan()); // Just for testing
+        bookList.add(new WMSLoan()); // Just for testing
+        bookList.add(new WMSLoan()); // Just for testing
+        bookList.add(new WMSLoan()); // Just for testing
 
         LoanBookListAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
         mListView.setAdapter(adapter);
