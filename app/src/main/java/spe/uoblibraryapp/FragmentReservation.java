@@ -93,6 +93,10 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         List<WMSHold> bookList = new ArrayList<>(userProfile.getOnHold());
 
         bookList.add(new WMSHold());
+        bookList.add(new WMSHold());
+        bookList.add(new WMSHold());
+        bookList.add(new WMSHold());
+        bookList.add(new WMSHold());
 
 
         ResvBookListAdapter adapter = new ResvBookListAdapter(getContext(), R.layout.adapter_view_layout_resv, bookList);
