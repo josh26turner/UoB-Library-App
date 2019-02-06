@@ -107,7 +107,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     // If we want thumbnails this gives us an image link https://www.googleapis.com/books/v1/volumes?q=isbn:9780226467047
 
     public void fillListView(WMSUserProfile userProfile) {
-        ListView mListView = view.findViewById(R.id.listview);
+        NonScrollListView mListView = view.findViewById(R.id.listview);
         List<WMSLoan> bookList = new ArrayList<>(userProfile.getLoans());
         bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing

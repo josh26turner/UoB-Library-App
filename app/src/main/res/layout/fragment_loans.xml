@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"></Spinner>
 
 
-                <ListView
+                <spe.uoblibraryapp.NonScrollListView
                     android:id="@+id/listview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -89,7 +89,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
 
 
     public void fillListView(WMSUserProfile userProfile) {
-        ListView mListView = view.findViewById(R.id.listview2);
+        NonScrollListView mListView = view.findViewById(R.id.listview2);
         List<WMSHold> bookList = new ArrayList<>(userProfile.getOnHold());
 
         bookList.add(new WMSHold());
