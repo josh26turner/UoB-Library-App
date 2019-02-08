@@ -19,7 +19,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_loans, container, false);
+        view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         return view;
     }
 
