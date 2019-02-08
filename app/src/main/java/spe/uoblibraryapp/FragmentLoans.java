@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -105,6 +106,22 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     }
 
     // If we want thumbnails this gives us an image link https://www.googleapis.com/books/v1/volumes?q=isbn:9780226467047
+
+    public class customComparatorAZ implements Comparator<WMSLoan> {
+        public int compare(WMSLoan object1, WMSLoan object2) {
+            if (object1.getBook().getTitle().compareTo(object2.getBook().getTitle()) < 0 )
+                return -1;
+            else if (object1.getBook().getTitle().compareTo(object2.getBook().getTitle()) > 0 )
+                return 1;
+            else
+                return 0;
+        }
+    }
+    public class customComparatorDueDate implements Comparator<WMSLoan> {
+        public int compare(WMSLoan object1, WMSLoan object2) {
+            return (object1.getDueDate().compareTo(object2.getDueDate()));
+        }
+    }
 
     public void fillListView(WMSUserProfile userProfile) {
         ListView mListView = view.findViewById(R.id.listview);
