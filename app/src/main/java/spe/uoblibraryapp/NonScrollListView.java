@@ -2,6 +2,7 @@ package spe.uoblibraryapp;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
@@ -16,6 +17,14 @@ public class NonScrollListView extends ListView {
     public NonScrollListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev){
+        if(ev.getAction()==MotionEvent.ACTION_MOVE)
+            return true;
+        return super.dispatchTouchEvent(ev);
+    }
+
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int heightMeasureSpec_custom = MeasureSpec.makeMeasureSpec(
@@ -24,4 +33,5 @@ public class NonScrollListView extends ListView {
         ViewGroup.LayoutParams params = getLayoutParams();
         params.height = getMeasuredHeight();
     }
+
 }

@@ -40,7 +40,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         toggle.syncState();
 
         NavigationView navigationView = $(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_current_loans_reservations);
+        navigationView.setCheckedItem(R.id.nav_dashboard);
         navigationView.setNavigationItemSelectedListener(this);
 
         mViewPager = $(R.id.container);
@@ -58,12 +58,15 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
                 navigationView.getMenu().getItem(position).setChecked(true);
                 switch (position) {
                     case 0:
-                        getSupportActionBar().setTitle("Loans");
+                        getSupportActionBar().setTitle("Dashboard");
                         break;
                     case 1:
-                        getSupportActionBar().setTitle("Reservations");
+                        getSupportActionBar().setTitle("Loans");
                         break;
                     case 2:
+                        getSupportActionBar().setTitle("Reservations");
+                        break;
+                    case 3:
                         getSupportActionBar().setTitle("App Settings");
                         break;
                     default:
@@ -76,7 +79,6 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
 
             }
         });
-
 
         setupViewPager(mViewPager);
         mViewPager.setCurrentItem(0);
@@ -154,6 +156,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
 
     private void setupViewPager(ViewPager viewPager) {
         mAdapter = new FragmentCustomPagerAdapter(getSupportFragmentManager());
+        mAdapter.addFragment(new FragmentDashboard(), "Dashboard");
         mAdapter.addFragment(new FragmentLoans(), "Loans");
         mAdapter.addFragment(new FragmentReservation(), "Reservation");
         mAdapter.addFragment(new FragmentSettings(), "Settings");

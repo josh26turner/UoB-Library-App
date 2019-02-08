@@ -123,18 +123,6 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         mListView.setAdapter(adapter);
 
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
-
-        updateDash(bookList);
-    }
-
-    private void updateDash(List<WMSLoan> bookList){
-        //Update Dashboard
-        TextView loan_dash_description = view.findViewById(R.id.loan_dash_description);
-        loan_dash_description.setText("You have borrowed "
-                + bookList.size()
-                + " out of 40 books. The first book is due on "
-                + bookList.get(0).getDueDate()
-                + ".");
     }
 
     /**
