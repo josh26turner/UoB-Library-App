@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -48,6 +49,8 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     View view;
     private MyBroadCastReceiver myBroadCastReceiver;
     private CacheManager cacheManager;
+    private enum sort{ AZ, ZA, dueDateAZ, dueDateZA }
+    private sort currentSort = sort.AZ;
 
     @Nullable
     @Override
@@ -73,13 +76,29 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.loan_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinner.setAdapter(adapter);
+        spinner.setSelected(false);  // Prevents onItemSelected from running during init.
+        spinner.setSelection(0,true);  //read above, do NOT remove.
+
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 Toast toast = Toast.makeText(getContext(), "Sorting by "+ spinner.getSelectedItem().toString(), Toast.LENGTH_SHORT);
                 toast.show();
+
+                if (spinner.getSelectedItemId() == 0) currentSort = sort.AZ;
+                else if (spinner.getSelectedItemId() == 1) currentSort = sort.ZA;
+                else if (spinner.getSelectedItemId() == 2) currentSort = sort.dueDateAZ;
+                else if (spinner.getSelectedItemId() == 3) currentSort = sort.dueDateZA;
+
+                //Update View here.
+                //TODO: DISABLE THIS WHILE REFRESHING.
+                fillListView(cacheManager.getUserProfile());
+
+
             }
 
             @Override
@@ -136,11 +155,29 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing
 
+        if (bookList.isEmpty()) return; //TODO: TEST ME.
+
+        switch (currentSort) {
+            case AZ:
+                Collections.sort(bookList, new customComparatorAZ());
+                break;
+            case ZA:
+                Collections.sort(bookList, new customComparatorAZ());
+                Collections.reverse(bookList);
+                break;
+            case dueDateAZ:
+                Collections.sort(bookList, new customComparatorDueDate());
+                break;
+            case dueDateZA:
+                Collections.sort(bookList, new customComparatorDueDate());
+                Collections.reverse(bookList);
+                break;
+        }
+
         LoanBookListAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
         mListView.setAdapter(adapter);
 
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
-
     }
 
 
