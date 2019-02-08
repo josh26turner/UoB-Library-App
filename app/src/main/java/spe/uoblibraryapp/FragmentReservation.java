@@ -33,6 +33,7 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.api.wmsobjects.WMSHold;
+import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
@@ -89,7 +90,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
 
 
     public void fillListView(WMSUserProfile userProfile) {
-        NonScrollListView mListView = view.findViewById(R.id.listview2);
+        ListView mListView = view.findViewById(R.id.listview2);
         List<WMSHold> bookList = new ArrayList<>(userProfile.getOnHold());
 
         bookList.add(new WMSHold());
@@ -106,27 +107,10 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         mListView.setAdapter(adapter);
 
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
+        //updateDash(userProfile.getLoans());
 
-        //Updating Reservation Dashboard
-        Log.d(TAG, "Updating Reservation Dash");
-        TextView tv = view.findViewById(R.id.resv_dash_description);
-        tv.setText(   "You have "
-                + cacheManager.getUserProfile().getOnHold().size()
-                + " reservations, "
-                + readyCollectCount(cacheManager.getUserProfile())
-                + " of which are ready to collect.");
     }
 
-    public int readyCollectCount(WMSUserProfile profile){
-        int c = 0;
-        int i = 0;
-        List<WMSHold> holds = profile.getOnHold();
-        for(i=0; i < holds.size(); i++){
-            if(holds.get(i).isReadyToCollect())
-                c++;
-        }
-        return c;
-    }
 
 
 

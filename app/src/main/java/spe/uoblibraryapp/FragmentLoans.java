@@ -107,7 +107,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     // If we want thumbnails this gives us an image link https://www.googleapis.com/books/v1/volumes?q=isbn:9780226467047
 
     public void fillListView(WMSUserProfile userProfile) {
-        NonScrollListView mListView = view.findViewById(R.id.listview);
+        ListView mListView = view.findViewById(R.id.listview);
         List<WMSLoan> bookList = new ArrayList<>(userProfile.getLoans());
         bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing
@@ -123,7 +123,9 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         mListView.setAdapter(adapter);
 
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
+
     }
+
 
     /**
      * This method is responsible to register an action to BroadCastReceiver
