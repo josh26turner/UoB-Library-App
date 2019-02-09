@@ -11,7 +11,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -23,11 +22,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import spe.uoblibraryapp.ActivityConfirm;
-import spe.uoblibraryapp.api.IntentActions;
+import spe.uoblibraryapp.Constants;
+import spe.uoblibraryapp.api.AuthService;
 
 
 public class WMSNCIPService extends JobIntentService {
     private static final String TAG = "WMSNCIPService";
+    public static final Integer jobId = 1000;
 
     private WorkQueue workQueue;
 
@@ -36,49 +37,10 @@ public class WMSNCIPService extends JobIntentService {
         SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
         String accessToken = prefs.getString("authorisationToken", "");
 
-        String url = "https://bub.share.worldcat.org/ncip/circ-patron";
-        String requestBody = "<NCIPMessage xmlns=\"http://www.niso.org/2008/ncip\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:ncip=\"http://www.niso.org/2008/ncip\" xmlns:ns2=\"http://oclc.org/WCL/ncip/2011/extensions\" xsi:schemaLocation=\"http://www.niso.org/2008/ncip http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\" ncip:version=\"http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\">\n" +
-                "<LookupUser>\n" +
-                "<InitiationHeader>\n" +
-                "<FromAgencyId>\n" +
-                "<AgencyId ncip:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">132607</AgencyId>\n" +
-                "</FromAgencyId>\n" +
-                "<ToAgencyId>\n" +
-                "<AgencyId ncip:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">132607</AgencyId>\n" +
-                "</ToAgencyId>\n" +
-                "<ApplicationProfileType ncip:Scheme=\"http://oclc.org/ncip/schemes/application-profile/wcl.scm\">Version 2011</ApplicationProfileType>\n" +
-                "</InitiationHeader>\n" +
-                "<UserId>\n" +
-                "<UserIdentifierValue>" + prefs.getString("principalID", "") + "</UserIdentifierValue>\n" +
-                "</UserId>\n" +
-                "<LoanedItemsDesired/>\n" +
-                "<RequestedItemsDesired/>\n" +
-                "<UserFiscalAccountDesired/>\n" +
-                "<Ext>\n" +
-                "<ns2:ResponseElementControl>\n" +
-                "<ns2:ElementType ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/elementtype.scm\">Account Details</ns2:ElementType>\n" +
-                "<ns2:StartElement>1</ns2:StartElement>\n" +
-                "<ns2:MaximumCount>10</ns2:MaximumCount>\n" +
-                "<ns2:SortField ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/accountdetailselementtype.scm\">Accrual Date</ns2:SortField>\n" +
-                "<ns2:SortOrderType ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/sortordertype.scm\">Ascending</ns2:SortOrderType>\n" +
-                "</ns2:ResponseElementControl>\n" +
-                "<ns2:ResponseElementControl>\n" +
-                "<ns2:ElementType ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/elementtype.scm\">Loaned Item</ns2:ElementType>\n" +
-                "<ns2:StartElement>1</ns2:StartElement>\n" +
-                "<ns2:MaximumCount>50</ns2:MaximumCount>\n" +
-                "<ns2:SortField ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/loaneditemelementtype.scm\">Date Due</ns2:SortField>\n" +
-                "<ns2:SortOrderType ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/sortordertype.scm\">Ascending</ns2:SortOrderType>\n" +
-                "</ns2:ResponseElementControl>\n" +
-                "<ns2:ResponseElementControl>\n" +
-                "<ns2:ElementType ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/elementtype.scm\">Requested Item</ns2:ElementType>\n" +
-                "<ns2:StartElement>1</ns2:StartElement>\n" +
-                "<ns2:MaximumCount>50</ns2:MaximumCount>\n" +
-                "<ns2:SortField ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/requesteditemelementtype.scm\">Date Placed</ns2:SortField>\n" +
-                "<ns2:SortOrderType ncip:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/sortordertype.scm\">Ascending</ns2:SortOrderType>\n" +
-                "</ns2:ResponseElementControl>\n" +
-                "</Ext>\n" +
-                "</LookupUser>\n" +
-                "</NCIPMessage>";
+        String url = Constants.APIUrls.lookupUser;
+        String requestBody = String.format(
+                Constants.RequestTemplates.lookupUser,
+                prefs.getString("principalID", ""));
 
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.start();
@@ -87,7 +49,7 @@ public class WMSNCIPService extends JobIntentService {
             public void onResponse(String xml) {
                 Log.d(TAG, "HTTP request Actioned");
 
-                Intent broadcastIntent = new Intent(IntentActions.USER_PROFILE_RESPONSE);
+                Intent broadcastIntent = new Intent(Constants.IntentActions.USER_PROFILE_RESPONSE);
                 broadcastIntent.putExtra("xml", xml);
 
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
@@ -123,27 +85,15 @@ public class WMSNCIPService extends JobIntentService {
         SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
         String accessToken = prefs.getString("authorisationToken", "");
 
-        JSONObject object = new JSONObject();
-        try {
-            object.put("userId", prefs.getString("principalID", ""));
-            object.put("accessToken", accessToken);
-            object.put("itemId", itemId);
-        } catch (JSONException ex){
-            ex.printStackTrace();
-        }
-
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.start();
 
-
-        String url = "http://132.145.54.223/checkout";
-
-        String requestBody = "<CheckoutBookRequest>" +
-                "<userId>" + prefs.getString("principalID", "") + "</userId>" +
-                "<accessToken>" + accessToken + "</accessToken>" +
-                "<itemId>" + itemId + "</itemId>" +
-                "</CheckoutBookRequest>";
-
+        String url = Constants.APIUrls.checkoutBook;
+        String requestBody = String.format(
+                Constants.RequestTemplates.checkoutBook,
+                prefs.getString("principalID", ""),
+                accessToken,
+                itemId);
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -152,7 +102,7 @@ public class WMSNCIPService extends JobIntentService {
 
                 Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
                 confirmIntent.putExtra("xml", xml);
-                confirmIntent.setAction(IntentActions.BOOK_CHECK_OUT_RESPONSE);
+                confirmIntent.setAction(Constants.IntentActions.BOOK_CHECK_OUT_RESPONSE);
                 startActivity(confirmIntent);
 
             }
@@ -213,20 +163,20 @@ public class WMSNCIPService extends JobIntentService {
         }
         Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
         confirmIntent.putExtra("xml", response);
-        confirmIntent.setAction(IntentActions.BOOK_CHECK_OUT_RESPONSE);
+        confirmIntent.setAction(Constants.IntentActions.BOOK_CHECK_OUT_RESPONSE);
         startActivity(confirmIntent);
     }
 
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
-        if (IntentActions.ACCESS_TOKEN_GENERATED.equals(intent.getAction())) {
+        if (Constants.IntentActions.ACCESS_TOKEN_GENERATED.equals(intent.getAction())) {
             Log.d(TAG, "token generated intent recieved");
             while (!workQueue.isEmpty()) {
                 String action = workQueue.get();
-                if (IntentActions.LOOKUP_USER.equals(action)) {
+                if (Constants.IntentActions.LOOKUP_USER.equals(action)) {
                     lookupUser();
-                } else if (IntentActions.CHECKOUT_BOOK.equals((action))) {
+                } else if (Constants.IntentActions.CHECKOUT_BOOK.equals((action))) {
 //                    String itemId = intent.getStringExtra("itemId"); // Use this
                     mockCheckOutBook(); // Comment this out once the server is live
 //                    checkoutBook(itemId); // And use this one
@@ -238,8 +188,8 @@ public class WMSNCIPService extends JobIntentService {
             Log.d(TAG, "Intent recieved");
             workQueue.add(intent.getAction());
             Log.d(TAG, "action added to work queue");
-            Intent getAccessTokenIntent = new Intent(IntentActions.ACCESS_TOKEN_NEEDED);
-            AuthService.enqueueWork(this, AuthService.class, 1001, getAccessTokenIntent);
+            Intent getAccessTokenIntent = new Intent(Constants.IntentActions.ACCESS_TOKEN_NEEDED);
+            AuthService.enqueueWork(this, AuthService.class, AuthService.jobId, getAccessTokenIntent);
             Log.d(TAG, "Access Token requested");
         }
     }

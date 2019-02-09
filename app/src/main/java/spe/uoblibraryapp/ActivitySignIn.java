@@ -1,6 +1,7 @@
 package spe.uoblibraryapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -56,7 +57,7 @@ public class ActivitySignIn extends SimpleActivity {
         });
 
         mywebview.setInitialScale(1);
-        mywebview.loadUrl("https://authn.sd00.worldcat.org/oauth2/authorizeCode?client_id=hNzXT2bmWYLwmWCfMDC2bAC9U1xJWBQytemHHKwzCF2YsJFnRw3isuML5E8PrK0F48OU8ENiIVzwcDWA&authenticatingInstitutionId=132607&contextInstitutionId=132607&redirect_uri=uoblibrary%3A%2F%2Fauthenticate&response_type=token&scope=WMS_NCIP%20refresh_token");
+        mywebview.loadUrl(Constants.UserAuth.oAuthUrl());
         mywebview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -70,6 +71,7 @@ public class ActivitySignIn extends SimpleActivity {
                          // Successful
                         Toast.makeText(getApplicationContext(), "Sign In Successful", Toast.LENGTH_SHORT).show();
 //                        finish();
+                        startActivity(new Intent(getApplicationContext(), ActivityHome.class));
                         return true;
                     } else {
 
@@ -115,7 +117,7 @@ public class ActivitySignIn extends SimpleActivity {
     }
 
     private boolean isAuthorisationDenied(String s) {
-        return s.contains("uoblibrary://authenticate#error");
+        return s.contains(Constants.UserAuth.authFailureUrl);
     }
 
     private void processAuthorisationString(String s) {
