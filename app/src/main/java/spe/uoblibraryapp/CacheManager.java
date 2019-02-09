@@ -31,7 +31,7 @@ public class CacheManager {
 
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(dateAccessed);
-        cal.add(Calendar.MINUTE, 10);
+        cal.add(Calendar.MINUTE, Constants.Cache.cacheExpiryTime);
         return cal.getTime().before(new Date());
     }
 
