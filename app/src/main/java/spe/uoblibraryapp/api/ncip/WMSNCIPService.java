@@ -127,6 +127,7 @@ public class WMSNCIPService extends JobIntentService {
     }
 
     private WMSUserProfile parseUserProfileResponse(String xml) throws WMSException, WMSParseException {
+        Log.e(TAG, xml);
         WMSResponse response = new WMSNCIPResponse(xml);
 
         if (response.didFail()) {
