@@ -49,8 +49,6 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
         textViewAuthor.setText(author);
 
 
-
-
         if (overdue) {
             textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorOverdue));
             textViewStatus.setText("Overdue");
