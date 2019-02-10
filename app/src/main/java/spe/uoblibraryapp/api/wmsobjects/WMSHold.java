@@ -29,7 +29,6 @@ public class WMSHold {
 
     WMSHold(WMSNCIPElement elemHolder) throws WMSParseException {
 
-        // TODO: Run some checks on elem to ensure it is correct and then extract the data.
         Node element = elemHolder.getElem();
 
         if (!element.getNodeName().equals("ns1:RequestedItem")) {
@@ -206,10 +205,8 @@ public class WMSHold {
         return this.needBeforeDate;
     }
 
-    //TODO: Implement collection state getter
     public Boolean isReadyToCollect() {
-        return this.requestStatusType.equals("Available For Pickup");
-//        return true;
+        return "Available For Pickup".equals(this.requestStatusType);
     }
 
 }

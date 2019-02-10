@@ -40,7 +40,6 @@ public class WMSBook {
      * @param bookId The OCLC number for a book
      */
     public WMSBook(String bookId){
-         // TODO: Use search service to find the book details and setup object.
         if (bookId.equals("1050042221")){
             title = "Pevsner's architectural glossary";
             publisher = "New Haven, Conn. Yale University Press 2016";

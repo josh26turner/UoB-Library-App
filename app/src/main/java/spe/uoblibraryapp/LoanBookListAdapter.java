@@ -45,9 +45,6 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
         TextView textViewAuthor = convertView.findViewById(R.id.txtAuthor);
         TextView textViewStatus = convertView.findViewById(R.id.txtStatus);
 
-//        if (getItem(position).textViewSetNeeded()) {
-//            getItem(position).setIsRenewableTextView(textViewStatus, mContext);
-//        }
         textViewTitle.setText(title);
         textViewAuthor.setText(author);
 

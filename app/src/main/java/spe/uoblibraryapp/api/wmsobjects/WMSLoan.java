@@ -13,6 +13,7 @@ import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -33,6 +34,7 @@ import spe.uoblibraryapp.Constants;
 import spe.uoblibraryapp.FragmentLoans;
 import spe.uoblibraryapp.LoanBookListAdapter;
 import spe.uoblibraryapp.R;
+import spe.uoblibraryapp.api.XMLParser;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -77,10 +79,6 @@ public class WMSLoan {
         } catch (ParseException e){
             throw new WMSParseException(e.getMessage());
         }
-
-        // TODO make WMS Availability request to check the status of the book.
-        // TODO Can a standard user use the availability service
-        // If so then can we join the two keys so the user only has to authenticate once? Ask David.
     }
 
 
@@ -96,7 +94,7 @@ public class WMSLoan {
         this.renewalCount = 0;
         this.reminderLevel = 0;
         this.mediumType = "Book";
-        this.isRenewable = true;
+        this.isRenewable = false;
     }
 
 
@@ -287,8 +285,9 @@ public class WMSLoan {
             boolean result;
             try{
                 String response = future.get(30, TimeUnit.SECONDS);
+                result = parseResponse(response);
                 // parse response
-                result = true;
+//                result = true;
                 Log.d(TAG, "book request for " + getBook().getBookId());
             } catch (InterruptedException e){
                 Log.d(TAG , "Iterrupt for " + getBook().getBookId());
@@ -308,6 +307,36 @@ public class WMSLoan {
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
             WMSLoan.this.setIsRenewable(result);
+        }
+
+        private Boolean parseResponse(String xml){
+            try {
+                Document doc = XMLParser.parse(xml);
+                NodeList itemIdList = doc.getElementsByTagName("itemId");
+                NodeList renewableList = doc.getElementsByTagName("renewable");
+                if(itemIdList.getLength() == 1){
+                    Node renewableNode = renewableList.item(0);
+                    Node value = renewableNode.getAttributes().getNamedItem("value");
+                    Log.e(TAG, "value: " + value.getNodeValue());
+                    return value.getNodeValue().equals("1");
+                }
+                for (int i=0; i<itemIdList.getLength(); i++){
+                    Node node = itemIdList.item(i);
+                    Log.e(TAG, node.getTextContent());
+                    Log.e(TAG, itemId);
+                    if (node.getTextContent().equals(itemId)){
+                        Node renewableNode = renewableList.item(i);
+                        Node value = renewableNode.getAttributes().getNamedItem("value");
+                        Log.e(TAG, "value: " + value.getNodeValue());
+                        return value.getNodeValue().equals("1");
+                    }
+                    Log.e(TAG, node.getNodeName());
+                }
+
+            } catch (Exception ex){
+                ex.printStackTrace();
+            }
+            return false;
         }
     }
 

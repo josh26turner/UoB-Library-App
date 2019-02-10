@@ -32,15 +32,6 @@ public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
     }
 
     /**
-     * A test to ensure that an empty user profile has no fines.
-     */
-    @Test
-    public void testEmptyUserProfileHasNoFines() {
-        WMSUserProfile userProfile = createBlankUserProfile();
-        assertEquals("Fines are not empty for a blank UserProfile",0, userProfile.getFines().size());
-    }
-
-    /**
      * A test to ensure that an empty user profile has no holds.
      */
     @Test
@@ -72,15 +63,6 @@ public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
     public void test1LoanNoFinesNoHoldsUserProfileHas1Loan() {
         WMSUserProfile userProfile = createUserProfile1LoanNoFinesNoHolds();
         assertEquals("Number of loans do not match",1, userProfile.getLoans().size());
-    }
-
-    /**
-     * A test to ensure that the user profile has no fines.
-     */
-    @Test
-    public void test1LoanNoFinesNoHoldsUserProfileHasNoFines() {
-        WMSUserProfile userProfile = createUserProfile1LoanNoFinesNoHolds();
-        assertEquals("Fines are not empty for a blank UserProfile",0, userProfile.getFines().size());
     }
 
     /**
@@ -118,15 +100,6 @@ public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
     }
 
     /**
-     * A test to ensure that the user profile has no fines.
-     */
-    @Test
-    public void test2LoansNoFines1HoldUserProfileHasNoFines() {
-        WMSUserProfile userProfile = createUserProfile2LoansNoFines1Hold();
-        assertEquals("Fines are not empty for a blank UserProfile",0, userProfile.getFines().size());
-    }
-
-    /**
      * A test to ensure that the user profile has no holds.
      */
     @Test
@@ -134,10 +107,6 @@ public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
         WMSUserProfile userProfile = createUserProfile2LoansNoFines1Hold();
         assertEquals( "Number of holds do not match",1, userProfile.getOnHold().size());
     }
-
-
-
-    // TODO: Add tests for Fines when we know how to parse them.
 
 
 
