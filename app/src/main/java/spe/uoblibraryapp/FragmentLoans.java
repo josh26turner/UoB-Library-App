@@ -16,33 +16,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import spe.uoblibraryapp.api.WMSException;
-import spe.uoblibraryapp.api.WMSResponse;
-import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
-import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
-import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 
@@ -51,6 +41,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     private View view;
     private MyBroadCastReceiver myBroadCastReceiver;
     private CacheManager cacheManager;
+    public static ArrayAdapter listViewAdapter;
     private enum sort{ AZ, ZA, dueDateAZ, dueDateZA }
     private sort currentSort = sort.AZ;
     public List<WMSLoan> loanList;
@@ -68,9 +59,15 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
         swipeRefreshLoans.setOnRefreshListener(() -> {
             // Pull to Refresh list
-            swipeRefreshLoans.setRefreshing(true);
-            Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
-            WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
+
+            // Avoids a double refresh
+            if (!cacheManager.getRefreshing()){
+                cacheManager.setRefreshing(true);
+                swipeRefreshLoans.setRefreshing(true);
+                Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
+                WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
+            }
+
         });
 
 
@@ -127,10 +124,13 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         super.onResume();
         registerMyReceiver();
         if (cacheManager.isExpired()) {
-            SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
-            swipeRefreshLoans.setRefreshing(true);
-            Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
-            WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
+            if(!cacheManager.getRefreshing()) {
+                cacheManager.setRefreshing(true);
+                SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
+                swipeRefreshLoans.setRefreshing(true);
+                Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
+                WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
+            }
         } else {
             fillListView(cacheManager.getUserProfile());
         }
@@ -192,8 +192,10 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
 
         loanList = bookList;
         LoanBookListAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
+        ArrayAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
         mListView.setAdapter(adapter);
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
+        listViewAdapter = adapter;
     }
 
 
@@ -223,6 +225,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         try {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Constants.IntentActions.USER_PROFILE_RESPONSE);
+            intentFilter.addAction(Constants.IntentActions.LOOKUP_USER_ERROR);
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver, intentFilter);
             Log.d(TAG, "Receiver Registered");
         } catch (Exception ex) {
@@ -236,40 +239,22 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(myBroadCastReceiver);
     }
 
-    private WMSUserProfile parseUserProfileResponse(String xml) throws WMSException, WMSParseException {
-        WMSResponse response = new WMSNCIPResponse(xml);
-
-        if (response.didFail()) {
-            throw new WMSException("There was an error retrieving the User Profile");
-        }
-        Document doc;
-        try {
-            doc = response.parse();
-        } catch (IOException | SAXException | ParserConfigurationException e) {
-            throw new WMSException("There was an error Parsing the WMS response");
-        }
-        Node node = doc.getElementsByTagName("ns1:LookupUserResponse").item(0);
-        return new WMSUserProfile(new WMSNCIPElement(node));
-    }
-
-
     class MyBroadCastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
                 Log.d(TAG, "onReceive() called");
-
-                String xml = intent.getStringExtra("xml");
-
-                WMSUserProfile userProfile = parseUserProfileResponse(xml);
-
-                fillListView(userProfile);
-
+                if (Constants.IntentActions.USER_PROFILE_RESPONSE.equals(intent.getAction())){
+                    WMSUserProfile userProfile = cacheManager.getUserProfile();
+                    fillListView(userProfile);
+                } else {
+                    Toast toast = Toast.makeText(getContext(), "Refresh Failed",Toast.LENGTH_LONG);
+                    toast.show();
+                }
 
                 SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh);
                 swipeRefreshLoans.setRefreshing(false);
-
-                cacheManager.setUserProfile(userProfile);
+                cacheManager.setRefreshing(false);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

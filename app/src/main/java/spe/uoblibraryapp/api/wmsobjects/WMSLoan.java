@@ -1,15 +1,41 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
+import spe.uoblibraryapp.Constants;
+import spe.uoblibraryapp.FragmentLoans;
+import spe.uoblibraryapp.LoanBookListAdapter;
+import spe.uoblibraryapp.R;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -26,7 +52,10 @@ public class WMSLoan {
     private Integer reminderLevel;
     private String mediumType;
     private Boolean isRenewable;
+    private TextView isRenewableTextView;
+    private Context isRenewableTextViewContext;
 
+    private String TAG = "WMSBook";
     /**
      * Constructor
      * @param elemHolder This contains the node information
@@ -68,7 +97,6 @@ public class WMSLoan {
         this.reminderLevel = 0;
         this.mediumType = "Book";
         this.isRenewable = true;
-
     }
 
 
@@ -207,14 +235,22 @@ public class WMSLoan {
         return this.mediumType;
     }
 
+    public Boolean getRenewable() {
+        return isRenewable;
+    }
+
+    public void setIsRenewable(Boolean isRenewable){
+        this.isRenewable = isRenewable;
+        Log.e(TAG, "set renewable: " + getBook().getBookId());
+        FragmentLoans.listViewAdapter.notifyDataSetChanged();
+    }
 
     /**
      * Gets renewal status, if the book can be renewed
      * @return if can be renewed
      */
-    public Boolean getIsRenewable() {
-        return false;
-//        return this.isRenewable;
+    public String getRenewableStatus() {
+        return "Fetching...";
     }
 
     public Boolean isOverdue() {
@@ -223,4 +259,56 @@ public class WMSLoan {
         cal.add(Calendar.DATE, 1);
         return cal.getTime().before(new Date());
     }
+
+    public void fetchIsRenewable(Context context){
+        isRenewableTextViewContext = context;
+        new GetRenewStatus().execute();
+    }
+
+
+    private class GetRenewStatus extends AsyncTask<URL, Integer, Boolean> {
+        @Override
+        protected Boolean doInBackground(URL... urls) {
+            RequestQueue requestQueue = Volley.newRequestQueue(isRenewableTextViewContext);
+            SharedPreferences prefs = isRenewableTextViewContext.getSharedPreferences("userDetails", MODE_PRIVATE);
+            String accessToken = prefs.getString("authorisationToken", "");
+            String url = String.format(Constants.APIUrls.bookAvailability, getBook().getBookId());
+
+            RequestFuture<String> future = RequestFuture.newFuture();
+            StringRequest request = new StringRequest(Request.Method.GET, url, future, future) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + accessToken);
+                    return headers;
+                }
+            };
+            requestQueue.add(request);
+            boolean result;
+            try{
+                String response = future.get(30, TimeUnit.SECONDS);
+                // parse response
+                result = true;
+                Log.d(TAG, "book request for " + getBook().getBookId());
+            } catch (InterruptedException e){
+                Log.d(TAG , "Iterrupt for " + getBook().getBookId());
+                result = false;
+            } catch (ExecutionException e){
+                Log.d(TAG , "Execution for " + getBook().getBookId());
+                result = false;
+            } catch (TimeoutException e){
+                Log.d(TAG , "Timeout for " + getBook().getBookId());
+                result = false;
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            WMSLoan.this.setIsRenewable(result);
+        }
+    }
+
 }
