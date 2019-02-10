@@ -1,7 +1,11 @@
 package spe.uoblibraryapp;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -13,6 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -66,10 +72,12 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             }
         });
 
-
+        ViewDialog alert = new ViewDialog();
+        alert.showDialog(getActivity(), "Book details go here, he is a very successful writer!");
 
         return view;
     }
+
 
     @Override
     public void onResume() {
@@ -174,5 +182,31 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             }
         }
     }
+
+    //TODO: Document this ViewDialog.
+    public class ViewDialog {
+
+        public void showDialog(Activity activity, String msg){
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.dialog_reservations_layout);
+
+            TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
+            text.setText(msg);
+
+            Button dialogButton = (Button) dialog.findViewById(R.id.btn_dialog);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+
+        }
+    }
+
 
 }

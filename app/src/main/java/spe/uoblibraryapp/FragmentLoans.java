@@ -26,9 +26,13 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -154,7 +158,6 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing
-
         if (bookList.isEmpty()) return; //TODO: TEST ME.
 
         switch (currentSort) {
@@ -176,10 +179,28 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
 
         LoanBookListAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
         mListView.setAdapter(adapter);
-
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
     }
 
+
+    //TODO: Send to Jerry.
+    public int daysBetween(Date d1, Date d2){
+        return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+    }
+    //TODO: Send to Jerry.
+    public int getLeastDueBook(List<WMSLoan> bookList){
+        if (bookList.isEmpty()) return -1;
+        Collections.sort(bookList, new customComparatorDueDate());
+        bookList.get(0).getDueDate();
+        Date date = new Date();
+
+
+        int days = daysBetween(bookList.get(0).getDueDate(), date);
+
+       // long diff = (Calendar.getInstance().getTime()) - Date.parse(bookList.get(0).getDueDate()))
+       // long diffDays = diff / (24 * 60 * 60 * 1000);
+        return days;
+    }
 
     /**
      * This method is responsible to register an action to BroadCastReceiver
@@ -189,7 +210,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(IntentActions.USER_PROFILE_RESPONSE);
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver, intentFilter);
-            Log.d(TAG, "Reciever Registered");
+            Log.d(TAG, "Receiver Registered");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

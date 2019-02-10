@@ -66,6 +66,7 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //TODO: LOCATE ME, this is where the magical toast occurs
                 Toast.makeText(getContext(), title, Toast.LENGTH_SHORT).show();
             }
         });
