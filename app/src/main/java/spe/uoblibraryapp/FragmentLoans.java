@@ -1,5 +1,7 @@
 package spe.uoblibraryapp;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +16,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -43,6 +47,7 @@ import spe.uoblibraryapp.api.WMSResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
+import spe.uoblibraryapp.api.wmsobjects.WMSHold;
 import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
@@ -55,6 +60,8 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     private CacheManager cacheManager;
     private enum sort{ AZ, ZA, dueDateAZ, dueDateZA }
     private sort currentSort = sort.AZ;
+    public List<WMSLoan> loanList;
+    ListView mListView;
 
     @Nullable
     @Override
@@ -109,6 +116,16 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
+        });
+
+
+        mListView=view.findViewById(R.id.listview);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                //TODO: MODIFY ME TO SHOW ACTUAL VALUES.
+                FragmentLoans.ViewDialog alert = new FragmentLoans.ViewDialog();
+                alert.showDialog(getActivity(), loanList.get(position)); }
         });
 
         return view;
@@ -179,6 +196,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
                 break;
         }
 
+        loanList = bookList;
         LoanBookListAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
         mListView.setAdapter(adapter);
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
@@ -216,7 +234,6 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 
     @Override
@@ -262,6 +279,23 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    //TODO: Document this ViewDialog.
+    public class ViewDialog {
+
+        public void showDialog(Activity activity, WMSLoan loan){
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.setContentView(R.layout.dialog_loans_layout);
+
+            ((TextView) dialog.findViewById(R.id.txt_bookname)).setText(loan.getBook().getTitle());
+            ((TextView) dialog.findViewById(R.id.txt_author)).setText(loan.getBook().getAuthor());
+
+            dialog.show();
         }
     }
 

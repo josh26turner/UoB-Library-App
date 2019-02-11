@@ -49,9 +49,6 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
         textViewTitle.setText(title);
         textViewAuthor.setText(author);
 
-
-
-
         if (overdue) {
             textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorOverdue));
             textViewStatus.setText("Overdue");
@@ -62,15 +59,6 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
             textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorLoan));
             textViewStatus.setText("Will renew");
         }
-
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: LOCATE ME, this is where the magical toast occurs
-                Toast.makeText(getContext(), title, Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
         return convertView;
     }
