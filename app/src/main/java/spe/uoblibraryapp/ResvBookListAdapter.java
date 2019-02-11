@@ -1,11 +1,17 @@
 package spe.uoblibraryapp;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,8 +56,8 @@ public class ResvBookListAdapter extends ArrayAdapter<WMSHold> {
         res_len.setText(len.toString());
         res_loc.setText(loc);
 
-
         res_ready.setText(getItem(position).getRequestStatusType());
+
         if (ready == Boolean.TRUE) {
 //            res_ready.setText("Ready for Collection");
             res_ready.setTextColor(ContextCompat.getColor(getContext(), R.color.colorLoan));
@@ -60,16 +66,11 @@ public class ResvBookListAdapter extends ArrayAdapter<WMSHold> {
             res_ready.setTextColor(ContextCompat.getColor(getContext(), R.color.colorReservation));
         }
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), title, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
         return convertView;
     }
+
+
+
 
 
 }

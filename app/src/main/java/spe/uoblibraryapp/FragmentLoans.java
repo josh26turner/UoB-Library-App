@@ -149,6 +149,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     public void fillListView(WMSUserProfile userProfile) {
         ListView mListView = view.findViewById(R.id.listview);
         List<WMSLoan> bookList = new ArrayList<>(userProfile.getLoans());
+
         bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing
@@ -158,6 +159,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing
+
         if (bookList.isEmpty()) return; //TODO: TEST ME.
 
         switch (currentSort) {

@@ -18,12 +18,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import android.widget.AdapterView.OnItemClickListener;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -49,6 +54,8 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
     private MyBroadCastReceiver myBroadCastReceiver;
     View view;
     private CacheManager cacheManager;
+    public List<WMSHold> resvlist;
+    ListView mListView;
 
 
     @Nullable
@@ -72,12 +79,19 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             }
         });
 
-        ViewDialog alert = new ViewDialog();
-        alert.showDialog(getActivity(), "Book details go here, he is a very successful writer!");
+   mListView=view.findViewById(R.id.listview2);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                //TODO: MODIFY ME TO SHOW ACTUAL VALUES.
+                ViewDialog alert = new ViewDialog();
+                alert.showDialog(getActivity(), resvlist.get(position)); }
+        });
+
+
 
         return view;
     }
-
 
     @Override
     public void onResume() {
@@ -96,11 +110,8 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
 
     }
 
-
     public void fillListView(WMSUserProfile userProfile) {
-        ListView mListView = view.findViewById(R.id.listview2);
         List<WMSHold> bookList = new ArrayList<>(userProfile.getOnHold());
-
         bookList.add(new WMSHold());
         bookList.add(new WMSHold());
         bookList.add(new WMSHold());
@@ -110,17 +121,14 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         bookList.add(new WMSHold());
         bookList.add(new WMSHold());
         bookList.add(new WMSHold());
-
+        resvlist=bookList;
         ResvBookListAdapter adapter = new ResvBookListAdapter(getContext(), R.layout.adapter_view_layout_resv, bookList);
         mListView.setAdapter(adapter);
-
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
+
         //updateDash(userProfile.getLoans());
 
     }
-
-
-
 
     /**
      * This method is responsible to register an action to BroadCastReceiver
@@ -183,20 +191,23 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         }
     }
 
+
+
     //TODO: Document this ViewDialog.
     public class ViewDialog {
 
-        public void showDialog(Activity activity, String msg){
+        public void showDialog(Activity activity, WMSHold reservation){
             final Dialog dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(true);
             dialog.setContentView(R.layout.dialog_reservations_layout);
 
-            TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
-            text.setText(msg);
+            ((TextView) dialog.findViewById(R.id.txt_pickuplocation)).setText(reservation.getPickupLocation());
+            ((TextView) dialog.findViewById(R.id.txt_bookname)).setText(reservation.getBook().getTitle());
+            ((TextView) dialog.findViewById(R.id.txt_author)).setText(reservation.getBook().getAuthor());
 
-            Button dialogButton = (Button) dialog.findViewById(R.id.btn_dialog);
-            dialogButton.setOnClickListener(new View.OnClickListener() {
+            ((Button) dialog.findViewById(R.id.btn_dialog)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
@@ -204,7 +215,6 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             });
 
             dialog.show();
-
         }
     }
 

@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,27 +13,38 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text_dialog2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/txt_pickuplocation"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginTop="20dp"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="20dp"
-            android:gravity="center_horizontal"
-            android:text="Example Book 1"
+            android:textSize="18sp"
             android:textColor="#ff000000"
-            android:textSize="18sp" />
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal" />
 
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/txt_bookname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/linearlayout"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_horizontal"
+        android:textColor="#ff000000"
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TEXTO"
-        android:id="@+id/text_dialog"
-        android:layout_below="@+id/linearlayout"
+        android:id="@+id/txt_author"
+        android:layout_below="@+id/txt_bookname"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
@@ -43,15 +55,17 @@
         android:gravity="center_horizontal" />
 
     <Button
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:text="OK"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="X"
         android:id="@+id/btn_dialog"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_below="@+id/text_dialog"
+        android:layout_below="@+id/txt_author"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/ic_menu_share"
+        android:background="@drawable/btn_circle"
         android:layout_centerHorizontal="true"
+        android:textSize="15sp"
         android:textColor="#ffffffff" />
 
 </RelativeLayout>
