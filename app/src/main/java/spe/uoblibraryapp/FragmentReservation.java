@@ -211,6 +211,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                 @Override
                 public void onClick(View v) {
                     //TODO: Add cancel reservation function here
+                    Toast.makeText(getContext(), "Functionality coming soon, please use the UoB Library Website for now.", Toast.LENGTH_LONG).show();
                 }
             });
 
