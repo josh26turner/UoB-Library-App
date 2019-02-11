@@ -42,8 +42,6 @@ public class ActivityScanNFC extends AppCompatActivity {
             startActivity(i);
             finish();
         } else {
-            txtContentSysInfo = findViewById(R.id.txtContentSysInfo);
-            txtBarcode = findViewById(R.id.Barcode);
 
             Intent pnd = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0, pnd, 0);
