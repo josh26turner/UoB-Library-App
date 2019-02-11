@@ -32,7 +32,7 @@ public class NFC {
 
         nfcTag.connect();
 
-        //removeSecureSetting(); REMOVE THE `//` AT THE START OF THE LINE WHEN RELEASING!!!!!
+        // removeSecureSetting(); // REMOVE THE `//` AT THE START OF THE LINE WHEN RELEASING!!!!!
         userBlocks = readMultipleBlocks(5);
         systemInformation = getSystemInfo();
 
