@@ -6,66 +6,82 @@
     android:background="#ffffffff">
 
     <LinearLayout
-        android:id="@+id/linearlayout"
+        android:id="@+id/dialog_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/gradient_cyan"
+        android:background="@drawable/gradient_red"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/dialog_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txt_pickuplocation"
+            android:text="Reservation Detail"
+            android:textColor="#FFF"
+            android:fontFamily="@font/sf_display_medium"
+            android:layout_gravity="center_horizontal|center_vertical"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
-            android:layout_marginBottom="20dp"
-            android:textSize="18sp"
-            android:textColor="#ff000000"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal" />
+            android:layout_marginBottom="12dp"
+            android:textSize="22dp"/>
 
 
     </LinearLayout>
-    <TextView
-        android:id="@+id/txt_bookname"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/linearlayout"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_horizontal"
-        android:textColor="#ff000000"
-        android:textSize="18sp" />
+        android:orientation="vertical"
+        android:layout_below="@id/dialog_top">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txt_author"
-        android:layout_below="@+id/txt_bookname"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="20dp"
-        android:textSize="18sp"
-        android:textColor="#ff000000"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal" />
+        <TextView
+            android:id="@+id/txt_bookname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ff000000"
+            android:textSize="20dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/sf_display_medium"
+            android:gravity="center"/>
 
-    <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:text="X"
-        android:id="@+id/btn_dialog"
-        android:gravity="center_vertical|center_horizontal"
-        android:layout_below="@+id/txt_author"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/btn_circle"
-        android:layout_centerHorizontal="true"
-        android:textSize="15sp"
-        android:textColor="#ffffffff" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_author"
+            android:textSize="16dp"
+            android:textColor="#ff000000"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/sf_display_mediumitalic"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_pickuplocation"
+            android:textSize="16dp"
+            android:textColor="#B7000000"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="2dp"
+            android:fontFamily="@font/sf_display_medium"
+            android:gravity="center"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="Cancel Reservation"
+            android:id="@+id/btn_dialog"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="17sp"
+            android:shadowColor="#FFF"
+            android:textColor="@color/colorAccent"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:background="#FFF"/>
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>
