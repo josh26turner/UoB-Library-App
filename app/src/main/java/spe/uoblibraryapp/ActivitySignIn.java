@@ -1,6 +1,8 @@
 package spe.uoblibraryapp;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -57,6 +59,8 @@ public class ActivitySignIn extends SimpleActivity {
 
         mywebview.setInitialScale(1);
         mywebview.loadUrl("https://authn.sd00.worldcat.org/oauth2/authorizeCode?client_id=hNzXT2bmWYLwmWCfMDC2bAC9U1xJWBQytemHHKwzCF2YsJFnRw3isuML5E8PrK0F48OU8ENiIVzwcDWA&authenticatingInstitutionId=132607&contextInstitutionId=132607&redirect_uri=uoblibrary%3A%2F%2Fauthenticate&response_type=token&scope=WMS_NCIP%20refresh_token");
+
+        Activity myActivity = this;
         mywebview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -69,7 +73,9 @@ public class ActivitySignIn extends SimpleActivity {
                         processAuthorisationString(URL);
                          // Successful
                         Toast.makeText(getApplicationContext(), "Sign In Successful", Toast.LENGTH_SHORT).show();
-//                        finish();
+                        Intent in = new Intent(myActivity, ActivityHome.class);
+                        startActivity(in);
+                        finish();
                         return true;
                     } else {
 

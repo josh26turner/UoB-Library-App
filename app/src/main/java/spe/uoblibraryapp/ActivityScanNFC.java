@@ -1,5 +1,7 @@
 package spe.uoblibraryapp;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
@@ -8,13 +10,19 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 
 import spe.uoblibraryapp.api.IntentActions;
+import spe.uoblibraryapp.api.ncip.AuthService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
+import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 import spe.uoblibraryapp.nfc.BarcodeException;
 import spe.uoblibraryapp.nfc.IntentException;
 import spe.uoblibraryapp.nfc.NFC;
@@ -49,6 +57,19 @@ public class ActivityScanNFC extends AppCompatActivity {
             techList = new String[][]{ new String[]{NfcV.class.getName()} };
 
         }
+        Activity myAct = this;
+
+        Button butt = findViewById(R.id.btnProblemReport2);
+        butt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityScanNFC.ViewDialog alert = new ActivityScanNFC.ViewDialog();
+                //TODO: Fix me, this call for showDialog needs changing.
+                alert.showDialog(myAct);
+            }
+        });
+
+
     }
 
     /**
@@ -133,5 +154,19 @@ public class ActivityScanNFC extends AppCompatActivity {
             stringBuilder.append(buffer);
         }
         return stringBuilder.toString().toUpperCase().replace('X','x');
+    }
+
+    //TODO: Document this ViewDialog.
+    public class ViewDialog {
+
+        public void showDialog(Activity activity){
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.setContentView(R.layout.dialog_problems_scanning_layout);
+
+            dialog.show();
+        }
     }
 }

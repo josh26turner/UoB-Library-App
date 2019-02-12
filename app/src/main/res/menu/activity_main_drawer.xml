@@ -4,11 +4,15 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_dash"
-            android:icon="@drawable/ic_outline_library_books_24px"
-            android:title="Dashboard" />
+            android:icon="@drawable/ic_baseline_dashboard_24px"
+            android:title="@string/Dashboard" />
 
+    </group>
+
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_current_loans_reservations"
             android:icon="@drawable/ic_outline_library_books_24px"
