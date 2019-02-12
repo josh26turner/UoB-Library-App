@@ -1,11 +1,9 @@
 package spe.uoblibraryapp;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -24,11 +22,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import android.widget.AdapterView.OnItemClickListener;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -44,7 +39,6 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.api.wmsobjects.WMSHold;
-import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
@@ -52,10 +46,10 @@ import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 public class FragmentReservation extends android.support.v4.app.Fragment {
     private static final String TAG = "ReservationFragment";
     private MyBroadCastReceiver myBroadCastReceiver;
-    View view;
+    private View view;
     private CacheManager cacheManager;
     public List<WMSHold> resvlist;
-    ListView mListView;
+    private ListView mListView;
 
 
     @Nullable

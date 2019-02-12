@@ -71,7 +71,7 @@ public class ActivitySignIn extends SimpleActivity {
                     // TODO need to change this... never actually checks if the url received is the url expected.
                     if (!isAuthorisationDenied(URL)) {
                         processAuthorisationString(URL);
-                         // Successful
+                        // Successful
                         Toast.makeText(getApplicationContext(), "Sign In Successful", Toast.LENGTH_SHORT).show();
                         Intent in = new Intent(myActivity, ActivityHome.class);
                         startActivity(in);

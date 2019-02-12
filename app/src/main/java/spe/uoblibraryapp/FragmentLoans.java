@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,10 +28,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -47,7 +42,6 @@ import spe.uoblibraryapp.api.WMSResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
-import spe.uoblibraryapp.api.wmsobjects.WMSHold;
 import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
@@ -55,13 +49,13 @@ import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 public class FragmentLoans extends android.support.v4.app.Fragment {
     private static final String TAG = "LoansFragment";
-    View view;
+    private View view;
     private MyBroadCastReceiver myBroadCastReceiver;
     private CacheManager cacheManager;
     private enum sort{ AZ, ZA, dueDateAZ, dueDateZA }
     private sort currentSort = sort.AZ;
     public List<WMSLoan> loanList;
-    ListView mListView;
+    private ListView mListView;
 
     @Nullable
     @Override

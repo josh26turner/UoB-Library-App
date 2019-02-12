@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,9 +19,7 @@ import android.widget.Toast;
 import java.io.IOException;
 
 import spe.uoblibraryapp.api.IntentActions;
-import spe.uoblibraryapp.api.ncip.AuthService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
-import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 import spe.uoblibraryapp.nfc.BarcodeException;
 import spe.uoblibraryapp.nfc.IntentException;
 import spe.uoblibraryapp.nfc.NFC;

@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.w3c.dom.Document;
@@ -21,7 +20,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -33,7 +31,6 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.api.wmsobjects.WMSHold;
-import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
