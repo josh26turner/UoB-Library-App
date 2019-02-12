@@ -38,8 +38,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
     private static final String TAG = "DashboardFragment";
     private FragmentDashboard.MyBroadCastReceiver myBroadCastReceiver;
     private CacheManager cacheManager;
-
-    View view;
+    private View view;
 
     @Nullable
     @Override
@@ -99,8 +98,8 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
             WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
         } else {
-            updateDash_Loan();
-            updateDash_Resv();
+            updateDashboardLoans();
+            updateDashboardReservations();
         }
     }
 
@@ -121,7 +120,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         return new WMSUserProfile(new WMSNCIPElement(node));
     }
 
-    private void updateDash_Loan(){
+    private void updateDashboardLoans(){
         //Update Dashboard
         TextView loan_dash_description = view.findViewById(R.id.loan_dash_description);
         loan_dash_description.setText("You have borrowed "
@@ -131,7 +130,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
                 + ".");
     }
 
-    private void updateDash_Resv(){
+    private void updateDashboardReservations(){
         //Updating Reservation Dashboard
         Log.d(TAG, "Updating Reservation Dash");
         TextView tv = view.findViewById(R.id.resv_dash_description);
@@ -163,8 +162,8 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
 
                 WMSUserProfile userProfile = parseUserProfileResponse(xml);
 
-                updateDash_Loan();
-                updateDash_Resv();
+                updateDashboardLoans();
+                updateDashboardReservations();
 
                 SwipeRefreshLayout swipeRefresh = view.findViewById(R.id.swiperefresh_dash);
                 swipeRefresh.setRefreshing(false);

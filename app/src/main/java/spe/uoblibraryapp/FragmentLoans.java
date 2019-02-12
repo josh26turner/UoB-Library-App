@@ -55,7 +55,6 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     private enum sort{ AZ, ZA, dueDateAZ, dueDateZA }
     private sort currentSort = sort.AZ;
     public List<WMSLoan> loanList;
-    private ListView mListView;
 
     @Nullable
     @Override
@@ -112,8 +111,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
             }
         });
 
-
-        mListView=view.findViewById(R.id.listview);
+        ListView mListView=view.findViewById(R.id.listview);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -187,6 +185,9 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
             case dueDateZA:
                 Collections.sort(bookList, new customComparatorDueDate());
                 Collections.reverse(bookList);
+                break;
+            default:
+                //this is not possible, added for the automatic code review.
                 break;
         }
 
