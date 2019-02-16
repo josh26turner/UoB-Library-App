@@ -72,7 +72,7 @@ public class ActivitySignIn extends SimpleActivity {
                         // Successful
                         Toast.makeText(getApplicationContext(), "Sign In Successful", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), ActivityHome.class));
-                        finish()
+                        finish();
                         return true;
                     } else {
 
