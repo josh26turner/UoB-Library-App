@@ -85,8 +85,8 @@ public class ActivityScanNFC extends AppCompatActivity {
 
             // TODO Denis -> Change screen to show the book has been scanned and is now loading.
 
-            txtContentSysInfo.setText(sysInfo.substring(24, 26));
-            txtBarcode.setText(nfc.getBarcode());
+//            txtContentSysInfo.setText(sysInfo.substring(24, 26));
+//            txtBarcode.setText(nfc.getBarcode());
 
             // TODO End
 
