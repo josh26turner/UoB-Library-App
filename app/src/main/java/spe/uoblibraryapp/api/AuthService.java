@@ -1,4 +1,4 @@
-package spe.uoblibraryapp.api.ncip;
+package spe.uoblibraryapp.api;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,11 +28,13 @@ import java.util.Locale;
 
 import spe.uoblibraryapp.ActivitySignIn;
 import spe.uoblibraryapp.CacheManager;
+import spe.uoblibraryapp.Constants;
 import spe.uoblibraryapp.SplashScreen;
-import spe.uoblibraryapp.api.IntentActions;
+import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 
 public class AuthService extends JobIntentService {
-    String TAG = "AuthService";
+    private final String TAG = "AuthService";
+    public final static Integer jobId = 1001;
 
     private SharedPreferences tokens;
 
@@ -44,19 +46,19 @@ public class AuthService extends JobIntentService {
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
-        if (IntentActions.ACCESS_TOKEN_NEEDED.equals(intent.getAction())) {
+        if (Constants.IntentActions.ACCESS_TOKEN_NEEDED.equals(intent.getAction())) {
             try {
                 getAccessToken();
             } catch (Exception e) {
                 Log.e(TAG, "Sending auth error", e);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(IntentActions.AUTH_ERROR));
+                LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Constants.IntentActions.AUTH_ERROR));
             }
-        } else if (IntentActions.AUTH_LOGOUT.equals(intent.getAction())) {
+        } else if (Constants.IntentActions.AUTH_LOGOUT.equals(intent.getAction())) {
             try {
                 logout();
             } catch (Exception e) {
                 Log.e(TAG, "Sending auth error", e);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(IntentActions.AUTH_ERROR));
+                LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Constants.IntentActions.AUTH_ERROR));
             }
         }
     }
@@ -93,7 +95,7 @@ public class AuthService extends JobIntentService {
         } else {
             accessToken = tokens.getString("authorisationToken", "");
 
-            Intent accessTokenGeneratedIntent = new Intent(IntentActions.ACCESS_TOKEN_GENERATED);
+            Intent accessTokenGeneratedIntent = new Intent(Constants.IntentActions.ACCESS_TOKEN_GENERATED);
             accessTokenGeneratedIntent.putExtra("token", accessToken);
             WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, accessTokenGeneratedIntent);
             Log.d(TAG, "Access Token Broadcasted");
@@ -128,7 +130,7 @@ public class AuthService extends JobIntentService {
                     tokens.edit().putString("authorisationTokenExpiry", accessTokenExpiry).apply();
 
 
-                    Intent accessTokenGeneratedIntent = new Intent(IntentActions.ACCESS_TOKEN_GENERATED);
+                    Intent accessTokenGeneratedIntent = new Intent(Constants.IntentActions.ACCESS_TOKEN_GENERATED);
                     accessTokenGeneratedIntent.putExtra("token", accessToken);
                     WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, accessTokenGeneratedIntent);
 

@@ -32,7 +32,6 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import spe.uoblibraryapp.api.IntentActions;
 import spe.uoblibraryapp.api.WMSException;
 import spe.uoblibraryapp.api.WMSResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
@@ -68,8 +67,8 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             public void onRefresh() {
                 // Pull to Refresh list
                 swipeRefreshResv.setRefreshing(true);
-                Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
-                WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
+                Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
+                WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
             }
         });
 
@@ -95,8 +94,8 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         if (cacheManager.isExpired()) {
             SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh2);
             swipeRefreshResv.setRefreshing(true);
-            Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
-            WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
+            Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
+            WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
         } else {
             fillListView(cacheManager.getUserProfile());
         }
@@ -130,7 +129,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
     private void registerMyReceiver() {
         try {
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(IntentActions.USER_PROFILE_RESPONSE);
+            intentFilter.addAction(Constants.IntentActions.USER_PROFILE_RESPONSE);
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver, intentFilter);
             Log.d(TAG, "Reciever Registered");
         } catch (Exception ex) {

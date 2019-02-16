@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,8 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import spe.uoblibraryapp.api.IntentActions;
-import spe.uoblibraryapp.api.ncip.AuthService;
+import spe.uoblibraryapp.api.AuthService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import stanford.androidlib.SimpleActivity;
 
@@ -125,12 +125,12 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         /*Action bar menu options*/
         if (id == R.id.action_logout) {
             //Action bar logout
-            AuthService.enqueueWork(this, AuthService.class, 1001, new Intent(IntentActions.AUTH_LOGOUT));
+            AuthService.enqueueWork(this, AuthService.class, AuthService.jobId, new Intent(Constants.IntentActions.AUTH_LOGOUT));
             return true;
-        }
-        if (id == R.id.action_refresh) {
-            Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
-            WMSNCIPService.enqueueWork(this, WMSNCIPService.class, 1000, getUserProfileIntent);
+        }else if (id == R.id.action_refresh) {
+            Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
+            WMSNCIPService.enqueueWork(this, WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

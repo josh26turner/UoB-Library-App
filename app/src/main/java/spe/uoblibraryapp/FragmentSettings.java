@@ -11,8 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import spe.uoblibraryapp.api.IntentActions;
-import spe.uoblibraryapp.api.ncip.AuthService;
+import spe.uoblibraryapp.api.AuthService;
 
 public class FragmentSettings extends android.support.v4.app.Fragment {
 
@@ -23,27 +22,12 @@ public class FragmentSettings extends android.support.v4.app.Fragment {
 
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        String[] values = {"Pink", "Green"};
-//        Spinner spinner = v.findViewById(R.id.spinner_theme);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, values);
-        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-//        spinner.setAdapter(adapter);
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            public void onItemSelected(AdapterView<?> parent, View view,
-//                                       int position, long id) {
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
 
         Button butt = v.findViewById(R.id.goto_signin);
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AuthService.enqueueWork(getContext(), AuthService.class, 1001, new Intent(IntentActions.AUTH_LOGOUT));
+                AuthService.enqueueWork(getContext(), AuthService.class, AuthService.jobId, new Intent(Constants.IntentActions.AUTH_LOGOUT));
             }
         });
         return v;

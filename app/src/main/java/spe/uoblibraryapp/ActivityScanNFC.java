@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
-import spe.uoblibraryapp.api.IntentActions;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.nfc.BarcodeException;
 import spe.uoblibraryapp.nfc.IntentException;
@@ -92,7 +91,7 @@ public class ActivityScanNFC extends AppCompatActivity {
 
 
             // Send intent to WMSNCIPService with itemId
-            Intent checkoutIntent = new Intent(IntentActions.CHECKOUT_BOOK);
+            Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
             checkoutIntent.putExtra("itemId", nfc.getBarcode());
             WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
 
