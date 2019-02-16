@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import spe.uoblibraryapp.api.IntentActions;
 import spe.uoblibraryapp.api.WMSException;
 import spe.uoblibraryapp.api.WMSResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
