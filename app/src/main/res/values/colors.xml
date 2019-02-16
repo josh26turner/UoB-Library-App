@@ -8,4 +8,6 @@
     <color name="colorOverdue">#a60039</color>
     <color name="colorReservation">#cc8400</color>
     <color name="colorLoan">#14931d</color>
+
+    <color name="colourCancel">#b54c56</color>
 </resources>

@@ -1,5 +1,7 @@
 package spe.uoblibraryapp;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -39,8 +45,10 @@ import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 public class FragmentReservation extends android.support.v4.app.Fragment {
     private static final String TAG = "ReservationFragment";
     private MyBroadCastReceiver myBroadCastReceiver;
-    View view;
+    private View view;
     private CacheManager cacheManager;
+    public List<WMSHold> resvlist;
+    private ListView mListView;
 
 
     @Nullable
@@ -62,6 +70,15 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                 Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
                 WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
             }
+        });
+
+        mListView=view.findViewById(R.id.listview2);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                //TODO: MODIFY ME TO SHOW ACTUAL VALUES.
+                ViewDialog alert = new ViewDialog();
+                alert.showDialog(getActivity(), resvlist.get(position)); }
         });
 
 
@@ -86,11 +103,8 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
 
     }
 
-
     public void fillListView(WMSUserProfile userProfile) {
-        NonScrollListView mListView = view.findViewById(R.id.listview2);
         List<WMSHold> bookList = new ArrayList<>(userProfile.getOnHold());
-
         bookList.add(new WMSHold());
         bookList.add(new WMSHold());
         bookList.add(new WMSHold());
@@ -100,34 +114,14 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         bookList.add(new WMSHold());
         bookList.add(new WMSHold());
         bookList.add(new WMSHold());
-
+        resvlist=bookList;
         ResvBookListAdapter adapter = new ResvBookListAdapter(getContext(), R.layout.adapter_view_layout_resv, bookList);
         mListView.setAdapter(adapter);
-
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
 
-        //Updating Reservation Dashboard
-        Log.d(TAG, "Updating Reservation Dash");
-        TextView tv = view.findViewById(R.id.resv_dash_description);
-        tv.setText(   "You have "
-                + cacheManager.getUserProfile().getOnHold().size()
-                + " reservations, "
-                + readyCollectCount(cacheManager.getUserProfile())
-                + " of which are ready to collect.");
+        //updateDash(userProfile.getLoans());
+
     }
-
-    public int readyCollectCount(WMSUserProfile profile){
-        int c = 0;
-        int i = 0;
-        List<WMSHold> holds = profile.getOnHold();
-        for(i=0; i < holds.size(); i++){
-            if(holds.get(i).isReadyToCollect())
-                c++;
-        }
-        return c;
-    }
-
-
 
     /**
      * This method is responsible to register an action to BroadCastReceiver
@@ -189,5 +183,34 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             }
         }
     }
+
+
+
+    //TODO: Document this ViewDialog.
+    public class ViewDialog {
+
+        public void showDialog(Activity activity, WMSHold reservation){
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.setContentView(R.layout.dialog_reservations_layout);
+
+            ((TextView) dialog.findViewById(R.id.txt_pickuplocation)).setText(reservation.getPickupLocation());
+            ((TextView) dialog.findViewById(R.id.txt_bookname)).setText(reservation.getBook().getTitle());
+            ((TextView) dialog.findViewById(R.id.txt_author)).setText(reservation.getBook().getAuthor());
+
+            ((Button) dialog.findViewById(R.id.btn_dialog)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO: Add cancel reservation function here
+                    Toast.makeText(getContext(), "Functionality coming soon, please use the UoB Library Website for now.", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            dialog.show();
+        }
+    }
+
 
 }

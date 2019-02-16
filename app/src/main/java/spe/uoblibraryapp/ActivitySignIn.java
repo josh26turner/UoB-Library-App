@@ -1,5 +1,6 @@
 package spe.uoblibraryapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -68,10 +69,10 @@ public class ActivitySignIn extends SimpleActivity {
                     // TODO need to change this... never actually checks if the url received is the url expected.
                     if (!isAuthorisationDenied(URL)) {
                         processAuthorisationString(URL);
-                         // Successful
+                        // Successful
                         Toast.makeText(getApplicationContext(), "Sign In Successful", Toast.LENGTH_SHORT).show();
-//                        finish();
                         startActivity(new Intent(getApplicationContext(), ActivityHome.class));
+                        finish();
                         return true;
                     } else {
 

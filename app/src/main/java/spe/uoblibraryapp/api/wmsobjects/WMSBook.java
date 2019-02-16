@@ -95,8 +95,6 @@ public class WMSBook {
     }
 
 
-
-
     // Getters for UI people
 
     /**

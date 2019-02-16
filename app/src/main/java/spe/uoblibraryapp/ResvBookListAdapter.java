@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -50,8 +49,8 @@ public class ResvBookListAdapter extends ArrayAdapter<WMSHold> {
         res_len.setText(len.toString());
         res_loc.setText(loc);
 
-
         res_ready.setText(getItem(position).getRequestStatusType());
+
         if (ready == Boolean.TRUE) {
 //            res_ready.setText("Ready for Collection");
             res_ready.setTextColor(ContextCompat.getColor(getContext(), R.color.colorLoan));
@@ -60,16 +59,11 @@ public class ResvBookListAdapter extends ArrayAdapter<WMSHold> {
             res_ready.setTextColor(ContextCompat.getColor(getContext(), R.color.colorReservation));
         }
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), title, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
         return convertView;
     }
+
+
+
 
 
 }

@@ -22,6 +22,7 @@
     <!-- Used for login only.-->
     <string name="hint_username">Enter UoB Email Here</string>
     <string name="hint_password">Password</string>
+    <string name="Dashboard">Dashboard</string>
     <!-- END OF SECTION -->
 
     <string-array name="color_array">

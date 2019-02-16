@@ -1,5 +1,7 @@
 package spe.uoblibraryapp;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -26,6 +29,9 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -42,9 +48,12 @@ import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 public class FragmentLoans extends android.support.v4.app.Fragment {
     private static final String TAG = "LoansFragment";
-    View view;
+    private View view;
     private MyBroadCastReceiver myBroadCastReceiver;
     private CacheManager cacheManager;
+    private enum sort{ AZ, ZA, dueDateAZ, dueDateZA }
+    private sort currentSort = sort.AZ;
+    public List<WMSLoan> loanList;
 
     @Nullable
     @Override
@@ -70,19 +79,44 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.loan_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinner.setAdapter(adapter);
+        spinner.setSelected(false);  // Prevents onItemSelected from running during init.
+        spinner.setSelection(0,true);  //read above, do NOT remove.
+
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 Toast toast = Toast.makeText(getContext(), "Sorting by "+ spinner.getSelectedItem().toString(), Toast.LENGTH_SHORT);
                 toast.show();
+
+                if (spinner.getSelectedItemId() == 0) currentSort = sort.AZ;
+                else if (spinner.getSelectedItemId() == 1) currentSort = sort.ZA;
+                else if (spinner.getSelectedItemId() == 2) currentSort = sort.dueDateAZ;
+                else if (spinner.getSelectedItemId() == 3) currentSort = sort.dueDateZA;
+
+                //Update View here.
+                //TODO: DISABLE THIS WHILE REFRESHING.
+                fillListView(cacheManager.getUserProfile());
+
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
+        });
+
+        ListView mListView=view.findViewById(R.id.listview);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                //TODO: MODIFY ME TO SHOW ACTUAL VALUES.
+                FragmentLoans.ViewDialog alert = new FragmentLoans.ViewDialog();
+                alert.showDialog(getActivity(), loanList.get(position)); }
         });
 
         return view;
@@ -104,35 +138,82 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
 
     // If we want thumbnails this gives us an image link https://www.googleapis.com/books/v1/volumes?q=isbn:9780226467047
 
-    public void fillListView(WMSUserProfile userProfile) {
-        NonScrollListView mListView = view.findViewById(R.id.listview);
-        List<WMSLoan> bookList = new ArrayList<>(userProfile.getLoans());
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-
-        LoanBookListAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
-        mListView.setAdapter(adapter);
-
-        mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
-
-        updateDash(bookList);
+    public class customComparatorAZ implements Comparator<WMSLoan> {
+        public int compare(WMSLoan object1, WMSLoan object2) {
+            if (object1.getBook().getTitle().compareTo(object2.getBook().getTitle()) < 0 )
+                return -1;
+            else if (object1.getBook().getTitle().compareTo(object2.getBook().getTitle()) > 0 )
+                return 1;
+            else
+                return 0;
+        }
+    }
+    public class customComparatorDueDate implements Comparator<WMSLoan> {
+        public int compare(WMSLoan object1, WMSLoan object2) {
+            return (object1.getDueDate().compareTo(object2.getDueDate()));
+        }
     }
 
-    private void updateDash(List<WMSLoan> bookList){
-        //Update Dashboard
-        TextView loan_dash_description = view.findViewById(R.id.loan_dash_description);
-        loan_dash_description.setText("You have borrowed "
-                + bookList.size()
-                + " out of 40 books. The first book is due on "
-                + bookList.get(0).getDueDate()
-                + ".");
+    public void fillListView(WMSUserProfile userProfile) {
+        ListView mListView = view.findViewById(R.id.listview);
+        List<WMSLoan> bookList = new ArrayList<>(userProfile.getLoans());
+
+        bookList.add(new WMSLoan()); // Just for testing
+        bookList.add(new WMSLoan()); // Just for testing
+        bookList.add(new WMSLoan()); // Just for testing
+        bookList.add(new WMSLoan()); // Just for testing
+        bookList.add(new WMSLoan()); // Just for testing
+        bookList.add(new WMSLoan()); // Just for testing
+        bookList.add(new WMSLoan()); // Just for testing
+        bookList.add(new WMSLoan()); // Just for testing
+        bookList.add(new WMSLoan()); // Just for testing
+
+        if (bookList.isEmpty()) return; //TODO: TEST ME.
+
+        switch (currentSort) {
+            case AZ:
+                Collections.sort(bookList, new customComparatorAZ());
+                break;
+            case ZA:
+                Collections.sort(bookList, new customComparatorAZ());
+                Collections.reverse(bookList);
+                break;
+            case dueDateAZ:
+                Collections.sort(bookList, new customComparatorDueDate());
+                break;
+            case dueDateZA:
+                Collections.sort(bookList, new customComparatorDueDate());
+                Collections.reverse(bookList);
+                break;
+            default:
+                //this is not possible, added for the automatic code review.
+                break;
+        }
+
+        loanList = bookList;
+        LoanBookListAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
+        mListView.setAdapter(adapter);
+        mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
+    }
+
+
+    //TODO: Send to Jerry.
+    public int daysBetween(Date d1, Date d2){
+        return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+    }
+    //TODO: Send to Jerry.
+    public int getLeastDueBook(List<WMSLoan> bookList){
+        if (bookList.isEmpty()) return -1;
+        Collections.sort(bookList, new customComparatorDueDate());
+        bookList.get(0).getDueDate();
+        Date date = new Date();
+
+
+        int days = daysBetween(bookList.get(0).getDueDate(), date);
+
+       // long diff = (Calendar.getInstance().getTime()) - Date.parse(bookList.get(0).getDueDate()))
+       // long diffDays = diff / (24 * 60 * 60 * 1000);
+        return days;
     }
 
     /**
@@ -143,11 +224,10 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Constants.IntentActions.USER_PROFILE_RESPONSE);
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver, intentFilter);
-            Log.d(TAG, "Reciever Registered");
+            Log.d(TAG, "Receiver Registered");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 
     @Override
@@ -193,6 +273,23 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    //TODO: Document this ViewDialog.
+    public class ViewDialog {
+
+        public void showDialog(Activity activity, WMSLoan loan){
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.setContentView(R.layout.dialog_loans_layout);
+
+            ((TextView) dialog.findViewById(R.id.txt_bookname)).setText(loan.getBook().getTitle());
+            ((TextView) dialog.findViewById(R.id.txt_author)).setText(loan.getBook().getAuthor());
+
+            dialog.show();
         }
     }
 

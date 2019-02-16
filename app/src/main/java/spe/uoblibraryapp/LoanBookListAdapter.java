@@ -7,11 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,9 +47,6 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
         textViewTitle.setText(title);
         textViewAuthor.setText(author);
 
-
-
-
         if (overdue) {
             textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorOverdue));
             textViewStatus.setText("Overdue");
@@ -62,14 +57,6 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
             textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorLoan));
             textViewStatus.setText("Will renew");
         }
-
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), title, Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
         return convertView;
     }
