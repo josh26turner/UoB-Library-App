@@ -55,7 +55,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             // Pull to Refresh list
             swipeRefresh.setRefreshing(true);
             Log.d(TAG, "Dashboard SwipeRefresh true");
-            Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
+            Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
             WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
         });
 
@@ -70,7 +70,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
     private void registerMyReceiver() {
         try {
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(IntentActions.USER_PROFILE_RESPONSE);
+            intentFilter.addAction(Constants.IntentActions.USER_PROFILE_RESPONSE);
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver, intentFilter);
             Log.d(TAG, "Reciever Registered");
         } catch (Exception ex) {
@@ -95,7 +95,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         if (cacheManager.isExpired()) {
             SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh_dash);
             swipeRefreshResv.setRefreshing(true);
-            Intent getUserProfileIntent = new Intent(IntentActions.LOOKUP_USER);
+            Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
             WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
         } else {
             updateDashboardLoans();
