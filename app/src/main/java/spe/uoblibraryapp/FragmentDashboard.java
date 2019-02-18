@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -156,18 +157,17 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         public void onReceive(Context context, Intent intent) {
             try {
                 Log.d(TAG, "onReceive() called");
+                if (Constants.IntentActions.USER_PROFILE_RESPONSE.equals(intent.getAction())){
+                    updateDashboardLoans();
+                    updateDashboardReservations();
+                } else {
+                    Toast toast = Toast.makeText(getContext(), "Refresh Failed",Toast.LENGTH_LONG);
+                    toast.show();
+                }
 
-                String xml = intent.getStringExtra("xml");
-
-                WMSUserProfile userProfile = parseUserProfileResponse(xml);
-
-                updateDashboardLoans();
-                updateDashboardReservations();
-
-                SwipeRefreshLayout swipeRefresh = view.findViewById(R.id.swiperefresh_dash);
-                swipeRefresh.setRefreshing(false);
-
-                cacheManager.setUserProfile(userProfile);
+                SwipeRefreshLayout swipeRefreshLoans = view.findViewById(R.id.swiperefresh_dash);
+                swipeRefreshLoans.setRefreshing(false);
+                cacheManager.setRefreshing(false);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

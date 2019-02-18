@@ -5,33 +5,54 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.sql.Time;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import spe.uoblibraryapp.ActivityConfirm;
+import spe.uoblibraryapp.CacheManager;
 import spe.uoblibraryapp.Constants;
+import spe.uoblibraryapp.R;
 import spe.uoblibraryapp.api.AuthService;
+import spe.uoblibraryapp.api.WMSException;
+import spe.uoblibraryapp.api.WMSResponse;
+import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
+import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
+import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 
 public class WMSNCIPService extends JobIntentService {
     private static final String TAG = "WMSNCIPService";
     public static final Integer jobId = 1000;
 
-    private WorkQueue workQueue;
 
+    private WorkQueue workQueue;
+    private CacheManager cacheManager;
+    private RequestQueue requestQueue;
 
     public void lookupUser() {
         SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
@@ -42,16 +63,40 @@ public class WMSNCIPService extends JobIntentService {
                 Constants.RequestTemplates.lookupUser,
                 prefs.getString("principalID", ""));
 
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.start();
+
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String xml) {
                 Log.d(TAG, "HTTP request Actioned");
 
-                Intent broadcastIntent = new Intent(Constants.IntentActions.USER_PROFILE_RESPONSE);
-                broadcastIntent.putExtra("xml", xml);
 
+                // Add parsing stuff here
+                WMSUserProfile userProfile;
+
+                try {
+                    userProfile = parseUserProfileResponse(xml);
+                } catch (Exception ex){
+                    userProfile = null;
+                }
+
+                Intent broadcastIntent;
+                if (userProfile != null) {
+                    for (WMSLoan loan : userProfile.getLoans()){
+                        loan.fetchIsRenewable(getApplicationContext());
+                    }
+                    // for each book in loans
+                    //     make http request
+                    //         parse and do book.setIsRenewable
+
+
+
+                    // Update cache
+                    cacheManager.setUserProfile(userProfile);
+
+                    broadcastIntent = new Intent(Constants.IntentActions.USER_PROFILE_RESPONSE);
+                } else {
+                    broadcastIntent = new Intent(Constants.IntentActions.LOOKUP_USER_ERROR);
+                }
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
                 Log.d(TAG, "Broadcast Intent Sent");
             }
@@ -78,8 +123,26 @@ public class WMSNCIPService extends JobIntentService {
                 return requestBody.getBytes(StandardCharsets.UTF_8);
             }
         };
-        queue.add(request);
+        requestQueue.add(request);
     }
+
+    private WMSUserProfile parseUserProfileResponse(String xml) throws WMSException, WMSParseException {
+        Log.e(TAG, xml);
+        WMSResponse response = new WMSNCIPResponse(xml);
+
+        if (response.didFail()) {
+            throw new WMSException("There was an error retrieving the User Profile");
+        }
+        Document doc;
+        try {
+            doc = response.parse();
+        } catch (IOException | SAXException | ParserConfigurationException e) {
+            throw new WMSException("There was an error Parsing the WMS response");
+        }
+        Node node = doc.getElementsByTagName("ns1:LookupUserResponse").item(0);
+        return new WMSUserProfile(new WMSNCIPElement(node));
+    }
+
 
     private void checkoutBook(String itemId) {
         SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
@@ -177,9 +240,9 @@ public class WMSNCIPService extends JobIntentService {
                 if (Constants.IntentActions.LOOKUP_USER.equals(action)) {
                     lookupUser();
                 } else if (Constants.IntentActions.CHECKOUT_BOOK.equals((action))) {
-//                    String itemId = intent.getStringExtra("itemId"); // Use this
-                    mockCheckOutBook(); // Comment this out once the server is live
-//                    checkoutBook(itemId); // And use this one
+                    String itemId = intent.getStringExtra("itemId"); // Use this
+//                    mockCheckOutBook(); // Comment this out once the server is live
+                    checkoutBook(itemId); // And use this one
                 } else {
                     Log.e(TAG, "Intent received has no valid action");
                 }
@@ -198,6 +261,9 @@ public class WMSNCIPService extends JobIntentService {
     public void onCreate() {
         super.onCreate();
         workQueue = WorkQueue.getInstance();
+        requestQueue = Volley.newRequestQueue(this);
+        requestQueue.start();
+        cacheManager = CacheManager.getInstance();
     }
 
 }

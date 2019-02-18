@@ -26,36 +26,43 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
         mResource = resource;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         String title = getItem(position).getBook().getTitle();
         String author = getItem(position).getBook().getAuthor();
         Boolean overdue = getItem(position).isOverdue();
-        Boolean willAutoRenew = getItem(position).getIsRenewable();
+        Boolean willAutoRenew = getItem(position).getRenewable();
         Date dueDate = getItem(position).getDueDate();
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String strDueDate = dateFormat.format(dueDate);
-
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false );
         TextView textViewTitle = convertView.findViewById(R.id.txtTitle);
         TextView textViewAuthor = convertView.findViewById(R.id.txtAuthor);
         TextView textViewStatus = convertView.findViewById(R.id.txtStatus);
+
         textViewTitle.setText(title);
         textViewAuthor.setText(author);
+
 
         if (overdue) {
             textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorOverdue));
             textViewStatus.setText("Overdue");
-        } else if (!willAutoRenew) {
+        } else if (willAutoRenew == null){
             textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorReservation));
-            textViewStatus.setText("Due: " + strDueDate);
+            textViewStatus.setText("Fetching...");
         } else {
-            textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorLoan));
-            textViewStatus.setText("Will renew");
+            if (!willAutoRenew) {
+                textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorReservation));
+                textViewStatus.setText("Due: " + strDueDate);
+            } else {
+                textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorLoan));
+                textViewStatus.setText("Will renew");
+            }
         }
 
         return convertView;

@@ -9,6 +9,7 @@ import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 public class CacheManager {
     private WMSUserProfile userProfile;
     private Date dateAccessed;
+    private Boolean refreshing = false;
     private static final CacheManager ourInstance = new CacheManager();
 
     public static CacheManager getInstance() {
@@ -19,7 +20,7 @@ public class CacheManager {
         return userProfile;
     }
 
-    void setUserProfile(WMSUserProfile userProfile){
+    public void setUserProfile(WMSUserProfile userProfile){
         this.userProfile = userProfile;
         this.dateAccessed = new Date();
     }
@@ -38,6 +39,14 @@ public class CacheManager {
     public void invalidateCache(){
         this.userProfile = null;
         this.dateAccessed = null;
+    }
+
+    public void setRefreshing(Boolean refreshing){
+        this.refreshing = refreshing;
+    }
+
+    public Boolean getRefreshing(){
+        return refreshing;
     }
 
 }

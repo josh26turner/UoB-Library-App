@@ -66,9 +66,12 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             @Override
             public void onRefresh() {
                 // Pull to Refresh list
-                swipeRefreshResv.setRefreshing(true);
-                Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
-                WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
+                if (!cacheManager.getRefreshing()) {
+                    cacheManager.setRefreshing(true);
+                    swipeRefreshResv.setRefreshing(true);
+                    Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
+                    WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
+                }
             }
         });
 
@@ -92,10 +95,13 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         registerMyReceiver();
         // Refresh list here if fragment resumes and it hasn't been refreshed in 10 minutes
         if (cacheManager.isExpired()) {
-            SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh2);
-            swipeRefreshResv.setRefreshing(true);
-            Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
-            WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
+            if(!cacheManager.getRefreshing()) {
+                cacheManager.setRefreshing(true);
+                SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh2);
+                swipeRefreshResv.setRefreshing(true);
+                Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
+                WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
+            }
         } else {
             fillListView(cacheManager.getUserProfile());
         }
@@ -145,22 +151,6 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(myBroadCastReceiver);
     }
 
-    private WMSUserProfile parseUserProfileResponse(String xml) throws WMSException, WMSParseException {
-        WMSResponse response = new WMSNCIPResponse(xml);
-
-        if (response.didFail()) {
-            throw new WMSException("There was an error retrieving the User Profile");
-        }
-        Document doc;
-        try {
-            doc = response.parse();
-        } catch (IOException | SAXException | ParserConfigurationException e) {
-            throw new WMSException("There was an error Parsing the WMS response");
-        }
-        Node node = doc.getElementsByTagName("ns1:LookupUserResponse").item(0);
-        return new WMSUserProfile(new WMSNCIPElement(node));
-    }
-
 
     class MyBroadCastReceiver extends BroadcastReceiver {
         @Override
@@ -168,16 +158,17 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             try {
                 Log.d(TAG, "onReceive() called");
 
-                String xml = intent.getStringExtra("xml");
-
-                WMSUserProfile userProfile = parseUserProfileResponse(xml);
-
-                fillListView(userProfile);
+                if (Constants.IntentActions.USER_PROFILE_RESPONSE.equals(intent.getAction())){
+                    WMSUserProfile userProfile = cacheManager.getUserProfile();
+                    fillListView(userProfile);
+                } else {
+                    Toast toast = Toast.makeText(getContext(), "Refresh Failed",Toast.LENGTH_LONG);
+                    toast.show();
+                }
 
                 SwipeRefreshLayout swipeRefreshResv = view.findViewById(R.id.swiperefresh2);
                 swipeRefreshResv.setRefreshing(false);
-
-                cacheManager.setUserProfile(userProfile);
+                cacheManager.setRefreshing(false);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

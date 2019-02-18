@@ -10,14 +10,9 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 
 public class WMSUserProfile {
 
-    private String userId = null;
-
-
+    private String userId;
     private List<WMSLoan> loans;
     private List<WMSHold> onHold;
-    private List<WMSHold> recentlyReceived;
-    private List<WMSFine> fines;
-
 
 
     /**
@@ -52,8 +47,6 @@ public class WMSUserProfile {
     private void parseNode(Node node) throws WMSParseException {
         List<Node> loanNodes = new ArrayList<>();
         List<Node> holdNodes = new ArrayList<>();
-        List<Node> recentlyReceivedNodes = new ArrayList<>(); // Will this be needed TODO!
-        List<Node> fineNodes = new ArrayList<>();
 
         NodeList childNodes = node.getChildNodes();
         for (int i=0; i<childNodes.getLength(); i++) {
@@ -67,19 +60,7 @@ public class WMSUserProfile {
                     loanNodes.add(child);
                     break;
                 case "ns1:RequestedItem":
-                    // TODO: Add check if request is on hold or recently recieved.
-                    // Can they be dealt with by the same list?
                     holdNodes.add(child);
-                    break;
-                case "ns1:Ext":
-                    NodeList childsChildren = child.getChildNodes();
-                    for (int j=0; j<childsChildren.getLength(); j++){
-                        Node childsChild = childsChildren.item(j);
-                        if (childsChild.getNodeName().equals("UserFiscalAccountSummary")){
-                            // TODO: Find example of api response with charges
-                            // Implement this once we know, not a high priority until final build.
-                        }
-                    }
                     break;
             }
         }
@@ -88,8 +69,6 @@ public class WMSUserProfile {
 
         this.loans = parseLoans(loanNodes);
         this.onHold = parseHolds(holdNodes);
-        this.recentlyReceived = parseRecentlyReceived(recentlyReceivedNodes);
-        this.fines = parseFines(fineNodes);
     }
 
     private void parseUserId(Node userIdNode) throws WMSParseException{
@@ -122,34 +101,10 @@ public class WMSUserProfile {
         return holds;
     }
 
-    private List<WMSHold> parseRecentlyReceived(List<Node> recentlyReceivedNodes) throws WMSParseException {
-        List<WMSHold> recentlyReceived = new ArrayList<>();
-        for (Node node : recentlyReceivedNodes) {
-            recentlyReceived.add(new WMSHold(new WMSNCIPElement(node)));
-        }
-        return recentlyReceived;
-    }
-
-    private List<WMSFine> parseFines(List<Node> fineNodes) {
-        List<WMSFine> fines = new ArrayList<>();
-        for (Node node : fineNodes) {
-            fines.add(new WMSFine(new WMSNCIPElement(node)));
-        }
-        return fines;
-    }
-
 
 
 
     // Getters & other methods for UI people
-
-    /**
-     * Gets a users fines
-     * @return Returns a list of all fines the user has.
-     */
-    public List<WMSFine> getFines(){
-        return this.fines;
-    }
 
     /**
      * Gets all books a user has on loan.
@@ -168,18 +123,10 @@ public class WMSUserProfile {
     }
 
     /**
-     * Gets all requests the the user has recently made, and not actioned yet by the library.
-     * @return Returns a list of requests
-     */
-    public List<WMSHold> getRecentlyReceived(){
-        return this.recentlyReceived;
-    }
-
-    /**
      * Gets the userId
      * @return the userId
      */
-    public String getUserId(){
+    String getUserId(){
         return this.userId;
     }
 

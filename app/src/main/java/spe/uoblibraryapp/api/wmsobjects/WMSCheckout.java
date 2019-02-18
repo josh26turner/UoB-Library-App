@@ -22,7 +22,6 @@ public class WMSCheckout {
     private String userId;
     private Date dueDate;
 
-    // TODO: Change this class to represent a checkout response. Stores due date and a WMSBook.
 
     public WMSCheckout(
             WMSNCIPElement elementHolder,
@@ -60,8 +59,6 @@ public class WMSCheckout {
                     parseItemId(child);
                     break;
                 case "ns1:DueDate":
-                    // TODO: Add check if request is on hold or recently recieved.
-                    // Can they be dealt with by the same list?
                     dueDate = parseDate(child.getTextContent());
                     break;
                 case "ns1:ItemOptionalFields":

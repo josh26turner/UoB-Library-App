@@ -1,15 +1,43 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
+import spe.uoblibraryapp.Constants;
+import spe.uoblibraryapp.FragmentLoans;
+import spe.uoblibraryapp.LoanBookListAdapter;
+import spe.uoblibraryapp.R;
+import spe.uoblibraryapp.api.XMLParser;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -26,7 +54,10 @@ public class WMSLoan {
     private Integer reminderLevel;
     private String mediumType;
     private Boolean isRenewable;
+    private TextView isRenewableTextView;
+    private Context isRenewableTextViewContext;
 
+    private String TAG = "WMSBook";
     /**
      * Constructor
      * @param elemHolder This contains the node information
@@ -48,10 +79,6 @@ public class WMSLoan {
         } catch (ParseException e){
             throw new WMSParseException(e.getMessage());
         }
-
-        // TODO make WMS Availability request to check the status of the book.
-        // TODO Can a standard user use the availability service
-        // If so then can we join the two keys so the user only has to authenticate once? Ask David.
     }
 
 
@@ -67,8 +94,7 @@ public class WMSLoan {
         this.renewalCount = 0;
         this.reminderLevel = 0;
         this.mediumType = "Book";
-        this.isRenewable = true;
-
+        this.isRenewable = false;
     }
 
 
@@ -207,14 +233,22 @@ public class WMSLoan {
         return this.mediumType;
     }
 
+    public Boolean getRenewable() {
+        return isRenewable;
+    }
+
+    public void setIsRenewable(Boolean isRenewable){
+        this.isRenewable = isRenewable;
+        Log.e(TAG, "set renewable: " + getBook().getBookId());
+        FragmentLoans.listViewAdapter.notifyDataSetChanged();
+    }
 
     /**
      * Gets renewal status, if the book can be renewed
      * @return if can be renewed
      */
-    public Boolean getIsRenewable() {
-        return false;
-//        return this.isRenewable;
+    public String getRenewableStatus() {
+        return "Fetching...";
     }
 
     public Boolean isOverdue() {
@@ -223,4 +257,87 @@ public class WMSLoan {
         cal.add(Calendar.DATE, 1);
         return cal.getTime().before(new Date());
     }
+
+    public void fetchIsRenewable(Context context){
+        isRenewableTextViewContext = context;
+        new GetRenewStatus().execute();
+    }
+
+
+    private class GetRenewStatus extends AsyncTask<URL, Integer, Boolean> {
+        @Override
+        protected Boolean doInBackground(URL... urls) {
+            RequestQueue requestQueue = Volley.newRequestQueue(isRenewableTextViewContext);
+            SharedPreferences prefs = isRenewableTextViewContext.getSharedPreferences("userDetails", MODE_PRIVATE);
+            String accessToken = prefs.getString("authorisationToken", "");
+            String url = String.format(Constants.APIUrls.bookAvailability, getBook().getBookId());
+
+            RequestFuture<String> future = RequestFuture.newFuture();
+            StringRequest request = new StringRequest(Request.Method.GET, url, future, future) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + accessToken);
+                    return headers;
+                }
+            };
+            requestQueue.add(request);
+            boolean result;
+            try{
+                String response = future.get(30, TimeUnit.SECONDS);
+                result = parseResponse(response);
+                // parse response
+//                result = true;
+                Log.d(TAG, "book request for " + getBook().getBookId());
+            } catch (InterruptedException e){
+                Log.d(TAG , "Iterrupt for " + getBook().getBookId());
+                result = false;
+            } catch (ExecutionException e){
+                Log.d(TAG , "Execution for " + getBook().getBookId());
+                result = false;
+            } catch (TimeoutException e){
+                Log.d(TAG , "Timeout for " + getBook().getBookId());
+                result = false;
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            WMSLoan.this.setIsRenewable(result);
+        }
+
+        private Boolean parseResponse(String xml){
+            try {
+                Document doc = XMLParser.parse(xml);
+                NodeList itemIdList = doc.getElementsByTagName("itemId");
+                NodeList renewableList = doc.getElementsByTagName("renewable");
+                if(itemIdList.getLength() == 1){
+                    Node renewableNode = renewableList.item(0);
+                    Node value = renewableNode.getAttributes().getNamedItem("value");
+                    Log.e(TAG, "value: " + value.getNodeValue());
+                    return value.getNodeValue().equals("1");
+                }
+                for (int i=0; i<itemIdList.getLength(); i++){
+                    Node node = itemIdList.item(i);
+                    Log.e(TAG, node.getTextContent());
+                    Log.e(TAG, itemId);
+                    if (node.getTextContent().equals(itemId)){
+                        Node renewableNode = renewableList.item(i);
+                        Node value = renewableNode.getAttributes().getNamedItem("value");
+                        Log.e(TAG, "value: " + value.getNodeValue());
+                        return value.getNodeValue().equals("1");
+                    }
+                    Log.e(TAG, node.getNodeName());
+                }
+
+            } catch (Exception ex){
+                ex.printStackTrace();
+            }
+            return false;
+        }
+    }
+
 }
