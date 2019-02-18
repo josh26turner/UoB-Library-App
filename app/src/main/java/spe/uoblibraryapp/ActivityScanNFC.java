@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +56,10 @@ public class ActivityScanNFC extends AppCompatActivity {
 
         }
         Activity myAct = this;
+
+        final Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake_anim);
+        TextView txt = (TextView) findViewById(R.id.textView2);
+        txt.startAnimation(shake);
 
         Button butt = findViewById(R.id.btnProblemReport2);
         butt.setOnClickListener(new View.OnClickListener() {
