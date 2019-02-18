@@ -72,7 +72,7 @@ public final class Constants {
 
     public static final class APIUrls{
         public final static String lookupUser = "https://bub.share.worldcat.org/ncip/circ-patron";
-        public final static String checkoutBook = "http://132.145.54.223/checkout";
+        public final static String checkoutBook = "http://132.145.54.223:8080/checkout";
         public final static String bookAvailability = "https://worldcat.org/circ/availability/sru/service?x-registryId=" + LibraryDetails.institutionId + "&query=no:ocm%s";
         private APIUrls() { }
     }

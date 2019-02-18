@@ -143,42 +143,6 @@ public class WMSNCIPService extends JobIntentService {
         return new WMSUserProfile(new WMSNCIPElement(node));
     }
 
-    private void bookAvailabilityRequest(WMSLoan loan){
-        Log.d(TAG, "bookavailability");
-        SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
-        String accessToken = prefs.getString("authorisationToken", "");
-        String url = String.format(Constants.APIUrls.bookAvailability, loan.getBook().getBookId());
-
-        RequestFuture<String> future = RequestFuture.newFuture();
-        StringRequest request = new StringRequest(Request.Method.GET, url, future, future) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + accessToken);
-                return headers;
-            }
-        };
-        requestQueue.add(request);
-
-        try{
-            String response = future.get(30, TimeUnit.SECONDS);
-            // parse response
-            Log.d(TAG, "book request for " + loan.getBook().getBookId());
-            loan.setIsRenewable(false);
-        } catch (InterruptedException e){
-            Log.d(TAG , "Iterrupt for " + loan.getBook().getBookId());
-        } catch (ExecutionException e){
-            Log.d(TAG , "Execution for " + loan.getBook().getBookId());
-        } catch (TimeoutException e){
-            Log.d(TAG , "Timeout for " + loan.getBook().getBookId());
-        }
-
-
-    }
-
-
-
-
 
     private void checkoutBook(String itemId) {
         SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
@@ -276,9 +240,9 @@ public class WMSNCIPService extends JobIntentService {
                 if (Constants.IntentActions.LOOKUP_USER.equals(action)) {
                     lookupUser();
                 } else if (Constants.IntentActions.CHECKOUT_BOOK.equals((action))) {
-//                    String itemId = intent.getStringExtra("itemId"); // Use this
-                    mockCheckOutBook(); // Comment this out once the server is live
-//                    checkoutBook(itemId); // And use this one
+                    String itemId = intent.getStringExtra("itemId"); // Use this
+//                    mockCheckOutBook(); // Comment this out once the server is live
+                    checkoutBook(itemId); // And use this one
                 } else {
                     Log.e(TAG, "Intent received has no valid action");
                 }
