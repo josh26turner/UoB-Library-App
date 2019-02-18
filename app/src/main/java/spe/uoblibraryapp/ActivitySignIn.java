@@ -115,6 +115,8 @@ public class ActivitySignIn extends SimpleActivity {
         // Dont do anything when back button is pressed?
 
         // TODO could we change back button to work with webview?
+        WebView mywebview = findViewById(R.id.loginWebView);
+        mywebview.loadUrl(Constants.UserAuth.oAuthUrl());
     }
 
     private boolean isAuthorisationDenied(String s) {
