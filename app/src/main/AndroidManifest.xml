@@ -16,9 +16,14 @@
         tools:ignore="GoogleAppIndexingWarning"
         android:theme="@style/AppTheme">
 
-        <activity
-            android:name=".ActivityHome"
-            android:theme="@style/AppTheme.NoActionBar" android:exported="true"/>
+        <activity android:name=".ActivityHome"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="true">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value="spe.uoblibraryapp.ActivityHome"   >
+            </meta-data>
+         </activity>
+
         <activity android:name=".ActivitySignIn"/>
         <activity android:name=".SplashScreen">
             <intent-filter>

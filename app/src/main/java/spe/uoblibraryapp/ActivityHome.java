@@ -1,5 +1,6 @@
 package spe.uoblibraryapp;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -105,6 +106,12 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
             drawer.closeDrawer(GravityCompat.START);
         } else {
             //TODO: Exit prompt.
+            if (getViewPager()==0){
+                //exit app
+                super.onBackPressed();
+            }
+            else setViewPager("Dashboard");
+
         }
     }
 
@@ -171,4 +178,9 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         setTitle(fragmentName);
         mViewPager.setCurrentItem(index);
     }
+
+    public int getViewPager() {
+        return mViewPager.getCurrentItem();
+    }
+
 }
