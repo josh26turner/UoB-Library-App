@@ -132,7 +132,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             Collections.sort(bookList, new SortCustomComparatorDueDate());
             output = String.format("You have borrowed %s out of %s books. The first book is due back on %s", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getDueDate());
         }
-        else output = "Wrong Library!!";
+        else output = "Currently you have no loans :)";
 
 
 
