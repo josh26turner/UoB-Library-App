@@ -147,27 +147,11 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
                 return 0;
         }
     }
-    public class customComparatorDueDate implements Comparator<WMSLoan> {
-        public int compare(WMSLoan object1, WMSLoan object2) {
-            return (object1.getDueDate().compareTo(object2.getDueDate()));
-        }
-    }
 
     public void fillListView(WMSUserProfile userProfile) {
         ListView mListView = view.findViewById(R.id.listview);
         List<WMSLoan> bookList = new ArrayList<>(userProfile.getLoans());
 
-     /*   bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-
-    */
         if (bookList.isEmpty()) return; //TODO: TEST ME.
 
         switch (currentSort) {
@@ -179,10 +163,10 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
                 Collections.reverse(bookList);
                 break;
             case dueDateAZ:
-                Collections.sort(bookList, new customComparatorDueDate());
+                Collections.sort(bookList, new SortCustomComparatorDueDate());
                 break;
             case dueDateZA:
-                Collections.sort(bookList, new customComparatorDueDate());
+                Collections.sort(bookList, new SortCustomComparatorDueDate());
                 Collections.reverse(bookList);
                 break;
             default:
@@ -205,7 +189,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     //TODO: Send to Jerry.
     public int getLeastDueBook(List<WMSLoan> bookList){
         if (bookList.isEmpty()) return -1;
-        Collections.sort(bookList, new customComparatorDueDate());
+        Collections.sort(bookList, new SortCustomComparatorDueDate());
         bookList.get(0).getDueDate();
         Date date = new Date();
 

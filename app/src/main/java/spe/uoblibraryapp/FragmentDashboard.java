@@ -21,6 +21,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,6 +32,7 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.api.wmsobjects.WMSHold;
+import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
@@ -123,8 +125,17 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
     private void updateDashboardLoans(){
         //Update Dashboard
         TextView loan_dash_description = view.findViewById(R.id.loan_dash_description);
-        String output = String.format("You have borrowed %s out of %s books. The first book is due back on: %s", cacheManager.getUserProfile().getLoans().size(), 40, 0);
         //TODO: Fix DueDate.
+        String output;
+        List<WMSLoan> bookList = cacheManager.getUserProfile().getLoans();
+        if (!bookList.isEmpty()) {
+            Collections.sort(bookList, new SortCustomComparatorDueDate());
+            output = String.format("You have borrowed %s out of %s books. The first book is due back on %s", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getDueDate());
+        }
+        else output = "Wrong Library!!";
+
+
+
         loan_dash_description.setText(output);
     }
 

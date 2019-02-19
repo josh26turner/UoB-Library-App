@@ -111,18 +111,10 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
 
     public void fillListView(WMSUserProfile userProfile) {
         List<WMSHold> bookList = new ArrayList<>(userProfile.getOnHold());
-
-        /*bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        */
         resvlist=bookList;
+
+        if (bookList.isEmpty()) return; //TODO: Test me
+
         ResvBookListAdapter adapter = new ResvBookListAdapter(getContext(), R.layout.adapter_view_layout_resv, bookList);
         mListView.setAdapter(adapter);
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
