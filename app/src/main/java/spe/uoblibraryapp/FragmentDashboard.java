@@ -123,28 +123,26 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
     private void updateDashboardLoans(){
         //Update Dashboard
         TextView loan_dash_description = view.findViewById(R.id.loan_dash_description);
-        loan_dash_description.setText("You have borrowed "
-                + cacheManager.getUserProfile().getLoans().size()
-                + " out of 40 books. The first book is due on "
-                + 0 //TODO: Solve due date issue
-                + ".");
+        String output = String.format("You have borrowed %s out of %s books. The first book is due back on: %s", cacheManager.getUserProfile().getLoans().size(), 40, 0);
+        //TODO: Fix DueDate.
+        loan_dash_description.setText(output);
     }
 
     private void updateDashboardReservations(){
         //Updating Reservation Dashboard
         Log.d(TAG, "Updating Reservation Dash");
         TextView tv = view.findViewById(R.id.resv_dash_description);
-        tv.setText(   "You have "
-                + cacheManager.getUserProfile().getOnHold().size()
-                + " reservations, "
-                + readyCollectCount(cacheManager.getUserProfile())
-                + " of which are ready to collect.");
+        int reservationSize = cacheManager.getUserProfile().getOnHold().size();
+        if (reservationSize==0) tv.setText("Currently you have no reservations :)");
+        else {
+            String output = String.format("You have %s reservations, %s of which are ready to collect", cacheManager.getUserProfile().getOnHold().size(), readyCollectCount(cacheManager.getUserProfile()));
+            tv.setText(output);
+        }
     }
     public int readyCollectCount(WMSUserProfile profile){
         int c = 0;
-        int i = 0;
         List<WMSHold> holds = profile.getOnHold();
-        for(i=0; i < holds.size(); i++){
+        for(int i=0; i < holds.size(); i++){
             if(holds.get(i).isReadyToCollect())
                 c++;
         }

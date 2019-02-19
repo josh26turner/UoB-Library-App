@@ -95,7 +95,6 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
                 else if (spinner.getSelectedItemId() == 3) currentSort = sort.dueDateZA;
 
                 //Update View here.
-                //TODO: DISABLE THIS WHILE REFRESHING.
                 fillListView(cacheManager.getUserProfile());
 
 
@@ -158,7 +157,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         ListView mListView = view.findViewById(R.id.listview);
         List<WMSLoan> bookList = new ArrayList<>(userProfile.getLoans());
 
-        bookList.add(new WMSLoan()); // Just for testing
+     /*   bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing
@@ -168,6 +167,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         bookList.add(new WMSLoan()); // Just for testing
         bookList.add(new WMSLoan()); // Just for testing
 
+    */
         if (bookList.isEmpty()) return; //TODO: TEST ME.
 
         switch (currentSort) {

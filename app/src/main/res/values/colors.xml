@@ -10,4 +10,6 @@
     <color name="colorLoan">#14931d</color>
 
     <color name="colourCancel">#b54c56</color>
+
+    <color name="sortBorder">#cccccc</color>
 </resources>

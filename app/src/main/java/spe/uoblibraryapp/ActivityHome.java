@@ -105,7 +105,6 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            //TODO: Exit prompt.
             if (getViewPager()==0){
                 //exit app
                 super.onBackPressed();

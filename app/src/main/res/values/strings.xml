@@ -31,10 +31,10 @@
     </string-array>
 
     <string-array name="loan_spinner">
-        <item>name: A-Z</item>
-        <item>name: Z-A</item>
-        <item>earliest due</item>
-        <item>last due</item>
+        <item>A-Z</item>
+        <item>Z-A</item>
+        <item>Due First</item>
+        <item>Due Last</item>
     </string-array>
 
 </resources>
