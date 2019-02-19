@@ -125,7 +125,6 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
     private void updateDashboardLoans(){
         //Update Dashboard
         TextView loan_dash_description = view.findViewById(R.id.loan_dash_description);
-        //TODO: Fix DueDate.
         String output;
         List<WMSLoan> bookList = cacheManager.getUserProfile().getLoans();
         if (!bookList.isEmpty()) {
