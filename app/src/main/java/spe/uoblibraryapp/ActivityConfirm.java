@@ -55,22 +55,13 @@ public class ActivityConfirm extends SimpleActivity {
             WMSCheckout checkout = new WMSCheckout(new WMSNCIPElement(node), userId);
 
 
-            TextView bookName = findTextView(R.id.book_name_confirm);
-            TextView bookAuthor = findTextView(R.id.book_author_confirm);
+              ((TextView) findViewById(R.id.txt_bookName)).setText(checkout.getBook().getTitle());
+            //  ((TextView) findViewById(R.id.txt_success)).setText("New addition to your library:");
 
-            bookName.setText(checkout.getBook().getTitle());
-            bookAuthor.setText(checkout.getBook().getAuthor());
-
-
-
-            Button scanButton = findButton(R.id.scan_button);
             Button closeButton = findButton(R.id.close_button);
 
-            scanButton.setOnClickListener((view) -> {
-                startActivity(new Intent(getApplicationContext(), ActivityScanNFC.class));
-            });
             closeButton.setOnClickListener((view) -> {
-                startActivity(new Intent(getApplicationContext(), ActivityHome.class));
+                finish();
             });
 
 
@@ -91,6 +82,6 @@ public class ActivityConfirm extends SimpleActivity {
 
     @Override
     public void onBackPressed () {
-        super.onBackPressed();
+        finish();
     }
 }

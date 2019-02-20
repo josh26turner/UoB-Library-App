@@ -110,7 +110,6 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                //TODO: MODIFY ME TO SHOW ACTUAL VALUES.
                 FragmentLoans.ViewDialog alert = new FragmentLoans.ViewDialog();
                 alert.showDialog(getActivity(), loanList.get(position)); }
         });
@@ -152,7 +151,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         ListView mListView = view.findViewById(R.id.listview);
         List<WMSLoan> bookList = new ArrayList<>(userProfile.getLoans());
 
-        if (bookList.isEmpty()) return; //TODO: TEST ME.
+        if (bookList.isEmpty()) return;
 
         switch (currentSort) {
             case AZ:
@@ -185,20 +184,6 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     //TODO: Send to Jerry.
     public int daysBetween(Date d1, Date d2){
         return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
-    }
-    //TODO: Send to Jerry.
-    public int getLeastDueBook(List<WMSLoan> bookList){
-        if (bookList.isEmpty()) return -1;
-        Collections.sort(bookList, new SortCustomComparatorDueDate());
-        bookList.get(0).getDueDate();
-        Date date = new Date();
-
-
-        int days = daysBetween(bookList.get(0).getDueDate(), date);
-
-       // long diff = (Calendar.getInstance().getTime()) - Date.parse(bookList.get(0).getDueDate()))
-       // long diffDays = diff / (24 * 60 * 60 * 1000);
-        return days;
     }
 
     /**
@@ -244,7 +229,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         }
     }
 
-    //TODO: Document this ViewDialog.
+    //Extra Loan Information Dialog
     public class ViewDialog {
 
         public void showDialog(Activity activity, WMSLoan loan){

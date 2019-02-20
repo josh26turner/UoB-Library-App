@@ -3,6 +3,7 @@ package spe.uoblibraryapp;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.NfcV;
@@ -12,11 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -28,9 +26,6 @@ import spe.uoblibraryapp.nfc.NFCTechException;
 
 public class ActivityScanNFC extends AppCompatActivity {
     private static final String TAG = "Scan NFC Activity";
-
-    private TextView txtContentSysInfo;
-    private TextView txtBarcode;
 
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
@@ -62,7 +57,6 @@ public class ActivityScanNFC extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ActivityScanNFC.ViewDialog alert = new ActivityScanNFC.ViewDialog();
-                //TODO: Fix me, this call for showDialog needs changing.
                 alert.showDialog(myAct);
             }
         });
@@ -77,32 +71,29 @@ public class ActivityScanNFC extends AppCompatActivity {
      */
     @Override
     protected void onNewIntent(Intent scanIntent) {
-        Toast.makeText(this, "NFC Intent", Toast.LENGTH_SHORT).show();
 
-        new Thread(new Runnable() {
+        ProgressDialog nDialog;
+        nDialog = new ProgressDialog(this);
+        nDialog.setMessage("Loading...");
+        nDialog.setTitle("Checkout in progress");
+        nDialog.setIndeterminate(false);
+        nDialog.setCancelable(true);
+        nDialog.show();
+
+
+        Thread mThread = new Thread() {
+            @Override
             public void run() {
-                // a potentially time consuming task
+
                 try {
                     NFC nfc = new NFC(scanIntent);
                     String sysInfo = bytesToHexString(nfc.getSystemInformation());
-
-
-                    // TODO Denis -> Change screen to show the book has been scanned and is now loading.
-
-//            txtContentSysInfo.setText(sysInfo.substring(24, 26));
-//            txtBarcode.setText(nfc.getBarcode());
-
-                    // TODO End
-
 
                     // Send intent to WMSNCIPService with itemId
                     Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
                     checkoutIntent.putExtra("itemId", nfc.getBarcode());
                     WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
-
-
                     // When checkout is complete the confirm activity is started by the WMSNCIPService.
-
                 } catch (NFCTechException e) {
                     e.printStackTrace();
                     Log.d(TAG, "Not the right NFC/RFID type");
@@ -116,10 +107,16 @@ public class ActivityScanNFC extends AppCompatActivity {
                     e.printStackTrace();
                     Log.d(TAG, "There was a problem with the tag");
                 }
+                try {
+                    Thread.sleep(1250);
+                }
+                catch (InterruptedException e){
 
+                    }
+                nDialog.dismiss();
             }
-        }).start();
-
+        };
+        mThread.start();
 
     }
 
@@ -162,7 +159,7 @@ public class ActivityScanNFC extends AppCompatActivity {
         return stringBuilder.toString().toUpperCase().replace('X','x');
     }
 
-    //TODO: Document this ViewDialog.
+    //Problems Scanning Dialog
     public class ViewDialog {
 
         public void showDialog(Activity activity){
