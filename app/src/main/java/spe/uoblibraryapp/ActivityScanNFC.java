@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -49,12 +50,10 @@ public class ActivityScanNFC extends AppCompatActivity {
             startActivity(i);
             finish();
         } else {
-
             Intent pnd = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0, pnd, 0);
             // Setup a tech list for NfcV tag.
             techList = new String[][]{ new String[]{NfcV.class.getName()} };
-
         }
         Activity myAct = this;
 
@@ -66,8 +65,6 @@ public class ActivityScanNFC extends AppCompatActivity {
                 alert.showDialog(myAct);
             }
         });
-
-
     }
 
     /**
@@ -82,7 +79,7 @@ public class ActivityScanNFC extends AppCompatActivity {
         nDialog.setMessage("Loading...");
         nDialog.setTitle("Checkout in progress");
         nDialog.setIndeterminate(false);
-        nDialog.setCancelable(true);
+        nDialog.setCancelable(false);
         nDialog.show();
         scanDialog = nDialog;
 
@@ -126,12 +123,12 @@ public class ActivityScanNFC extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, techList);
         super.onResume();
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, techList);
         try {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Constants.IntentActions.BOOK_CHECK_OUT_RESPONSE);
-            LocalBroadcastManager.getInstance(this).registerReceiver(myBroadCastReceiver, intentFilter);
+            registerReceiver(myBroadCastReceiver, intentFilter);
             Log.d(TAG, "Receiver Registered");
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -144,9 +141,8 @@ public class ActivityScanNFC extends AppCompatActivity {
         if (scanDialog != null){
             scanDialog.dismiss();
         }
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(myBroadCastReceiver);
+        unregisterReceiver(myBroadCastReceiver);
         super.onPause();
-
     }
 
     public void onBackPressed(){
