@@ -34,6 +34,7 @@ import java.util.concurrent.TimeoutException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import spe.uoblibraryapp.ActivityConfirm;
+import spe.uoblibraryapp.ActivityScanNFC;
 import spe.uoblibraryapp.CacheManager;
 import spe.uoblibraryapp.Constants;
 import spe.uoblibraryapp.R;
@@ -163,11 +164,14 @@ public class WMSNCIPService extends JobIntentService {
             public void onResponse(String xml) {
                 Log.d(TAG, "HTTP request Actioned");
 
-                Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
-                confirmIntent.putExtra("xml", xml);
-                confirmIntent.setAction(Constants.IntentActions.BOOK_CHECK_OUT_RESPONSE);
-                startActivity(confirmIntent);
+//                Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
+//                confirmIntent.putExtra("xml", xml);
+//                confirmIntent.setAction(Constants.IntentActions.BOOK_CHECK_OUT_RESPONSE);
+//                startActivity(confirmIntent);
 
+                Intent intent = new Intent(Constants.IntentActions.BOOK_CHECK_OUT_RESPONSE);
+                intent.putExtra("xml", xml);
+                sendBroadcast(intent);
             }
         }, new Response.ErrorListener() {
             @Override

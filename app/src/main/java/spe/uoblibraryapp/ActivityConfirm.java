@@ -63,6 +63,7 @@ public class ActivityConfirm extends SimpleActivity {
 
             closeButton.setOnClickListener((view) -> {
                 //TODO: Re-Direct to Home Activity rather than NFC!
+                startActivity(new Intent(this, ActivityHome.class));
                 finish();
             });
 

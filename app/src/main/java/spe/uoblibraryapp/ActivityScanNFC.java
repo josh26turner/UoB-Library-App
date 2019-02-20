@@ -4,11 +4,16 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +24,7 @@ import android.widget.TextView;
 import java.io.IOException;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
+import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 import spe.uoblibraryapp.nfc.BarcodeException;
 import spe.uoblibraryapp.nfc.IntentException;
 import spe.uoblibraryapp.nfc.NFC;
@@ -30,12 +36,15 @@ public class ActivityScanNFC extends AppCompatActivity {
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
     private String[][] techList;
+    private Dialog scanDialog;
+    private MyBroadCastReceiver myBroadCastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_nfc);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        myBroadCastReceiver = new MyBroadCastReceiver();
 
         if (!(nfcAdapter != null && nfcAdapter.isEnabled())){
             //Toast.makeText(this, "No NFC Detected", Toast.LENGTH_SHORT).show();
@@ -65,13 +74,12 @@ public class ActivityScanNFC extends AppCompatActivity {
     }
 
     /**
-     * Called when an intent gets parsed to the activity,
+     * Called when an intent gets passed to the activity,
      * hopefully an NFC tag.
      * @param scanIntent - an intent sent to the activity, hopefully a tag
      */
     @Override
     protected void onNewIntent(Intent scanIntent) {
-
         ProgressDialog nDialog;
         nDialog = new ProgressDialog(this);
         nDialog.setMessage("Loading...");
@@ -79,6 +87,7 @@ public class ActivityScanNFC extends AppCompatActivity {
         nDialog.setIndeterminate(false);
         nDialog.setCancelable(true);
         nDialog.show();
+        scanDialog = nDialog;
 
 
         Thread mThread = new Thread() {
@@ -87,6 +96,9 @@ public class ActivityScanNFC extends AppCompatActivity {
 
                 try {
                     NFC nfc = new NFC(scanIntent);
+                    // Tag has been scanned now stop scanning for tags
+                    nfcAdapter.disableForegroundDispatch(ActivityScanNFC.this);
+
                     String sysInfo = bytesToHexString(nfc.getSystemInformation());
 
                     // Send intent to WMSNCIPService with itemId
@@ -96,45 +108,54 @@ public class ActivityScanNFC extends AppCompatActivity {
                     // When checkout is complete the confirm activity is started by the WMSNCIPService.
                 } catch (NFCTechException e) {
                     e.printStackTrace();
+                    nDialog.setMessage("Not the right NFC/RFID type");
                     Log.d(TAG, "Not the right NFC/RFID type");
                 } catch (IntentException e) {
                     e.printStackTrace();
                     Log.d(TAG, "No tag in the intent");
                 } catch (IOException e) {
                     e.printStackTrace();
+                    nDialog.setMessage("There was a problem with the tag. Hold phone still over tag.");
                     Log.d(TAG, "Can't connect to the tag");
                 } catch (BarcodeException e) {
                     e.printStackTrace();
+                    nDialog.setMessage("There was a problem reading the tag");
                     Log.d(TAG, "There was a problem with the tag");
                 }
-                try {
-                    Thread.sleep(1250);
-                }
-                catch (InterruptedException e){
-
-                    }
-                nDialog.dismiss();
             }
         };
         mThread.start();
-
     }
 
     @Override
     protected void onResume() {
         nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, techList);
         super.onResume();
+        try {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Constants.IntentActions.BOOK_CHECK_OUT_RESPONSE);
+            LocalBroadcastManager.getInstance(this).registerReceiver(myBroadCastReceiver, intentFilter);
+            Log.d(TAG, "Receiver Registered");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
         nfcAdapter.disableForegroundDispatch(this);
+        if (scanDialog != null){
+            scanDialog.dismiss();
+        }
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(myBroadCastReceiver);
+        super.onPause();
+
     }
 
     public void onBackPressed(){
         Intent intent = new Intent(ActivityScanNFC.this, ActivityHome.class);
         startActivity(intent);
+        finish();
     }
 
     /**
@@ -158,6 +179,26 @@ public class ActivityScanNFC extends AppCompatActivity {
         }
         return stringBuilder.toString().toUpperCase().replace('X','x');
     }
+
+
+
+    class MyBroadCastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                Log.d(TAG, "onReceive() called");
+
+                String xml = intent.getStringExtra("xml");
+                Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
+                confirmIntent.putExtra("xml", xml);
+                startActivity(confirmIntent);
+                finish();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
 
     //Problems Scanning Dialog
     public class ViewDialog {
