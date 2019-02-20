@@ -3,7 +3,11 @@ package spe.uoblibraryapp;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
@@ -13,8 +17,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -27,18 +29,18 @@ import spe.uoblibraryapp.nfc.NFCTechException;
 public class ActivityScanNFC extends AppCompatActivity {
     private static final String TAG = "Scan NFC Activity";
 
-    private TextView txtContentSysInfo;
-    private TextView txtBarcode;
-
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
     private String[][] techList;
+    private Dialog scanDialog;
+    private MyBroadCastReceiver myBroadCastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_nfc);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        myBroadCastReceiver = new MyBroadCastReceiver();
 
         if (!(nfcAdapter != null && nfcAdapter.isEnabled())){
             //Toast.makeText(this, "No NFC Detected", Toast.LENGTH_SHORT).show();
@@ -46,12 +48,10 @@ public class ActivityScanNFC extends AppCompatActivity {
             startActivity(i);
             finish();
         } else {
-
             Intent pnd = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0, pnd, 0);
             // Setup a tech list for NfcV tag.
             techList = new String[][]{ new String[]{NfcV.class.getName()} };
-
         }
         Activity myAct = this;
 
@@ -60,74 +60,93 @@ public class ActivityScanNFC extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ActivityScanNFC.ViewDialog alert = new ActivityScanNFC.ViewDialog();
-                //TODO: Fix me, this call for showDialog needs changing.
                 alert.showDialog(myAct);
             }
         });
-
-
     }
 
     /**
-     * Called when an intent gets parsed to the activity,
+     * Called when an intent gets passed to the activity,
      * hopefully an NFC tag.
      * @param scanIntent - an intent sent to the activity, hopefully a tag
      */
     @Override
     protected void onNewIntent(Intent scanIntent) {
-        Toast.makeText(this, "NFC Intent", Toast.LENGTH_SHORT).show();
-
-        try {
-            NFC nfc = new NFC(scanIntent);
-            String sysInfo = bytesToHexString(nfc.getSystemInformation());
-
-
-            // TODO Denis -> Change screen to show the book has been scanned and is now loading.
-
-//            txtContentSysInfo.setText(sysInfo.substring(24, 26));
-//            txtBarcode.setText(nfc.getBarcode());
-
-            // TODO End
+        ProgressDialog nDialog;
+        nDialog = new ProgressDialog(this);
+        nDialog.setMessage("Loading...");
+        nDialog.setTitle("Checkout in progress");
+        nDialog.setIndeterminate(false);
+        nDialog.setCancelable(false);
+        nDialog.show();
+        scanDialog = nDialog;
 
 
-            // Send intent to WMSNCIPService with itemId
-            Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
-            checkoutIntent.putExtra("itemId", nfc.getBarcode());
-            WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
+        Thread mThread = new Thread() {
+            @Override
+            public void run() {
 
+                try {
+                    NFC nfc = new NFC(scanIntent);
+                    // Tag has been scanned now stop scanning for tags
+                    nfcAdapter.disableForegroundDispatch(ActivityScanNFC.this);
 
-            // When checkout is complete the confirm activity is started by the WMSNCIPService.
+                    String sysInfo = bytesToHexString(nfc.getSystemInformation());
 
-        } catch (NFCTechException e) {
-            e.printStackTrace();
-            Log.d(TAG, "Not the right NFC/RFID type");
-        } catch (IntentException e) {
-            e.printStackTrace();
-            Log.d(TAG, "No tag in the intent");
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.d(TAG, "Can't connect to the tag");
-        } catch (BarcodeException e) {
-            e.printStackTrace();
-            Log.d(TAG, "There was a problem with the tag");
-        }
+                    // Send intent to WMSNCIPService with itemId
+                    Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
+                    checkoutIntent.putExtra("itemId", nfc.getBarcode());
+                    WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
+                    // When checkout is complete the confirm activity is started by the WMSNCIPService.
+                } catch (NFCTechException e) {
+                    e.printStackTrace();
+                    nDialog.setMessage("Not the right NFC/RFID type");
+                    Log.d(TAG, "Not the right NFC/RFID type");
+                } catch (IntentException e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "No tag in the intent");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    nDialog.setMessage("There was a problem with the tag. Hold phone still over tag.");
+                    Log.d(TAG, "Can't connect to the tag");
+                } catch (BarcodeException e) {
+                    e.printStackTrace();
+                    nDialog.setMessage("There was a problem reading the tag");
+                    Log.d(TAG, "There was a problem with the tag");
+                }
+            }
+        };
+        mThread.start();
     }
 
     @Override
     protected void onResume() {
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, techList);
         super.onResume();
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, techList);
+        try {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Constants.IntentActions.BOOK_CHECK_OUT_RESPONSE);
+            registerReceiver(myBroadCastReceiver, intentFilter);
+            Log.d(TAG, "Receiver Registered");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
         nfcAdapter.disableForegroundDispatch(this);
+        if (scanDialog != null){
+            scanDialog.dismiss();
+        }
+        unregisterReceiver(myBroadCastReceiver);
+        super.onPause();
     }
 
     public void onBackPressed(){
         Intent intent = new Intent(ActivityScanNFC.this, ActivityHome.class);
         startActivity(intent);
+        finish();
     }
 
     /**
@@ -152,7 +171,27 @@ public class ActivityScanNFC extends AppCompatActivity {
         return stringBuilder.toString().toUpperCase().replace('X','x');
     }
 
-    //TODO: Document this ViewDialog.
+
+
+    class MyBroadCastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                Log.d(TAG, "onReceive() called");
+
+                String xml = intent.getStringExtra("xml");
+                Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
+                confirmIntent.putExtra("xml", xml);
+                startActivity(confirmIntent);
+                finish();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+
+    //Problems Scanning Dialog
     public class ViewDialog {
 
         public void showDialog(Activity activity){

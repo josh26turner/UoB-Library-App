@@ -22,23 +22,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import spe.uoblibraryapp.api.WMSException;
-import spe.uoblibraryapp.api.WMSResponse;
-import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
-import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.api.wmsobjects.WMSHold;
-import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 
@@ -79,7 +67,6 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                //TODO: MODIFY ME TO SHOW ACTUAL VALUES.
                 ViewDialog alert = new ViewDialog();
                 alert.showDialog(getActivity(), resvlist.get(position)); }
         });
@@ -111,16 +98,10 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
 
     public void fillListView(WMSUserProfile userProfile) {
         List<WMSHold> bookList = new ArrayList<>(userProfile.getOnHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
-        bookList.add(new WMSHold());
         resvlist=bookList;
+
+        if (bookList.isEmpty()) return;
+
         ResvBookListAdapter adapter = new ResvBookListAdapter(getContext(), R.layout.adapter_view_layout_resv, bookList);
         mListView.setAdapter(adapter);
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
@@ -137,7 +118,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Constants.IntentActions.USER_PROFILE_RESPONSE);
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver, intentFilter);
-            Log.d(TAG, "Reciever Registered");
+            Log.d(TAG, "Receiver Registered");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -177,7 +158,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
 
 
 
-    //TODO: Document this ViewDialog.
+    //Extra Reservation Information Dialog
     public class ViewDialog {
 
         public void showDialog(Activity activity, WMSHold reservation){

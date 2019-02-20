@@ -21,6 +21,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,12 +32,13 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.api.wmsobjects.WMSHold;
+import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 public class FragmentDashboard extends android.support.v4.app.Fragment {
     private static final String TAG = "DashboardFragment";
-    private FragmentDashboard.MyBroadCastReceiver myBroadCastReceiver;
+    private MyBroadCastReceiver myBroadCastReceiver;
     private CacheManager cacheManager;
     private View view;
 
@@ -104,47 +106,37 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
     }
 
 
-    private WMSUserProfile parseUserProfileResponse(String xml) throws WMSException, WMSParseException {
-        WMSResponse response = new WMSNCIPResponse(xml);
-
-        if (response.didFail()) {
-            throw new WMSException("There was an error retrieving the User Profile");
-        }
-        Document doc;
-        try {
-            doc = response.parse();
-        } catch (IOException | SAXException | ParserConfigurationException e) {
-            throw new WMSException("There was an error Parsing the WMS response");
-        }
-        Node node = doc.getElementsByTagName("ns1:LookupUserResponse").item(0);
-        return new WMSUserProfile(new WMSNCIPElement(node));
-    }
-
     private void updateDashboardLoans(){
         //Update Dashboard
         TextView loan_dash_description = view.findViewById(R.id.loan_dash_description);
-        loan_dash_description.setText("You have borrowed "
-                + cacheManager.getUserProfile().getLoans().size()
-                + " out of 40 books. The first book is due on "
-                + 0 //TODO: Solve due date issue
-                + ".");
+        String output;
+        List<WMSLoan> bookList = cacheManager.getUserProfile().getLoans();
+        if (!bookList.isEmpty()) {
+            Collections.sort(bookList, new SortCustomComparatorDueDate());
+            output = String.format("You have borrowed %s out of %s books. The first book is due back on %s", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getDueDate());
+        }
+        else output = "Currently you have no loans :)";
+
+
+
+        loan_dash_description.setText(output);
     }
 
     private void updateDashboardReservations(){
         //Updating Reservation Dashboard
         Log.d(TAG, "Updating Reservation Dash");
         TextView tv = view.findViewById(R.id.resv_dash_description);
-        tv.setText(   "You have "
-                + cacheManager.getUserProfile().getOnHold().size()
-                + " reservations, "
-                + readyCollectCount(cacheManager.getUserProfile())
-                + " of which are ready to collect.");
+        int reservationSize = cacheManager.getUserProfile().getOnHold().size();
+        if (reservationSize==0) tv.setText("Currently you have no reservations :)");
+        else {
+            String output = String.format("You have %s reservations, %s of which are ready to collect", cacheManager.getUserProfile().getOnHold().size(), readyCollectCount(cacheManager.getUserProfile()));
+            tv.setText(output);
+        }
     }
     public int readyCollectCount(WMSUserProfile profile){
         int c = 0;
-        int i = 0;
         List<WMSHold> holds = profile.getOnHold();
-        for(i=0; i < holds.size(); i++){
+        for(int i=0; i < holds.size(); i++){
             if(holds.get(i).isReadyToCollect())
                 c++;
         }

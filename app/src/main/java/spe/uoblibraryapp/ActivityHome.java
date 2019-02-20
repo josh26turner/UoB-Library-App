@@ -1,6 +1,5 @@
 package spe.uoblibraryapp;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,13 +7,11 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import spe.uoblibraryapp.api.AuthService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
@@ -91,8 +88,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast toast = Toast.makeText(ActivityHome.this, "Scan New Book", Toast.LENGTH_SHORT);
-                toast.show();
+                //Scan a New Book.
                 Intent NFCActivity = new Intent(ActivityHome.this, ActivityScanNFC.class);
                 startActivity(NFCActivity);
             }
@@ -105,7 +101,6 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            //TODO: Exit prompt.
             if (getViewPager()==0){
                 //exit app
                 super.onBackPressed();

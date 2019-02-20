@@ -136,7 +136,7 @@ public class AuthService extends JobIntentService {
 
 //                    sendBroadcast(accessTokenGeneratedIntent);
 
-                    Log.d(TAG, "recieved response: broadcast key");
+                    Log.d(TAG, "received response: broadcast key");
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -178,6 +178,6 @@ public class AuthService extends JobIntentService {
         Log.d(TAG, "Stopping queue");
 
 
-        Log.d(TAG, "Logout intent recieved");
+        Log.d(TAG, "Logout intent received");
     }
 }

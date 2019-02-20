@@ -1,6 +1,5 @@
 package spe.uoblibraryapp;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,19 +36,19 @@ public class ActivitySignIn extends SimpleActivity {
 
         getSupportActionBar().setTitle("Single Sign On");
 
-        WebView mywebview = findViewById(R.id.loginWebView);
+        WebView loginWebView = findViewById(R.id.loginWebView);
 
         // Clear all user cache previously store, this will force the user to login again.
-        mywebview.clearCache(true);
-        mywebview.clearHistory();
+        loginWebView.clearCache(true);
+        loginWebView.clearHistory();
         clearCookies();
 
-        mywebview.getSettings().setJavaScriptEnabled(true);
-        mywebview.getSettings().setLoadWithOverviewMode(true);
-        mywebview.getSettings().setUseWideViewPort(true);
-        mywebview.getSettings().setSupportZoom(true);
+        loginWebView.getSettings().setJavaScriptEnabled(true);
+        loginWebView.getSettings().setLoadWithOverviewMode(true);
+        loginWebView.getSettings().setUseWideViewPort(true);
+        loginWebView.getSettings().setSupportZoom(true);
 
-        mywebview.setWebChromeClient(new WebChromeClient(){
+        loginWebView.setWebChromeClient(new WebChromeClient(){
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 pBar.setProgress(newProgress);
@@ -57,9 +56,9 @@ public class ActivitySignIn extends SimpleActivity {
             }
         });
 
-        mywebview.setInitialScale(1);
-        mywebview.loadUrl(Constants.UserAuth.oAuthUrl());
-        mywebview.setWebViewClient(new WebViewClient() {
+        loginWebView.setInitialScale(1);
+        loginWebView.loadUrl(Constants.UserAuth.oAuthUrl());
+        loginWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String URL = request.getUrl().toString();
@@ -114,6 +113,7 @@ public class ActivitySignIn extends SimpleActivity {
         Log.v("Tag", "Log: " + mywebview.getUrl());
         Log.v("Tag", "Con: " + Constants.UserAuth.oAuthUrl());
 
+        // Dont do anything when back button is pressed?
 
         if (mywebview.getUrl().equals("https://authn.sd02.worldcat.org/wayf/metaauth-ui/cmnd/protocol/samlpost")){
             finish();
@@ -168,14 +168,14 @@ public class ActivitySignIn extends SimpleActivity {
         CookieManager.getInstance().flush();
     }
 
-    private void injectCSS(WebView mywebview){
+    private void injectCSS(WebView loginWebView){
         try {
             InputStream inputStream = getAssets().open("black.css");
             byte[] buffer = new byte[inputStream.available()];
             inputStream.read(buffer);
             inputStream.close();
             String encoded = Base64.encodeToString(buffer, Base64.NO_WRAP);
-            mywebview.loadUrl("javascript:(function() {" +
+            loginWebView.loadUrl("javascript:(function() {" +
                     "var parent = document.getElementsByTagName('head').item(0);" +
                     "var style = document.createElement('style');" +
                     "style.type = 'text/css';" +

@@ -10,7 +10,7 @@
         android:layout_height="180dp"
         android:layout_gravity="center"
         android:layout_marginTop="71dp"
-        android:background="@drawable/nfc_2" />
+        android:background="@drawable/logo_nfc" />
 
     <TextView
         android:id="@+id/textView2"

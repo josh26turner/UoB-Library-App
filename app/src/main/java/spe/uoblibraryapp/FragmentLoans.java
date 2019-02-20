@@ -16,10 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -95,7 +93,6 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
                 else if (spinner.getSelectedItemId() == 3) currentSort = sort.dueDateZA;
 
                 //Update View here.
-                //TODO: DISABLE THIS WHILE REFRESHING.
                 fillListView(cacheManager.getUserProfile());
 
 
@@ -111,7 +108,6 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                //TODO: MODIFY ME TO SHOW ACTUAL VALUES.
                 FragmentLoans.ViewDialog alert = new FragmentLoans.ViewDialog();
                 alert.showDialog(getActivity(), loanList.get(position)); }
         });
@@ -148,27 +144,12 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
                 return 0;
         }
     }
-    public class customComparatorDueDate implements Comparator<WMSLoan> {
-        public int compare(WMSLoan object1, WMSLoan object2) {
-            return (object1.getDueDate().compareTo(object2.getDueDate()));
-        }
-    }
 
     public void fillListView(WMSUserProfile userProfile) {
         ListView mListView = view.findViewById(R.id.listview);
         List<WMSLoan> bookList = new ArrayList<>(userProfile.getLoans());
 
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-        bookList.add(new WMSLoan()); // Just for testing
-
-        if (bookList.isEmpty()) return; //TODO: TEST ME.
+        if (bookList.isEmpty()) return;
 
         switch (currentSort) {
             case AZ:
@@ -179,10 +160,10 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
                 Collections.reverse(bookList);
                 break;
             case dueDateAZ:
-                Collections.sort(bookList, new customComparatorDueDate());
+                Collections.sort(bookList, new SortCustomComparatorDueDate());
                 break;
             case dueDateZA:
-                Collections.sort(bookList, new customComparatorDueDate());
+                Collections.sort(bookList, new SortCustomComparatorDueDate());
                 Collections.reverse(bookList);
                 break;
             default:
@@ -202,20 +183,6 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     public int daysBetween(Date d1, Date d2){
         return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }
-    //TODO: Send to Jerry.
-    public int getLeastDueBook(List<WMSLoan> bookList){
-        if (bookList.isEmpty()) return -1;
-        Collections.sort(bookList, new customComparatorDueDate());
-        bookList.get(0).getDueDate();
-        Date date = new Date();
-
-
-        int days = daysBetween(bookList.get(0).getDueDate(), date);
-
-       // long diff = (Calendar.getInstance().getTime()) - Date.parse(bookList.get(0).getDueDate()))
-       // long diffDays = diff / (24 * 60 * 60 * 1000);
-        return days;
-    }
 
     /**
      * This method is responsible to register an action to BroadCastReceiver
@@ -234,8 +201,8 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
 
     @Override
     public void onPause() {
-        super.onPause();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(myBroadCastReceiver);
+        super.onPause();
     }
 
     class MyBroadCastReceiver extends BroadcastReceiver {
@@ -260,7 +227,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         }
     }
 
-    //TODO: Document this ViewDialog.
+    //Extra Loan Information Dialog
     public class ViewDialog {
 
         public void showDialog(Activity activity, WMSLoan loan){

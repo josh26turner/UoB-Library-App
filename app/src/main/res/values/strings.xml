@@ -23,6 +23,7 @@
     <string name="hint_username">Enter UoB Email Here</string>
     <string name="hint_password">Password</string>
     <string name="Dashboard">Dashboard</string>
+    <string name="scanBook">Scan a New Book</string>
     <!-- END OF SECTION -->
 
     <string-array name="color_array">
@@ -31,10 +32,10 @@
     </string-array>
 
     <string-array name="loan_spinner">
-        <item>name: A-Z</item>
-        <item>name: Z-A</item>
-        <item>earliest due</item>
-        <item>last due</item>
+        <item>A-Z</item>
+        <item>Z-A</item>
+        <item>Due First</item>
+        <item>Due Last</item>
     </string-array>
 
 </resources>
