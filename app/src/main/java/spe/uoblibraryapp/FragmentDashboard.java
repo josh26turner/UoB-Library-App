@@ -38,7 +38,7 @@ import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
 public class FragmentDashboard extends android.support.v4.app.Fragment {
     private static final String TAG = "DashboardFragment";
-    private FragmentDashboard.MyBroadCastReceiver myBroadCastReceiver;
+    private MyBroadCastReceiver myBroadCastReceiver;
     private CacheManager cacheManager;
     private View view;
 
@@ -105,22 +105,6 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         }
     }
 
-
-    private WMSUserProfile parseUserProfileResponse(String xml) throws WMSException, WMSParseException {
-        WMSResponse response = new WMSNCIPResponse(xml);
-
-        if (response.didFail()) {
-            throw new WMSException("There was an error retrieving the User Profile");
-        }
-        Document doc;
-        try {
-            doc = response.parse();
-        } catch (IOException | SAXException | ParserConfigurationException e) {
-            throw new WMSException("There was an error Parsing the WMS response");
-        }
-        Node node = doc.getElementsByTagName("ns1:LookupUserResponse").item(0);
-        return new WMSUserProfile(new WMSNCIPElement(node));
-    }
 
     private void updateDashboardLoans(){
         //Update Dashboard

@@ -13,18 +13,15 @@ import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.TextView;
 
 import java.io.IOException;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
-import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 import spe.uoblibraryapp.nfc.BarcodeException;
 import spe.uoblibraryapp.nfc.IntentException;
 import spe.uoblibraryapp.nfc.NFC;

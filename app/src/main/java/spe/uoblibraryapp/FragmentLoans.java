@@ -16,10 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -203,8 +201,8 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
 
     @Override
     public void onPause() {
-        super.onPause();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(myBroadCastReceiver);
+        super.onPause();
     }
 
     class MyBroadCastReceiver extends BroadcastReceiver {
