@@ -102,7 +102,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
 
     public void fillListView(WMSUserProfile userProfile) {
         List<WMSHold> bookList = new ArrayList<>(userProfile.getOnHold());
-        resvlist=bookList;
+        resvList=bookList;
 
         if (bookList.isEmpty()) return;
 
