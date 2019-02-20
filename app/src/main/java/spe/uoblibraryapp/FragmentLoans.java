@@ -170,7 +170,6 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
                 //this is not possible, added for the automatic code review.
                 break;
         }
-
         loanList = bookList;
         ArrayAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
         mListView.setAdapter(adapter);
@@ -179,10 +178,6 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     }
 
 
-    //TODO: Send to Jerry.
-    public int daysBetween(Date d1, Date d2){
-        return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
-    }
 
     /**
      * This method is responsible to register an action to BroadCastReceiver
