@@ -16,11 +16,13 @@ import com.android.volley.toolbox.Volley;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,6 +32,8 @@ import spe.uoblibraryapp.Constants;
 import spe.uoblibraryapp.api.AuthService;
 import spe.uoblibraryapp.api.WMSException;
 import spe.uoblibraryapp.api.WMSResponse;
+import spe.uoblibraryapp.api.XMLParser;
+import spe.uoblibraryapp.api.wmsobjects.WMSHold;
 import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
@@ -48,7 +52,7 @@ public class WMSNCIPService extends JobIntentService {
         SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
         String accessToken = prefs.getString("authorisationToken", "");
 
-        String url = Constants.APIUrls.lookupUser;
+        String url = Constants.APIUrls.patronProfile;
         String requestBody = String.format(
                 Constants.RequestTemplates.lookupUser,
                 prefs.getString("principalID", ""));
@@ -74,11 +78,6 @@ public class WMSNCIPService extends JobIntentService {
                     for (WMSLoan loan : userProfile.getLoans()){
                         loan.fetchIsRenewable(getApplicationContext());
                     }
-                    // for each book in loans
-                    //     make http request
-                    //         parse and do book.setIsRenewable
-
-
 
                     // Update cache
                     cacheManager.setUserProfile(userProfile);
@@ -181,6 +180,77 @@ public class WMSNCIPService extends JobIntentService {
         queue.add(request);
     }
 
+    private void cancelReservation(String reservationId){
+        SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
+        String accessToken = prefs.getString("authorisationToken", "");
+
+        String url = Constants.APIUrls.patronProfile;
+        String requestBody = String.format(
+                Constants.RequestTemplates.cancelReservation,
+                prefs.getString("principalID", ""),
+                reservationId);
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String xml) {
+                Log.d(TAG, "HTTP request Actioned");
+
+                String requestId;
+                try {
+                    Document doc = XMLParser.parse(xml);
+                    Log.d(TAG,xml);
+                    NodeList nodeList = doc.getElementsByTagName("ns1:RequestIdentifierValue");
+                    Log.d(TAG, "nodelist" + String.valueOf(nodeList.getLength()));
+                    requestId = nodeList.item(0).getTextContent();
+                    Log.d(TAG, "done");
+                } catch(Exception ex){
+                    requestId = null;
+                }
+
+
+                Intent broadcastIntent;
+                if (requestId != null) {
+                    // Add parsing stuff here
+                    WMSUserProfile userProfile = cacheManager.getUserProfile();
+                    Iterator<WMSHold> iterator = userProfile.getOnHold().iterator();
+                    while (iterator.hasNext()) {
+                        WMSHold p = iterator.next();
+                        if (p.getRequestId().equals(requestId)) iterator.remove();
+                    }
+                    broadcastIntent = new Intent(Constants.IntentActions.CANCEL_RESERVATION_RESPONSE);
+                } else{
+                    Log.d(TAG, "Error");
+                    broadcastIntent = new Intent(Constants.IntentActions.CANCEL_RESERVATION_ERROR);
+                }
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
+                Log.d(TAG, "Broadcast Intent Sent");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "ERRROOOOORRRRR");
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + accessToken);
+                return headers;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/xml";
+            }
+
+            @Override
+            public byte[] getBody() {
+                return requestBody.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        requestQueue.add(request);
+    }
+
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
         if (Constants.IntentActions.ACCESS_TOKEN_GENERATED.equals(intent.getAction())) {
@@ -189,11 +259,13 @@ public class WMSNCIPService extends JobIntentService {
                 String action = workQueue.get();
                 if (Constants.IntentActions.LOOKUP_USER.equals(action)) {
                     lookupUser();
-                } else if (Constants.IntentActions.CHECKOUT_BOOK.equals((action))) {
-                    String itemId = intent.getStringExtra("itemId"); // Use this
-//                    mockCheckOutBook(); // Comment this out once the server is live
-                    checkoutBook(itemId); // And use this one
-                } else {
+                } else if (Constants.IntentActions.CHECKOUT_BOOK.equals(action)) {
+                    String itemId = intent.getStringExtra("itemId");
+                    checkoutBook(itemId);
+                } else if(Constants.IntentActions.CANCEL_RESERVATION.equals(action)) {
+                    String reservationId = intent.getStringExtra("reservationId");
+                    cancelReservation(reservationId);
+                }else{
                     Log.e(TAG, "Intent received has no valid action");
                 }
             }

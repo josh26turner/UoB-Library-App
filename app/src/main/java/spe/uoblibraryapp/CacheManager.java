@@ -16,7 +16,7 @@ public class CacheManager {
         return ourInstance;
     }
 
-    WMSUserProfile getUserProfile() {
+    public WMSUserProfile getUserProfile() {
         return userProfile;
     }
 
@@ -41,11 +41,11 @@ public class CacheManager {
         this.dateAccessed = null;
     }
 
-    public void setRefreshing(Boolean refreshing){
+    void setRefreshing(Boolean refreshing){
         this.refreshing = refreshing;
     }
 
-    public Boolean getRefreshing(){
+    Boolean getRefreshing(){
         return refreshing;
     }
 

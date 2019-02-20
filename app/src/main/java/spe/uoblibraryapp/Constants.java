@@ -53,13 +53,15 @@ public final class Constants {
         public static final String LOOKUP_USER = "spe.uoblibraryapp.api.ncip.LOOKUP_USER";
         public static final String LOOKUP_USER_ERROR = "spe.uoblibraryapp.api.ncip.LOOKUP_USER";
         public static final String CHECKOUT_BOOK = "spe.uoblibraryapp.api.ncip.CHECKOUT_BOOK";
+        public static final String BOOK_CHECK_OUT_RESPONSE = "spe.uoblibraryapp.api.BOOK_CHECK_OUT_RESPONSE";
         public static final String CANCEL_RESERVATION = "spe.uoblibraryapp.api.ncip.CANCEL_RESERVATION";
+        public static final String CANCEL_RESERVATION_RESPONSE = "spe.uoblibraryapp.api.ncip.CANCEL_RESERVATION_RESPONSE";
+        public static final String CANCEL_RESERVATION_ERROR = "spe.uoblibraryapp.api.ncip.CANCEL_RESERVATION_ERROR";
         public static final String ACCESS_TOKEN_GENERATED = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_GENERATED";
         public static final String ACCESS_TOKEN_NEEDED = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_NEEDED";
         public static final String AUTH_ERROR = "spe.uoblibraryapp.api.auth.AUTH_ERROR";
         public static final String AUTH_LOGOUT = "spe.uoblibraryapp.api.auth.AUTH_LOGOUT";
         public static final String USER_PROFILE_RESPONSE = "spe.uoblibraryapp.api.USER_PROFILE_RESPONSE";
-        public static final String BOOK_CHECK_OUT_RESPONSE = "spe.uoblibraryapp.api.BOOK_CHECK_OUT_RESPONSE";
         private IntentActions() { }
     }
 
@@ -72,7 +74,7 @@ public final class Constants {
 
 
     public static final class APIUrls{
-        public static final String lookupUser = "https://bub.share.worldcat.org/ncip/circ-patron";
+        public static final String patronProfile = "https://bub.share.worldcat.org/ncip/circ-patron";
         public static final String checkoutBook = "http://132.145.54.223:8080/checkout";
         public static final String bookAvailability = "https://worldcat.org/circ/availability/sru/service?x-registryId=" + LibraryDetails.institutionId + "&query=no:ocm%s";
         private APIUrls() { }
@@ -121,6 +123,30 @@ public final class Constants {
                 "</ns2:ResponseElementControl>\n" +
                 "</Ext>\n" +
                 "</LookupUser>\n" +
+                "</NCIPMessage>";
+
+        public static final String cancelReservation = "<NCIPMessage xmlns=\"http://www.niso.org/2008/ncip\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:ncip=\"http://www.niso.org/2008/ncip\" xsi:schemaLocation=\"http://www.niso.org/2008/ncip http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\" ncip:version=\"http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\">\n" +
+                "<CancelRequestItem>\n" +
+                "<InitiationHeader>\n" +
+                "<FromAgencyId>\n" +
+                "<AgencyId ncip:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">" + LibraryDetails.institutionId + "</AgencyId>\n" +
+                "</FromAgencyId>\n" +
+                "<ToAgencyId>\n" +
+                "<AgencyId>" + LibraryDetails.institutionId + "</AgencyId>\n" +
+                "</ToAgencyId>\n" +
+                "<ApplicationProfileType ncip:Scheme=\"http://oclc.org/ncip/schemes/application-profile/wcl.scm\">Version 2011</ApplicationProfileType>\n" +
+                "</InitiationHeader>\n" +
+                "<UserId>\n" +
+                "<AgencyId>" + LibraryDetails.institutionId + "</AgencyId>\n" +
+                "<UserIdentifierValue>%s</UserIdentifierValue>\n" +
+                "</UserId>\n" +
+                "<RequestId>\n" +
+                "<AgencyId>" + LibraryDetails.institutionId + "</AgencyId>\n" +
+                "<RequestIdentifierValue>%s</RequestIdentifierValue>\n" +
+                "</RequestId>\n" +
+                "<RequestType ncip:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requesttype/requesttype.scm\">Hold</RequestType>\n" +
+                "<RequestScopeType ncip:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requestscopetype/requestscopetype.scm\">Bibliographic Item</RequestScopeType>\n" +
+                "</CancelRequestItem>\n" +
                 "</NCIPMessage>";
 
         public static final String checkoutBook = "<CheckoutBookRequest>" +

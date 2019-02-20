@@ -35,8 +35,10 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
     private MyBroadCastReceiver myBroadCastReceiver;
     private View view;
     private CacheManager cacheManager;
-    public List<WMSHold> resvlist;
+    private ResvBookListAdapter resvBookListAdapter;
+    public List<WMSHold> resvList;
     private ListView mListView;
+    private ViewDialog openDialog;
 
 
     @Nullable
@@ -68,7 +70,9 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 ViewDialog alert = new ViewDialog();
-                alert.showDialog(getActivity(), resvlist.get(position)); }
+                alert.showDialog(getActivity(), resvList.get(position));
+                openDialog = alert;
+            }
         });
 
 
@@ -105,7 +109,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         ResvBookListAdapter adapter = new ResvBookListAdapter(getContext(), R.layout.adapter_view_layout_resv, bookList);
         mListView.setAdapter(adapter);
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
-
+        resvBookListAdapter = adapter;
         //updateDash(userProfile.getLoans());
 
     }
@@ -142,7 +146,11 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                 if (Constants.IntentActions.USER_PROFILE_RESPONSE.equals(intent.getAction())){
                     WMSUserProfile userProfile = cacheManager.getUserProfile();
                     fillListView(userProfile);
-                } else {
+                } else if(Constants.IntentActions.CANCEL_RESERVATION_RESPONSE.equals(intent.getAction())){
+                    if (openDialog != null){
+                        openDialog.closeDialog();
+                    }
+                }else {
                     Toast toast = Toast.makeText(getContext(), "Refresh Failed",Toast.LENGTH_LONG);
                     toast.show();
                 }
@@ -160,8 +168,9 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
 
     //Extra Reservation Information Dialog
     public class ViewDialog {
-
-        public void showDialog(Activity activity, WMSHold reservation){
+        Dialog dialog;
+        String reservationId;
+        void showDialog(Activity activity, WMSHold reservation){
             final Dialog dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
@@ -176,11 +185,18 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                 @Override
                 public void onClick(View v) {
                     //TODO: Add cancel reservation function here
-                    Toast.makeText(getContext(), "Functionality coming soon, please use the UoB Library Website for now.", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(Constants.IntentActions.CANCEL_RESERVATION);
+                    intent.putExtra("reservationId", reservation.getRequestId());
+                    WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, intent);
+                    Toast.makeText(getContext(), "Clicked.", Toast.LENGTH_LONG).show();
                 }
             });
-
             dialog.show();
+            this.dialog = dialog;
+        }
+
+        void closeDialog(){
+            if (dialog != null) dialog.dismiss();
         }
     }
 
