@@ -57,10 +57,6 @@ public class ActivityScanNFC extends AppCompatActivity {
         }
         Activity myAct = this;
 
-        final Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake_anim);
-        TextView txt = (TextView) findViewById(R.id.textView2);
-        txt.startAnimation(shake);
-
         Button butt = findViewById(R.id.btnProblemReport2);
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,40 +79,48 @@ public class ActivityScanNFC extends AppCompatActivity {
     protected void onNewIntent(Intent scanIntent) {
         Toast.makeText(this, "NFC Intent", Toast.LENGTH_SHORT).show();
 
-        try {
-            NFC nfc = new NFC(scanIntent);
-            String sysInfo = bytesToHexString(nfc.getSystemInformation());
+        new Thread(new Runnable() {
+            public void run() {
+                // a potentially time consuming task
+                try {
+                    NFC nfc = new NFC(scanIntent);
+                    String sysInfo = bytesToHexString(nfc.getSystemInformation());
 
 
-            // TODO Denis -> Change screen to show the book has been scanned and is now loading.
+                    // TODO Denis -> Change screen to show the book has been scanned and is now loading.
 
 //            txtContentSysInfo.setText(sysInfo.substring(24, 26));
 //            txtBarcode.setText(nfc.getBarcode());
 
-            // TODO End
+                    // TODO End
 
 
-            // Send intent to WMSNCIPService with itemId
-            Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
-            checkoutIntent.putExtra("itemId", nfc.getBarcode());
-            WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
+                    // Send intent to WMSNCIPService with itemId
+                    Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
+                    checkoutIntent.putExtra("itemId", nfc.getBarcode());
+                    WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
 
 
-            // When checkout is complete the confirm activity is started by the WMSNCIPService.
+                    // When checkout is complete the confirm activity is started by the WMSNCIPService.
 
-        } catch (NFCTechException e) {
-            e.printStackTrace();
-            Log.d(TAG, "Not the right NFC/RFID type");
-        } catch (IntentException e) {
-            e.printStackTrace();
-            Log.d(TAG, "No tag in the intent");
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.d(TAG, "Can't connect to the tag");
-        } catch (BarcodeException e) {
-            e.printStackTrace();
-            Log.d(TAG, "There was a problem with the tag");
-        }
+                } catch (NFCTechException e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "Not the right NFC/RFID type");
+                } catch (IntentException e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "No tag in the intent");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "Can't connect to the tag");
+                } catch (BarcodeException e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "There was a problem with the tag");
+                }
+
+            }
+        }).start();
+
+
     }
 
     @Override

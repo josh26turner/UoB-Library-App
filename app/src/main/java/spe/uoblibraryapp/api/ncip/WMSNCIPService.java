@@ -234,7 +234,7 @@ public class WMSNCIPService extends JobIntentService {
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
         if (Constants.IntentActions.ACCESS_TOKEN_GENERATED.equals(intent.getAction())) {
-            Log.d(TAG, "token generated intent recieved");
+            Log.d(TAG, "token generated intent received");
             while (!workQueue.isEmpty()) {
                 String action = workQueue.get();
                 if (Constants.IntentActions.LOOKUP_USER.equals(action)) {
@@ -248,7 +248,7 @@ public class WMSNCIPService extends JobIntentService {
                 }
             }
         } else {
-            Log.d(TAG, "Intent recieved");
+            Log.d(TAG, "Intent received");
             workQueue.add(intent.getAction());
             Log.d(TAG, "action added to work queue");
             Intent getAccessTokenIntent = new Intent(Constants.IntentActions.ACCESS_TOKEN_NEEDED);
