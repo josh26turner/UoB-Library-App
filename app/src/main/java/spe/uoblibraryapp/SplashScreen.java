@@ -24,9 +24,6 @@ public class SplashScreen extends AppCompatActivity {
     private final String TAG = "SplashScreen";
     private MyBroadCastReceiver myBroadCastReceiver;
 
-    // TODO: If not logged in then open sign in activity rather than home
-    // TODO: Could we trigger api calls and then only move on once they have recieved a response?
-
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         Window window = getWindow();
@@ -63,13 +60,6 @@ public class SplashScreen extends AppCompatActivity {
         imageView.clearAnimation();
         imageView.startAnimation(loadAnimation);
 
-
-
-
-        // TODO: Rather than wait here, trigger load for FragmentLoans when received then startActivity
-
-
-        Intent intent;
         SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
         if (prefs.getString("principalID", "").equals("")) {
 
