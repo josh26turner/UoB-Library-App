@@ -1,6 +1,6 @@
 package spe.uoblibraryapp;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -110,13 +110,21 @@ public class ActivitySignIn extends SimpleActivity {
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
-
-        // Dont do anything when back button is pressed?
-
-        // TODO could we change back button to work with webview?
         WebView mywebview = findViewById(R.id.loginWebView);
-        mywebview.loadUrl(Constants.UserAuth.oAuthUrl());
+        Log.v("Tag", "Log: " + mywebview.getUrl());
+        Log.v("Tag", "Con: " + Constants.UserAuth.oAuthUrl());
+
+
+        if (mywebview.getUrl().equals("https://authn.sd02.worldcat.org/wayf/metaauth-ui/cmnd/protocol/samlpost")){
+            finish();
+        }
+        else if (mywebview.getUrl().equals(Constants.UserAuth.oAuthUrl())){
+            finish();
+        }
+        else{
+            mywebview.loadUrl(Constants.UserAuth.oAuthUrl());
+            Toast.makeText(getApplicationContext(), "blyn1", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private boolean isAuthorisationDenied(String s) {
