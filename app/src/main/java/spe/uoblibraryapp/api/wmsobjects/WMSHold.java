@@ -11,7 +11,7 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 
 public class WMSHold {
 
-    private static final String TAG = "WMSBook";
+    private static final String TAG = "WMSHold";
 
     private String requestId;
     private String agencyId;

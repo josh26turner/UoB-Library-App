@@ -57,7 +57,7 @@ public class WMSLoan {
     private TextView isRenewableTextView;
     private Context isRenewableTextViewContext;
 
-    private String TAG = "WMSBook";
+    private String TAG = "WMSLoan";
     /**
      * Constructor
      * @param elemHolder This contains the node information
@@ -239,7 +239,6 @@ public class WMSLoan {
 
     public void setIsRenewable(Boolean isRenewable){
         this.isRenewable = isRenewable;
-        Log.e(TAG, "set renewable: " + getBook().getBookId());
         FragmentLoans.listViewAdapter.notifyDataSetChanged();
     }
 
@@ -286,9 +285,6 @@ public class WMSLoan {
             try{
                 String response = future.get(30, TimeUnit.SECONDS);
                 result = parseResponse(response);
-                // parse response
-//                result = true;
-                Log.d(TAG, "book request for " + getBook().getBookId());
             } catch (InterruptedException e){
                 Log.d(TAG , "Iterrupt for " + getBook().getBookId());
                 result = false;
@@ -317,7 +313,6 @@ public class WMSLoan {
                 if(itemIdList.getLength() == 1){
                     Node renewableNode = renewableList.item(0);
                     Node value = renewableNode.getAttributes().getNamedItem("value");
-                    Log.e(TAG, "value: " + value.getNodeValue());
                     return value.getNodeValue().equals("1");
                 }
                 for (int i=0; i<itemIdList.getLength(); i++){
@@ -327,7 +322,7 @@ public class WMSLoan {
                     if (node.getTextContent().equals(itemId)){
                         Node renewableNode = renewableList.item(i);
                         Node value = renewableNode.getAttributes().getNamedItem("value");
-                        Log.e(TAG, "value: " + value.getNodeValue());
+
                         return value.getNodeValue().equals("1");
                     }
                     Log.e(TAG, node.getNodeName());
