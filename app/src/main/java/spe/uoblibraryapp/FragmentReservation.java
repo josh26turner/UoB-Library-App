@@ -79,7 +79,6 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                //TODO: MODIFY ME TO SHOW ACTUAL VALUES.
                 ViewDialog alert = new ViewDialog();
                 alert.showDialog(getActivity(), resvlist.get(position)); }
         });
@@ -113,7 +112,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         List<WMSHold> bookList = new ArrayList<>(userProfile.getOnHold());
         resvlist=bookList;
 
-        if (bookList.isEmpty()) return; //TODO: Test me
+        if (bookList.isEmpty()) return;
 
         ResvBookListAdapter adapter = new ResvBookListAdapter(getContext(), R.layout.adapter_view_layout_resv, bookList);
         mListView.setAdapter(adapter);
@@ -131,7 +130,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Constants.IntentActions.USER_PROFILE_RESPONSE);
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver, intentFilter);
-            Log.d(TAG, "Reciever Registered");
+            Log.d(TAG, "Receiver Registered");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -171,7 +170,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
 
 
 
-    //TODO: Document this ViewDialog.
+    //Extra Reservation Information Dialog
     public class ViewDialog {
 
         public void showDialog(Activity activity, WMSHold reservation){

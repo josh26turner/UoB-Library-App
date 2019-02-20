@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -61,14 +62,14 @@ public class ActivityConfirm extends SimpleActivity {
             Button closeButton = findButton(R.id.close_button);
 
             closeButton.setOnClickListener((view) -> {
+                //TODO: Re-Direct to Home Activity rather than NFC!
                 finish();
             });
 
 
 
         } catch (Exception ex){
-            // TODO fix this
-            // Cry
+            Toast.makeText(getApplicationContext(), "Fatal Error occurred! Try again later.", Toast.LENGTH_LONG);
             Log.e(TAG, ex.getMessage());
             ex.printStackTrace();
         }
