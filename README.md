@@ -1,6 +1,6 @@
 # UoB-Library-App [![CircleCI](https://circleci.com/gh/josh26turner/UoB-Library-App.svg?style=svg)](https://circleci.com/gh/josh26turner/UoB-Library-App)
 
-# Main parts to the system
+## Main parts to the system
 
 1.  UCard scanning
 2.  NFC scanning
