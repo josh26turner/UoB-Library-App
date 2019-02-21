@@ -93,7 +93,7 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
                 else if (spinner.getSelectedItemId() == 3) currentSort = sort.dueDateZA;
 
                 //Update View here.
-                fillListView(cacheManager.getUserProfile());
+//                fillListView(cacheManager.getUserProfile());
 
 
             }
