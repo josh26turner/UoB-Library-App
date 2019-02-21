@@ -50,7 +50,6 @@ public class WMSLoan {
     private Integer reminderLevel;
     private String mediumType;
     private Boolean isRenewable;
-    private TextView isRenewableTextView;
     private Context isRenewableTextViewContext;
 
     private String TAG = "WMSLoan";
@@ -101,9 +100,9 @@ public class WMSLoan {
      * @throws ParseException Throws if the date fails to parse
      */
     private Date parseDate(String strDate) throws ParseException{
-        strDate = strDate.replace("T", "-").replace("Z", "");
+        String formattedStrDate = strDate.replace("T", "-").replace("Z", "");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
-        return format.parse(strDate);
+        return format.parse(formattedStrDate);
     }
 
     /**
@@ -127,6 +126,8 @@ public class WMSLoan {
                                 break;
                             case "ns1:AgencyId":
                                 agencyId = childsChild.getTextContent();
+                                break;
+                            default:
                                 break;
                         }
                     }
@@ -154,8 +155,12 @@ public class WMSLoan {
                             case "ns1:BibliographicDescription":
                                 book = new WMSBook(new WMSNCIPElement(childsChild));
                                 break;
+                            default:
+                                break;
                         }
                     }
+                    break;
+                default:
                     break;
             }
         }
