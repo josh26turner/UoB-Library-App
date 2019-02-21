@@ -1,6 +1,5 @@
 package spe.uoblibraryapp.api.ncip;
 
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import spe.uoblibraryapp.api.ElementHolder;

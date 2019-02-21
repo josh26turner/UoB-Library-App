@@ -3,7 +3,6 @@ package spe.uoblibraryapp.api.wmsobjects;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -18,7 +17,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,8 +30,6 @@ import java.util.concurrent.TimeoutException;
 
 import spe.uoblibraryapp.Constants;
 import spe.uoblibraryapp.FragmentLoans;
-import spe.uoblibraryapp.LoanBookListAdapter;
-import spe.uoblibraryapp.R;
 import spe.uoblibraryapp.api.XMLParser;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 
@@ -54,7 +50,6 @@ public class WMSLoan {
     private Integer reminderLevel;
     private String mediumType;
     private Boolean isRenewable;
-    private TextView isRenewableTextView;
     private Context isRenewableTextViewContext;
 
     private String TAG = "WMSLoan";
@@ -105,9 +100,9 @@ public class WMSLoan {
      * @throws ParseException Throws if the date fails to parse
      */
     private Date parseDate(String strDate) throws ParseException{
-        strDate = strDate.replace("T", "-").replace("Z", "");
+        String formattedStrDate = strDate.replace("T", "-").replace("Z", "");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
-        return format.parse(strDate);
+        return format.parse(formattedStrDate);
     }
 
     /**
@@ -131,6 +126,8 @@ public class WMSLoan {
                                 break;
                             case "ns1:AgencyId":
                                 agencyId = childsChild.getTextContent();
+                                break;
+                            default:
                                 break;
                         }
                     }
@@ -158,8 +155,12 @@ public class WMSLoan {
                             case "ns1:BibliographicDescription":
                                 book = new WMSBook(new WMSNCIPElement(childsChild));
                                 break;
+                            default:
+                                break;
                         }
                     }
+                    break;
+                default:
                     break;
             }
         }

@@ -5,11 +5,8 @@ import org.w3c.dom.NodeList;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import spe.uoblibraryapp.api.WMSException;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 
 /**

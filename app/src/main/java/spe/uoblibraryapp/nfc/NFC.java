@@ -8,7 +8,10 @@ import android.nfc.tech.NfcV;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static spe.uoblibraryapp.nfc.Hex.*;
+import static spe.uoblibraryapp.nfc.Hex.getSystemInfoCommand;
+import static spe.uoblibraryapp.nfc.Hex.readSingleBlockCommand;
+import static spe.uoblibraryapp.nfc.Hex.setSecurityOff;
+import static spe.uoblibraryapp.nfc.Hex.setSecurityOn;
 
 /**
  * Provides a simple class to read and write to NfcV tags in the University of Bristol library

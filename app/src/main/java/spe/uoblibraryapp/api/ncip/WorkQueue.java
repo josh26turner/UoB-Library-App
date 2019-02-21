@@ -5,29 +5,25 @@ import java.util.Queue;
 
 public class WorkQueue {
     private static final WorkQueue ourInstance = new WorkQueue();
+    private Queue<String> workQueue;
 
-    public static WorkQueue getInstance() {
+    static WorkQueue getInstance() {
         return ourInstance;
     }
 
-    private Queue<String> workQueue;
     private WorkQueue() {
         workQueue = new LinkedList<>();
     }
 
-    String get(){
+    public String get(){
         return workQueue.remove();
     }
 
-    void add(String value){
+    public void add(String value){
         workQueue.add(value);
     }
 
     boolean isEmpty(){
         return workQueue.isEmpty();
-    }
-
-    int size(){
-        return workQueue.size();
     }
 }

@@ -1,20 +1,18 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
-import android.support.v4.widget.TextViewCompat;
-
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.text.ParseException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static spe.uoblibraryapp.api.XMLParser.parse;
 
 public class WMSBookTests {

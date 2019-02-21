@@ -1,14 +1,6 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import spe.uoblibraryapp.api.WMSException;
-
-
-
 public class WMSCheckoutTests extends WMSUserProfileTests {
 
 //    @Rule
