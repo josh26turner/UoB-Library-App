@@ -2,11 +2,13 @@ package spe.uoblibraryapp;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -48,7 +50,7 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
         textViewTitle.setText(title);
         textViewAuthor.setText(author);
 
-
+        //TODO: CHECK IF SORTING WORKS ON DUE DATE!!!
         if (overdue) {
             textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorOverdue));
             textViewStatus.setText("Overdue");
@@ -58,15 +60,25 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
         } else {
             if (!willAutoRenew) {
                 textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorReservation));
-                textViewStatus.setText("Due: " + strDueDate);
+                Date dateToday = new Date();
+                int bookDueDate = daysBetween(dateToday, dueDate);
+                if (bookDueDate <= 3)
+                    if (bookDueDate == 1)
+                        textViewStatus.setText(String.format("Due tomorrow", bookDueDate));
+                    else
+                        textViewStatus.setText(String.format("Due in %d days", bookDueDate));
+                else
+                    textViewStatus.setText("Due: " + strDueDate);
             } else {
                 textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorLoan));
-                textViewStatus.setText("Will renew");
+                textViewStatus.setText("Will auto-renew");
             }
         }
-
         return convertView;
     }
 
+    public int daysBetween(Date d1, Date d2){
+        return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+    }
 
 }

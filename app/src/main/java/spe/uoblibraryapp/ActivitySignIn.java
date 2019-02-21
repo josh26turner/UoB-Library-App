@@ -75,7 +75,7 @@ public class ActivitySignIn extends AppCompatActivity {
                         return true;
                     } else {
 
-                        // TODO redirect user to start of activity rather than finish it.
+                        // TODO: redirect user to start of activity rather than finish it.
                         // User Denied Request
                         Toast.makeText(getApplicationContext(), "Authentication Failed", Toast.LENGTH_SHORT).show();
 //                        finish();

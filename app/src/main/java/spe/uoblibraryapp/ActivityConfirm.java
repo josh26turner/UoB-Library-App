@@ -54,30 +54,17 @@ public class ActivityConfirm extends AppCompatActivity {
             Node node = doc.getElementsByTagName("ns1:CheckOutItemResponse").item(0);
             WMSCheckout checkout = new WMSCheckout(new WMSNCIPElement(node), userId);
 
-
-              ((TextView) findViewById(R.id.txt_bookName)).setText(checkout.getBook().getTitle());
-            //  ((TextView) findViewById(R.id.txt_success)).setText("New addition to your library:");
-
-            Button closeButton = findViewById(R.id.close_button);
-
-            closeButton.setOnClickListener((view) -> {
-                //TODO: Re-Direct to Home Activity rather than NFC!
+            ((TextView) findViewById(R.id.txt_bookName)).setText(checkout.getBook().getTitle());
+            Button buttonClose = findViewById(R.id.close_button);
+            buttonClose.setOnClickListener((view) -> {
                 startActivity(new Intent(this, ActivityHome.class));
                 finish();
             });
-
-
-
         } catch (Exception ex){
             Toast.makeText(getApplicationContext(), "Fatal Error occurred! Try again later.", Toast.LENGTH_LONG);
             Log.e(TAG, ex.getMessage());
             ex.printStackTrace();
         }
-
-
-
-
-
 
     }
 
