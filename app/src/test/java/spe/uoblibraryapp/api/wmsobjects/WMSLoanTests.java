@@ -6,7 +6,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.xml.parsers.ParserConfigurationException;

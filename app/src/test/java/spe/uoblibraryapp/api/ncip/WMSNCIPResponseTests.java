@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import spe.uoblibraryapp.api.WMSResponse;
 
-
 import static org.junit.Assert.assertNotNull;
 
 public class WMSNCIPResponseTests {
