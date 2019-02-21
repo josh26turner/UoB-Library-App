@@ -18,7 +18,15 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.InputStream;
-
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 
 public class ActivitySignIn extends AppCompatActivity {
@@ -117,6 +125,7 @@ public class ActivitySignIn extends AppCompatActivity {
 
         if (mywebview.getUrl().equals("https://authn.sd02.worldcat.org/wayf/metaauth-ui/cmnd/protocol/samlpost")){
             finish();
+
         }
         else if (mywebview.getUrl().equals(Constants.UserAuth.oAuthUrl())){
             finish();
@@ -131,36 +140,65 @@ public class ActivitySignIn extends AppCompatActivity {
         return s.contains(Constants.UserAuth.authFailureUrl);
     }
 
+    private Map<String, String> getURLParams(String url){
+        Log.e(TAG, url);
+
+        String[] things = url.split(Pattern.quote("#"));
+
+
+        String[] params = things[1].split("&");
+        Map<String, String> map = new HashMap<String, String>();
+        for (String param : params)
+        {
+            String name = param.split("=")[0];
+            String value = param.split("=")[1];
+            map.put(name, value);
+        }
+        return map;
+    }
+
+
     private void processAuthorisationString(String s) {
-
         // TODO: Could this be a loop? store is a hash table, that way its future proof if they change the order of url arguments
-        int startOfToken = s.indexOf("access_token=") + 13;
-        int endOfToken = s.indexOf("&principalID=");
-        String authorisationToken = s.substring(startOfToken, endOfToken);
-
-        int startOfPrincipalID = endOfToken + 13;
-        int endOfPrincipalID = s.indexOf("&principalIDNS");
-        String principalID = s.substring(startOfPrincipalID, endOfPrincipalID);
-
-        int startOfExpires_at = s.indexOf("&expires_at=") + 12;
-        int endOfExpires_at = s.indexOf("Z&refresh_token=");
-        String authorisationTokenExpiry = s.substring(startOfExpires_at, endOfExpires_at);
-
-        int startOfRefreshToken = endOfExpires_at + 16;
-        int endOfRefreshToken = s.indexOf("&refresh_token_expires_in=");
-        String refreshToken = s.substring(startOfRefreshToken, endOfRefreshToken);
-
-        int startOfRefreshTokenExpires_at = s.indexOf("&refresh_token_expires_at=") + 26;
-        int endOfRefreshTokenExpires_at = s.length() - 1;
-        String refreshTokenExpiry = s.substring(startOfRefreshTokenExpires_at, endOfRefreshTokenExpires_at);
-
-        //------put in sharedPreferences
+        Map<String, String> params = getURLParams(s);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-        pref.edit().putString("authorisationToken", authorisationToken).apply();
-        pref.edit().putString("authorisationTokenExpiry", authorisationTokenExpiry).apply();
-        pref.edit().putString("principalID", principalID).apply();
-        pref.edit().putString("refreshToken", refreshToken).apply();
-        pref.edit().putString("refreshTokenExpiry", refreshTokenExpiry).apply();
+        pref.edit().putString("authorisationToken", params.get("access_token")).apply();
+        pref.edit().putString("authorisationTokenExpiry", params.get("expires_at").replace("Z", "")).apply();
+        pref.edit().putString("principalID", params.get("principalID")).apply();
+        pref.edit().putString("principalIDNS", params.get("principalIDNS")).apply();
+        pref.edit().putString("refreshToken", params.get("refresh_token")).apply();
+        pref.edit().putString("refreshTokenExpiry", params.get("refresh_token_expires_at").replace("Z", "")).apply();
+
+
+
+
+//        int startOfToken = s.indexOf("access_token=") + 13;
+//        int endOfToken = s.indexOf("&principalID=");
+//        String authorisationToken = s.substring(startOfToken, endOfToken);
+//
+//        int startOfPrincipalID = endOfToken + 13;
+//        int endOfPrincipalID = s.indexOf("&principalIDNS");
+//        String principalID = s.substring(startOfPrincipalID, endOfPrincipalID);
+//
+//        int startOfExpires_at = s.indexOf("&expires_at=") + 12;
+//        int endOfExpires_at = s.indexOf("Z&refresh_token=");
+//        String authorisationTokenExpiry = s.substring(startOfExpires_at, endOfExpires_at);
+//
+//        int startOfRefreshToken = endOfExpires_at + 16;
+//        int endOfRefreshToken = s.indexOf("&refresh_token_expires_in=");
+//        String refreshToken = s.substring(startOfRefreshToken, endOfRefreshToken);
+//
+//        int startOfRefreshTokenExpires_at = s.indexOf("&refresh_token_expires_at=") + 26;
+//        int endOfRefreshTokenExpires_at = s.length() - 1;
+//        String refreshTokenExpiry = s.substring(startOfRefreshTokenExpires_at, endOfRefreshTokenExpires_at);
+//
+//        //------put in sharedPreferences
+//        SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+//        pref.edit().putString("authorisationToken", authorisationToken).apply();
+//        pref.edit().putString("authorisationTokenExpiry", authorisationTokenExpiry).apply();
+//        pref.edit().putString("principalID", principalID).apply();
+//        pref.edit().putString("refreshToken", refreshToken).apply();
+//        pref.edit().putString("refreshTokenExpiry", refreshTokenExpiry).apply();
     }
 
     public void clearCookies() {
