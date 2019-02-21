@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b47afb3862274715927ada24e1bc5855)](https://app.codacy.com/app/RileyEv/UoB-Library-App?utm_source=github.com&utm_medium=referral&utm_content=josh26turner/UoB-Library-App&utm_campaign=Badge_Grade_Dashboard)
 # UoB-Library-App [![CircleCI](https://circleci.com/gh/josh26turner/UoB-Library-App.svg?style=svg)](https://circleci.com/gh/josh26turner/UoB-Library-App)
 
 ## Main parts to the system
