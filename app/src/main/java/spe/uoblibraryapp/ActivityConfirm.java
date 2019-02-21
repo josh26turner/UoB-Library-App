@@ -3,6 +3,7 @@ package spe.uoblibraryapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,9 +22,8 @@ import spe.uoblibraryapp.api.WMSResponse;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.wmsobjects.WMSCheckout;
-import stanford.androidlib.SimpleActivity;
 
-public class ActivityConfirm extends SimpleActivity {
+public class ActivityConfirm extends AppCompatActivity {
     private static final String TAG = "Confirm";
 
     @Override
@@ -58,7 +58,7 @@ public class ActivityConfirm extends SimpleActivity {
               ((TextView) findViewById(R.id.txt_bookName)).setText(checkout.getBook().getTitle());
             //  ((TextView) findViewById(R.id.txt_success)).setText("New addition to your library:");
 
-            Button closeButton = findButton(R.id.close_button);
+            Button closeButton = findViewById(R.id.close_button);
 
             closeButton.setOnClickListener((view) -> {
                 //TODO: Re-Direct to Home Activity rather than NFC!

@@ -8,6 +8,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,9 +16,8 @@ import android.view.View;
 
 import spe.uoblibraryapp.api.AuthService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
-import stanford.androidlib.SimpleActivity;
 
-public class ActivityHome extends SimpleActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ActivityHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "Home-Activity";
     private FragmentCustomPagerAdapter mAdapter;
@@ -28,20 +28,20 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Toolbar toolbar = $(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = $(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = $(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_dash);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mViewPager = $(R.id.container);
+        mViewPager = findViewById(R.id.container);
 
         //This is the new page change listener to fix action bar title not changing on horizontally swiping through pages
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -97,7 +97,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = $(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -152,7 +152,7 @@ public class ActivityHome extends SimpleActivity implements NavigationView.OnNav
             setViewPager("Settings");
         }
 
-        DrawerLayout drawer = $(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

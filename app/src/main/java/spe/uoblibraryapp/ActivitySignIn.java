@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -18,10 +19,9 @@ import android.widget.Toast;
 
 import java.io.InputStream;
 
-import stanford.androidlib.SimpleActivity;
 
 
-public class ActivitySignIn extends SimpleActivity {
+public class ActivitySignIn extends AppCompatActivity {
 
     private String TAG = "SignIn";
     private ProgressBar pBar;
@@ -32,7 +32,7 @@ public class ActivitySignIn extends SimpleActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        pBar = findProgressBar(R.id.loginProgressBar);
+        pBar = findViewById(R.id.loginProgressBar);
 
         getSupportActionBar().setTitle("Single Sign On");
 
