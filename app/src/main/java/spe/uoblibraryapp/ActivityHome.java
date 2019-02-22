@@ -1,6 +1,10 @@
 package spe.uoblibraryapp;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -10,9 +14,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import spe.uoblibraryapp.api.AuthService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
@@ -22,10 +28,14 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
     private static final String TAG = "Home-Activity";
     private FragmentCustomPagerAdapter mAdapter;
     private ViewPager mViewPager;
+    private MyBroadCastReceiver myBroadCastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        myBroadCastReceiver = new MyBroadCastReceiver();
+
         setContentView(R.layout.activity_home);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -82,6 +92,14 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         mViewPager.setCurrentItem(0);
         setTitle(mAdapter.getFragmentTitle(0));
 
+
+        SharedPreferences prefs = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        View v = navigationView.getHeaderView(0);
+        TextView userName = v.findViewById(R.id.user_name);
+        TextView userEmail = v.findViewById(R.id.user_email);
+
+        userEmail.setText(prefs.getString("email", ""));
+        userName.setText(prefs.getString("name", ""));
 
         // Floating action button
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -180,4 +198,41 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         return mViewPager.getCurrentItem();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE);
+            registerReceiver(myBroadCastReceiver, intentFilter);
+            Log.d(TAG, "Receiver Registered");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(myBroadCastReceiver);
+        Log.d(TAG, "Receiver Unregistered");
+        super.onPause();
+    }
+
+    class MyBroadCastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                Log.d(TAG, "onReceive() called");
+                SharedPreferences prefs = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+                TextView userName = findViewById(R.id.user_name);
+                TextView userEmail = findViewById(R.id.user_email);
+
+                userEmail.setText(prefs.getString("email", ""));
+                userName.setText(prefs.getString("name", ""));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }

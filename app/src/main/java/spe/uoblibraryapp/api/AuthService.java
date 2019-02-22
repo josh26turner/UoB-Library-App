@@ -3,6 +3,7 @@ package spe.uoblibraryapp.api;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
 import android.support.v4.content.LocalBroadcastManager;
@@ -46,6 +47,14 @@ public class AuthService extends JobIntentService {
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
+        Log.e(TAG, "onhandlework");
+        new Task().execute();
+
+
+//        Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
+//        WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
+
+        Log.e(TAG, "onhandleworkafter");
         if (Constants.IntentActions.ACCESS_TOKEN_NEEDED.equals(intent.getAction())) {
             try {
                 getAccessToken();
@@ -179,5 +188,35 @@ public class AuthService extends JobIntentService {
 
 
         Log.d(TAG, "Logout intent received");
+    }
+
+
+    class Task extends AsyncTask<String, Integer, String>{
+        SharedPreferences tokens;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            tokens = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            updateDetails();
+            return null;
+        }
+
+        private void updateDetails() {
+            String userId = tokens.getString("principalID", "");
+            String userIdNS = tokens.getString("principalIDNS", "aa");
+
+            if (!"".equals(userId) && !"".equals(userIdNS)) {
+                // Make new json request
+                tokens.edit().putString("name", "Riley Evans").apply();
+                tokens.edit().putString("email", "riley.evans@bristol.ac.uk").apply();
+                tokens.edit().putBoolean("accountBlocked", false).apply();
+                sendBroadcast(new Intent(Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE));
+                Log.e(TAG, "user response sent");
+            }
+        }
     }
 }
