@@ -24,8 +24,7 @@
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="12dp"
-            android:textSize="22dp"/>
-
+            android:textSize="20sp"/>
 
     </LinearLayout>
 
@@ -36,33 +35,24 @@
         android:layout_below="@id/dialog_top">
 
         <TextView
-            android:id="@+id/txt_bookname"
+            android:id="@+id/txt_bookName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#ff000000"
-            android:textSize="20dp"
-            android:layout_marginTop="12dp"
+            android:textSize="18sp"
+            android:layout_marginTop="12sp"
+            android:layout_marginBottom="10sp"
             android:fontFamily="@font/sf_display_medium"
             android:gravity="center"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txt_author"
-            android:textSize="16dp"
-            android:textColor="#ff000000"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/sf_display_mediumitalic"
-            android:gravity="center"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/txt_pickuplocation"
-            android:textSize="16dp"
+            android:id="@+id/txt_pickupLocation"
+            android:textSize="16sp"
             android:textColor="#B7000000"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="2dp"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="10sp"
             android:fontFamily="@font/sf_display_medium"
             android:gravity="center"/>
 
