@@ -46,9 +46,9 @@
                             android:layout_marginLeft="17dp"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/sf_display_medium"
-                            android:text="Welcome Back"
+                            android:text="My Loans"
                             android:textStyle="normal"
-                            android:textSize="30dp"
+                            android:textSize="30sp"
                             android:textColor="#FFF"/>
 
                         <TextView
@@ -62,7 +62,7 @@
                             android:lineSpacingExtra="5dp"
                             android:text="You have borrowed 25 out of 40 books. The first is due in 4 days. 3 books could not be auto-renewed."
                             android:fontFamily="@font/sf_display_light"
-                            android:textSize="18dp"
+                            android:textSize="18sp"
                             android:textColor="#FFF"/>
                     </LinearLayout>
 
@@ -92,9 +92,9 @@
                             android:layout_marginLeft="17dp"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/sf_display_medium"
-                            android:text="Your Reservations"
+                            android:text="My Reservations"
                             android:textStyle="normal"
-                            android:textSize="30dp"
+                            android:textSize="30sp"
                             android:textColor="#FFF"/>
 
                         <TextView
@@ -108,7 +108,7 @@
                             android:lineSpacingExtra="5dp"
                             android:text="Updating reservation status..."
                             android:fontFamily="@font/sf_display_light"
-                            android:textSize="18dp"
+                            android:textSize="18sp"
                             android:textColor="#FFF"/>
                     </LinearLayout>
 
