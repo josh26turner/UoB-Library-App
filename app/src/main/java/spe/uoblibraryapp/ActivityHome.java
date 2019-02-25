@@ -142,7 +142,9 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.nav_dash) {
+        if (id == R.id.nav_scan){
+            startActivity(new Intent(this, ActivityScanNFC.class));
+        } else if (id == R.id.nav_dash) {
             setViewPager("Dashboard");
         } else if (id == R.id.nav_current_loans_reservations) {
             setViewPager("Loans");
