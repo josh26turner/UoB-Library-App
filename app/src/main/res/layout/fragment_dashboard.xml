@@ -46,10 +46,10 @@
                             android:layout_marginTop="19dp"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/sf_display_medium"
-                            android:text="Welcome Back"
-                            android:textColor="#FFF"
+                            android:text="My Loans"
+                            android:textStyle="normal"
                             android:textSize="30sp"
-                            android:textStyle="normal" />
+                            android:textColor="#FFF"/>
 
                         <TextView
                             android:id="@+id/loan_dash_description"
@@ -92,10 +92,10 @@
                             android:layout_marginTop="19dp"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/sf_display_medium"
-                            android:text="Your Reservations"
-                            android:textColor="#FFF"
+                            android:text="My Reservations"
+                            android:textStyle="normal"
                             android:textSize="30sp"
-                            android:textStyle="normal" />
+                            android:textColor="#FFF"/>
 
                         <TextView
                             android:id="@+id/resv_dash_description"
