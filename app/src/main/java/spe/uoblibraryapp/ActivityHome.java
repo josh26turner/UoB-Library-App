@@ -64,9 +64,6 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
                     case 2:
                         getSupportActionBar().setTitle("Reservations");
                         break;
-                    case 3:
-                        getSupportActionBar().setTitle("App Settings");
-                        break;
                     default:
                         break;
                 }
@@ -142,14 +139,14 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.nav_dash) {
+        if (id == R.id.nav_scan){
+            startActivity(new Intent(this, ActivityScanNFC.class));
+        } else if (id == R.id.nav_dash) {
             setViewPager("Dashboard");
         } else if (id == R.id.nav_current_loans_reservations) {
             setViewPager("Loans");
         } else if (id == R.id.nav_reservations) {
             setViewPager("Reservation");
-        } else if (id == R.id.nav_settings) {
-            setViewPager("Settings");
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -162,7 +159,6 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         mAdapter.addFragment(new FragmentDashboard(), "Dashboard");
         mAdapter.addFragment(new FragmentLoans(), "Loans");
         mAdapter.addFragment(new FragmentReservation(), "Reservation");
-        mAdapter.addFragment(new FragmentSettings(), "Settings");
         viewPager.setAdapter(mAdapter);
     }
 

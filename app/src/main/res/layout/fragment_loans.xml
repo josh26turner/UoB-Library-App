@@ -13,6 +13,7 @@
         android:layout_marginTop="0dp">
 
         <LinearLayout
+            android:id="@+id/loan_linerlayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -49,14 +50,14 @@
 
             </LinearLayout>
 
-            <ListView
-                android:id="@+id/listview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:descendantFocusability="blocksDescendants">
+                <ListView
+                    android:id="@+id/listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:descendantFocusability="blocksDescendants">
 
-            </ListView>
+                </ListView>
 
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>

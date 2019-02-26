@@ -18,7 +18,7 @@
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <android.support.v7.widget.CardView
@@ -39,11 +39,11 @@
 
                         <TextView
                             android:id="@+id/welcome_message"
-                            android:layout_gravity="top"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="19dp"
+                            android:layout_gravity="top"
                             android:layout_marginLeft="17dp"
+                            android:layout_marginTop="19dp"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/sf_display_medium"
                             android:text="My Loans"
@@ -55,8 +55,8 @@
                             android:id="@+id/loan_dash_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="0dp"
                             android:layout_marginLeft="17dp"
+                            android:layout_marginTop="0dp"
                             android:layout_marginRight="17dp"
                             android:layout_marginBottom="15dp"
                             android:lineSpacingExtra="5dp"
@@ -85,11 +85,11 @@
 
                         <TextView
                             android:id="@+id/resv_title"
-                            android:layout_gravity="top"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="19dp"
+                            android:layout_gravity="top"
                             android:layout_marginLeft="17dp"
+                            android:layout_marginTop="19dp"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/sf_display_medium"
                             android:text="My Reservations"
@@ -101,8 +101,8 @@
                             android:id="@+id/resv_dash_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="0dp"
                             android:layout_marginLeft="17dp"
+                            android:layout_marginTop="0dp"
                             android:layout_marginRight="17dp"
                             android:layout_marginBottom="15dp"
                             android:lineSpacingExtra="5dp"

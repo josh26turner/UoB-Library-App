@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -100,7 +102,15 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         List<WMSHold> bookList = new ArrayList<>(userProfile.getOnHold());
         resvlist=bookList;
 
-        if (bookList.isEmpty()) return;
+        if (bookList.isEmpty()) {
+            LinearLayout res_liner = getView().findViewById(R.id.resv_main);
+            ImageView empty = new ImageView(getContext());
+            empty.setImageDrawable(getResources().getDrawable(R.drawable.empty));
+            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            empty.setLayoutParams(lp);
+            res_liner.addView(empty);
+            return;
+        }
 
         ResvBookListAdapter adapter = new ResvBookListAdapter(getContext(), R.layout.adapter_view_layout_resv, bookList);
         mListView.setAdapter(adapter);
