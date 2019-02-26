@@ -1,5 +1,7 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
+import android.util.Log;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -139,19 +141,15 @@ public class WMSHold {
     public String getRequestId() {
         return this.requestId;
     }
-
     public String getAgencyId() {
         return this.agencyId;
     }
-
     public String getRequestType() {
         return this.requestType;
     }
-
     public String getRequestStatusType() {
         return this.requestStatusType;
     }
-
     public Date getDatePlaced() {
         return this.datePlaced;
     }
@@ -181,32 +179,29 @@ public class WMSHold {
         }
     }
 
+    public String getBranchId(){
+        return this.pickupLocation;
+    }
+
     public Integer getHoldQueuePosition() {
         return this.holdQueuePosition;
     }
-
     public String getMediumType() {
         return this.mediumType;
     }
-
     public WMSBook getBook() {
         return this.book;
     }
-
     public Date getEarliestDateNeeded() {
         return this.earliestDateNeeded;
     }
-
     public Integer getHoldQueueLength() {
         return this.holdQueueLength;
     }
-
     public Date getNeedBeforeDate() {
         return this.needBeforeDate;
     }
-
     public Boolean isReadyToCollect() {
         return "Available For Pickup".equals(this.requestStatusType);
     }
-
 }

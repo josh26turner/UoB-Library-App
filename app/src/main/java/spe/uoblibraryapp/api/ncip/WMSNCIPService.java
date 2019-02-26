@@ -2,6 +2,7 @@ package spe.uoblibraryapp.api.ncip;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
 import android.support.v4.content.LocalBroadcastManager;
@@ -180,16 +181,17 @@ public class WMSNCIPService extends JobIntentService {
         queue.add(request);
     }
 
-    private void cancelReservation(String reservationId){
+    private void cancelReservation(String reservationId, String branchId){
         SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
         String accessToken = prefs.getString("authorisationToken", "");
 
         String url = Constants.APIUrls.patronProfile;
         String requestBody = String.format(
                 Constants.RequestTemplates.cancelReservation,
+                branchId,
                 prefs.getString("principalID", ""),
                 reservationId);
-
+        Log.e(TAG, requestBody);
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String xml) {
@@ -207,6 +209,8 @@ public class WMSNCIPService extends JobIntentService {
                     requestId = null;
                 }
 
+                Log.e(TAG, requestId);
+
 
                 Intent broadcastIntent;
                 if (requestId != null) {
@@ -215,7 +219,10 @@ public class WMSNCIPService extends JobIntentService {
                     Iterator<WMSHold> iterator = userProfile.getOnHold().iterator();
                     while (iterator.hasNext()) {
                         WMSHold p = iterator.next();
-                        if (p.getRequestId().equals(requestId)) iterator.remove();
+                        if (p.getRequestId().equals(requestId)){
+                            iterator.remove();
+                            Log.e(TAG, "request removed");
+                        }
                     }
                     broadcastIntent = new Intent(Constants.IntentActions.CANCEL_RESERVATION_RESPONSE);
                 } else{
@@ -256,22 +263,30 @@ public class WMSNCIPService extends JobIntentService {
         if (Constants.IntentActions.ACCESS_TOKEN_GENERATED.equals(intent.getAction())) {
             Log.d(TAG, "token generated intent received");
             while (!workQueue.isEmpty()) {
-                String action = workQueue.get();
+                WorkQueue.WorkQueueObject workQueueObject = workQueue.get();
+                String action = workQueueObject.getAction();
+                Bundle extras = workQueueObject.getExtras();
                 if (Constants.IntentActions.LOOKUP_USER.equals(action)) {
                     lookupUser();
                 } else if (Constants.IntentActions.CHECKOUT_BOOK.equals(action)) {
                     String itemId = intent.getStringExtra("itemId");
                     checkoutBook(itemId);
                 } else if(Constants.IntentActions.CANCEL_RESERVATION.equals(action)) {
-                    String reservationId = intent.getStringExtra("reservationId");
-                    cancelReservation(reservationId);
-                }else{
+                    for(String key : extras.keySet()){
+                        Log.e(TAG, key);
+                    }
+                    String reservationId = extras.getString("reservationId");
+                    String branchId = extras.getString("branchId");
+                    if (branchId != null) Log.e(TAG, branchId);
+                    else Log.e(TAG, "Branch id is null");
+                    cancelReservation(reservationId, branchId);
+                } else {
                     Log.e(TAG, "Intent received has no valid action");
                 }
             }
         } else {
             Log.d(TAG, "Intent received");
-            workQueue.add(intent.getAction());
+            workQueue.add(intent.getAction(), intent.getExtras());
             Log.d(TAG, "action added to work queue");
             Intent getAccessTokenIntent = new Intent(Constants.IntentActions.ACCESS_TOKEN_NEEDED);
             AuthService.enqueueWork(this, AuthService.class, AuthService.jobId, getAccessTokenIntent);

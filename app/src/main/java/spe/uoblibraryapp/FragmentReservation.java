@@ -110,8 +110,6 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         mListView.setAdapter(adapter);
         mListView.setDescendantFocusability(ListView.FOCUS_BLOCK_DESCENDANTS);
         resvBookListAdapter = adapter;
-        //updateDash(userProfile.getLoans());
-
     }
 
     /**
@@ -121,6 +119,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         try {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Constants.IntentActions.USER_PROFILE_RESPONSE);
+            intentFilter.addAction(Constants.IntentActions.CANCEL_RESERVATION_RESPONSE);
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver, intentFilter);
             Log.d(TAG, "Receiver Registered");
         } catch (Exception ex) {
@@ -150,6 +149,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                     if (openDialog != null){
                         openDialog.closeDialog();
                     }
+                    resvBookListAdapter.notifyDataSetChanged();
                 }else {
                     Toast toast = Toast.makeText(getContext(), "Refresh Failed",Toast.LENGTH_LONG);
                     toast.show();
@@ -186,7 +186,13 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                 public void onClick(View v) {
                     //TODO: Add cancel reservation function here
                     Intent intent = new Intent(Constants.IntentActions.CANCEL_RESERVATION);
-                    intent.putExtra("reservationId", reservation.getRequestId());
+                    Bundle extras = new Bundle();
+                    extras.putString("reservationId", reservation.getRequestId());
+                    String branchId = reservation.getBranchId();
+                    if (branchId != null) Log.e(TAG, branchId);
+                    else Log.e(TAG, "Branch id is null");
+                    extras.putString("branchId", branchId);
+                    intent.putExtras(extras);
                     WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, intent);
                     Toast.makeText(getContext(), "Clicked.", Toast.LENGTH_LONG).show();
                 }

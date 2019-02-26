@@ -132,7 +132,7 @@ public final class Constants {
                 "<AgencyId ncip:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">" + LibraryDetails.institutionId + "</AgencyId>\n" +
                 "</FromAgencyId>\n" +
                 "<ToAgencyId>\n" +
-                "<AgencyId>" + LibraryDetails.institutionId + "</AgencyId>\n" +
+                "<AgencyId>%s</AgencyId>\n" +
                 "</ToAgencyId>\n" +
                 "<ApplicationProfileType ncip:Scheme=\"http://oclc.org/ncip/schemes/application-profile/wcl.scm\">Version 2011</ApplicationProfileType>\n" +
                 "</InitiationHeader>\n" +
