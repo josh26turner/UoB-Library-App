@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -115,7 +117,9 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         Log.d(TAG, "Updating Reservation Dash");
         TextView tv = view.findViewById(R.id.resv_dash_description);
         int reservationSize = cacheManager.getUserProfile().getOnHold().size();
-        if (reservationSize==0) tv.setText("Currently you have no reservations :)");
+        if (reservationSize==0) {
+            tv.setText("Currently you have no reservations :)");
+        }
         else {
             String output = String.format("You have %s reservations, %s of which are ready to collect", cacheManager.getUserProfile().getOnHold().size(), readyCollectCount(cacheManager.getUserProfile()));
             tv.setText(output);
