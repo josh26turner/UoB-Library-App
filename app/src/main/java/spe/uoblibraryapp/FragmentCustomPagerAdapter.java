@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class FragmentCustomPagerAdapter extends FragmentStatePagerAdapter {
 
     private final List<Fragment> mFragmentList= new ArrayList<>();

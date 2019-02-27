@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import spe.uoblibraryapp.api.AuthService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
@@ -21,7 +22,7 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
 
     private static final String TAG = "Home-Activity";
     private FragmentCustomPagerAdapter mAdapter;
-    private ViewPager mViewPager;
+    private ViewPager mViewPager; //container holding the fragments.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +50,11 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
-
             @Override
             public void onPageSelected(int position) {
                 mViewPager.setCurrentItem(position);
-                navigationView.getMenu().getItem(position).setChecked(true);
+                //Pos+1 because this position is from the fragment manager. Fragment 0 corresponds to Navigation View 1.
+                navigationView.getMenu().getItem(position+1).setChecked(true);
                 switch (position) {
                     case 0:
                         getSupportActionBar().setTitle("Dashboard");
@@ -68,19 +69,18 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
                         break;
                 }
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
 
             }
         });
 
-        setupViewPager(mViewPager);
+        //Load all the fragments & Select Index 0 [Dashboard].
+        createViewPager(mViewPager);
         mViewPager.setCurrentItem(0);
         setTitle(mAdapter.getFragmentTitle(0));
 
-
-        // Floating action button
+        //Floating action button
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +103,6 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
                 super.onBackPressed();
             }
             else setViewPager("Dashboard");
-
         }
     }
 
@@ -126,12 +125,12 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
             //Action bar logout
             AuthService.enqueueWork(this, AuthService.class, AuthService.jobId, new Intent(Constants.IntentActions.AUTH_LOGOUT));
             return true;
-        }else if (id == R.id.action_refresh) {
+        }
+        else if (id == R.id.action_refresh) {
             Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
             WMSNCIPService.enqueueWork(this, WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -139,6 +138,7 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+
         if (id == R.id.nav_scan){
             startActivity(new Intent(this, ActivityScanNFC.class));
         } else if (id == R.id.nav_dash) {
@@ -154,7 +154,7 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void createViewPager(ViewPager viewPager) {
         mAdapter = new FragmentCustomPagerAdapter(getSupportFragmentManager());
         mAdapter.addFragment(new FragmentDashboard(), "Dashboard");
         mAdapter.addFragment(new FragmentLoans(), "Loans");
@@ -163,11 +163,16 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
     }
 
     public void setViewPager(String fragmentName) {
-        int index = mAdapter.getFragmentIndex(fragmentName);
-
-        //Show Appropriate Title
-        setTitle(fragmentName);
-        mViewPager.setCurrentItem(index);
+        if (mAdapter.fragmentExists(fragmentName)){
+            //Fragment exists, change title & view.
+            setTitle(fragmentName);
+            mViewPager.setCurrentItem(mAdapter.getFragmentIndex(fragmentName));
+        }
+        else {
+            //Default to First Fragment...
+            setTitle(mAdapter.getFragmentTitle(0));
+            mViewPager.setCurrentItem(0);
+        }
     }
 
     public int getViewPager() {

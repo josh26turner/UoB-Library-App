@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,10 +36,9 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
         myBroadCastReceiver = new MyBroadCastReceiver();
-
         cacheManager = CacheManager.getInstance();
 
         // Swipe to Refresh
@@ -52,6 +52,18 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         });
 
 
+        ((CardView) view.findViewById(R.id.loan_card_view)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Call Loans from here.
+            }
+        });
+        ((CardView) view.findViewById(R.id.resv_card_view)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Call Reservations from here.
+            }
+        });
 
         return view;
     }
@@ -64,11 +76,10 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Constants.IntentActions.USER_PROFILE_RESPONSE);
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver, intentFilter);
-            Log.d(TAG, "Reciever Registered");
+            Log.d(TAG, "Receiver Registered");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 
 
