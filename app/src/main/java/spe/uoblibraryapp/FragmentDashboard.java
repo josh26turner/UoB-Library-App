@@ -118,14 +118,20 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         List<WMSLoan> bookList = cacheManager.getUserProfile().getLoans();
         if (!bookList.isEmpty()) {
             Collections.sort(bookList, new SortCustomComparatorDueDate());
-            Date mostRecentDueDate = bookList.get(0).getDueDate(); //TODO: This is long and ugly.
-            SimpleDateFormat smp = new SimpleDateFormat("dd/MM");
-            //smp.format(mostRecentDueDate)  TODO: This is short and ugly.
-            output = String.format("You have borrowed %s out of %s books. The book '%s' is due back on %s. %s", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getBook().getTitle(), smp.format(mostRecentDueDate), mostRecentDueDate);
+            Date mostRecentDueDate = bookList.get(0).getDueDate();
+            Date dateToday = new Date();
+
+            int bookDueDate = daysBetween(dateToday, mostRecentDueDate);
+            if (bookDueDate <= 3)
+                if (bookDueDate == 1)
+                    output = String.format("You have borrowed %s out of %s books. The book %s is due back in 1 day.", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getBook().getTitle());
+                else
+                    output = String.format("You have borrowed %s out of %s books. The book %s is due back in %s days.", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getBook().getTitle(), bookDueDate);
+
+            else
+                output = String.format("You have borrowed %s out of %s books.", cacheManager.getUserProfile().getLoans().size(), 40);
         }
         else output = "Currently you have no loans :)";
-
-
 
         loan_dash_description.setText(output);
     }
@@ -158,6 +164,10 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         //}
 
         return c;
+    }
+
+    public int daysBetween(Date d1, Date d2){
+        return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }
 
 
