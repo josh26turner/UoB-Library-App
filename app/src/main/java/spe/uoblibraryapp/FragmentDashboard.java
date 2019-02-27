@@ -145,11 +145,18 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
     }
     public int readyCollectCount(WMSUserProfile profile){
         int c = 0;
-        List<WMSHold> holds = profile.getOnHold();
-        for(int i=0; i < holds.size(); i++){
-            if(holds.get(i).isReadyToCollect())
+        List<WMSHold> holdList = profile.getOnHold();
+
+        for (WMSHold hold  : holdList){
+            if (hold.isReadyToCollect())
                 c++;
         }
+
+        //for(int i=0; i < holds.size(); i++){
+        //    if(holds.get(i).isReadyToCollect())
+        //        c++;
+        //}
+
         return c;
     }
 
