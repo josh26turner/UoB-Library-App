@@ -19,7 +19,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
@@ -56,6 +59,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: Call Loans from here.
+
             }
         });
         ((CardView) view.findViewById(R.id.resv_card_view)).setOnClickListener(new View.OnClickListener() {
@@ -114,7 +118,10 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         List<WMSLoan> bookList = cacheManager.getUserProfile().getLoans();
         if (!bookList.isEmpty()) {
             Collections.sort(bookList, new SortCustomComparatorDueDate());
-            output = String.format("You have borrowed %s out of %s books. The first book is due back on %s", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getDueDate());
+            Date mostRecentDueDate = bookList.get(0).getDueDate(); //TODO: This is long and ugly.
+            SimpleDateFormat smp = new SimpleDateFormat("dd/MM");
+            //smp.format(mostRecentDueDate)  TODO: This is short and ugly.
+            output = String.format("You have borrowed %s out of %s books. The book '%s' is due back on %s. %s", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getBook().getTitle(), smp.format(mostRecentDueDate), mostRecentDueDate);
         }
         else output = "Currently you have no loans :)";
 
