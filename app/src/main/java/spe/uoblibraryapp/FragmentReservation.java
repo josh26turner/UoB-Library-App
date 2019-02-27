@@ -101,7 +101,8 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
     }
 
     public void fillListView(WMSUserProfile userProfile) {
-        List<WMSHold> bookList = new ArrayList<>(userProfile.getOnHold());
+
+        List<WMSHold> bookList = userProfile.getOnHold();
         resvList=bookList;
 
         if (bookList.isEmpty()) return;
@@ -150,7 +151,8 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                         openDialog.closeDialog();
                     }
                     resvBookListAdapter.notifyDataSetChanged();
-                }else {
+//                    WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, new Intent(Constants.IntentActions.LOOKUP_USER));
+                } else {
                     Toast toast = Toast.makeText(getContext(), "Refresh Failed",Toast.LENGTH_LONG);
                     toast.show();
                 }
