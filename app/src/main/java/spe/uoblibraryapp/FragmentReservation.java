@@ -170,7 +170,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
     //Extra Reservation Information Dialog
     public class ViewDialog {
         private Dialog dialog;
-        void showDialog(Activity activity, WMSHold reservation){
+        public void showDialog(Activity activity, WMSHold reservation){
             final Dialog dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
