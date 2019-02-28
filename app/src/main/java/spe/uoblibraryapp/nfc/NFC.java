@@ -85,14 +85,6 @@ public class NFC {
     }
 
     /**
-     * Get system information
-     * @return - the information stored about the tag
-     */
-    public byte[] getSystemInformation() {
-        return systemInformation;
-    }
-
-    /**
      * Gets the AFI to see if a book has already been checked out
      * @return - if the book is checked out already
      */
