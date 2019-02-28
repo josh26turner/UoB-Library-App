@@ -29,6 +29,13 @@
                         android:layout_marginStart="0dp"
                         android:descendantFocusability="blocksDescendants"  />
 
+                    <TextView android:id="@android:id/empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textSize="30sp"
+                        android:text="No reservations!"/>
+
             </LinearLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>
