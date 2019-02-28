@@ -143,6 +143,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
                     updateDashboardReservations();
                 } else if (Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE.equals(intent.getAction())) {
                     // TODO add blocked message to dashboard.
+                    Log.d(TAG, "To be added");
                 } else {
                     Toast toast = Toast.makeText(getContext(), "Refresh Failed",Toast.LENGTH_LONG);
                     toast.show();
