@@ -16,7 +16,7 @@ public class CacheManager {
         return ourInstance;
     }
 
-    WMSUserProfile getUserProfile() {
+    public WMSUserProfile getUserProfile() {
         return userProfile;
     }
 

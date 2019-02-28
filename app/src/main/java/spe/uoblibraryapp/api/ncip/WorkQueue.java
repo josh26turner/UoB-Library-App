@@ -1,11 +1,13 @@
 package spe.uoblibraryapp.api.ncip;
 
+import android.os.Bundle;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class WorkQueue {
     private static final WorkQueue ourInstance = new WorkQueue();
-    private Queue<String> workQueue;
+    private Queue<WorkQueueObject> workQueue;
 
     static WorkQueue getInstance() {
         return ourInstance;
@@ -15,15 +17,33 @@ public class WorkQueue {
         workQueue = new LinkedList<>();
     }
 
-    public String get(){
+    public WorkQueueObject get(){
         return workQueue.remove();
     }
 
-    public void add(String value){
-        workQueue.add(value);
+    public void add(String value, Bundle extras){
+        workQueue.add(new WorkQueueObject(value, extras));
     }
 
     boolean isEmpty(){
         return workQueue.isEmpty();
+    }
+
+
+    class WorkQueueObject{
+        private String action;
+        private Bundle extras;
+
+        WorkQueueObject(String action, Bundle extras){
+            this.action = action;
+            this.extras = extras;
+        }
+
+        public Bundle getExtras() {
+            return extras;
+        }
+        public String getAction() {
+            return action;
+        }
     }
 }
