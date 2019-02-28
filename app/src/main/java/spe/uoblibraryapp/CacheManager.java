@@ -41,11 +41,11 @@ public class CacheManager {
         this.dateAccessed = null;
     }
 
-    void setRefreshing(Boolean refreshing){
+    public void setRefreshing(Boolean refreshing){
         this.refreshing = refreshing;
     }
 
-    Boolean getRefreshing(){
+    public Boolean getRefreshing(){
         return refreshing;
     }
 

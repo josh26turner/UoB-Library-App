@@ -22,7 +22,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
@@ -170,8 +169,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
 
     //Extra Reservation Information Dialog
     public class ViewDialog {
-        Dialog dialog;
-        String reservationId;
+        private Dialog dialog;
         void showDialog(Activity activity, WMSHold reservation){
             final Dialog dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -203,7 +201,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             this.dialog = dialog;
         }
 
-        void closeDialog(){
+        public void closeDialog(){
             if (dialog != null) dialog.dismiss();
         }
     }
