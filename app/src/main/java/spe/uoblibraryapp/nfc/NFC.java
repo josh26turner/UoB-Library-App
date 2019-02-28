@@ -30,16 +30,22 @@ public class NFC {
      * @throws IntentException - not the right type of intent
      * @throws IOException - can't communicate with the tag
      */
-    public NFC(Intent intent) throws NFCTechException, IntentException, IOException {
+    public NFC(Intent intent) throws NFCTechException, IntentException, IOException, CheckedOutException {
         setNfcTag(intent);
 
         nfcTag.connect();
 
-        // removeSecureSetting(); // REMOVE THE `//` AT THE START OF THE LINE WHEN RELEASING!!!!!
         userBlocks = readMultipleBlocks(5);
         systemInformation = getSystemInfo();
 
-        nfcTag.close();
+
+        if (isCheckedOut()) {
+            nfcTag.close();
+            throw new CheckedOutException();
+        } else {
+            //removeSecureSetting(); // REMOVE THE `//` AT THE START OF THE LINE WHEN RELEASING!!!!!
+            nfcTag.close();
+        }
     }
 
     /**
@@ -88,8 +94,8 @@ public class NFC {
      * Gets the AFI to see if a book has already been checked out
      * @return - if the book is checked out already
      */
-    public boolean isCheckedOut() {
-        return systemInformation[11] == 0x07;
+    private boolean isCheckedOut() {
+        return systemInformation[11] == 0xC2;
     }
 
     /**

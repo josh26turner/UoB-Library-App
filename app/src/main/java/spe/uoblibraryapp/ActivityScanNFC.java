@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.nfc.BarcodeException;
+import spe.uoblibraryapp.nfc.CheckedOutException;
 import spe.uoblibraryapp.nfc.IntentException;
 import spe.uoblibraryapp.nfc.NFC;
 import spe.uoblibraryapp.nfc.NFCTechException;
@@ -91,15 +92,12 @@ public class ActivityScanNFC extends AppCompatActivity {
                     // Tag has been scanned now stop scanning for tags
                     nfcAdapter.disableForegroundDispatch(ActivityScanNFC.this);
 
-                    if (!nfc.isCheckedOut()) {
-                        // Send intent to WMSNCIPService with itemId
-                        Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
-                        checkoutIntent.putExtra("itemId", nfc.getBarcode());
-                        WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
-                        // When checkout is complete the confirm activity is started by the WMSNCIPService.
-                    } else {
-                        // TODO: Add something telling the user this book isn't available
-                    }
+                    // Send intent to WMSNCIPService with itemId
+                    Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
+                    checkoutIntent.putExtra("itemId", nfc.getBarcode());
+                    WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
+                    // When checkout is complete the confirm activity is started by the WMSNCIPService.
+
                 } catch (NFCTechException e) {
                     e.printStackTrace();
                     nDialog.setMessage("Not the right NFC/RFID type");
@@ -115,6 +113,8 @@ public class ActivityScanNFC extends AppCompatActivity {
                     e.printStackTrace();
                     nDialog.setMessage("There was a problem reading the tag");
                     Log.d(TAG, "There was a problem with the tag");
+                } catch (CheckedOutException e) {
+                    // TODO: Add something telling the user this book isn't available
                 }
             }
         };
