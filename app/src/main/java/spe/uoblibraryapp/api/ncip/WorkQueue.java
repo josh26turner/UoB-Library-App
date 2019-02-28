@@ -25,7 +25,7 @@ public class WorkQueue {
         workQueue.add(new WorkQueueObject(value, extras));
     }
 
-    boolean isEmpty(){
+    public boolean isEmpty(){
         return workQueue.isEmpty();
     }
 

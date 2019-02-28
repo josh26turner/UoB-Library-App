@@ -88,6 +88,9 @@ public class WMSBook {
                         }
                     }
                     break;
+                default:
+                    //for completeness [and code review!]
+                    break;
             }
         }
 
