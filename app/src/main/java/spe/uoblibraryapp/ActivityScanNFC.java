@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -44,7 +45,7 @@ public class ActivityScanNFC extends AppCompatActivity {
         myBroadCastReceiver = new MyBroadCastReceiver();
 
         if (!(nfcAdapter != null && nfcAdapter.isEnabled())){
-            //Toast.makeText(this, "No NFC Detected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No NFC Detected", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
             startActivity(i);
             finish();
@@ -82,6 +83,7 @@ public class ActivityScanNFC extends AppCompatActivity {
         nDialog.show();
         scanDialog = nDialog;
 
+        ActivityScanNFC activityScanNFC = this;
 
         Thread mThread = new Thread() {
             @Override
@@ -114,7 +116,7 @@ public class ActivityScanNFC extends AppCompatActivity {
                     nDialog.setMessage("There was a problem reading the tag");
                     Log.d(TAG, "There was a problem with the tag");
                 } catch (CheckedOutException e) {
-                    // TODO: Add something telling the user this book isn't available
+                    Toast.makeText(activityScanNFC, "This book has already been checked out", Toast.LENGTH_LONG).show();
                 }
             }
         };

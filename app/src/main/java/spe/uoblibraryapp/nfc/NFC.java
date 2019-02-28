@@ -95,7 +95,7 @@ public class NFC {
      * @return - if the book is checked out already
      */
     private boolean isCheckedOut() {
-        return systemInformation[11] == 0xC2;
+        return systemInformation[11] ==  (byte) 0xC2;
     }
 
     /**
@@ -149,7 +149,7 @@ public class NFC {
      * Stops the alarm going off if you take a book through
      * @throws IOException - if the tag can't be communicated with
      */
-    public void removeSecureSetting() throws IOException {
+    private void removeSecureSetting() throws IOException {
         nfcTag.transceive(setSecurityOff(tagID));
     }
 
@@ -168,7 +168,8 @@ public class NFC {
      * @return - the int value of all the hex digits
      */
     private int sum(byte[] bytes){
-        int sum = 0, len = bytes.length;
+        int sum = 0;
+        int len = bytes.length;
         for (int i = 0; i < len; i++)
             sum += (bytes[i] & 0xFF) * Math.pow(256,len - i - 1);
 

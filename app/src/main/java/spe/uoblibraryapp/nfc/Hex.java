@@ -23,6 +23,7 @@ class Hex {
      * @param id - the ID of the tag
      * @return - the constructed addressed command for turning off security
      */
+
     static byte[] setSecurityOff(byte[] id) {
         return addressedCommand(WRITE_AFI, AFI_CHECKED_OUT, id);
     }
