@@ -62,6 +62,8 @@ public final class Constants {
         public static final String AUTH_ERROR = "spe.uoblibraryapp.api.auth.AUTH_ERROR";
         public static final String AUTH_LOGOUT = "spe.uoblibraryapp.api.auth.AUTH_LOGOUT";
         public static final String USER_PROFILE_RESPONSE = "spe.uoblibraryapp.api.USER_PROFILE_RESPONSE";
+        public final static String LOOKUP_USER_ACCOUNT = "spe.uoblibraryapp.api.LOOKUP_USER_ACCOUNT";
+        public final static String LOOKUP_USER_ACCOUNT_RESPONSE = "spe.uoblibraryapp.api.LOOKUP_USER_ACCOUNT_RESPONSE";
         private IntentActions() { }
     }
 
@@ -74,9 +76,10 @@ public final class Constants {
 
 
     public static final class APIUrls{
-        public static final String patronProfile = "https://bub.share.worldcat.org/ncip/circ-patron";
-        public static final String checkoutBook = "http://132.145.54.223:8080/checkout";
-        public static final String bookAvailability = "https://worldcat.org/circ/availability/sru/service?x-registryId=" + LibraryDetails.institutionId + "&query=no:ocm%s";
+        public final static String patronProfile = "https://bub.share.worldcat.org/ncip/circ-patron";
+        public final static String lookupUserAccount = "http://132.145.54.223:8080/auth/%s";
+        public final static String checkoutBook = "http://132.145.54.223:8080/checkout";
+        public final static String bookAvailability = "https://worldcat.org/circ/availability/sru/service?x-registryId=" + LibraryDetails.institutionId + "&query=no:ocm%s";
         private APIUrls() { }
     }
 
