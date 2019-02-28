@@ -10,19 +10,19 @@ public final class Constants {
 
 
     public static final class LibraryDetails {
-        public final static String institutionId = "132607";
+        public static final String institutionId = "132607";
         private LibraryDetails() { }
     }
 
     public static final class UserAuth {
         // Key Details for WMS NCIP and Availability
-        public final static String clientId = "hNzXT2bmWYLwmWCfMDC2bAC9U1xJWBQytemHHKwzCF2YsJFnRw3isuML5E8PrK0F48OU8ENiIVzwcDWA";
+        public static final String clientId = "hNzXT2bmWYLwmWCfMDC2bAC9U1xJWBQytemHHKwzCF2YsJFnRw3isuML5E8PrK0F48OU8ENiIVzwcDWA";
 
         // OAuth2 flow
-        public final static String redirectUrl = "uoblibrary://authenticate";
-        public final static String authFailureUrl = "uoblibrary://authenticate#error";
+        public static final String redirectUrl = "uoblibrary://authenticate";
+        public static final String authFailureUrl = "uoblibrary://authenticate#error";
 
-        public final static String[] scopes = {"WMS_NCIP", "WMS_Availability", "refresh_token"};
+        public static final String[] scopes = {"WMS_NCIP", "WMS_Availability", "refresh_token"};
 
         private UserAuth() { }
 
@@ -50,28 +50,34 @@ public final class Constants {
     }
 
     public static final class IntentActions {
-        public final static String LOOKUP_USER = "spe.uoblibraryapp.api.ncip.LOOKUP_USER";
-        public final static String LOOKUP_USER_ERROR = "spe.uoblibraryapp.api.ncip.LOOKUP_USER";
-        public final static String CHECKOUT_BOOK = "spe.uoblibraryapp.api.ncip.CHECKOUT_BOOK";
-        public final static String ACCESS_TOKEN_GENERATED = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_GENERATED";
-        public final static String ACCESS_TOKEN_NEEDED = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_NEEDED";
-        public final static String AUTH_ERROR = "spe.uoblibraryapp.api.auth.AUTH_ERROR";
-        public final static String AUTH_LOGOUT = "spe.uoblibraryapp.api.auth.AUTH_LOGOUT";
-        public final static String USER_PROFILE_RESPONSE = "spe.uoblibraryapp.api.USER_PROFILE_RESPONSE";
-        public final static String BOOK_CHECK_OUT_RESPONSE = "spe.uoblibraryapp.api.BOOK_CHECK_OUT_RESPONSE";
+        public static final String LOOKUP_USER = "spe.uoblibraryapp.api.ncip.LOOKUP_USER";
+        public static final String LOOKUP_USER_ERROR = "spe.uoblibraryapp.api.ncip.LOOKUP_USER";
+        public static final String CHECKOUT_BOOK = "spe.uoblibraryapp.api.ncip.CHECKOUT_BOOK";
+        public static final String BOOK_CHECK_OUT_RESPONSE = "spe.uoblibraryapp.api.BOOK_CHECK_OUT_RESPONSE";
+        public static final String CANCEL_RESERVATION = "spe.uoblibraryapp.api.ncip.CANCEL_RESERVATION";
+        public static final String CANCEL_RESERVATION_RESPONSE = "spe.uoblibraryapp.api.ncip.CANCEL_RESERVATION_RESPONSE";
+        public static final String CANCEL_RESERVATION_ERROR = "spe.uoblibraryapp.api.ncip.CANCEL_RESERVATION_ERROR";
+        public static final String ACCESS_TOKEN_GENERATED = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_GENERATED";
+        public static final String ACCESS_TOKEN_NEEDED = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_NEEDED";
+        public static final String AUTH_ERROR = "spe.uoblibraryapp.api.auth.AUTH_ERROR";
+        public static final String AUTH_LOGOUT = "spe.uoblibraryapp.api.auth.AUTH_LOGOUT";
+        public static final String USER_PROFILE_RESPONSE = "spe.uoblibraryapp.api.USER_PROFILE_RESPONSE";
+        public final static String LOOKUP_USER_ACCOUNT = "spe.uoblibraryapp.api.LOOKUP_USER_ACCOUNT";
+        public final static String LOOKUP_USER_ACCOUNT_RESPONSE = "spe.uoblibraryapp.api.LOOKUP_USER_ACCOUNT_RESPONSE";
         private IntentActions() { }
     }
 
 
     public static final class Cache{
         // Cache Expiry
-        public final static Integer cacheExpiryTime = 10; // in minutes
+        public static final Integer cacheExpiryTime = 10; // in minutes
         private Cache() { }
     }
 
 
     public static final class APIUrls{
-        public final static String lookupUser = "https://bub.share.worldcat.org/ncip/circ-patron";
+        public final static String patronProfile = "https://bub.share.worldcat.org/ncip/circ-patron";
+        public final static String lookupUserAccount = "http://132.145.54.223:8080/auth/%s";
         public final static String checkoutBook = "http://132.145.54.223:8080/checkout";
         public final static String bookAvailability = "https://worldcat.org/circ/availability/sru/service?x-registryId=" + LibraryDetails.institutionId + "&query=no:ocm%s";
         private APIUrls() { }
@@ -79,7 +85,7 @@ public final class Constants {
 
 
     public static final class RequestTemplates {
-        public final static String lookupUser = "<NCIPMessage xmlns=\"http://www.niso.org/2008/ncip\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:ncip=\"http://www.niso.org/2008/ncip\" xmlns:ns2=\"http://oclc.org/WCL/ncip/2011/extensions\" xsi:schemaLocation=\"http://www.niso.org/2008/ncip http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\" ncip:version=\"http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\">\n" +
+        public static final String lookupUser = "<NCIPMessage xmlns=\"http://www.niso.org/2008/ncip\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:ncip=\"http://www.niso.org/2008/ncip\" xmlns:ns2=\"http://oclc.org/WCL/ncip/2011/extensions\" xsi:schemaLocation=\"http://www.niso.org/2008/ncip http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\" ncip:version=\"http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\">\n" +
                 "<LookupUser>\n" +
                 "<InitiationHeader>\n" +
                 "<FromAgencyId>\n" +
@@ -122,7 +128,31 @@ public final class Constants {
                 "</LookupUser>\n" +
                 "</NCIPMessage>";
 
-        public final static String checkoutBook = "<CheckoutBookRequest>" +
+        public static final String cancelReservation = "<NCIPMessage xmlns=\"http://www.niso.org/2008/ncip\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:ncip=\"http://www.niso.org/2008/ncip\" xsi:schemaLocation=\"http://www.niso.org/2008/ncip http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\" ncip:version=\"http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\">\n" +
+                "<CancelRequestItem>\n" +
+                "<InitiationHeader>\n" +
+                "<FromAgencyId>\n" +
+                "<AgencyId ncip:Scheme=\"http://oclc.org/ncip/schemes/agencyid.scm\">" + LibraryDetails.institutionId + "</AgencyId>\n" +
+                "</FromAgencyId>\n" +
+                "<ToAgencyId>\n" +
+                "<AgencyId>%s</AgencyId>\n" +
+                "</ToAgencyId>\n" +
+                "<ApplicationProfileType ncip:Scheme=\"http://oclc.org/ncip/schemes/application-profile/wcl.scm\">Version 2011</ApplicationProfileType>\n" +
+                "</InitiationHeader>\n" +
+                "<UserId>\n" +
+                "<AgencyId>" + LibraryDetails.institutionId + "</AgencyId>\n" +
+                "<UserIdentifierValue>%s</UserIdentifierValue>\n" +
+                "</UserId>\n" +
+                "<RequestId>\n" +
+                "<AgencyId>" + LibraryDetails.institutionId + "</AgencyId>\n" +
+                "<RequestIdentifierValue>%s</RequestIdentifierValue>\n" +
+                "</RequestId>\n" +
+                "<RequestType ncip:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requesttype/requesttype.scm\">Hold</RequestType>\n" +
+                "<RequestScopeType ncip:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requestscopetype/requestscopetype.scm\">Bibliographic Item</RequestScopeType>\n" +
+                "</CancelRequestItem>\n" +
+                "</NCIPMessage>";
+
+        public static final String checkoutBook = "<CheckoutBookRequest>" +
                 "<userId>%s</userId>" +
                 "<accessToken>%s</accessToken>" +
                 "<itemId>%s</itemId>" +
