@@ -94,10 +94,10 @@ public class NFC {
 
     /**
      * Gets the AFI to see if a book has already been checked out
-     * @return - the AFI value stored on the tag
+     * @return - if the book is checked out already
      */
-    public byte getAFI() {
-        return systemInformation[11];
+    public boolean isCheckedOut() {
+        return systemInformation[11] == 0x07;
     }
 
     /**
