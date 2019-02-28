@@ -93,6 +93,14 @@ public class NFC {
     }
 
     /**
+     * Gets the AFI to see if a book has already been checked out
+     * @return - the AFI value stored on the tag
+     */
+    public byte getAFI() {
+        return systemInformation[11];
+    }
+
+    /**
      * Converts the parts of the user blocks to the form printed on the barcode
      * @return - the printed version of the barcode
      */
