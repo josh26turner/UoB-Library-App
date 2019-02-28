@@ -76,9 +76,10 @@ public final class Constants {
 
 
     public static final class APIUrls{
-        public static final String patronProfile = "https://bub.share.worldcat.org/ncip/circ-patron";
-        public static final String checkoutBook = "http://132.145.54.223:8080/checkout";
-        public static final String bookAvailability = "https://worldcat.org/circ/availability/sru/service?x-registryId=" + LibraryDetails.institutionId + "&query=no:ocm%s";
+        public final static String lookupUser = "https://bub.share.worldcat.org/ncip/circ-patron";
+        public final static String lookupUserAccount = "http://132.145.54.223:8080/auth/%s";
+        public final static String checkoutBook = "http://132.145.54.223:8080/checkout";
+        public final static String bookAvailability = "https://worldcat.org/circ/availability/sru/service?x-registryId=" + LibraryDetails.institutionId + "&query=no:ocm%s";
         private APIUrls() { }
     }
 

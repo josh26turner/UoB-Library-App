@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import spe.uoblibraryapp.api.AuthService;
+import spe.uoblibraryapp.api.IMService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 
 public class ActivityHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -92,7 +93,7 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         mViewPager.setCurrentItem(0);
         setTitle(mAdapter.getFragmentTitle(0));
 
-
+        // Adds name and email to homepage
         SharedPreferences prefs = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         View v = navigationView.getHeaderView(0);
         TextView userName = v.findViewById(R.id.user_name);
@@ -111,6 +112,9 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
                 startActivity(NFCActivity);
             }
         });
+
+        // Get user account details.
+        IMService.enqueueWork(getApplicationContext(), IMService.class, IMService.jobId, new Intent(Constants.IntentActions.LOOKUP_USER_ACCOUNT));
     }
 
     @Override
@@ -225,8 +229,10 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
             try {
                 Log.d(TAG, "onReceive() called");
                 SharedPreferences prefs = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-                TextView userName = findViewById(R.id.user_name);
-                TextView userEmail = findViewById(R.id.user_email);
+                NavigationView navigationView = findViewById(R.id.nav_view);
+                View v = navigationView.getHeaderView(0);
+                TextView userName = v.findViewById(R.id.user_name);
+                TextView userEmail = v.findViewById(R.id.user_email);
 
                 userEmail.setText(prefs.getString("email", ""));
                 userName.setText(prefs.getString("name", ""));

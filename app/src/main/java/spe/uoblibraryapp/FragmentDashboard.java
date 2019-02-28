@@ -61,6 +61,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         try {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Constants.IntentActions.USER_PROFILE_RESPONSE);
+            intentFilter.addAction(Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE);
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver, intentFilter);
             Log.d(TAG, "Reciever Registered");
         } catch (Exception ex) {
@@ -140,6 +141,8 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
                 if (Constants.IntentActions.USER_PROFILE_RESPONSE.equals(intent.getAction())){
                     updateDashboardLoans();
                     updateDashboardReservations();
+                } else if (Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE.equals(intent.getAction())) {
+                    // TODO add blocked message to dashboard.
                 } else {
                     Toast toast = Toast.makeText(getContext(), "Refresh Failed",Toast.LENGTH_LONG);
                     toast.show();
