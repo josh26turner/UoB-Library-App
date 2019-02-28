@@ -126,7 +126,7 @@ public class WMSUserProfile {
      * Gets the userId
      * @return the userId
      */
-    String getUserId(){
+    public String getUserId(){
         return this.userId;
     }
 

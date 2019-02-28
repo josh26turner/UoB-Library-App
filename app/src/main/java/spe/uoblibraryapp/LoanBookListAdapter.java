@@ -18,7 +18,7 @@ import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
 
     private Context mContext;
-    int mResource;
+    private int mResource;
 
     public LoanBookListAdapter(Context context, int resource, List<WMSLoan> objects){
         super(context, resource, objects);
@@ -29,7 +29,8 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View newView = inflater.inflate(mResource, parent, false );
         String title = getItem(position).getBook().getTitle();
         String author = getItem(position).getBook().getAuthor();
         Boolean overdue = getItem(position).isOverdue();
@@ -39,11 +40,9 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String strDueDate = dateFormat.format(dueDate);
 
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        convertView = inflater.inflate(mResource, parent, false );
-        TextView textViewTitle = convertView.findViewById(R.id.txtTitle);
-        TextView textViewAuthor = convertView.findViewById(R.id.txtAuthor);
-        TextView textViewStatus = convertView.findViewById(R.id.txtStatus);
+        TextView textViewTitle = newView.findViewById(R.id.txtTitle);
+        TextView textViewAuthor = newView.findViewById(R.id.txtAuthor);
+        TextView textViewStatus = newView.findViewById(R.id.txtStatus);
 
         textViewTitle.setText(title);
         textViewAuthor.setText(author);
@@ -72,7 +71,7 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
                 textViewStatus.setText("Will auto-renew");
             }
         }
-        return convertView;
+        return newView;
     }
 
     public int daysBetween(Date d1, Date d2){

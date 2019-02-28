@@ -25,6 +25,8 @@ public class ResvBookListAdapter extends ArrayAdapter<WMSHold> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View newView = inflater.inflate(mResource, parent, false);
 
         String title = getItem(position).getBook().getTitle();
         String author = getItem(position).getBook().getAuthor();
@@ -33,15 +35,12 @@ public class ResvBookListAdapter extends ArrayAdapter<WMSHold> {
         String loc = getItem(position).getPickupLocation();
         Boolean ready = getItem(position).isReadyToCollect();
 
-
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        convertView = inflater.inflate(mResource, parent, false);
-        TextView resTitle = convertView.findViewById(R.id.res_title);
-        TextView resAuthor = convertView.findViewById(R.id.res_author);
-        TextView res_pos = convertView.findViewById(R.id.res_pos);
-        TextView res_len = convertView.findViewById(R.id.res_len);
-        TextView res_ready = convertView.findViewById(R.id.res_ready);
-        TextView res_loc = convertView.findViewById(R.id.res_loc);
+        TextView resTitle = newView.findViewById(R.id.res_title);
+        TextView resAuthor = newView.findViewById(R.id.res_author);
+        TextView res_pos = newView.findViewById(R.id.res_pos);
+        TextView res_len = newView.findViewById(R.id.res_len);
+        TextView res_ready = newView.findViewById(R.id.res_ready);
+        TextView res_loc = newView.findViewById(R.id.res_loc);
 
         resTitle.setText(title);
         resAuthor.setText(author);
@@ -59,7 +58,7 @@ public class ResvBookListAdapter extends ArrayAdapter<WMSHold> {
             res_ready.setTextColor(ContextCompat.getColor(getContext(), R.color.colorReservation));
         }
 
-        return convertView;
+        return newView;
     }
 
 

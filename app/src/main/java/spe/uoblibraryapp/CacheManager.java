@@ -25,7 +25,7 @@ public class CacheManager {
         this.dateAccessed = new Date();
     }
 
-    Boolean isExpired(){
+    public Boolean isExpired(){
         if (userProfile == null){
             return true;
         }
