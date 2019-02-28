@@ -51,13 +51,20 @@
             </LinearLayout>
 
                 <ListView
-                    android:id="@+id/listview"
+                    android:id="@+id/loansListView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="0dp"
                     android:descendantFocusability="blocksDescendants">
 
                 </ListView>
+
+                <TextView android:id="@android:id/empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="30sp"
+                    android:text="No Loans!"/>
 
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>

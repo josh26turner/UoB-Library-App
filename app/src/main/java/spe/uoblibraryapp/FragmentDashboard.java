@@ -158,11 +158,6 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
                 c++;
         }
 
-        //for(int i=0; i < holds.size(); i++){
-        //    if(holds.get(i).isReadyToCollect())
-        //        c++;
-        //}
-
         return c;
     }
 

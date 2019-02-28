@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -103,12 +104,6 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         resvlist=bookList;
 
         if (bookList.isEmpty()) {
-            LinearLayout res_liner = getView().findViewById(R.id.resv_main);
-            ImageView empty = new ImageView(getContext());
-            empty.setImageDrawable(getResources().getDrawable(R.drawable.empty));
-            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            empty.setLayoutParams(lp);
-            res_liner.addView(empty);
             return;
         }
 
