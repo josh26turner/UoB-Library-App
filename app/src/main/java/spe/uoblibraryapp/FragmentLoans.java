@@ -103,7 +103,9 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
             }
         });
 
-        ListView mListView=view.findViewById(R.id.listview);
+        ListView mListView=view.findViewById(R.id.loansListView);
+        mListView.setEmptyView(view.findViewById(R.id.empty));
+
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -145,10 +147,12 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
     }
 
     public void fillListView(WMSUserProfile userProfile) {
-        ListView mListView = view.findViewById(R.id.listview);
+        ListView mListView = view.findViewById(R.id.loansListView);
         List<WMSLoan> bookList = new ArrayList<>(userProfile.getLoans());
 
-        if (bookList.isEmpty()) return;
+        if (bookList.isEmpty()) {
+            return;
+        }
 
         switch (currentSort) {
             case AZ:

@@ -65,6 +65,7 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         });
 
         mListView=view.findViewById(R.id.listview2);
+        mListView.setEmptyView(view.findViewById(R.id.empty));
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -104,7 +105,9 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         List<WMSHold> bookList = userProfile.getOnHold();
         resvList=bookList;
 
-        if (bookList.isEmpty()) return;
+        if (bookList.isEmpty()) {
+            return;
+        }
 
         ResvBookListAdapter adapter = new ResvBookListAdapter(getContext(), R.layout.adapter_view_layout_resv, bookList);
         mListView.setAdapter(adapter);
@@ -165,8 +168,6 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
         }
     }
 
-
-
     //Extra Reservation Information Dialog
     public class ViewDialog {
         private Dialog dialog;
@@ -177,9 +178,14 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             dialog.setCanceledOnTouchOutside(true);
             dialog.setContentView(R.layout.dialog_reservations_layout);
 
-            ((TextView) dialog.findViewById(R.id.txt_pickuplocation)).setText(reservation.getPickupLocation());
-            ((TextView) dialog.findViewById(R.id.txt_bookname)).setText(reservation.getBook().getTitle());
-            ((TextView) dialog.findViewById(R.id.txt_author)).setText(reservation.getBook().getAuthor());
+            String statusText = String.format("Status: %s", reservation.getRequestStatusType());
+            ((TextView) dialog.findViewById(R.id.dialog_title)).setText(statusText);
+
+            String bookText = String.format("Item Name: %s", reservation.getBook().getTitle());
+            ((TextView) dialog.findViewById(R.id.txt_bookName)).setText(bookText);
+
+            String pickupText = String.format("Pick-Up Location: %s", reservation.getPickupLocation());
+            ((TextView) dialog.findViewById(R.id.txt_pickupLocation)).setText(pickupText);
 
             ((Button) dialog.findViewById(R.id.btn_dialog)).setOnClickListener(new View.OnClickListener() {
                 @Override

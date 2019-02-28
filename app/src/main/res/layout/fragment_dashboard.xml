@@ -18,7 +18,7 @@
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <android.support.v7.widget.CardView
@@ -46,10 +46,10 @@
                             android:layout_marginTop="19dp"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/sf_display_medium"
-                            android:text="Welcome Back"
-                            android:textColor="#FFF"
+                            android:text="My Loans"
+                            android:textStyle="normal"
                             android:textSize="30sp"
-                            android:textStyle="normal" />
+                            android:textColor="#FFF"/>
 
                         <TextView
                             android:id="@+id/loan_dash_description"
@@ -59,11 +59,11 @@
                             android:layout_marginTop="0dp"
                             android:layout_marginRight="17dp"
                             android:layout_marginBottom="15dp"
-                            android:fontFamily="@font/sf_display_light"
                             android:lineSpacingExtra="5dp"
-                            android:text="You have borrowed 25 out of 40 books. The first is due in 4 days. 3 books could not be auto-renewed."
-                            android:textColor="#FFF"
-                            android:textSize="18sp" />
+                            android:text="Updating your loans..."
+                            android:fontFamily="@font/sf_display_light"
+                            android:textSize="18sp"
+                            android:textColor="#FFF"/>
                     </LinearLayout>
 
                 </android.support.v7.widget.CardView>
@@ -92,10 +92,10 @@
                             android:layout_marginTop="19dp"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/sf_display_medium"
-                            android:text="Your Reservations"
-                            android:textColor="#FFF"
+                            android:text="My Reservations"
+                            android:textStyle="normal"
                             android:textSize="30sp"
-                            android:textStyle="normal" />
+                            android:textColor="#FFF"/>
 
                         <TextView
                             android:id="@+id/resv_dash_description"
@@ -105,11 +105,11 @@
                             android:layout_marginTop="0dp"
                             android:layout_marginRight="17dp"
                             android:layout_marginBottom="15dp"
-                            android:fontFamily="@font/sf_display_light"
                             android:lineSpacingExtra="5dp"
                             android:text="Updating reservation status..."
-                            android:textColor="#FFF"
-                            android:textSize="18sp" />
+                            android:fontFamily="@font/sf_display_light"
+                            android:textSize="18sp"
+                            android:textColor="#FFF"/>
                     </LinearLayout>
 
                 </android.support.v7.widget.CardView>

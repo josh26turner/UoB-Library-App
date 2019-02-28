@@ -9,14 +9,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
@@ -33,10 +39,9 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
         myBroadCastReceiver = new MyBroadCastReceiver();
-
         cacheManager = CacheManager.getInstance();
 
         // Swipe to Refresh
@@ -50,6 +55,19 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         });
 
 
+        ((CardView) view.findViewById(R.id.loan_card_view)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Call Loans from here.
+
+            }
+        });
+        ((CardView) view.findViewById(R.id.resv_card_view)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Call Reservations from here.
+            }
+        });
 
         return view;
     }
@@ -63,11 +81,10 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             intentFilter.addAction(Constants.IntentActions.USER_PROFILE_RESPONSE);
             intentFilter.addAction(Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE);
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver, intentFilter);
-            Log.d(TAG, "Reciever Registered");
+            Log.d(TAG, "Receiver Registered");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 
 
@@ -102,11 +119,20 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         List<WMSLoan> bookList = cacheManager.getUserProfile().getLoans();
         if (!bookList.isEmpty()) {
             Collections.sort(bookList, new SortCustomComparatorDueDate());
-            output = String.format("You have borrowed %s out of %s books. The first book is due back on %s", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getDueDate());
+            Date mostRecentDueDate = bookList.get(0).getDueDate();
+            Date dateToday = new Date();
+
+            int bookDueDate = daysBetween(dateToday, mostRecentDueDate);
+            if (bookDueDate <= 3)
+                if (bookDueDate == 1)
+                    output = String.format("You have borrowed %s out of %s books. The book %s is due back in 1 day.", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getBook().getTitle());
+                else
+                    output = String.format("You have borrowed %s out of %s books. The book %s is due back in %s days.", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getBook().getTitle(), bookDueDate);
+
+            else
+                output = String.format("You have borrowed %s out of %s books.", cacheManager.getUserProfile().getLoans().size(), 40);
         }
         else output = "Currently you have no loans :)";
-
-
 
         loan_dash_description.setText(output);
     }
@@ -116,7 +142,9 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         Log.d(TAG, "Updating Reservation Dash");
         TextView tv = view.findViewById(R.id.resv_dash_description);
         int reservationSize = cacheManager.getUserProfile().getOnHold().size();
-        if (reservationSize==0) tv.setText("Currently you have no reservations :)");
+        if (reservationSize==0) {
+            tv.setText("Currently you have no reservations :)");
+        }
         else {
             String output = String.format("You have %s reservations, %s of which are ready to collect", cacheManager.getUserProfile().getOnHold().size(), readyCollectCount(cacheManager.getUserProfile()));
             tv.setText(output);
@@ -124,12 +152,18 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
     }
     public int readyCollectCount(WMSUserProfile profile){
         int c = 0;
-        List<WMSHold> holds = profile.getOnHold();
-        for(int i=0; i < holds.size(); i++){
-            if(holds.get(i).isReadyToCollect())
+        List<WMSHold> holdList = profile.getOnHold();
+
+        for (WMSHold hold  : holdList){
+            if (hold.isReadyToCollect())
                 c++;
         }
+
         return c;
+    }
+
+    public int daysBetween(Date d1, Date d2){
+        return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }
 
 
