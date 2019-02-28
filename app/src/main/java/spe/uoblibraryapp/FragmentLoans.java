@@ -104,6 +104,8 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         });
 
         ListView mListView=view.findViewById(R.id.loansListView);
+        mListView.setEmptyView(view.findViewById(R.id.empty));
+
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
