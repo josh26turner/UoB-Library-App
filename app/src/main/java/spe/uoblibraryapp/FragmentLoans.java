@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -149,6 +151,12 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         List<WMSLoan> bookList = new ArrayList<>(userProfile.getLoans());
 
         if (bookList.isEmpty()) {
+            LinearLayout loan_layout = getView().findViewById(R.id.loan_linerlayout);
+            ImageView empty = new ImageView(getContext());
+            empty.setImageDrawable(getResources().getDrawable(R.drawable.empty));
+            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            empty.setLayoutParams(lp);
+            loan_layout.addView(empty);
             return;
         }
 

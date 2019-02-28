@@ -59,13 +59,6 @@
 
                 </ListView>
 
-                <TextView android:id="@android:id/empty"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="30sp"
-                    android:text="No Loans!"/>
-
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
