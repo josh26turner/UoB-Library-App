@@ -30,16 +30,22 @@ public class NFC {
      * @throws IntentException - not the right type of intent
      * @throws IOException - can't communicate with the tag
      */
-    public NFC(Intent intent) throws NFCTechException, IntentException, IOException {
+    public NFC(Intent intent) throws NFCTechException, IntentException, IOException, CheckedOutException {
         setNfcTag(intent);
 
         nfcTag.connect();
 
-        // removeSecureSetting(); // REMOVE THE `//` AT THE START OF THE LINE WHEN RELEASING!!!!!
         userBlocks = readMultipleBlocks(5);
         systemInformation = getSystemInfo();
 
-        nfcTag.close();
+
+        if (isCheckedOut()) {
+            nfcTag.close();
+            throw new CheckedOutException();
+        } else {
+            //removeSecureSetting(); // REMOVE THE `//` AT THE START OF THE LINE WHEN RELEASING!!!!!
+            nfcTag.close();
+        }
     }
 
     /**
@@ -85,11 +91,11 @@ public class NFC {
     }
 
     /**
-     * Get system information
-     * @return - the information stored about the tag
+     * Gets the AFI to see if a book has already been checked out
+     * @return - if the book is checked out already
      */
-    public byte[] getSystemInformation() {
-        return systemInformation;
+    private boolean isCheckedOut() {
+        return systemInformation[11] ==  (byte) 0xC2;
     }
 
     /**
@@ -143,7 +149,7 @@ public class NFC {
      * Stops the alarm going off if you take a book through
      * @throws IOException - if the tag can't be communicated with
      */
-    public void removeSecureSetting() throws IOException {
+    private void removeSecureSetting() throws IOException {
         nfcTag.transceive(setSecurityOff(tagID));
     }
 
@@ -162,7 +168,8 @@ public class NFC {
      * @return - the int value of all the hex digits
      */
     private int sum(byte[] bytes){
-        int sum = 0, len = bytes.length;
+        int sum = 0;
+        int len = bytes.length;
         for (int i = 0; i < len; i++)
             sum += (bytes[i] & 0xFF) * Math.pow(256,len - i - 1);
 

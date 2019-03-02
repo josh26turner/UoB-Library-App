@@ -17,11 +17,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.IOException;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.nfc.BarcodeException;
+import spe.uoblibraryapp.nfc.CheckedOutException;
 import spe.uoblibraryapp.nfc.IntentException;
 import spe.uoblibraryapp.nfc.NFC;
 import spe.uoblibraryapp.nfc.NFCTechException;
@@ -43,7 +45,7 @@ public class ActivityScanNFC extends AppCompatActivity {
         myBroadCastReceiver = new MyBroadCastReceiver();
 
         if (!(nfcAdapter != null && nfcAdapter.isEnabled())){
-            //Toast.makeText(this, "No NFC Detected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No NFC Detected", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
             startActivity(i);
             finish();
@@ -81,42 +83,40 @@ public class ActivityScanNFC extends AppCompatActivity {
         nDialog.show();
         scanDialog = nDialog;
 
+        ActivityScanNFC activityScanNFC = this;
 
-        Thread mThread = new Thread() {
-            @Override
-            public void run() {
 
-                try {
-                    NFC nfc = new NFC(scanIntent);
-                    // Tag has been scanned now stop scanning for tags
-                    nfcAdapter.disableForegroundDispatch(ActivityScanNFC.this);
+        try {
+            NFC nfc = new NFC(scanIntent);
+            // Tag has been scanned now stop scanning for tags
+            //nfcAdapter.disableForegroundDispatch(ActivityScanNFC.this);
 
-                    String sysInfo = bytesToHexString(nfc.getSystemInformation());
+            // Send intent to WMSNCIPService with itemId
+            Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
+            checkoutIntent.putExtra("itemId", nfc.getBarcode());
+            WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
+            // When checkout is complete the confirm activity is started by the WMSNCIPService.
 
-                    // Send intent to WMSNCIPService with itemId
-                    Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
-                    checkoutIntent.putExtra("itemId", nfc.getBarcode());
-                    WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
-                    // When checkout is complete the confirm activity is started by the WMSNCIPService.
-                } catch (NFCTechException e) {
-                    e.printStackTrace();
-                    nDialog.setMessage("Not the right NFC/RFID type");
-                    Log.d(TAG, "Not the right NFC/RFID type");
-                } catch (IntentException e) {
-                    e.printStackTrace();
-                    Log.d(TAG, "No tag in the intent");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    nDialog.setMessage("There was a problem with the tag. Hold phone still over tag.");
-                    Log.d(TAG, "Can't connect to the tag");
-                } catch (BarcodeException e) {
-                    e.printStackTrace();
-                    nDialog.setMessage("There was a problem reading the tag");
-                    Log.d(TAG, "There was a problem with the tag");
-                }
-            }
-        };
-        mThread.start();
+        } catch (NFCTechException e) {
+            e.printStackTrace();
+            nDialog.setMessage("Not the right NFC/RFID type");
+            Log.d(TAG, "Not the right NFC/RFID type");
+        } catch (IntentException e) {
+            e.printStackTrace();
+            Log.d(TAG, "No tag in the intent");
+        } catch (IOException e) {
+            e.printStackTrace();
+            nDialog.setMessage("There was a problem with the tag. Hold phone still over tag.");
+            Log.d(TAG, "Can't connect to the tag");
+        } catch (BarcodeException e) {
+            e.printStackTrace();
+            nDialog.setMessage("There was a problem reading the tag");
+            Log.d(TAG, "There was a problem with the tag");
+        } catch (CheckedOutException e) {
+            Log.e(TAG, "Book checked out");
+            Toast.makeText(activityScanNFC, "Book checked out already", Toast.LENGTH_LONG).show();
+            nDialog.cancel();
+        }
     }
 
     @Override
