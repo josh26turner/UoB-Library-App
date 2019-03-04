@@ -68,7 +68,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: Call Reservations from here.
-                mHome.setViewPager("Reservations");
+                mHome.setViewPager("Reservation");
             }
         });
 
