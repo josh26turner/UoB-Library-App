@@ -40,23 +40,33 @@ public class ActivityScanNFC extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_nfc);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         myBroadCastReceiver = new MyBroadCastReceiver();
 
-        if (!(nfcAdapter != null && nfcAdapter.isEnabled())){
-            Toast.makeText(this, "No NFC Detected", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
-            startActivity(i);
+        if (nfcAdapter == null){
+            Toast.makeText(this, "NFC Not Supported. Functionality Disabled.", Toast.LENGTH_LONG).show();
             finish();
-        } else {
-            Intent pnd = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            pendingIntent = PendingIntent.getActivity(this, 0, pnd, 0);
-            // Setup a tech list for NfcV tag.
-            techList = new String[][]{ new String[]{NfcV.class.getName()} };
+            return;
+            //TODO: Disable Floating Button & Scan.
         }
-        Activity myAct = this;
+        else {
+            if (nfcAdapter.isEnabled()){
+                //Do NFC Stuff.
+                Intent pnd = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                pendingIntent = PendingIntent.getActivity(this, 0, pnd, 0);
+                // Setup a tech list for NfcV tag.
+                techList = new String[][]{ new String[]{NfcV.class.getName()} };
+            }
+            else{
+                //disabled.
+                Toast.makeText(this, "Please enable NFC & try again.", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
+                startActivity(i);
+                finish();
+            }
+        }
 
+        Activity myAct = this;
         Button butt = findViewById(R.id.btnProblemReport2);
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
