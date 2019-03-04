@@ -55,15 +55,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
         });
 
-
-        //TODO: Riley Check Here.
-        //
-        Log.e("TAG:", getActivity().toString());
-
-        android.support.v4.app.FragmentManager mThis = getChildFragmentManager();
-        FragmentActivity x = getActivity();
         ActivityHome mHome = (ActivityHome) getActivity();
-
 
         ((CardView) view.findViewById(R.id.loan_card_view)).setOnClickListener(new View.OnClickListener() {
             @Override
