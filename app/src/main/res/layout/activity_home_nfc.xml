@@ -16,9 +16,18 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="62dp"
+        android:layout_marginTop="60sp"
         android:layout_gravity="center"
-        android:text="Hold Your Phone Close to the Book."
+        android:text="1) Open Back Cover of the book."
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30sp"
+        android:layout_gravity="center"
+        android:text="2) Tap the NFC Tag with your phone."
         android:textColor="@android:color/black" />
 
     <Button
@@ -29,7 +38,7 @@
         android:layout_gravity="bottom|center"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="0dp"
-        android:text="Problems Scanning?"
+        android:text="Show me how"
         android:textColor="@android:color/darker_gray"
         android:textSize="12sp" />
 

@@ -6,7 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_scan"
-            android:icon="@drawable/ic_outline_camera_alt_24px"
+            android:icon="@drawable/nfc_search_variant"
             android:title="Scan Book    " />
         <item
             android:id="@+id/nav_dash"
@@ -20,6 +20,8 @@
             android:id="@+id/nav_reservations"
             android:icon="@drawable/ic_outline_book_24px"
             android:title="@string/reservations" />
+
+
     </group>
 
 </menu>

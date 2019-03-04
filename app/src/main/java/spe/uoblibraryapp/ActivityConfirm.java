@@ -55,6 +55,7 @@ public class ActivityConfirm extends AppCompatActivity {
             WMSCheckout checkout = new WMSCheckout(new WMSNCIPElement(node), userId);
 
             ((TextView) findViewById(R.id.txt_bookName)).setText(checkout.getBook().getTitle());
+
             Button buttonClose = findViewById(R.id.close_button);
             buttonClose.setOnClickListener((view) -> {
                 startActivity(new Intent(this, ActivityHome.class));
