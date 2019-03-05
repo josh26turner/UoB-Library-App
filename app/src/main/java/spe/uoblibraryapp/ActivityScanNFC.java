@@ -42,6 +42,10 @@ public class ActivityScanNFC extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         myBroadCastReceiver = new MyBroadCastReceiver();
+        setContentView(R.layout.activity_home_nfc);
+        Activity myAct = this;
+
+
 
         if (nfcAdapter == null){
             Toast.makeText(this, "NFC Not Supported. Functionality Disabled.", Toast.LENGTH_LONG).show();
@@ -66,15 +70,20 @@ public class ActivityScanNFC extends AppCompatActivity {
             }
         }
 
-        Activity myAct = this;
-        Button butt = findViewById(R.id.btnProblemReport2);
+
+        Button butt = findViewById(R.id.btnShowMeHow);
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ActivityScanNFC.ViewDialog alert = new ActivityScanNFC.ViewDialog();
-                alert.showDialog(myAct);
+                //alert.showDialog(myAct, R.layout.dialog_problems_scanning_layout, true);
+               // ActivityScanNFC.ViewDialog alert = new ActivityScanNFC.ViewDialog();
+                alert.showDialog(myAct, R.layout.dialog_scan_select_library, false);
+
+
             }
         });
+
     }
 
     /**
@@ -204,12 +213,12 @@ public class ActivityScanNFC extends AppCompatActivity {
     //Problems Scanning Dialog
     public class ViewDialog {
 
-        public void showDialog(Activity activity){
+        public void showDialog(Activity activity, int layoutResID, boolean setCanceledOnTouchOutside){
             final Dialog dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(true);
-            dialog.setContentView(R.layout.dialog_problems_scanning_layout);
+            dialog.setCanceledOnTouchOutside(setCanceledOnTouchOutside);
+            dialog.setContentView(layoutResID);
 
             dialog.show();
         }

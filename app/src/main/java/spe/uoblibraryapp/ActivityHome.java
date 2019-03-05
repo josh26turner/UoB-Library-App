@@ -112,28 +112,9 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
                 startActivity(NFCActivity);
             }
         });
-        String[] langs = {"bla", "bla"};
+
         // Get user account details.
         IMService.enqueueWork(getApplicationContext(), IMService.class, IMService.jobId, new Intent(Constants.IntentActions.LOOKUP_USER_ACCOUNT));
-
-        //TODO: Spinner Shit Goes Here.
-
-        /*Spinner sp = (Spinner) navigationView.getMenu().findItem(R.id. nav_lang).getActionView();
-        sp.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, langs));
-        sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ActivityHome.this,langs[position],Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        */
-
-
 
     }
 
