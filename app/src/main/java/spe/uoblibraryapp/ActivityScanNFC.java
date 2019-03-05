@@ -8,6 +8,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
@@ -16,7 +19,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -220,7 +225,33 @@ public class ActivityScanNFC extends AppCompatActivity {
             dialog.setCanceledOnTouchOutside(setCanceledOnTouchOutside);
             dialog.setContentView(layoutResID);
 
-            dialog.show();
+            if (layoutResID == R.layout.dialog_scan_select_library) {
+                //Library Selection
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+                Spinner spinnerSelect = dialog.findViewById(R.id.spinnerSelectLibrary);
+
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("spinnerSelection", Context.MODE_PRIVATE);
+
+                if (pref.contains("spinnerSelect"))
+                    Log.e("YES", "YES");
+                    //SET SELECTED ITEM TO THAT INDEX.
+                else
+                    pref.edit().putInt("spinnerSelect", 0).apply();
+
+
+
+                ((Button) dialog.findViewById(R.id.btnConfirm)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Remember me for next time.
+                        pref.edit().putInt("spinnerSelect", spinnerSelect.getSelectedItemPosition()).apply();
+                        
+                        // Close dialog
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
         }
     }
 }
