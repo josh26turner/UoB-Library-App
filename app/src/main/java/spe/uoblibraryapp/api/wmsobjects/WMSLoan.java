@@ -317,15 +317,15 @@ public class WMSLoan {
                 }
                 for (int i=0; i<itemIdList.getLength(); i++){
                     Node node = itemIdList.item(i);
-                    Log.e(TAG, node.getTextContent());
-                    Log.e(TAG, itemId);
+                    //Log.e(TAG, node.getTextContent());
+                    //Log.e(TAG, itemId);
                     if (node.getTextContent().equals(itemId)){
                         Node renewableNode = renewableList.item(i);
                         Node value = renewableNode.getAttributes().getNamedItem("value");
 
                         return value.getNodeValue().equals("1");
                     }
-                    Log.e(TAG, node.getNodeName());
+                    //Log.e(TAG, node.getNodeName());
                 }
 
             } catch (Exception ex){
