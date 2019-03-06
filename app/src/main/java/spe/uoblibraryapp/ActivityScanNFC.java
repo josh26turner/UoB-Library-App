@@ -1,8 +1,8 @@
 package spe.uoblibraryapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -15,7 +15,6 @@ import android.nfc.NfcAdapter;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -41,7 +40,7 @@ public class ActivityScanNFC extends AppCompatActivity {
     private String[][] techList;
     private Dialog scanDialog;
     private MyBroadCastReceiver myBroadCastReceiver;
-    private boolean endOfWork = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +50,6 @@ public class ActivityScanNFC extends AppCompatActivity {
         setTitle("Checkout a New Book");
         Activity myAct = this;
 
-        Log.e(TAG, "1");
         if (nfcAdapter == null){
             Toast.makeText(this, "NFC Not Supported. Functionality Disabled.", Toast.LENGTH_LONG).show();
             finish();
@@ -59,53 +57,15 @@ public class ActivityScanNFC extends AppCompatActivity {
         }
         else {
             if (nfcAdapter.isEnabled()){
-                Log.e(TAG, "2");
-               // ActivityScanNFC.ViewDialog alert = new ActivityScanNFC.ViewDialog();
-                Log.e(TAG, "3");
-               // alert.showDialog(myAct, R.layout.dialog_scan_select_library, false);
-                //TODO: Wait until alert is dismissed.
 
-                final Dialog dialog = new Dialog(this);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setCancelable(false);
-                dialog.setCanceledOnTouchOutside(false);
                 SharedPreferences pref = getApplicationContext().getSharedPreferences("spinnerSelection", Context.MODE_PRIVATE);
-                dialog.setContentView(R.layout.dialog_scan_select_library);
-                ((Button) dialog.findViewById(R.id.btnConfirm)).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Remember me for next time.
-                        //pref.edit().putInt("spinnerInt", spinnerSelect.getSelectedItemPosition()).apply();
-                        //pref.edit().putString("spinnerString", spinnerSelect.getSelectedItem().toString()).apply();
-                        // Close dialog
-                        dialog.dismiss();
-                    }
-                });
 
-                dialog.show();
-                dialog.setOnDismissListener(new Dialog.OnDismissListener(){
-                    @Nullable
-                    public void onDismiss(DialogInterface x){
-                        //DO SHIT;
-                        Toast.makeText(getApplicationContext(), "TEST", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                pref.getInt("spinnerInt", 0); //TODO: USE SELECTED ITEM
-
-                //Do NFC Stuff.
-                Intent pnd = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                pendingIntent = PendingIntent.getActivity(this, 0, pnd, 0);
+                Intent pnd = new Intent(myAct, myAct.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                pendingIntent = PendingIntent.getActivity(myAct, 0, pnd, 0);
                 // Setup a tech list for NfcV tag.
                 techList = new String[][]{ new String[]{NfcV.class.getName()} };
-                Button butt = findViewById(R.id.btnShowMeHow);
-                butt.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ActivityScanNFC.ViewDialog alert = new ActivityScanNFC.ViewDialog();
-                        alert.showDialog(myAct, R.layout.dialog_problems_scanning_layout, true);
-                    }
-                });
+
+                pref.getInt("spinnerInt", 0); //TODO: USE SELECTED ITEM
             }
             else{
                 //disabled.
@@ -115,7 +75,15 @@ public class ActivityScanNFC extends AppCompatActivity {
                 finish();
             }
         }
-        Log.e(TAG, "END OF ON CREATE");
+
+        Button butt = findViewById(R.id.btnShowMeHow);
+        butt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityScanNFC.ViewDialog alert = new ActivityScanNFC.ViewDialog();
+                alert.showDialog(myAct, R.layout.dialog_problems_scanning_layout, true);
+            }
+        });
     }
 
     /**
@@ -195,8 +163,13 @@ public class ActivityScanNFC extends AppCompatActivity {
     }
 
     public void onBackPressed(){
-        Intent intent = new Intent(ActivityScanNFC.this, ActivityHome.class);
-        startActivity(intent);
+        //Intent intent = new Intent(ActivityScanNFC.this, ActivityHome.class);
+        //startActivity(intent);
+
+        Intent data = new Intent();
+        data.putExtra("ended", "true");
+        // Activity finished return ok, return the data
+        setResult(RESULT_OK, data);
         finish();
     }
 
@@ -242,48 +215,19 @@ public class ActivityScanNFC extends AppCompatActivity {
     }
 
     //Problems Scanning Dialog
-    public class ViewDialog implements DialogInterface.OnDismissListener{
+    public class ViewDialog {
 
         public void showDialog(Activity activity, int layoutResID, boolean setCanceledOnTouchOutside){
             final Dialog dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(setCanceledOnTouchOutside);
-
-
             dialog.setContentView(layoutResID);
+            dialog.show();
 
-            if (layoutResID == R.layout.dialog_scan_select_library) {
-                //Library Selection
-                Spinner spinnerSelect = dialog.findViewById(R.id.spinnerSelectLibrary);
-
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("spinnerSelection", Context.MODE_PRIVATE);
-
-                if (pref.contains("spinnerInt"))
-                    spinnerSelect.setSelection(pref.getInt("spinnerInt", 0));
-
-
-                ((Button) dialog.findViewById(R.id.btnConfirm)).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Remember me for next time.
-                        pref.edit().putInt("spinnerInt", spinnerSelect.getSelectedItemPosition()).apply();
-                        pref.edit().putString("spinnerString", spinnerSelect.getSelectedItem().toString()).apply();
-                        // Close dialog
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
-            }
-            else {
-                //NOT Library Selection.
-            }
         }
 
-        public void onDismiss(final DialogInterface dialog){
-            //TODO: CREATE SOME SORT OF TRANSACTION...
-            Log.e(TAG, "caddasdasdASDFsdf");
-        }
+
 
 
     }

@@ -28,24 +28,18 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@id/dialog_top">
 
-        <Spinner
-            android:id="@+id/spinnerSelectLibrary"
+        <ListView
             android:layout_width="match_parent"
-            android:layout_height="100sp"
-            android:entries="@array/spinner_library"/>
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/listViewSelectLibrary" />
 
-        <Button
-            android:id="@+id/btnConfirm"
-            android:layout_width="match_parent"
-            android:layout_height="65sp"
-            android:text="CONFIRM" />
-
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

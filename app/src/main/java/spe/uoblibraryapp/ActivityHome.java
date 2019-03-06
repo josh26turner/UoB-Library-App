@@ -18,11 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import spe.uoblibraryapp.api.AuthService;
 import spe.uoblibraryapp.api.IMService;
@@ -108,8 +104,8 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 //Scan a New Book.
-                Intent NFCActivity = new Intent(ActivityHome.this, ActivityScanNFC.class);
-                startActivity(NFCActivity);
+                Intent LibraryNFCActivity = new Intent(ActivityHome.this, ActivityLibrarySelect.class);
+                startActivity(LibraryNFCActivity);
             }
         });
 
@@ -166,7 +162,8 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_scan){
-            startActivity(new Intent(this, ActivityScanNFC.class));
+            startActivity(new Intent(this, ActivityLibrarySelect.class));
+
         } else if (id == R.id.nav_dash) {
             setViewPager("Dashboard");
         } else if (id == R.id.nav_current_loans_reservations) {
