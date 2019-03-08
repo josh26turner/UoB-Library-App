@@ -39,7 +39,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/welcome_message"
+                            android:id="@+id/account_blocked_message"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="top"
@@ -53,7 +53,7 @@
                             android:textStyle="normal" />
 
                         <TextView
-                            android:id="@+id/loan_dash_description"
+                            android:id="@+id/account_blocked_detail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="17dp"
