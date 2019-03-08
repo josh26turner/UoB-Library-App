@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swiperefresh_dash"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,7 +22,54 @@
                 android:layout_height="wrap_content">
 
                 <android.support.v7.widget.CardView
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/blocked_account_card_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="9dp"
+                    android:layout_marginTop="3dp"
+                    android:visibility="gone"
+                    card_view:cardCornerRadius="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="top"
+                        android:background="@color/colorPrimary"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/welcome_message"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:layout_marginLeft="17dp"
+                            android:layout_marginTop="19dp"
+                            android:layout_marginBottom="10dp"
+                            android:fontFamily="@font/sf_display_medium"
+                            android:text="Account Blocked"
+                            android:textColor="#FFF"
+                            android:textSize="30sp"
+                            android:textStyle="normal" />
+
+                        <TextView
+                            android:id="@+id/loan_dash_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="17dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginRight="17dp"
+                            android:layout_marginBottom="15dp"
+                            android:fontFamily="@font/sf_display_light"
+                            android:lineSpacingExtra="5dp"
+                            android:text="Please speak to a librarian"
+                            android:textColor="#FFF"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
                     android:id="@+id/loan_card_view"
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
@@ -30,6 +77,7 @@
                     card_view:cardCornerRadius="6dp"
                     android:layout_marginTop="3dp"
                     android:layout_margin="9dp">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -146,6 +147,20 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             tv.setText(output);
         }
     }
+
+    private void updateAccountBlocked(){
+        View accountCard = view.findViewById(R.id.blocked_account_card_view);
+        SharedPreferences prefs = getActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        Boolean accountBlocked = prefs.getBoolean("accountBlocked", true);
+        if (accountBlocked){
+            accountCard.setVisibility(View.VISIBLE);
+        } else{
+            accountCard.setVisibility(View.GONE);
+        }
+    }
+
+
+
     public int readyCollectCount(WMSUserProfile profile){
         int c = 0;
         List<WMSHold> holdList = profile.getOnHold();
@@ -171,9 +186,11 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
                 if (Constants.IntentActions.USER_PROFILE_RESPONSE.equals(intent.getAction())){
                     updateDashboardLoans();
                     updateDashboardReservations();
+//                    updateAccountBlocked();
                 } else if (Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE.equals(intent.getAction())) {
                     // TODO add blocked message to dashboard.
                     Log.d(TAG, "To be added");
+                    updateAccountBlocked();
                 } else {
                     Toast toast = Toast.makeText(getContext(), "Refresh Failed",Toast.LENGTH_LONG);
                     toast.show();
