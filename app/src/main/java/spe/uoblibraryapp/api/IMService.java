@@ -84,9 +84,17 @@ public class IMService extends JobIntentService {
                         } catch (JSONException ex){
                             accountBlocked = true;
                         }
+                        String borrowerCategory;
+                        try {
+                            JSONObject accountInfo = response.getJSONObject("urn:mace:oclc.org:eidm:schema:persona:wmscircselfinfo:20180101");
+                            borrowerCategory = accountInfo.getString("borrowerCategory");
+                        } catch (JSONException ex){
+                            borrowerCategory = "";
+                        }
                         tokens.edit().putString("name", name).apply();
                         tokens.edit().putString("email", email).apply();
                         tokens.edit().putBoolean("accountBlocked", accountBlocked).apply();
+                        tokens.edit().putString("borrowerCategory", borrowerCategory).apply();
                         sendBroadcast(new Intent(Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE));
                     }
                 }, new Response.ErrorListener() {
