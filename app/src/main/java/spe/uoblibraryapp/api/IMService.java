@@ -79,14 +79,15 @@ public class IMService extends JobIntentService {
                         }
                         Boolean accountBlocked;
                         try{
-                            JSONObject accountInfo = response.getJSONObject("urn:mace:oclc.org:eidm:schema:persona:wmscircselfinfo:20180101");
+                            JSONObject accountInfo = response.getJSONObject("urn:mace:oclc.org:eidm:schema:persona:wmscircselfinfo:20180101").getJSONObject("circulationInfo");
                             accountBlocked = accountInfo.getBoolean("isCircBlocked");
                         } catch (JSONException ex){
+                            ex.printStackTrace();
                             accountBlocked = true;
                         }
                         String borrowerCategory;
                         try {
-                            JSONObject accountInfo = response.getJSONObject("urn:mace:oclc.org:eidm:schema:persona:wmscircselfinfo:20180101");
+                            JSONObject accountInfo = response.getJSONObject("urn:mace:oclc.org:eidm:schema:persona:wmscircselfinfo:20180101").getJSONObject("circulationInfo");
                             borrowerCategory = accountInfo.getString("borrowerCategory");
                         } catch (JSONException ex){
                             borrowerCategory = "";
