@@ -4,6 +4,9 @@ import android.text.TextUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class Constants {
     private Constants(){ }
@@ -11,6 +14,48 @@ public final class Constants {
 
     public static final class LibraryDetails {
         public static final String institutionId = "132607";
+        public static final Map<String, Integer> borrowerCategories = Stream.of(new Object[][] {
+                {"Binding", 40 },
+                {"Branch Transfers", 40 },
+                {"Bristol Graduate", 40 },
+                {"Bristol Law Society", 40 },
+                {"Bristol Society of Architects", 40 },
+                {"Cataloguing Dept.", 40 },
+                {"Display of New Books", 40 },
+                {"External Subscribers", 40 },
+                {"ILL", 40 },
+                {"ILL Borrower (External Libraries)", 40 },
+                {"Individual Subscriber", 40 },
+                {"Large Firm", 40 },
+                {"Library Admin (28 days)", 40 },
+                {"Library Admin (3 months)", 40 },
+                {"Library Admin (364 days)", 40 },
+                {"Medical Branches/Hospitals", 40 },
+                {"Medics (MD)", 40 },
+                {"Postgraduate Research FT", 40 },
+                {"Postgraduate Research FT (EL)", 40 },
+                {"Postgraduate Research PT", 40 },
+                {"Postgraduate Taught FT", 40 },
+                {"Postgraduate Taught FT (EL)", 40 },
+                {"Postgraduate Taught PT", 40 },
+                {"Recognised Local Users", 40 },
+                {"Retired Staff", 40 },
+                {"SCONUL Access Band A", 40 },
+                {"SCONUL Access Band B", 40 },
+                {"SCONUL Access Band C", 40 },
+                {"SETSquared Firms", 40 },
+                {"Small Firm", 40 },
+                {"Staff", 40 },
+                {"Student/Staff (PGT FT)", 40 },
+                {"Student/Staff (PGT UG)", 40 },
+                {"Student/Staff (UG FT)", 40 },
+                {"Student/Staff (UG PT)", 40 },
+                {"Suspended Account", 40 },
+                {"Undergraduate FT", 40 },
+                {"Undergraduate FT (EL)", 40 },
+                {"Undergraduate PT", 40 },
+                {"Visitor Non-Borrowing", 40 }
+        }).collect(Collectors.toMap(data -> (String) data[0], data -> (Integer) data[1]));
         private LibraryDetails() { }
     }
 
