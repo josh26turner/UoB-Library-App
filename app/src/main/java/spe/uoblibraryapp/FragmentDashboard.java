@@ -105,6 +105,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         } else {
             updateDashboardLoans();
             updateDashboardReservations();
+            updateAccountBlocked();
         }
     }
 
