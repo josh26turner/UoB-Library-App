@@ -35,6 +35,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".ActivityScanNFC"/>
+        
+        <activity android:name=".ActivityLibrarySelect"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SelectLibrary" />
+
         <activity android:name=".ActivityConfirm"/>
         <service
             android:name="spe.uoblibraryapp.api.ncip.WMSNCIPService"

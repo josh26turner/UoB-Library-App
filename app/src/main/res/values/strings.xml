@@ -38,4 +38,18 @@
         <item>Due Last</item>
     </string-array>
 
+
+    <string-array name="spinner_library">
+        <item>Wills Memorial Library</item>
+        <item>Arts and Social Sciences</item>
+        <item>Biological Sciences</item>
+        <item>Chemistry Library</item>
+        <item>Education Library</item>
+        <item>Medical Library</item>
+        <item>Physics Sciences</item>
+        <item>Queens Building Library</item>
+        <item>Veterinary Sciences Library</item>
+
+    </string-array>
+
 </resources>

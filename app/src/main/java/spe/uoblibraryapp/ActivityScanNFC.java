@@ -1,13 +1,16 @@
 package spe.uoblibraryapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -40,29 +44,44 @@ public class ActivityScanNFC extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_nfc);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         myBroadCastReceiver = new MyBroadCastReceiver();
-
-        if (!(nfcAdapter != null && nfcAdapter.isEnabled())){
-            Toast.makeText(this, "No NFC Detected", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
-            startActivity(i);
-            finish();
-        } else {
-            Intent pnd = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            pendingIntent = PendingIntent.getActivity(this, 0, pnd, 0);
-            // Setup a tech list for NfcV tag.
-            techList = new String[][]{ new String[]{NfcV.class.getName()} };
-        }
+        setContentView(R.layout.activity_home_nfc);
+        setTitle("Checkout a New Book");
         Activity myAct = this;
 
-        Button butt = findViewById(R.id.btnProblemReport2);
+        if (nfcAdapter == null){
+            Toast.makeText(this, "NFC Not Supported. Functionality Disabled.", Toast.LENGTH_LONG).show();
+            finish();
+            //TODO: Disable Floating Button & Scan.
+        }
+        else {
+            if (nfcAdapter.isEnabled()){
+
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("spinnerSelection", Context.MODE_PRIVATE);
+
+                Intent pnd = new Intent(myAct, myAct.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                pendingIntent = PendingIntent.getActivity(myAct, 0, pnd, 0);
+                // Setup a tech list for NfcV tag.
+                techList = new String[][]{ new String[]{NfcV.class.getName()} };
+
+                pref.getInt("spinnerInt", 0); //TODO: USE SELECTED ITEM
+            }
+            else{
+                //disabled.
+                Toast.makeText(this, "Please enable NFC & try again.", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
+                startActivity(i);
+                finish();
+            }
+        }
+
+        Button butt = findViewById(R.id.btnShowMeHow);
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ActivityScanNFC.ViewDialog alert = new ActivityScanNFC.ViewDialog();
-                alert.showDialog(myAct);
+                alert.showDialog(myAct, R.layout.dialog_problems_scanning_layout, true);
             }
         });
     }
@@ -144,8 +163,13 @@ public class ActivityScanNFC extends AppCompatActivity {
     }
 
     public void onBackPressed(){
-        Intent intent = new Intent(ActivityScanNFC.this, ActivityHome.class);
-        startActivity(intent);
+        //Intent intent = new Intent(ActivityScanNFC.this, ActivityHome.class);
+        //startActivity(intent);
+
+        Intent data = new Intent();
+        data.putExtra("ended", "true");
+        // Activity finished return ok, return the data
+        setResult(RESULT_OK, data);
         finish();
     }
 
@@ -190,18 +214,23 @@ public class ActivityScanNFC extends AppCompatActivity {
         }
     }
 
-
     //Problems Scanning Dialog
     public class ViewDialog {
 
-        public void showDialog(Activity activity){
+        public void showDialog(Activity activity, int layoutResID, boolean setCanceledOnTouchOutside){
             final Dialog dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(true);
-            dialog.setContentView(R.layout.dialog_problems_scanning_layout);
-
+            dialog.setCanceledOnTouchOutside(setCanceledOnTouchOutside);
+            dialog.setContentView(layoutResID);
             dialog.show();
+
         }
+
+
+
+
     }
+
+
 }

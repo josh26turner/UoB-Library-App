@@ -1,5 +1,7 @@
 package spe.uoblibraryapp;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +10,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
@@ -51,18 +55,20 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, 1000, getUserProfileIntent);
         });
 
+        ActivityHome mHome = (ActivityHome) getActivity();
 
         ((CardView) view.findViewById(R.id.loan_card_view)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO: Call Loans from here.
-
+                mHome.setViewPager("Loans");
             }
         });
         ((CardView) view.findViewById(R.id.resv_card_view)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO: Call Reservations from here.
+                mHome.setViewPager("Reservation");
             }
         });
 

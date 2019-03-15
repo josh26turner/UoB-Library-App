@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -19,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import spe.uoblibraryapp.api.AuthService;
 import spe.uoblibraryapp.api.IMService;
@@ -30,11 +32,15 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
     private FragmentCustomPagerAdapter mAdapter;
     private ViewPager mViewPager; //container holding the fragments.
     private MyBroadCastReceiver myBroadCastReceiver;
+    private Boolean phoneHasNFC = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (nfcAdapter!=null){
+            phoneHasNFC = true;
+        }
         myBroadCastReceiver = new MyBroadCastReceiver();
 
         setContentView(R.layout.activity_home);
@@ -104,13 +110,18 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 //Scan a New Book.
-                Intent NFCActivity = new Intent(ActivityHome.this, ActivityScanNFC.class);
-                startActivity(NFCActivity);
+                if (phoneHasNFC) {
+                    Intent LibraryNFCActivity = new Intent(ActivityHome.this, ActivityLibrarySelect.class);
+                    startActivity(LibraryNFCActivity);
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "Feature Disabled, your phone does not support NFC.", Toast.LENGTH_LONG).show();
             }
         });
 
         // Get user account details.
         IMService.enqueueWork(getApplicationContext(), IMService.class, IMService.jobId, new Intent(Constants.IntentActions.LOOKUP_USER_ACCOUNT));
+
     }
 
     @Override
@@ -161,7 +172,14 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_scan){
-            startActivity(new Intent(this, ActivityScanNFC.class));
+            if (phoneHasNFC)
+                startActivity(new Intent(this, ActivityLibrarySelect.class));
+            else {
+                Toast.makeText(getApplicationContext(), "Feature Disabled, your phone does not support NFC.", Toast.LENGTH_LONG).show();
+                //TODO: FIX Nav View -> Keep Last Item Selected.
+            }
+
+
         } else if (id == R.id.nav_dash) {
             setViewPager("Dashboard");
         } else if (id == R.id.nav_current_loans_reservations) {
@@ -211,7 +229,6 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 
     @Override
