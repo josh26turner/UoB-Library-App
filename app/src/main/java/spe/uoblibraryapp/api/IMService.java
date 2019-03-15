@@ -93,10 +93,18 @@ public class IMService extends JobIntentService {
                         } catch (JSONException ex){
                             borrowerCategory = "";
                         }
+                        String userBarcode;
+                        try {
+                            JSONObject accountInfo = response.getJSONObject("urn:mace:oclc.org:eidm:schema:persona:wmscircselfinfo:20180101").getJSONObject("circulationInfo");
+                            userBarcode = accountInfo.getString("barcode");
+                        } catch (JSONException ex){
+                            userBarcode = "";
+                        }
                         tokens.edit().putString("name", name).apply();
                         tokens.edit().putString("email", email).apply();
                         tokens.edit().putBoolean("accountBlocked", accountBlocked).apply();
                         tokens.edit().putString("borrowerCategory", borrowerCategory).apply();
+                        tokens.edit().putString("userBarcode", userBarcode).apply();
                         sendBroadcast(new Intent(Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE));
                         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent(Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE));
                     }

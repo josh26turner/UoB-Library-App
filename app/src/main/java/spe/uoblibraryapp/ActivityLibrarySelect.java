@@ -47,6 +47,7 @@ public class ActivityLibrarySelect extends AppCompatActivity {
                     if (data.getExtras().getString("ended").contains("true"))
                         finish();
     }
+
     @Override
     public void onBackPressed() {
         finish();

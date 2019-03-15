@@ -143,7 +143,7 @@ public class WMSNCIPService extends JobIntentService {
         String url = Constants.APIUrls.checkoutBook;
         String requestBody = String.format(
                 Constants.RequestTemplates.checkoutBook,
-                prefs.getString("principalID", ""),
+                prefs.getString("userBarcode", ""),
                 accessToken,
                 itemId);
 
