@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -97,6 +98,7 @@ public class IMService extends JobIntentService {
                         tokens.edit().putBoolean("accountBlocked", accountBlocked).apply();
                         tokens.edit().putString("borrowerCategory", borrowerCategory).apply();
                         sendBroadcast(new Intent(Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE));
+                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent(Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE));
                     }
                 }, new Response.ErrorListener() {
                     @Override
