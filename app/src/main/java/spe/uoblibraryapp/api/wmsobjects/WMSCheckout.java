@@ -79,7 +79,7 @@ public class WMSCheckout {
             Node child = children.item(i);
             if (child.getNodeName().equals("ns1:UserIdentifierValue")){
                 if (!userId.equals(child.getTextContent())){
-                    throw new WMSParseException("UserId of response does not match UserId of the profile given");
+//                    throw new WMSParseException("UserId of response does not match UserId of the profile given");
                 }
                 return;
             }
