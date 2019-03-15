@@ -235,10 +235,10 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
                 userEmail.setText(prefs.getString("email", ""));
                 userName.setText(prefs.getString("name", ""));
 
-                boolean accountBlocked = prefs.getBoolean("accountBlocked", true);
-                if (accountBlocked){
-                    // TODO Disable scan button.
-                }
+//                boolean accountBlocked = prefs.getBoolean("accountBlocked", true);
+//                if (accountBlocked){
+//                    // TODO Disable scan button.
+//                }
 
 
             } catch (Exception ex) {
