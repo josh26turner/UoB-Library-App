@@ -199,9 +199,10 @@ public final class Constants {
 
         public static final String checkoutBook = "<CheckoutBookRequest>" +
                 "<userId>%s</userId>" +
+                "<barcode>%s</barcode>" +
                 "<accessToken>%s</accessToken>" +
                 "<itemId>%s</itemId>" +
-                "<location>119059</location>" + //TODO change this to dynamic location
+                "<location>%s</location>" + //TODO change this to dynamic location
                 "</CheckoutBookRequest>";
 
         private RequestTemplates(){ }
