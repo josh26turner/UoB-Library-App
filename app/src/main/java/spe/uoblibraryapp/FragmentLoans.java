@@ -23,7 +23,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -93,8 +92,8 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
 
                 //Update View here.
 //                fillListView(cacheManager.getUserProfile());
-
-
+                sortLibrary(cacheManager.getUserProfile().getLoans());
+                listViewAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -146,33 +145,40 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
         }
     }
 
-    public void fillListView(WMSUserProfile userProfile) {
-        ListView mListView = view.findViewById(R.id.loansListView);
-        List<WMSLoan> bookList = new ArrayList<>(userProfile.getLoans());
 
-        if (bookList.isEmpty()) {
+    private void sortLibrary(List<WMSLoan> loans){
+
+        if (loans.isEmpty()) {
             return;
         }
 
         switch (currentSort) {
             case AZ:
-                Collections.sort(bookList, new customComparatorAZ());
+                Collections.sort(loans, new customComparatorAZ());
                 break;
             case ZA:
-                Collections.sort(bookList, new customComparatorAZ());
-                Collections.reverse(bookList);
+                Collections.sort(loans, new customComparatorAZ());
+                Collections.reverse(loans);
                 break;
             case dueDateAZ:
-                Collections.sort(bookList, new SortCustomComparatorDueDate());
+                Collections.sort(loans, new SortCustomComparatorDueDate());
                 break;
             case dueDateZA:
-                Collections.sort(bookList, new SortCustomComparatorDueDate());
-                Collections.reverse(bookList);
+                Collections.sort(loans, new SortCustomComparatorDueDate());
+                Collections.reverse(loans);
                 break;
             default:
                 //this is not possible, added for the automatic code review.
                 break;
         }
+
+    }
+
+
+    public void fillListView(WMSUserProfile userProfile) {
+        ListView mListView = view.findViewById(R.id.loansListView);
+        List<WMSLoan> bookList = userProfile.getLoans();
+        sortLibrary(bookList);
         loanList = bookList;
         ArrayAdapter adapter = new LoanBookListAdapter(getContext(), R.layout.adapter_view_layout, bookList);
         mListView.setAdapter(adapter);
