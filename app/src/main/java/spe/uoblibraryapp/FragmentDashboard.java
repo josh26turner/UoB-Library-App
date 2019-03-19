@@ -112,6 +112,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             updateDashboardLoans();
             updateDashboardReservations();
             updateAccountBlocked();
+            updateInfoCard();
         }
     }
 
@@ -164,6 +165,14 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         } else{
             accountCard.setVisibility(View.GONE);
         }
+    }
+
+    public void updateInfoCard(){
+        Log.d(TAG, "Updating Info Dash");
+        TextView infoCardText = view.findViewById(R.id.info_dash_description);
+        SharedPreferences prefs = getActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        String lastLocation = prefs.getString("lastSelectedLocation","");
+        infoCardText.setText(lastLocation);
     }
 
 

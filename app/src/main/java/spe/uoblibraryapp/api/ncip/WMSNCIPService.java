@@ -139,6 +139,7 @@ public class WMSNCIPService extends JobIntentService {
 
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.start();
+        Log.d(TAG, "NCIP location: " + prefs.getString("lastSelectedLocation",""));
 
         String url = Constants.APIUrls.checkoutBook;
         String requestBody = String.format(
@@ -149,6 +150,7 @@ public class WMSNCIPService extends JobIntentService {
                 itemId,
                 prefs.getString("lastSelectedLocation","")
         );
+
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

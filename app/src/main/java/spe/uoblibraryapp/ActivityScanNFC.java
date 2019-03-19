@@ -76,6 +76,10 @@ public class ActivityScanNFC extends AppCompatActivity {
             }
         }
 
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        pref.edit().putString("lastSelectedLocation", getIntent().getStringExtra("location")).apply();
+        Toast.makeText(getApplicationContext(), getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("lastSelectedLocation",""),Toast.LENGTH_LONG).show();
+
         Button butt = findViewById(R.id.btnShowMeHow);
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,8 +118,8 @@ public class ActivityScanNFC extends AppCompatActivity {
             Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
             checkoutIntent.putExtra("itemId", nfc.getBarcode());
             //TODO: Add location code
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-            pref.edit().putString("lastSelectedLocation", getIntent().getStringExtra("location")).apply();
+//            SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+//            pref.edit().putString("lastSelectedLocation", getIntent().getStringExtra("location")).apply();
             WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
             // When checkout is complete the confirm activity is started by the WMSNCIPService.
 

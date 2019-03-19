@@ -31,7 +31,8 @@ public class ActivityLibrarySelect extends AppCompatActivity {
 
                 Intent intent = new Intent(ActivityLibrarySelect.this, ActivityScanNFC.class);
 
-                intent.putExtra("location", getLocationCode(0));
+                intent.putExtra("location", getLocationCode(i));
+                //Toast.makeText(getApplicationContext(),getLocationCode(i).toString() ,Toast.LENGTH_LONG).show();
 
                 startActivityForResult(intent, 2404);
                 ActivityScanNFC nfc = new ActivityScanNFC();
