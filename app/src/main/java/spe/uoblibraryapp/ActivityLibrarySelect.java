@@ -30,9 +30,10 @@ public class ActivityLibrarySelect extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), listView.getItemAtPosition(i).toString(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(ActivityLibrarySelect.this, ActivityScanNFC.class);
-                intent.putExtra("key", "0");
-                startActivityForResult(intent, 2404);
 
+                intent.putExtra("location", getLocationCode(0));
+
+                startActivityForResult(intent, 2404);
                 ActivityScanNFC nfc = new ActivityScanNFC();
 
             }
@@ -51,5 +52,20 @@ public class ActivityLibrarySelect extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    private String getLocationCode(int i){
+        String s = "";
+        if(i == 0) s = "119061";
+        if(i == 1) s = "119036";
+        if(i == 2) s = "119038";
+        if(i == 3) s = "119045";
+        if(i == 4) s = "119049";
+        if(i == 5) s = "119054";
+        if(i == 6) s = "119058";
+        if(i == 7) s = "119059";
+        if(i == 8) s = "119060";
+
+        return s;
     }
 }

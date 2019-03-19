@@ -113,6 +113,9 @@ public class ActivityScanNFC extends AppCompatActivity {
             // Send intent to WMSNCIPService with itemId
             Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
             checkoutIntent.putExtra("itemId", nfc.getBarcode());
+            //TODO: Add location code
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+            pref.edit().putString("lastSelectedLocation", getIntent().getStringExtra("location")).apply();
             WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
             // When checkout is complete the confirm activity is started by the WMSNCIPService.
 

@@ -147,7 +147,7 @@ public class WMSNCIPService extends JobIntentService {
                 prefs.getString("userBarcode", ""),
                 accessToken,
                 itemId,
-                String.valueOf(119059)
+                prefs.getString("lastSelectedLocation","")
         );
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
