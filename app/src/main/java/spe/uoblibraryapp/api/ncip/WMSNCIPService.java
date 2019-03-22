@@ -139,19 +139,23 @@ public class WMSNCIPService extends JobIntentService {
 
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.start();
+        Log.d(TAG, "NCIP location: " + prefs.getString("lastSelectedLocation",""));
 
         String url = Constants.APIUrls.checkoutBook;
         String requestBody = String.format(
                 Constants.RequestTemplates.checkoutBook,
                 prefs.getString("principalID", ""),
+                prefs.getString("userBarcode", ""),
                 accessToken,
-                itemId);
+                itemId,
+                prefs.getString("lastSelectedLocation","")
+        );
+
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String xml) {
                 Log.d(TAG, "HTTP request Actioned");
-
 //                Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
 //                confirmIntent.putExtra("xml", xml);
 //                confirmIntent.setAction(Constants.IntentActions.BOOK_CHECK_OUT_RESPONSE);
@@ -191,7 +195,6 @@ public class WMSNCIPService extends JobIntentService {
                 branchId,
                 prefs.getString("principalID", ""),
                 reservationId);
-        Log.e(TAG, requestBody);
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String xml) {
@@ -269,7 +272,7 @@ public class WMSNCIPService extends JobIntentService {
                 if (Constants.IntentActions.LOOKUP_USER.equals(action)) {
                     lookupUser();
                 } else if (Constants.IntentActions.CHECKOUT_BOOK.equals(action)) {
-                    String itemId = intent.getStringExtra("itemId");
+                    String itemId = extras.getString("itemId");
                     checkoutBook(itemId);
                 } else if(Constants.IntentActions.CANCEL_RESERVATION.equals(action)) {
                     for(String key : extras.keySet()){
