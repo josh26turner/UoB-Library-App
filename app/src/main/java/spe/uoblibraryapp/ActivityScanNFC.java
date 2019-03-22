@@ -1,13 +1,11 @@
 package spe.uoblibraryapp;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -20,7 +18,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -111,17 +108,13 @@ public class ActivityScanNFC extends AppCompatActivity {
 
         try {
             NFC nfc = new NFC(scanIntent);
-            // Tag has been scanned now stop scanning for tags
-            //nfcAdapter.disableForegroundDispatch(ActivityScanNFC.this);
 
             // Send intent to WMSNCIPService with itemId
             Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
             checkoutIntent.putExtra("itemId", nfc.getBarcode());
-            //TODO: Add location code
-//            SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-//            pref.edit().putString("lastSelectedLocation", getIntent().getStringExtra("location")).apply();
+
             WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
-            // When checkout is complete the confirm activity is started by the WMSNCIPService.
+
 
         } catch (NFCTechException e) {
             e.printStackTrace();
@@ -170,8 +163,6 @@ public class ActivityScanNFC extends AppCompatActivity {
     }
 
     public void onBackPressed(){
-        //Intent intent = new Intent(ActivityScanNFC.this, ActivityHome.class);
-        //startActivity(intent);
 
         Intent data = new Intent();
         data.putExtra("ended", "true");
