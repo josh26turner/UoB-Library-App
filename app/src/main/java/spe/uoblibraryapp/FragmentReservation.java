@@ -189,7 +189,6 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             ((Button) dialog.findViewById(R.id.btn_dialog)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO: Add cancel reservation function here
                     Intent intent = new Intent(Constants.IntentActions.CANCEL_RESERVATION);
                     Bundle extras = new Bundle();
                     extras.putString("reservationId", reservation.getRequestId());

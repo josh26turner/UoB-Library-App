@@ -13,7 +13,7 @@ public class WMSBook {
     private String title;
     private String author;
     private String publisher;
-    private Integer publicationDate; // TODO: Could this be changed to type Year?
+    private Integer publicationDate;
     private String bookId;
 
 
