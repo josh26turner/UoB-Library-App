@@ -34,7 +34,6 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
     private MyBroadCastReceiver myBroadCastReceiver;
     private Boolean phoneHasNFC = false;
     private SharedPreferences userPrefs;
-    private String lastMenuOption = "Dashboard";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +71,6 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
             public void onPageSelected(int position) {
                 mViewPager.setCurrentItem(position);
                 //Pos+1 because this position is from the fragment manager. Fragment 0 corresponds to Navigation View 1.
-                navigationView.getMenu().getItem(position+1).setChecked(true);
                 switch (position) {
                     case 0:
                         getSupportActionBar().setTitle("Dashboard");
@@ -179,21 +177,18 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(this, ActivityLibrarySelect.class));
             } else if (accountBlocked) {
                 Toast.makeText(getApplicationContext(), "Feature Disabled, your account is blocked.", Toast.LENGTH_LONG).show();
-                setViewPager(lastMenuOption);
+                return false;
             } else {
                 Toast.makeText(getApplicationContext(), "Feature Disabled, your phone does not support NFC.", Toast.LENGTH_LONG).show();
-                setViewPager(lastMenuOption);
+                return false;
             }
 
 
         } else if (id == R.id.nav_dash) {
-            lastMenuOption = "Dashboard";
             setViewPager("Dashboard");
         } else if (id == R.id.nav_current_loans_reservations) {
-            lastMenuOption = "Loans";
             setViewPager("Loans");
         } else if (id == R.id.nav_reservations) {
-            lastMenuOption = "Reservation";
             setViewPager("Reservation");
         }
 
@@ -260,12 +255,6 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
 
                 userEmail.setText(prefs.getString("email", ""));
                 userName.setText(prefs.getString("name", ""));
-
-//                boolean accountBlocked = prefs.getBoolean("accountBlocked", true);
-//                if (accountBlocked){
-//                    // TODO Disable scan button.
-//                }
-
 
             } catch (Exception ex) {
                 ex.printStackTrace();
