@@ -73,7 +73,7 @@ public class WMSHoldTests {
         WMSHold hold = createParsedHold();
         assertEquals(
                 "PickupLocation does not match",
-                "129055",
+                "Queens Building Library",
                 hold.getPickupLocation()
         );
     }
@@ -146,7 +146,7 @@ public class WMSHoldTests {
                             "            <ns1:RequestType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requesttype/requesttype.scm\">Hold</ns1:RequestType>\n" +
                             "            <ns1:RequestStatusType ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/requeststatustype/requeststatustype.scm\">In Process</ns1:RequestStatusType>\n" +
                             "            <ns1:DatePlaced>2014-02-21T16:48:14Z</ns1:DatePlaced>\n" +
-                            "            <ns1:PickupLocation>129055</ns1:PickupLocation>\n" +
+                            "            <ns1:PickupLocation>119059</ns1:PickupLocation>\n" +
                             "            <ns1:HoldQueuePosition>1</ns1:HoldQueuePosition>\n" +
                             "            <ns1:Title>Diary of a wimpy kid : dog days /</ns1:Title>\n" +
                             "            <ns1:MediumType ns1:Scheme=\"http://worldcat.org/ncip/schemes/v2/extensions/mediumtype.scm\">Book</ns1:MediumType>\n" +
