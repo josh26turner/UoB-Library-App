@@ -71,6 +71,6 @@ public class ActivityConfirm extends AppCompatActivity {
 
     @Override
     public void onBackPressed () {
-        finish();
+        startActivity(new Intent(this, ActivityHome.class));
     }
 }
