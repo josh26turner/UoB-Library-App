@@ -123,16 +123,37 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             Date dateToday = new Date();
 
             int bookDueDate = daysBetween(dateToday, mostRecentDueDate);
-            if (bookDueDate <= 3)
-                if (bookDueDate == 1)
-                    output = String.format("You have borrowed %s out of %s books. The book %s is due back in 1 day.", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getBook().getTitle());
+            if (bookDueDate <= 7)
+                if (bookDueDate == 0)
+                    output = String.format(
+                            "You have borrowed %s out of %s books. The book %s is due back today.",
+                            cacheManager.getUserProfile().getLoans().size(),
+                            40,
+                            bookList.get(0).getBook().getTitle()
+                    );
+                else if (bookDueDate == 1)
+                    output = String.format(
+                            "You have borrowed %s out of %s books. The book %s is due back in 1 day.",
+                            cacheManager.getUserProfile().getLoans().size(),
+                            40,
+                            bookList.get(0).getBook().getTitle()
+                    );
                 else
-                    output = String.format("You have borrowed %s out of %s books. The book %s is due back in %s days.", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getBook().getTitle(), bookDueDate);
+                    output = String.format(
+                            "You have borrowed %s out of %s books. The book %s is due back in %s days.",
+                            cacheManager.getUserProfile().getLoans().size(),
+                            40,
+                            bookList.get(0).getBook().getTitle(), bookDueDate
+                    );
 
             else
-                output = String.format("You have borrowed %s out of %s books.", cacheManager.getUserProfile().getLoans().size(), 40);
+                output = String.format(
+                        "You have borrowed %s out of %s books.",
+                        cacheManager.getUserProfile().getLoans().size(),
+                        40
+                );
         }
-        else output = "Currently you have no loans :)";
+        else output = "Currently you have no loans.";
 
         loan_dash_description.setText(output);
     }
@@ -143,7 +164,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         TextView tv = view.findViewById(R.id.resv_dash_description);
         int reservationSize = cacheManager.getUserProfile().getOnHold().size();
         if (reservationSize==0) {
-            tv.setText("Currently you have no reservations :)");
+            tv.setText("Currently, you have no reservations.");
         }
         else {
             String output = String.format("You have %s reservations, %s of which are ready to collect", cacheManager.getUserProfile().getOnHold().size(), readyCollectCount(cacheManager.getUserProfile()));
