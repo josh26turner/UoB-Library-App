@@ -1,16 +1,17 @@
 package spe.uoblibraryapp;
 
+import android.accounts.NetworkErrorException;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -50,31 +50,27 @@ public class ActivityScanNFC extends AppCompatActivity {
         setTitle("Checkout a New Book");
         Activity myAct = this;
 
-        if (nfcAdapter == null){
-            Toast.makeText(this, "NFC Not Supported. Functionality Disabled.", Toast.LENGTH_LONG).show();
+        //if (nfcAdapter != null) handled by ActivityHome.
+        if (nfcAdapter.isEnabled()) {
+            //Perform check in case user turns off NFC while in-app.
+
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("spinnerSelection", Context.MODE_PRIVATE);
+            Intent pnd = new Intent(myAct, myAct.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            pendingIntent = PendingIntent.getActivity(myAct, 0, pnd, 0);
+            // Setup a tech list for NfcV tag.
+            techList = new String[][]{new String[]{NfcV.class.getName()}};
+
+            pref.getInt("spinnerInt", 0); //TODO: USE SELECTED ITEM
+
+        }
+        else{
+            //disabled.
+            Toast.makeText(this, "Please enable NFC & try again.", Toast.LENGTH_LONG).show();
+            Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
+            startActivity(i);
             finish();
-            //TODO: Disable Floating Button & Scan.
         }
-        else {
-            if (nfcAdapter.isEnabled()){
 
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("spinnerSelection", Context.MODE_PRIVATE);
-
-                Intent pnd = new Intent(myAct, myAct.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                pendingIntent = PendingIntent.getActivity(myAct, 0, pnd, 0);
-                // Setup a tech list for NfcV tag.
-                techList = new String[][]{ new String[]{NfcV.class.getName()} };
-
-                pref.getInt("spinnerInt", 0); //TODO: USE SELECTED ITEM
-            }
-            else{
-                //disabled.
-                Toast.makeText(this, "Please enable NFC & try again.", Toast.LENGTH_LONG).show();
-                Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
-                startActivity(i);
-                finish();
-            }
-        }
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         pref.edit().putString("lastSelectedLocation", getIntent().getStringExtra("location")).apply();
@@ -111,15 +107,26 @@ public class ActivityScanNFC extends AppCompatActivity {
 
         try {
             NFC nfc = new NFC(scanIntent);
-            // Tag has been scanned now stop scanning for tags
+            //Tag has been scanned now stop scanning for tags
             //nfcAdapter.disableForegroundDispatch(ActivityScanNFC.this);
 
-            // Send intent to WMSNCIPService with itemId
+            //TODO: Perform Internet check.
+            if (!isNetworkConnected())
+                //Not connected to Wifi!!!
+                throw new NetworkErrorException();
+
+            if (!isInternetWorking()){
+                //No internet.
+                Toast.makeText(activityScanNFC, "Sneaky.", Toast.LENGTH_LONG).show();
+                finish();
+
+            }
+
+
+
             Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
             checkoutIntent.putExtra("itemId", nfc.getBarcode());
-            //TODO: Add location code
-//            SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-//            pref.edit().putString("lastSelectedLocation", getIntent().getStringExtra("location")).apply();
+            // Send intent to WMSNCIPService with itemId
             WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
             // When checkout is complete the confirm activity is started by the WMSNCIPService.
 
@@ -142,6 +149,9 @@ public class ActivityScanNFC extends AppCompatActivity {
             Log.e(TAG, "Book checked out");
             Toast.makeText(activityScanNFC, "Book checked out already", Toast.LENGTH_LONG).show();
             nDialog.cancel();
+        } catch (NetworkErrorException e){
+            Toast.makeText(this, "Please connect to the internet & try again.", Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 
@@ -167,11 +177,13 @@ public class ActivityScanNFC extends AppCompatActivity {
         }
         unregisterReceiver(myBroadCastReceiver);
         super.onPause();
+        Intent data = new Intent();
+        data.putExtra("ended", "true");
+        // Activity finished return ok, return the data
+        setResult(RESULT_OK, data);
     }
 
     public void onBackPressed(){
-        //Intent intent = new Intent(ActivityScanNFC.this, ActivityHome.class);
-        //startActivity(intent);
 
         Intent data = new Intent();
         data.putExtra("ended", "true");
@@ -202,7 +214,18 @@ public class ActivityScanNFC extends AppCompatActivity {
         return stringBuilder.toString().toUpperCase().replace('X','x');
     }
 
-
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
+    private boolean isInternetWorking() {
+        try {
+            String command = "ping -c 1 google.com";
+            return (Runtime.getRuntime().exec(command).waitFor() == 0);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     class MyBroadCastReceiver extends BroadcastReceiver {
         @Override
