@@ -105,7 +105,6 @@ public class AuthService extends JobIntentService {
     private void requestNewAccessToken() throws ParseException {
         String refreshTokenExpiry = tokens.getString("refreshTokenExpiry", "");
         if (addDays(parseDate(refreshTokenExpiry), -1).before(new Date())) {  // Subtracting 1 day to allow for a good overlap period between two active refresh tokens.
-            // TODO: Start receiver, wait for authentication, then broadcast intent ACCESS_TOKEN_GENERATED. Then stop receiver.
             startActivity(new Intent(this, ActivitySignIn.class));
         } else {
             String url = "https://authn.sd00.worldcat.org/oauth2/accessToken?grant_type=refresh_token&refresh_token="

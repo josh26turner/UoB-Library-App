@@ -56,14 +56,12 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         ((CardView) view.findViewById(R.id.loan_card_view)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Call Loans from here.
                 mHome.setViewPager("Loans");
             }
         });
         ((CardView) view.findViewById(R.id.resv_card_view)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Call Reservations from here.
                 mHome.setViewPager("Reservation");
             }
         });

@@ -153,7 +153,6 @@ public class ActivitySignIn extends AppCompatActivity {
 
 
     private void processAuthorisationString(String s) {
-        // TODO: Could this be a loop? store is a hash table, that way its future proof if they change the order of url arguments
         Map<String, String> params = getURLParams(s);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         pref.edit().putString("authorisationToken", params.get("access_token")).apply();

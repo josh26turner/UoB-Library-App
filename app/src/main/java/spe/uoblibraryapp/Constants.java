@@ -214,7 +214,7 @@ public final class Constants {
                 "<barcode>%s</barcode>" +
                 "<accessToken>%s</accessToken>" +
                 "<itemId>%s</itemId>" +
-                "<location>%s</location>" + //TODO change this to dynamic location
+                "<location>%s</location>" +
                 "</CheckoutBookRequest>";
 
         private RequestTemplates(){ }

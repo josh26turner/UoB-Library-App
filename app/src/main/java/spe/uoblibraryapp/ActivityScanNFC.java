@@ -50,19 +50,13 @@ public class ActivityScanNFC extends AppCompatActivity {
         if (nfcAdapter == null){
             Toast.makeText(this, "NFC Not Supported. Functionality Disabled.", Toast.LENGTH_LONG).show();
             finish();
-            //TODO: Disable Floating Button & Scan.
         }
         else {
             if (nfcAdapter.isEnabled()){
-
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("spinnerSelection", Context.MODE_PRIVATE);
-
                 Intent pnd = new Intent(myAct, myAct.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 pendingIntent = PendingIntent.getActivity(myAct, 0, pnd, 0);
                 // Setup a tech list for NfcV tag.
                 techList = new String[][]{ new String[]{NfcV.class.getName()} };
-
-                pref.getInt("spinnerInt", 0); //TODO: USE SELECTED ITEM
             }
             else{
                 //disabled.
