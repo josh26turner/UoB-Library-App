@@ -8,10 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 
@@ -34,11 +33,8 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
         String title = getItem(position).getBook().getTitle();
         String author = getItem(position).getBook().getAuthor();
         Boolean overdue = getItem(position).isOverdue();
-        Boolean willAutoRenew = getItem(position).getRenewable();
-        Date dueDate = getItem(position).getDueDate();
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String strDueDate = dateFormat.format(dueDate);
+        Date dueDate = getItem(position).getDueDate();
 
         TextView textViewTitle = newView.findViewById(R.id.txtTitle);
         TextView textViewAuthor = newView.findViewById(R.id.txtAuthor);
@@ -47,34 +43,21 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
         textViewTitle.setText(title);
         textViewAuthor.setText(author);
 
-        //TODO: CHECK IF SORTING WORKS ON DUE DATE!!!
         if (overdue) {
             textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorOverdue));
             textViewStatus.setText("Overdue");
-        } else if (willAutoRenew == null){
-            textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorReservation));
-            textViewStatus.setText("Fetching...");
         } else {
-            if (!willAutoRenew) {
-                textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorReservation));
-                Date dateToday = new Date();
-                int bookDueDate = daysBetween(dateToday, dueDate);
-                if (bookDueDate <= 3)
-                    if (bookDueDate == 1)
-                        textViewStatus.setText(String.format("Due tomorrow", bookDueDate));
-                    else
-                        textViewStatus.setText(String.format("Due in %d days", bookDueDate));
-                else
-                    textViewStatus.setText("Due: " + strDueDate);
-            } else {
-                textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorLoan));
-                textViewStatus.setText("Will auto-renew");
-            }
+            textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorReservation));
+            Date dateToday = new Date();
+            int bookDueDate = daysBetween(dateToday, dueDate);
+            if (bookDueDate == 0) textViewStatus.setText("Due today");
+            if (bookDueDate == 1) textViewStatus.setText("Due tomorrow");
+            else textViewStatus.setText(String.format(Locale.ENGLISH, "Due in %d days", bookDueDate));
         }
         return newView;
     }
 
-    public int daysBetween(Date d1, Date d2){
+    private int daysBetween(Date d1, Date d2){
         return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }
 

@@ -120,9 +120,4 @@ public class WMSCheckout {
     public WMSBook getBook(){
         return this.book;
     }
-
-
-    public Date getDueDate() {
-        return dueDate;
-    }
 }

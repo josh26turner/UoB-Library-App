@@ -33,6 +33,7 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
     private ViewPager mViewPager; //container holding the fragments.
     private MyBroadCastReceiver myBroadCastReceiver;
     private Boolean phoneHasNFC = false;
+    private SharedPreferences userPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,6 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
             public void onPageSelected(int position) {
                 mViewPager.setCurrentItem(position);
                 //Pos+1 because this position is from the fragment manager. Fragment 0 corresponds to Navigation View 1.
-                navigationView.getMenu().getItem(position+1).setChecked(true);
                 switch (position) {
                     case 0:
                         getSupportActionBar().setTitle("Dashboard");
@@ -97,13 +97,13 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         setTitle(mAdapter.getFragmentTitle(0));
 
         // Adds name and email to homepage
-        SharedPreferences prefs = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        userPrefs = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         View v = navigationView.getHeaderView(0);
         TextView userName = v.findViewById(R.id.user_name);
         TextView userEmail = v.findViewById(R.id.user_email);
 
-        userEmail.setText(prefs.getString("email", ""));
-        userName.setText(prefs.getString("name", ""));
+        userEmail.setText(userPrefs.getString("email", ""));
+        userName.setText(userPrefs.getString("name", ""));
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -171,12 +171,16 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_scan){
-            if (phoneHasNFC)
+        if (id == R.id.nav_scan) {
+            boolean accountBlocked = userPrefs.getBoolean("accountBlocked", true);
+            if (phoneHasNFC && !accountBlocked) {
                 startActivity(new Intent(this, ActivityLibrarySelect.class));
-            else {
+            } else if (accountBlocked) {
+                Toast.makeText(getApplicationContext(), "Feature Disabled, your account is blocked.", Toast.LENGTH_LONG).show();
+                return false;
+            } else {
                 Toast.makeText(getApplicationContext(), "Feature Disabled, your phone does not support NFC.", Toast.LENGTH_LONG).show();
-                //TODO: FIX Nav View -> Keep Last Item Selected.
+                return false;
             }
 
 
@@ -251,12 +255,6 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
 
                 userEmail.setText(prefs.getString("email", ""));
                 userName.setText(prefs.getString("name", ""));
-
-//                boolean accountBlocked = prefs.getBoolean("accountBlocked", true);
-//                if (accountBlocked){
-//                    // TODO Disable scan button.
-//                }
-
 
             } catch (Exception ex) {
                 ex.printStackTrace();

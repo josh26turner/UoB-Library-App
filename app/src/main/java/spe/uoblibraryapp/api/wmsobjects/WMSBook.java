@@ -22,7 +22,7 @@ public class WMSBook {
      * @param elemHolder Contains the node information
      * @throws WMSParseException throws if the book fails to parse
      */
-    public WMSBook(WMSNCIPElement elemHolder) throws WMSParseException{
+    WMSBook(WMSNCIPElement elemHolder) throws WMSParseException{
 
 
         Node element = elemHolder.getElem();
@@ -36,25 +36,14 @@ public class WMSBook {
 
     /**
      * Constructor
-     * This will create a book from the oclc number
-     * @param bookId The OCLC number for a book
      */
-    public WMSBook(String bookId){
-        if (bookId.equals("1050042221")){
-            title = "Pevsner's architectural glossary";
-            publisher = "New Haven, Conn. Yale University Press 2016";
-            publicationDate = 2016;
-            this.bookId = "1050042221";
-            author = "Nikolaus Pevsner";
-        } else {
-            title = "Diary of a wimpy kid : dog days";
-            publisher = "New York : Amulet Books";
-            publicationDate = 2007;
-            this.bookId = "123456789";
-            author = "Shanske, Darien,";
-        }
+    protected WMSBook(){
+        title = "Diary of a wimpy kid : dog days";
+        publisher = "New York : Amulet Books";
+        publicationDate = 2007;
+        this.bookId = "123456789";
+        author = "Shanske, Darien,";
     }
-
 
     // Parsers
 

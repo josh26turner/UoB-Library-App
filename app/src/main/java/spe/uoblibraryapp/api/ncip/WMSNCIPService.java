@@ -35,7 +35,6 @@ import spe.uoblibraryapp.api.WMSException;
 import spe.uoblibraryapp.api.WMSResponse;
 import spe.uoblibraryapp.api.XMLParser;
 import spe.uoblibraryapp.api.wmsobjects.WMSHold;
-import spe.uoblibraryapp.api.wmsobjects.WMSLoan;
 import spe.uoblibraryapp.api.wmsobjects.WMSParseException;
 import spe.uoblibraryapp.api.wmsobjects.WMSUserProfile;
 
@@ -76,10 +75,6 @@ public class WMSNCIPService extends JobIntentService {
 
                 Intent broadcastIntent;
                 if (userProfile != null) {
-                    for (WMSLoan loan : userProfile.getLoans()){
-                        loan.fetchIsRenewable(getApplicationContext());
-                    }
-
                     // Update cache
                     cacheManager.setUserProfile(userProfile);
 

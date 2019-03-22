@@ -83,7 +83,6 @@ public class SplashScreen extends AppCompatActivity {
                     } finally {
                         SplashScreen.this.finish();
                     }
-
                 }
             };
             splashTread.start();

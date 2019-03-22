@@ -136,15 +136,9 @@ public class WMSHold {
     public Date getDatePlaced() {
         return this.datePlaced;
     }
-
-    public String getPickupLocation() {
-        return Constants.LibraryDetails.libraryBranches.get(this.pickupLocation);
-    }
-
     public String getBranchId(){
         return this.pickupLocation;
     }
-
     public Integer getHoldQueuePosition() {
         return this.holdQueuePosition;
     }
@@ -165,5 +159,8 @@ public class WMSHold {
     }
     public Boolean isReadyToCollect() {
         return "Available For Pickup".equals(this.requestStatusType);
+    }
+    public String getPickupLocation() {
+        return Constants.LibraryDetails.libraryBranches.get(this.pickupLocation);
     }
 }
