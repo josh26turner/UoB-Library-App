@@ -39,6 +39,7 @@ import static android.content.Context.MODE_PRIVATE;
  * This is used to represent a loan, from WMS.
  */
 public class WMSLoan {
+    private final static String TAG = "WMSLoan";
 
     private String itemId;
     private String agencyId;
@@ -51,7 +52,6 @@ public class WMSLoan {
     private Boolean isRenewable;
     private Context isRenewableTextViewContext;
 
-    private String TAG = "WMSLoan";
     /**
      * Constructor
      * @param elemHolder This contains the node information
@@ -73,22 +73,6 @@ public class WMSLoan {
         } catch (ParseException e){
             throw new WMSParseException(e.getMessage());
         }
-    }
-
-
-    /**
-     * Just for testing.
-     */
-    public WMSLoan(){
-        this.itemId = "123456789X";
-        this.agencyId = "132607";
-        this.book = new WMSBook(itemId);
-        this.dueDate = new Date();
-        this.checkedOutDate = new Date();
-        this.renewalCount = 0;
-        this.reminderLevel = 0;
-        this.mediumType = "Book";
-        this.isRenewable = false;
     }
 
 

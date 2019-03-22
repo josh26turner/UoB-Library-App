@@ -26,10 +26,10 @@
     <string name="scanBook">Scan a New Book</string>
     <!-- END OF SECTION -->
 
-    <string-array name="color_array">
-        <item>Pink</item>
-        <item>Green</item>
-    </string-array>
+    <!--<string-array name="color_array">-->
+        <!--<item>Pink</item>-->
+        <!--<item>Green</item>-->
+    <!--</string-array>-->
 
     <string-array name="loan_spinner">
         <item>A-Z</item>
@@ -39,17 +39,17 @@
     </string-array>
 
 
-    <string-array name="spinner_library">
-        <item>Wills Memorial Library</item>
-        <item>Arts and Social Sciences</item>
-        <item>Biological Sciences</item>
-        <item>Chemistry Library</item>
-        <item>Education Library</item>
-        <item>Medical Library</item>
-        <item>Physics Sciences</item>
-        <item>Queens Building Library</item>
-        <item>Veterinary Sciences Library</item>
+    <!--<string-array name="spinner_library">-->
+        <!--<item>Wills Memorial Library</item>-->
+        <!--<item>Arts and Social Sciences</item>-->
+        <!--<item>Biological Sciences</item>-->
+        <!--<item>Chemistry Library</item>-->
+        <!--<item>Education Library</item>-->
+        <!--<item>Medical Library</item>-->
+        <!--<item>Physics Sciences</item>-->
+        <!--<item>Queens Building Library</item>-->
+        <!--<item>Veterinary Sciences Library</item>-->
 
-    </string-array>
+    <!--</string-array>-->
 
 </resources>
