@@ -53,9 +53,6 @@ public class WMSUserProfile {
             Node child = childNodes.item(i);
 
             switch (child.getNodeName()) {
-                case "ns1:UserId":
-                    parseUserId(child);
-                    break;
                 case "ns1:LoanedItem":
                     loanNodes.add(child);
                     break;
@@ -69,20 +66,6 @@ public class WMSUserProfile {
 
         this.loans = parseLoans(loanNodes);
         this.onHold = parseHolds(holdNodes);
-    }
-
-    private void parseUserId(Node userIdNode) throws WMSParseException{
-        NodeList children = userIdNode.getChildNodes();
-        for (int i=0; i<children.getLength(); i++){
-            Node child = children.item(i);
-            if (child.getNodeName().equals("ns1:UserIdentifierValue")){
-                this.userId = child.getTextContent();
-                return;
-            }
-        }
-        if (this.userId == null){
-            throw new WMSParseException("No UserId element can be found");
-        }
     }
 
     private List<WMSLoan> parseLoans(List<Node> loanNodes) throws WMSParseException {
