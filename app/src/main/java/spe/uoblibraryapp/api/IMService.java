@@ -43,7 +43,6 @@ public class IMService extends JobIntentService {
     protected void onHandleWork(@NonNull Intent intent) {
         Log.e(TAG, "Intent received");
         if (Constants.IntentActions.LOOKUP_USER_ACCOUNT.equals(intent.getAction())) {
-            Log.e(TAG, "IFFFF");
             lookupUserAccount();
         }
     }

@@ -134,8 +134,6 @@ public class AuthService extends JobIntentService {
                     accessTokenGeneratedIntent.putExtra("token", accessToken);
                     WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, accessTokenGeneratedIntent);
 
-//                    sendBroadcast(accessTokenGeneratedIntent);
-
                     Log.d(TAG, "received response: broadcast key");
                 }
             }, new Response.ErrorListener() {

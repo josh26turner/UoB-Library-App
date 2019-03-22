@@ -10,7 +10,6 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 
 public class WMSUserProfile {
 
-    private String userId;
     private List<WMSLoan> loans;
     private List<WMSHold> onHold;
 
