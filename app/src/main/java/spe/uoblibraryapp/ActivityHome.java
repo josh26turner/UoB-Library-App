@@ -33,6 +33,8 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
     private ViewPager mViewPager; //container holding the fragments.
     private MyBroadCastReceiver myBroadCastReceiver;
     private Boolean phoneHasNFC = false;
+    private SharedPreferences userPrefs;
+    private String lastMenuOption = "Dashboard";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,13 +99,13 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         setTitle(mAdapter.getFragmentTitle(0));
 
         // Adds name and email to homepage
-        SharedPreferences prefs = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        userPrefs = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         View v = navigationView.getHeaderView(0);
         TextView userName = v.findViewById(R.id.user_name);
         TextView userEmail = v.findViewById(R.id.user_email);
 
-        userEmail.setText(prefs.getString("email", ""));
-        userName.setText(prefs.getString("name", ""));
+        userEmail.setText(userPrefs.getString("email", ""));
+        userName.setText(userPrefs.getString("name", ""));
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -171,20 +173,27 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_scan){
-            if (phoneHasNFC)
+        if (id == R.id.nav_scan) {
+            boolean accountBlocked = userPrefs.getBoolean("accountBlocked", true);
+            if (phoneHasNFC && !accountBlocked) {
                 startActivity(new Intent(this, ActivityLibrarySelect.class));
-            else {
+            } else if (accountBlocked) {
+                Toast.makeText(getApplicationContext(), "Feature Disabled, your account is blocked.", Toast.LENGTH_LONG).show();
+                setViewPager(lastMenuOption);
+            } else {
                 Toast.makeText(getApplicationContext(), "Feature Disabled, your phone does not support NFC.", Toast.LENGTH_LONG).show();
-                //TODO: FIX Nav View -> Keep Last Item Selected.
+                setViewPager(lastMenuOption);
             }
 
 
         } else if (id == R.id.nav_dash) {
+            lastMenuOption = "Dashboard";
             setViewPager("Dashboard");
         } else if (id == R.id.nav_current_loans_reservations) {
+            lastMenuOption = "Loans";
             setViewPager("Loans");
         } else if (id == R.id.nav_reservations) {
+            lastMenuOption = "Reservation";
             setViewPager("Reservation");
         }
 
