@@ -43,7 +43,6 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
         textViewTitle.setText(title);
         textViewAuthor.setText(author);
 
-        //TODO: CHECK IF SORTING WORKS ON DUE DATE!!!
         if (overdue) {
             textViewStatus.setTextColor(ContextCompat.getColor(getContext(), R.color.colorOverdue));
             textViewStatus.setText("Overdue");

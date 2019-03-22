@@ -153,7 +153,6 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                         openDialog.closeDialog();
                     }
                     resvBookListAdapter.notifyDataSetChanged();
-//                    WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, new Intent(Constants.IntentActions.LOOKUP_USER));
                 } else {
                     Toast toast = Toast.makeText(getContext(), "Refresh Failed",Toast.LENGTH_LONG);
                     toast.show();
