@@ -139,8 +139,8 @@ public class WMSNCIPService extends JobIntentService {
         String url = Constants.APIUrls.checkoutBook;
         String requestBody = String.format(
                 Constants.RequestTemplates.checkoutBook,
-                prefs.getString("principalID", ""),
                 prefs.getString("userBarcode", ""),
+                prefs.getString("principalID", ""),
                 accessToken,
                 itemId,
                 prefs.getString("lastSelectedLocation","")
@@ -155,7 +155,7 @@ public class WMSNCIPService extends JobIntentService {
 //                confirmIntent.putExtra("xml", xml);
 //                confirmIntent.setAction(Constants.IntentActions.BOOK_CHECK_OUT_RESPONSE);
 //                startActivity(confirmIntent);
-
+                Log.d("FINDME", xml);
                 Intent intent = new Intent(Constants.IntentActions.BOOK_CHECK_OUT_RESPONSE);
                 intent.putExtra("xml", xml);
                 sendBroadcast(intent);
@@ -233,6 +233,7 @@ public class WMSNCIPService extends JobIntentService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "NOTME");
                 Log.e(TAG, "ERRROOOOORRRRR");
             }
         }) {

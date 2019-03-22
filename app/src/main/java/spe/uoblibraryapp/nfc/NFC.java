@@ -43,7 +43,7 @@ public class NFC {
             nfcTag.close();
             throw new CheckedOutException();
         } else {
-            //removeSecureSetting(); // REMOVE THE `//` AT THE START OF THE LINE WHEN RELEASING!!!!!
+//            removeSecureSetting(); // REMOVE THE `//` AT THE START OF THE LINE WHEN RELEASING!!!!!
             nfcTag.close();
         }
     }

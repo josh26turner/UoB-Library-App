@@ -40,9 +40,11 @@ public class ActivityConfirm extends AppCompatActivity {
         String xml = intent.getStringExtra("xml");
 
         try {
+            if (xml.equals("")) Log.e(TAG, "xml is empty");
             WMSResponse response = new WMSNCIPResponse(xml);
-
+            Log.e(TAG, response.rawResponse());
             if (response.didFail()) {
+                //TODO: CHANGE THIS WRONG TAG.
                 throw new WMSException("There was an error retrieving the User Profile");
             }
             Document doc;
