@@ -1,7 +1,5 @@
 package spe.uoblibraryapp;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
@@ -112,7 +108,6 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             updateDashboardLoans();
             updateDashboardReservations();
             updateAccountBlocked();
-            updateInfoCard();
         }
     }
 
@@ -167,15 +162,6 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         }
     }
 
-    public void updateInfoCard(){
-        Log.d(TAG, "Updating Info Dash");
-        TextView infoCardText = view.findViewById(R.id.info_dash_description);
-        SharedPreferences prefs = getActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-        String lastLocation = prefs.getString("lastSelectedLocation","");
-        infoCardText.setText(lastLocation);
-    }
-
-
 
     public int readyCollectCount(WMSUserProfile profile){
         int c = 0;
@@ -202,10 +188,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
                 if (Constants.IntentActions.USER_PROFILE_RESPONSE.equals(intent.getAction())){
                     updateDashboardLoans();
                     updateDashboardReservations();
-//                    updateAccountBlocked();
                 } else if (Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE.equals(intent.getAction())) {
-                    // TODO add blocked message to dashboard.
-                    Log.d(TAG, "To be added");
                     updateAccountBlocked();
                 } else {
                     Toast toast = Toast.makeText(getContext(), "Refresh Failed",Toast.LENGTH_LONG);
