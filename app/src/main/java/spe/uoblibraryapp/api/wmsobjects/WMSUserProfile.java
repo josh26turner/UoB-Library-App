@@ -122,12 +122,6 @@ public class WMSUserProfile {
         return this.onHold;
     }
 
-    /**
-     * Gets the userId
-     * @return the userId
-     */
-    public String getUserId(){
-        return this.userId;
-    }
+
 
 }

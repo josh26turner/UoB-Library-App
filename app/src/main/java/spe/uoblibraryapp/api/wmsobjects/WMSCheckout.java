@@ -39,7 +39,6 @@ public class WMSCheckout {
         } catch (ParseException e) {
             throw new WMSParseException(e.getMessage());
         }
-
     }
 
 
