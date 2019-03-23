@@ -138,7 +138,8 @@ public class AuthService extends JobIntentService {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e(TAG, "ERROR in response");
+                    Intent accessTokenGeneratedIntent = new Intent(Constants.IntentActions.ACCESS_TOKEN_ERROR);
+                    WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, accessTokenGeneratedIntent);
                 }
             });
             Log.d(TAG, "Adding request");
@@ -166,7 +167,7 @@ public class AuthService extends JobIntentService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // TODO: CRY )`:
+                sendBroadcast(new Intent(Constants.IntentActions.AUTH_LOGOUT_ERROR));
             }
         });
         Log.d(TAG, "Adding request");

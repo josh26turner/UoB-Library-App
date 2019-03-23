@@ -107,19 +107,26 @@ public final class Constants {
 
     public static final class IntentActions {
         public static final String LOOKUP_USER = "spe.uoblibraryapp.api.ncip.LOOKUP_USER";
+        public static final String LOOKUP_USER_RESPONSE = "spe.uoblibraryapp.api.LOOKUP_USER_RESPONSE";
         public static final String LOOKUP_USER_ERROR = "spe.uoblibraryapp.api.ncip.LOOKUP_USER";
+        public final static String LOOKUP_USER_ACCOUNT = "spe.uoblibraryapp.api.LOOKUP_USER_ACCOUNT";
+        public final static String LOOKUP_USER_ACCOUNT_RESPONSE = "spe.uoblibraryapp.api.LOOKUP_USER_ACCOUNT_RESPONSE";
+        public final static String LOOKUP_USER_ACCOUNT_ERROR = "spe.uoblibraryapp.api.LOOKUP_USER_ACCOUNT_ERROR";
         public static final String CHECKOUT_BOOK = "spe.uoblibraryapp.api.ncip.CHECKOUT_BOOK";
-        public static final String BOOK_CHECK_OUT_RESPONSE = "spe.uoblibraryapp.api.BOOK_CHECK_OUT_RESPONSE";
+        public static final String CHECKOUT_BOOK_RESPONSE = "spe.uoblibraryapp.api.CHECKOUT_BOOK_RESPONSE";
+        public static final String CHECKOUT_BOOK_ERROR = "spe.uoblibraryapp.api.CHECKOUT_BOOK_ERROR";
         public static final String CANCEL_RESERVATION = "spe.uoblibraryapp.api.ncip.CANCEL_RESERVATION";
         public static final String CANCEL_RESERVATION_RESPONSE = "spe.uoblibraryapp.api.ncip.CANCEL_RESERVATION_RESPONSE";
         public static final String CANCEL_RESERVATION_ERROR = "spe.uoblibraryapp.api.ncip.CANCEL_RESERVATION_ERROR";
-        public static final String ACCESS_TOKEN_GENERATED = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_GENERATED";
-        public static final String ACCESS_TOKEN_NEEDED = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_NEEDED";
+
         public static final String AUTH_ERROR = "spe.uoblibraryapp.api.auth.AUTH_ERROR";
+
         public static final String AUTH_LOGOUT = "spe.uoblibraryapp.api.auth.AUTH_LOGOUT";
-        public static final String USER_PROFILE_RESPONSE = "spe.uoblibraryapp.api.USER_PROFILE_RESPONSE";
-        public final static String LOOKUP_USER_ACCOUNT = "spe.uoblibraryapp.api.LOOKUP_USER_ACCOUNT";
-        public final static String LOOKUP_USER_ACCOUNT_RESPONSE = "spe.uoblibraryapp.api.LOOKUP_USER_ACCOUNT_RESPONSE";
+        public static final String AUTH_LOGOUT_ERROR = "spe.uoblibraryapp.api.auth.AUTH_LOGOUT_ERROR";
+
+        public static final String ACCESS_TOKEN_NEEDED = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_NEEDED";
+        public static final String ACCESS_TOKEN_GENERATED = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_GENERATED";
+        public static final String ACCESS_TOKEN_ERROR = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_ERROR";
         private IntentActions() { }
     }
 

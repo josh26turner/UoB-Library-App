@@ -78,7 +78,7 @@ public class WMSNCIPService extends JobIntentService {
                     // Update cache
                     cacheManager.setUserProfile(userProfile);
 
-                    broadcastIntent = new Intent(Constants.IntentActions.USER_PROFILE_RESPONSE);
+                    broadcastIntent = new Intent(Constants.IntentActions.LOOKUP_USER_RESPONSE);
                 } else {
                     broadcastIntent = new Intent(Constants.IntentActions.LOOKUP_USER_ERROR);
                 }
@@ -88,7 +88,10 @@ public class WMSNCIPService extends JobIntentService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "ERRROOOOORRRRR");
+                sendBroadcast(new Intent(Constants.IntentActions.LOOKUP_USER_ERROR));
+//                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(
+//                        new Intent(Constants.IntentActions.LOOKUP_USER_ERROR)
+//                );
             }
         }) {
             @Override
@@ -151,12 +154,8 @@ public class WMSNCIPService extends JobIntentService {
             @Override
             public void onResponse(String xml) {
                 Log.d(TAG, "HTTP request Actioned");
-//                Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
-//                confirmIntent.putExtra("xml", xml);
-//                confirmIntent.setAction(Constants.IntentActions.BOOK_CHECK_OUT_RESPONSE);
-//                startActivity(confirmIntent);
 
-                Intent intent = new Intent(Constants.IntentActions.BOOK_CHECK_OUT_RESPONSE);
+                Intent intent = new Intent(Constants.IntentActions.CHECKOUT_BOOK_RESPONSE);
                 intent.putExtra("xml", xml);
                 sendBroadcast(intent);
                 Log.d(TAG, "broadcast sent");
@@ -164,7 +163,7 @@ public class WMSNCIPService extends JobIntentService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "ERRROOOOORRRRR");
+                sendBroadcast(new Intent(Constants.IntentActions.CHECKOUT_BOOK_ERROR));
             }
         }) {
             @Override
@@ -233,7 +232,9 @@ public class WMSNCIPService extends JobIntentService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "ERRROOOOORRRRR");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(
+                        new Intent(Constants.IntentActions.CANCEL_RESERVATION_ERROR)
+                );
             }
         }) {
             @Override
@@ -282,6 +283,9 @@ public class WMSNCIPService extends JobIntentService {
                     Log.e(TAG, "Intent received has no valid action");
                 }
             }
+        } else if(Constants.IntentActions.ACCESS_TOKEN_ERROR.equals(intent.getAction())) {
+            workQueue.clear();
+            sendBroadcast(new Intent(Constants.IntentActions.ACCESS_TOKEN_ERROR));
         } else {
             Log.d(TAG, "Intent received");
             workQueue.add(intent.getAction(), intent.getExtras());
