@@ -72,13 +72,13 @@ public final class Constants {
 
     public static final class UserAuth {
         // Key Details for WMS NCIP and Availability
-        public static final String clientId = "hNzXT2bmWYLwmWCfMDC2bAC9U1xJWBQytemHHKwzCF2YsJFnRw3isuML5E8PrK0F48OU8ENiIVzwcDWA";
+        public static final String clientId = "LRQvSrRL1pjZCy8R0AyQpL45QtYvJs6SpjKSF2EmqzmVc0mpIhE85ahM2m4XbByK9qMhl9IcX8fOeOet";
 
         // OAuth2 flow
         public static final String redirectUrl = "uoblibrary://authenticate";
         public static final String authFailureUrl = "uoblibrary://authenticate#error";
 
-        public static final String[] scopes = {"WMS_NCIP", "WMS_Availability", "refresh_token"};
+        public static final String[] scopes = {"WMS_NCIP", "refresh_token"};
 
         private UserAuth() { }
 
@@ -143,7 +143,6 @@ public final class Constants {
         public final static String patronProfile = "https://bub.share.worldcat.org/ncip/circ-patron";
         public final static String lookupUserAccount = serverLocation + "/auth/%s";
         public final static String checkoutBook = serverLocation + "/checkout";
-        public final static String bookAvailability = "https://worldcat.org/circ/availability/sru/service?x-registryId=" + LibraryDetails.institutionId + "&query=no:ocm%s";
         private APIUrls() { }
     }
 

@@ -137,7 +137,6 @@ public class WMSNCIPService extends JobIntentService {
 
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.start();
-        Log.d(TAG, "NCIP location: " + prefs.getString("lastSelectedLocation",""));
 
         String url = Constants.APIUrls.checkoutBook;
         String requestBody = String.format(
@@ -153,8 +152,6 @@ public class WMSNCIPService extends JobIntentService {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String xml) {
-                Log.d(TAG, "HTTP request Actioned");
-
                 Intent intent = new Intent(Constants.IntentActions.CHECKOUT_BOOK_RESPONSE);
                 intent.putExtra("xml", xml);
                 sendBroadcast(intent);
@@ -192,16 +189,12 @@ public class WMSNCIPService extends JobIntentService {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String xml) {
-                Log.d(TAG, "HTTP request Actioned");
 
                 String requestId;
                 try {
                     Document doc = XMLParser.parse(xml);
-                    Log.d(TAG,xml);
                     NodeList nodeList = doc.getElementsByTagName("ns1:RequestIdentifierValue");
-                    Log.d(TAG, "nodelist" + String.valueOf(nodeList.getLength()));
                     requestId = nodeList.item(0).getTextContent();
-                    Log.d(TAG, "done");
                 } catch(Exception ex){
                     requestId = null;
                 }
@@ -218,16 +211,13 @@ public class WMSNCIPService extends JobIntentService {
                         WMSHold p = iterator.next();
                         if (p.getRequestId().equals(requestId)){
                             iterator.remove();
-                            Log.e(TAG, "request removed");
                         }
                     }
                     broadcastIntent = new Intent(Constants.IntentActions.CANCEL_RESERVATION_RESPONSE);
                 } else{
-                    Log.d(TAG, "Error");
                     broadcastIntent = new Intent(Constants.IntentActions.CANCEL_RESERVATION_ERROR);
                 }
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
-                Log.d(TAG, "Broadcast Intent Sent");
             }
         }, new Response.ErrorListener() {
             @Override
@@ -271,13 +261,8 @@ public class WMSNCIPService extends JobIntentService {
                     String itemId = extras.getString("itemId");
                     checkoutBook(itemId);
                 } else if(Constants.IntentActions.CANCEL_RESERVATION.equals(action)) {
-                    for(String key : extras.keySet()){
-                        Log.e(TAG, key);
-                    }
                     String reservationId = extras.getString("reservationId");
                     String branchId = extras.getString("branchId");
-                    if (branchId != null) Log.e(TAG, branchId);
-                    else Log.e(TAG, "Branch id is null");
                     cancelReservation(reservationId, branchId);
                 } else {
                     Log.e(TAG, "Intent received has no valid action");
