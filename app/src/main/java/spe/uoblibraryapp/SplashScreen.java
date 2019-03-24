@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
+
+import static java.lang.Thread.sleep;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -41,8 +44,9 @@ public class SplashScreen extends AppCompatActivity {
         StartAnimations();
 
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Constants.IntentActions.USER_PROFILE_RESPONSE);
+        intentFilter.addAction(Constants.IntentActions.LOOKUP_USER_RESPONSE);
         intentFilter.addAction(Constants.IntentActions.LOOKUP_USER_ERROR);
+        intentFilter.addAction(Constants.IntentActions.ACCESS_TOKEN_ERROR);
         myBroadCastReceiver = new MyBroadCastReceiver();
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(myBroadCastReceiver, intentFilter);
     }
@@ -62,7 +66,6 @@ public class SplashScreen extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
         if (prefs.getString("principalID", "").equals("")) {
-
             splashTread = new Thread() {
                 @Override
                 public void run() {
@@ -79,7 +82,6 @@ public class SplashScreen extends AppCompatActivity {
                         startActivity(intent);
                         SplashScreen.this.finish();
                     } catch (InterruptedException e) {
-
                     } finally {
                         SplashScreen.this.finish();
                     }
@@ -93,7 +95,6 @@ public class SplashScreen extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -103,16 +104,27 @@ public class SplashScreen extends AppCompatActivity {
     class MyBroadCastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("DENIS", "onReceive() called.");
             try {
                 Log.d(TAG, "onReceive() called");
-                if (Constants.IntentActions.USER_PROFILE_RESPONSE.equals(intent.getAction())){
+                if (Constants.IntentActions.LOOKUP_USER_RESPONSE.equals(intent.getAction())) {
+                    Log.e("DENIS", "No Error.");
                     Intent startActivityIntent = new Intent(SplashScreen.this, ActivityHome.class);
                     startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(startActivityIntent);
                     SplashScreen.this.finish();
-                } else {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Refresh Failed", Toast.LENGTH_LONG);
-                    toast.show();
+                }
+                else {
+                    if (!isNetworkConnected()){
+                        //WiFi & Network is turned off...
+                        Toast.makeText(getApplicationContext(), "Connect to the internet & try again.", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                    else{
+                        //Network connected but there is some problem with request -> SSO Down? User ran out of data?
+                        Toast.makeText(getApplicationContext(), "Connection failed. Retrying. ", Toast.LENGTH_LONG).show();
+                        //TODO: Try request again.
+                    }
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -120,5 +132,8 @@ public class SplashScreen extends AppCompatActivity {
         }
     }
 
-
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
 }

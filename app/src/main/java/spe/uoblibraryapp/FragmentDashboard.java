@@ -75,7 +75,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
     private void registerMyReceiver() {
         try {
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(Constants.IntentActions.USER_PROFILE_RESPONSE);
+            intentFilter.addAction(Constants.IntentActions.LOOKUP_USER_RESPONSE);
             intentFilter.addAction(Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE);
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadCastReceiver, intentFilter);
             Log.d(TAG, "Receiver Registered");
@@ -204,7 +204,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         public void onReceive(Context context, Intent intent) {
             try {
                 Log.d(TAG, "onReceive() called");
-                if (Constants.IntentActions.USER_PROFILE_RESPONSE.equals(intent.getAction())){
+                if (Constants.IntentActions.LOOKUP_USER_RESPONSE.equals(intent.getAction())){
                     updateDashboardLoans();
                     updateDashboardReservations();
                 } else if (Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE.equals(intent.getAction())) {

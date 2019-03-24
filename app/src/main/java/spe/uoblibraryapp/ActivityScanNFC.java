@@ -159,7 +159,7 @@ public class ActivityScanNFC extends AppCompatActivity {
         nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, techList);
         try {
             IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(Constants.IntentActions.BOOK_CHECK_OUT_RESPONSE);
+            intentFilter.addAction(Constants.IntentActions.CHECKOUT_BOOK_RESPONSE);
             registerReceiver(myBroadCastReceiver, intentFilter);
             Log.d(TAG, "Receiver Registered");
         } catch (Exception ex) {
