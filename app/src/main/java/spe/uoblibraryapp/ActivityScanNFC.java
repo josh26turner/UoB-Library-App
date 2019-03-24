@@ -49,22 +49,23 @@ public class ActivityScanNFC extends AppCompatActivity {
         setContentView(R.layout.activity_home_nfc);
         setTitle("Checkout a New Book");
         Activity myAct = this;
-
         //if (nfcAdapter != null) handled by ActivityHome.
-        if (nfcAdapter.isEnabled()) {
-            //Perform check in case user turns off NFC while in-app.
 
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("spinnerSelection", Context.MODE_PRIVATE);
+        //Perform check in case user turns off NFC while in-app.
+        if (nfcAdapter.isEnabled()) {
             Intent pnd = new Intent(myAct, myAct.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(myAct, 0, pnd, 0);
             // Setup a tech list for NfcV tag.
             techList = new String[][]{new String[]{NfcV.class.getName()}};
-
-            pref.getInt("spinnerInt", 0); //TODO: USE SELECTED ITEM
-
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+            pref.edit().putString("lastSelectedLocation", getIntent().getStringExtra("location")).apply();
+            Button butt = findViewById(R.id.btnShowMeHow);
+            butt.setOnClickListener(view -> {
+                ViewDialog alert = new ViewDialog();
+                alert.showDialog(myAct, R.layout.dialog_problems_scanning_layout, true);
+            });
         }
         else{
-            //disabled.
             Toast.makeText(this, "Please enable NFC & try again.", Toast.LENGTH_LONG).show();
             Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
             startActivity(i);
@@ -72,18 +73,6 @@ public class ActivityScanNFC extends AppCompatActivity {
         }
 
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-        pref.edit().putString("lastSelectedLocation", getIntent().getStringExtra("location")).apply();
-        Toast.makeText(getApplicationContext(), getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("lastSelectedLocation",""),Toast.LENGTH_LONG).show();
-
-        Button butt = findViewById(R.id.btnShowMeHow);
-        butt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ActivityScanNFC.ViewDialog alert = new ActivityScanNFC.ViewDialog();
-                alert.showDialog(myAct, R.layout.dialog_problems_scanning_layout, true);
-            }
-        });
     }
 
     /**
@@ -119,8 +108,6 @@ public class ActivityScanNFC extends AppCompatActivity {
                 finish();
 
             }
-
-
 
             Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
             checkoutIntent.putExtra("itemId", nfc.getBarcode());
