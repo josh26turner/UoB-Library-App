@@ -1,7 +1,5 @@
 package spe.uoblibraryapp;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
@@ -60,14 +56,12 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         ((CardView) view.findViewById(R.id.loan_card_view)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Call Loans from here.
                 mHome.setViewPager("Loans");
             }
         });
         ((CardView) view.findViewById(R.id.resv_card_view)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Call Reservations from here.
                 mHome.setViewPager("Reservation");
             }
         });
@@ -112,7 +106,6 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             updateDashboardLoans();
             updateDashboardReservations();
             updateAccountBlocked();
-            updateInfoCard();
         }
     }
 
@@ -128,16 +121,37 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             Date dateToday = new Date();
 
             int bookDueDate = daysBetween(dateToday, mostRecentDueDate);
-            if (bookDueDate <= 3)
-                if (bookDueDate == 1)
-                    output = String.format("You have borrowed %s out of %s books. The book %s is due back in 1 day.", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getBook().getTitle());
+            if (bookDueDate <= 7)
+                if (bookDueDate == 0)
+                    output = String.format(
+                            "You have borrowed %s out of %s books. The book %s is due back today.",
+                            cacheManager.getUserProfile().getLoans().size(),
+                            40,
+                            bookList.get(0).getBook().getTitle()
+                    );
+                else if (bookDueDate == 1)
+                    output = String.format(
+                            "You have borrowed %s out of %s books. The book %s is due back in 1 day.",
+                            cacheManager.getUserProfile().getLoans().size(),
+                            40,
+                            bookList.get(0).getBook().getTitle()
+                    );
                 else
-                    output = String.format("You have borrowed %s out of %s books. The book %s is due back in %s days.", cacheManager.getUserProfile().getLoans().size(), 40, bookList.get(0).getBook().getTitle(), bookDueDate);
+                    output = String.format(
+                            "You have borrowed %s out of %s books. The book %s is due back in %s days.",
+                            cacheManager.getUserProfile().getLoans().size(),
+                            40,
+                            bookList.get(0).getBook().getTitle(), bookDueDate
+                    );
 
             else
-                output = String.format("You have borrowed %s out of %s books.", cacheManager.getUserProfile().getLoans().size(), 40);
+                output = String.format(
+                        "You have borrowed %s out of %s books.",
+                        cacheManager.getUserProfile().getLoans().size(),
+                        40
+                );
         }
-        else output = "Currently you have no loans :)";
+        else output = "Currently you have no loans.";
 
         loan_dash_description.setText(output);
     }
@@ -148,7 +162,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         TextView tv = view.findViewById(R.id.resv_dash_description);
         int reservationSize = cacheManager.getUserProfile().getOnHold().size();
         if (reservationSize==0) {
-            tv.setText("Currently you have no reservations :)");
+            tv.setText("Currently, you have no reservations.");
         }
         else {
             String output = String.format("You have %s reservations, %s of which are ready to collect", cacheManager.getUserProfile().getOnHold().size(), readyCollectCount(cacheManager.getUserProfile()));
@@ -166,15 +180,6 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             accountCard.setVisibility(View.GONE);
         }
     }
-
-    public void updateInfoCard(){
-        Log.d(TAG, "Updating Info Dash");
-        TextView infoCardText = view.findViewById(R.id.info_dash_description);
-        SharedPreferences prefs = getActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-        String lastLocation = prefs.getString("lastSelectedLocation","");
-        infoCardText.setText(lastLocation);
-    }
-
 
 
     public int readyCollectCount(WMSUserProfile profile){
@@ -202,10 +207,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
                 if (Constants.IntentActions.USER_PROFILE_RESPONSE.equals(intent.getAction())){
                     updateDashboardLoans();
                     updateDashboardReservations();
-//                    updateAccountBlocked();
                 } else if (Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE.equals(intent.getAction())) {
-                    // TODO add blocked message to dashboard.
-                    Log.d(TAG, "To be added");
                     updateAccountBlocked();
                 } else {
                     Toast toast = Toast.makeText(getContext(), "Refresh Failed",Toast.LENGTH_LONG);

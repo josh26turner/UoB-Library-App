@@ -153,7 +153,6 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                         openDialog.closeDialog();
                     }
                     resvBookListAdapter.notifyDataSetChanged();
-//                    WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, new Intent(Constants.IntentActions.LOOKUP_USER));
                 } else {
                     Toast toast = Toast.makeText(getContext(), "Refresh Failed",Toast.LENGTH_LONG);
                     toast.show();
@@ -190,7 +189,6 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
             ((Button) dialog.findViewById(R.id.btn_dialog)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO: Add cancel reservation function here
                     Intent intent = new Intent(Constants.IntentActions.CANCEL_RESERVATION);
                     Bundle extras = new Bundle();
                     extras.putString("reservationId", reservation.getRequestId());

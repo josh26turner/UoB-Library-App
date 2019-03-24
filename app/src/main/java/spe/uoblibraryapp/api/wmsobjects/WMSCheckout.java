@@ -39,7 +39,6 @@ public class WMSCheckout {
         } catch (ParseException e) {
             throw new WMSParseException(e.getMessage());
         }
-
     }
 
 
@@ -120,10 +119,5 @@ public class WMSCheckout {
      */
     public WMSBook getBook(){
         return this.book;
-    }
-
-
-    public Date getDueDate() {
-        return dueDate;
     }
 }

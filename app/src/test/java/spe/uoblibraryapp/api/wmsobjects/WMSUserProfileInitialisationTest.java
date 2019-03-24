@@ -10,19 +10,6 @@ public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
     // Tests for empty user profile
 
     /**
-     * A test to ensure that the userId is set correctly.
-     */
-    @Test
-    public void testEmptyUserProfileUserIdSetCorrectly(){
-        WMSUserProfile userProfile = createBlankUserProfile();
-        assertEquals(
-                "The userId does not match the expected value",
-                "998c3f4b-765e-48b2-asdf-8bd2cf8acee9",
-                userProfile.getUserId()
-        );
-    }
-
-    /**
      * A test to ensure that an empty user profile has no loans.
      */
     @Test
@@ -44,19 +31,6 @@ public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
     // Tests for user profile with 1 loan, no fines and no holds
 
     /**
-     * A test to ensure that the userId is set correctly.
-     */
-    @Test
-    public void test1LoanNoFinesNoHoldsUserProfileUserIdSetCorrectly(){
-        WMSUserProfile userProfile = createUserProfile1LoanNoFinesNoHolds();
-        assertEquals(
-                "The userId does not match the expected value",
-                "998c3f4b-765e-48b2-asdf-8bd2cf8acee9",
-                userProfile.getUserId()
-        );
-    }
-
-    /**
      * A test to ensure that the user profile has 1 loans.
      */
     @Test
@@ -76,19 +50,6 @@ public class WMSUserProfileInitialisationTest extends WMSUserProfileTests{
 
 
     // Tests for user profile with 1 loan, no fines and no holds
-
-    /**
-     * A test to ensure that the userId is set correctly.
-     */
-    @Test
-    public void test2LoansNoFines1HoldUserProfileUserIdSetCorrectly(){
-        WMSUserProfile userProfile = createUserProfile2LoansNoFines1Hold();
-        assertEquals(
-                "The userId does not match the expected value",
-                "998c3f4b-765e-48b2-asdf-8bd2cf8acee9",
-                userProfile.getUserId()
-        );
-    }
 
     /**
      * A test to ensure that the user profile has 1 loans.

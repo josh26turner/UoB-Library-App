@@ -51,10 +51,8 @@ public class ResvBookListAdapter extends ArrayAdapter<WMSHold> {
         res_ready.setText(getItem(position).getRequestStatusType());
 
         if (ready == Boolean.TRUE) {
-//            res_ready.setText("Ready for Collection");
             res_ready.setTextColor(ContextCompat.getColor(getContext(), R.color.colorLoan));
         } else {
-//            res_ready.setText("In Queue");
             res_ready.setTextColor(ContextCompat.getColor(getContext(), R.color.colorReservation));
         }
 

@@ -17,7 +17,6 @@ public class WMSNCIPResponse  extends XMLParser implements WMSResponse {
     }
 
     public Boolean didFail() {
-        // TODO: Add check here to parse xml and test if the request failed. Requires knowledge of failed response to complete this
         try {
             Document parsedResponse = this.parse();
         } catch (Exception e){

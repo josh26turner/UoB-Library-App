@@ -153,7 +153,6 @@ public class ActivitySignIn extends AppCompatActivity {
 
 
     private void processAuthorisationString(String s) {
-        // TODO: Could this be a loop? store is a hash table, that way its future proof if they change the order of url arguments
         Map<String, String> params = getURLParams(s);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         pref.edit().putString("authorisationToken", params.get("access_token")).apply();
@@ -162,37 +161,6 @@ public class ActivitySignIn extends AppCompatActivity {
         pref.edit().putString("principalIDNS", params.get("principalIDNS")).apply();
         pref.edit().putString("refreshToken", params.get("refresh_token")).apply();
         pref.edit().putString("refreshTokenExpiry", params.get("refresh_token_expires_at").replace("Z", "")).apply();
-
-
-
-
-//        int startOfToken = s.indexOf("access_token=") + 13;
-//        int endOfToken = s.indexOf("&principalID=");
-//        String authorisationToken = s.substring(startOfToken, endOfToken);
-//
-//        int startOfPrincipalID = endOfToken + 13;
-//        int endOfPrincipalID = s.indexOf("&principalIDNS");
-//        String principalID = s.substring(startOfPrincipalID, endOfPrincipalID);
-//
-//        int startOfExpires_at = s.indexOf("&expires_at=") + 12;
-//        int endOfExpires_at = s.indexOf("Z&refresh_token=");
-//        String authorisationTokenExpiry = s.substring(startOfExpires_at, endOfExpires_at);
-//
-//        int startOfRefreshToken = endOfExpires_at + 16;
-//        int endOfRefreshToken = s.indexOf("&refresh_token_expires_in=");
-//        String refreshToken = s.substring(startOfRefreshToken, endOfRefreshToken);
-//
-//        int startOfRefreshTokenExpires_at = s.indexOf("&refresh_token_expires_at=") + 26;
-//        int endOfRefreshTokenExpires_at = s.length() - 1;
-//        String refreshTokenExpiry = s.substring(startOfRefreshTokenExpires_at, endOfRefreshTokenExpires_at);
-//
-//        //------put in sharedPreferences
-//        SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-//        pref.edit().putString("authorisationToken", authorisationToken).apply();
-//        pref.edit().putString("authorisationTokenExpiry", authorisationTokenExpiry).apply();
-//        pref.edit().putString("principalID", principalID).apply();
-//        pref.edit().putString("refreshToken", refreshToken).apply();
-//        pref.edit().putString("refreshTokenExpiry", refreshTokenExpiry).apply();
     }
 
     public void clearCookies() {

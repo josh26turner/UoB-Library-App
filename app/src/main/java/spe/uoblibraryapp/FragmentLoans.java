@@ -91,7 +91,6 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
                 else if (spinner.getSelectedItemId() == 3) currentSort = sort.dueDateZA;
 
                 //Update View here.
-//                fillListView(cacheManager.getUserProfile());
                 sortLibrary(cacheManager.getUserProfile().getLoans());
                 listViewAdapter.notifyDataSetChanged();
             }
@@ -131,8 +130,6 @@ public class FragmentLoans extends android.support.v4.app.Fragment {
             fillListView(cacheManager.getUserProfile());
         }
     }
-
-    // If we want thumbnails this gives us an image link https://www.googleapis.com/books/v1/volumes?q=isbn:9780226467047
 
     public class customComparatorAZ implements Comparator<WMSLoan> {
         public int compare(WMSLoan object1, WMSLoan object2) {

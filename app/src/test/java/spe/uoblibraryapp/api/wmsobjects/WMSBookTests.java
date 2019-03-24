@@ -110,7 +110,7 @@ public class WMSBookTests {
      * @return the book object
      */
     private WMSBook createSimpleBook(){
-        return new WMSBook("123456789");
+        return new WMSBook();
     }
 
     private WMSBook createParsedBook() throws WMSParseException{

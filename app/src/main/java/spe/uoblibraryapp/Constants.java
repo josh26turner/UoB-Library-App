@@ -56,6 +56,17 @@ public final class Constants {
                 {"Undergraduate PT", 40 },
                 {"Visitor Non-Borrowing", 40 }
         }).collect(Collectors.toMap(data -> (String) data[0], data -> (Integer) data[1]));
+        public static final Map<String, String> libraryBranches = Stream.of(new Object[][] {
+                {"119036", "Arts and Social Sciences Library" },
+                {"119038", "Biological Sciences Library" },
+                {"119045", "Chemistry Library" },
+                {"119049", "Education Library" },
+                {"119054", "Medical Library" },
+                {"119058", "Physics Library" },
+                {"119059", "Queens Building Library" },
+                {"119060", "Veterinary Sciences Library" },
+                {"119061", "Wills Memorial Library" }
+        }).collect(Collectors.toMap(data -> (String) data[0], data -> (String) data[1]));
         private LibraryDetails() { }
     }
 
@@ -121,9 +132,10 @@ public final class Constants {
 
 
     public static final class APIUrls{
+        private final static String serverLocation = "https://uoblibrary.spe.cs.bris.ac.uk";
         public final static String patronProfile = "https://bub.share.worldcat.org/ncip/circ-patron";
-        public final static String lookupUserAccount = "http://132.145.54.223:8080/auth/%s";
-        public final static String checkoutBook = "http://132.145.54.223:8080/checkout";
+        public final static String lookupUserAccount = serverLocation + "/auth/%s";
+        public final static String checkoutBook = serverLocation + "/checkout";
         public final static String bookAvailability = "https://worldcat.org/circ/availability/sru/service?x-registryId=" + LibraryDetails.institutionId + "&query=no:ocm%s";
         private APIUrls() { }
     }
@@ -202,7 +214,7 @@ public final class Constants {
                 "<barcode>%s</barcode>" +
                 "<accessToken>%s</accessToken>" +
                 "<itemId>%s</itemId>" +
-                "<location>%s</location>" + //TODO change this to dynamic location
+                "<location>%s</location>" +
                 "</CheckoutBookRequest>";
 
         private RequestTemplates(){ }

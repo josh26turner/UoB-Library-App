@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import spe.uoblibraryapp.Constants;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 
 public class WMSHold {
@@ -41,22 +42,6 @@ public class WMSHold {
         } catch (ParseException e) {
             throw new WMSParseException(e.getMessage());
         }
-    }
-
-
-    public WMSHold() {
-        requestId = "1234567890";
-        agencyId = "132607";
-        requestType = "Hold";
-        requestStatusType = "In Process";
-        datePlaced = new Date();
-        pickupLocation = "119061";
-        mediumType = "Book";
-        holdQueuePosition = 1;
-        holdQueueLength = 3;
-        earliestDateNeeded = new Date();
-        needBeforeDate = new Date();
-        book = new WMSBook("1234567890");
     }
 
     private Date parseDate(String strDate) throws ParseException {
@@ -151,36 +136,9 @@ public class WMSHold {
     public Date getDatePlaced() {
         return this.datePlaced;
     }
-
-    public String getPickupLocation() {
-        switch (this.pickupLocation) {
-            case "119059":
-                return "Queens Building Library";
-            case "119036":
-                return "Arts and Social Sciences Library";
-            case "119038":
-                return "Biological Sciences Library";
-            case "119045":
-                return "Chemistry Library";
-            case "119049":
-                return "Education Library";
-            case "119054":
-                return "Medical Library";
-            case "119058":
-                return "Physics Library";
-            case "119060":
-                return "Veterinary Sciences Library";
-            case "119061":
-                return "Wills Memorial Library";
-            default:
-                return this.pickupLocation;
-        }
-    }
-
     public String getBranchId(){
         return this.pickupLocation;
     }
-
     public Integer getHoldQueuePosition() {
         return this.holdQueuePosition;
     }
@@ -201,5 +159,8 @@ public class WMSHold {
     }
     public Boolean isReadyToCollect() {
         return "Available For Pickup".equals(this.requestStatusType);
+    }
+    public String getPickupLocation() {
+        return Constants.LibraryDetails.libraryBranches.get(this.pickupLocation);
     }
 }

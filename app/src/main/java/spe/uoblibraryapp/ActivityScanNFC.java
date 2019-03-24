@@ -107,8 +107,6 @@ public class ActivityScanNFC extends AppCompatActivity {
 
         try {
             NFC nfc = new NFC(scanIntent);
-            //Tag has been scanned now stop scanning for tags
-            //nfcAdapter.disableForegroundDispatch(ActivityScanNFC.this);
 
             //TODO: Perform Internet check.
             if (!isNetworkConnected())
@@ -128,7 +126,7 @@ public class ActivityScanNFC extends AppCompatActivity {
             checkoutIntent.putExtra("itemId", nfc.getBarcode());
             // Send intent to WMSNCIPService with itemId
             WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
-            // When checkout is complete the confirm activity is started by the WMSNCIPService.
+
 
         } catch (NFCTechException e) {
             e.printStackTrace();
