@@ -115,6 +115,8 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
         TextView loan_dash_description = view.findViewById(R.id.loan_dash_description);
         String output;
         List<WMSLoan> bookList = cacheManager.getUserProfile().getLoans();
+        SharedPreferences prefs = getActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+
         if (!bookList.isEmpty()) {
             Collections.sort(bookList, new SortCustomComparatorDueDate());
             Date mostRecentDueDate = bookList.get(0).getDueDate();
@@ -126,21 +128,21 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
                     output = String.format(
                             "You have borrowed %s out of %s books. The book %s is due back today.",
                             cacheManager.getUserProfile().getLoans().size(),
-                            40,
+                            Constants.LibraryDetails.borrowerCategories.get(prefs.getString("borrowerCategory", "")),
                             bookList.get(0).getBook().getTitle()
                     );
                 else if (bookDueDate == 1)
                     output = String.format(
                             "You have borrowed %s out of %s books. The book %s is due back in 1 day.",
                             cacheManager.getUserProfile().getLoans().size(),
-                            40,
+                            Constants.LibraryDetails.borrowerCategories.get(prefs.getString("borrowerCategory", "")),
                             bookList.get(0).getBook().getTitle()
                     );
                 else
                     output = String.format(
                             "You have borrowed %s out of %s books. The book %s is due back in %s days.",
                             cacheManager.getUserProfile().getLoans().size(),
-                            40,
+                            Constants.LibraryDetails.borrowerCategories.get(prefs.getString("borrowerCategory", "")),
                             bookList.get(0).getBook().getTitle(), bookDueDate
                     );
 
@@ -148,7 +150,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
                 output = String.format(
                         "You have borrowed %s out of %s books.",
                         cacheManager.getUserProfile().getLoans().size(),
-                        40
+                        Constants.LibraryDetails.borrowerCategories.get(prefs.getString("borrowerCategory", ""))
                 );
         }
         else output = "Currently you have no loans.";
