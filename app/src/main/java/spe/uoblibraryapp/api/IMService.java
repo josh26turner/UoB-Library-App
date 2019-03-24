@@ -110,7 +110,7 @@ public class IMService extends JobIntentService {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // todo handle error
+                        sendBroadcast(new Intent(Constants.IntentActions.LOOKUP_USER_ACCOUNT_ERROR));
                     }
                 }
             ){

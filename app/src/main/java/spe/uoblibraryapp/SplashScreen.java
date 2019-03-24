@@ -41,7 +41,7 @@ public class SplashScreen extends AppCompatActivity {
         StartAnimations();
 
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Constants.IntentActions.USER_PROFILE_RESPONSE);
+        intentFilter.addAction(Constants.IntentActions.LOOKUP_USER_RESPONSE);
         intentFilter.addAction(Constants.IntentActions.LOOKUP_USER_ERROR);
         myBroadCastReceiver = new MyBroadCastReceiver();
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(myBroadCastReceiver, intentFilter);
@@ -105,7 +105,7 @@ public class SplashScreen extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             try {
                 Log.d(TAG, "onReceive() called");
-                if (Constants.IntentActions.USER_PROFILE_RESPONSE.equals(intent.getAction())){
+                if (Constants.IntentActions.LOOKUP_USER_RESPONSE.equals(intent.getAction())){
                     Intent startActivityIntent = new Intent(SplashScreen.this, ActivityHome.class);
                     startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(startActivityIntent);
