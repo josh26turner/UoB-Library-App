@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 
+import static java.lang.Thread.sleep;
+
 public class SplashScreen extends AppCompatActivity {
 
     private final String TAG = "SplashScreen";
@@ -64,7 +66,6 @@ public class SplashScreen extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("userDetails", MODE_PRIVATE);
         if (prefs.getString("principalID", "").equals("")) {
-            Log.e("DENIS", "CREATE_IF_1");
             splashTread = new Thread() {
                 @Override
                 public void run() {
@@ -81,7 +82,6 @@ public class SplashScreen extends AppCompatActivity {
                         startActivity(intent);
                         SplashScreen.this.finish();
                     } catch (InterruptedException e) {
-
                     } finally {
                         SplashScreen.this.finish();
                     }
@@ -89,15 +89,11 @@ public class SplashScreen extends AppCompatActivity {
             };
             splashTread.start();
         } else{
-            Log.e("DENIS", "CREATE_ELSE_1");
             Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
-            Log.e("DENIS", "CREATE_ELSE_2");
             WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
-            Log.e("DENIS", "CREATE_ELSE_3");
         }
 
     }
-
 
     @Override
     protected void onDestroy() {
@@ -117,25 +113,20 @@ public class SplashScreen extends AppCompatActivity {
                     startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(startActivityIntent);
                     SplashScreen.this.finish();
-                } else {
-                    //No internet detected.
-                    //TODO: Try again.
-                    Log.e("DENIS", "Error.");
-
+                }
+                else {
                     if (!isNetworkConnected()){
+                        //WiFi & Network is turned off...
                         Toast.makeText(getApplicationContext(), "Connect to the internet & try again.", Toast.LENGTH_LONG).show();
                         finish();
                     }
                     else{
-                        //check if it still works. -> SSO could be down.
-                        while (true) {
-                            Toast.makeText(getApplicationContext(), "Internet Not ", Toast.LENGTH_LONG).show();
-                        }
+                        //Network connected but there is some problem with request -> SSO Down? User ran out of data?
+                        Toast.makeText(getApplicationContext(), "Connection failed. Retrying. ", Toast.LENGTH_LONG).show();
+                        //TODO: Try request again.
                     }
                 }
-
             } catch (Exception ex) {
-                Log.e("DENIS", "Exception Error.");
                 ex.printStackTrace();
             }
         }
