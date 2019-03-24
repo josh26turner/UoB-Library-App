@@ -52,7 +52,6 @@ public class ActivityScanNFC extends AppCompatActivity {
         setContentView(R.layout.activity_home_nfc);
         setTitle("Checkout a New Book");
         Activity myAct = this;
-
         //if (nfcAdapter != null) handled by ActivityHome.
         if (nfcAdapter.isEnabled()) {
 
@@ -72,16 +71,22 @@ public class ActivityScanNFC extends AppCompatActivity {
 
             //Perform check in case user turns off NFC while in-app.
 
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("spinnerSelection", Context.MODE_PRIVATE);
+        //Perform check in case user turns off NFC while in-app.
+        if (nfcAdapter.isEnabled()) {
             Intent pnd = new Intent(myAct, myAct.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(myAct, 0, pnd, 0);
             // Setup a tech list for NfcV tag.
             techList = new String[][]{new String[]{NfcV.class.getName()}};
-
-            pref.getInt("spinnerInt", 0);
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+            pref.edit().putString("lastSelectedLocation", getIntent().getStringExtra("location")).apply();
+            Button butt = findViewById(R.id.btnShowMeHow);
+            butt.setOnClickListener(view -> {
+                ViewDialog alert = new ViewDialog();
+                alert.showDialog(myAct, R.layout.dialog_problems_scanning_layout, true);
+            });
         }
         else{
-            // disabled.
+            //disabled.
             Toast.makeText(this, "Please enable NFC & try again.", Toast.LENGTH_LONG).show();
             Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
             startActivity(i);
@@ -191,6 +196,37 @@ public class ActivityScanNFC extends AppCompatActivity {
                 Toast.makeText(this, "Book checked out already", Toast.LENGTH_LONG).show();
                 nDialog.cancel();
             }
+
+
+
+            Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
+            checkoutIntent.putExtra("itemId", nfc.getBarcode());
+            // Send intent to WMSNCIPService with itemId
+            WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
+
+
+        } catch (NFCTechException e) {
+            e.printStackTrace();
+            nDialog.setMessage("Not the right NFC/RFID type");
+            Log.d(TAG, "Not the right NFC/RFID type");
+        } catch (IntentException e) {
+            e.printStackTrace();
+            Log.d(TAG, "No tag in the intent");
+        } catch (IOException e) {
+            e.printStackTrace();
+            nDialog.setMessage("There was a problem with the tag. Hold phone still over tag.");
+            Log.d(TAG, "Can't connect to the tag");
+        } catch (BarcodeException e) {
+            e.printStackTrace();
+            nDialog.setMessage("There was a problem reading the tag");
+            Log.d(TAG, "There was a problem with the tag");
+        } catch (CheckedOutException e) {
+            Log.e(TAG, "Book checked out");
+            Toast.makeText(activityScanNFC, "Book checked out already", Toast.LENGTH_LONG).show();
+            nDialog.cancel();
+        } catch (NetworkErrorException e){
+            Toast.makeText(this, "Please connect to the internet & try again.", Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 
