@@ -122,6 +122,8 @@ public class AuthService extends JobIntentService {
                         accessTokenExpiry = response.getString("expires_at");
                     } catch (JSONException e) {
                         // TODO: should this broadcast auth error?
+                        Intent accessTokenGeneratedIntent = new Intent(Constants.IntentActions.ACCESS_TOKEN_ERROR);
+                        WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, accessTokenGeneratedIntent);
                         return;
                     }
 
@@ -138,6 +140,7 @@ public class AuthService extends JobIntentService {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    Log.e("DENIS", "JSON ERROR RESPONSE");
                     Intent accessTokenGeneratedIntent = new Intent(Constants.IntentActions.ACCESS_TOKEN_ERROR);
                     WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, accessTokenGeneratedIntent);
                 }

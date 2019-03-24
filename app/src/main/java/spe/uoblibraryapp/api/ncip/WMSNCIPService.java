@@ -77,9 +77,10 @@ public class WMSNCIPService extends JobIntentService {
                 if (userProfile != null) {
                     // Update cache
                     cacheManager.setUserProfile(userProfile);
-
+                    Log.e("DENIS", "WMSNCIPSERVICE BROADCAST RESPONSE");
                     broadcastIntent = new Intent(Constants.IntentActions.LOOKUP_USER_RESPONSE);
                 } else {
+                    Log.e("DENIS", "WMSNCIPSERVICE BROADCAST ERROR");
                     broadcastIntent = new Intent(Constants.IntentActions.LOOKUP_USER_ERROR);
                 }
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
@@ -88,10 +89,9 @@ public class WMSNCIPService extends JobIntentService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                sendBroadcast(new Intent(Constants.IntentActions.LOOKUP_USER_ERROR));
-//                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(
-//                        new Intent(Constants.IntentActions.LOOKUP_USER_ERROR)
-//                );
+                Log.e("DENIS", "WMSNCIPSERVICE BROADCAST onErrorResponse");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent(Constants.IntentActions.LOOKUP_USER_ERROR));
+
             }
         }) {
             @Override
@@ -271,6 +271,7 @@ public class WMSNCIPService extends JobIntentService {
         } else if(Constants.IntentActions.ACCESS_TOKEN_ERROR.equals(intent.getAction())) {
             workQueue.clear();
             sendBroadcast(new Intent(Constants.IntentActions.ACCESS_TOKEN_ERROR));
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent(Constants.IntentActions.ACCESS_TOKEN_ERROR));
         } else {
             Log.d(TAG, "Intent received");
             workQueue.add(intent.getAction(), intent.getExtras());
