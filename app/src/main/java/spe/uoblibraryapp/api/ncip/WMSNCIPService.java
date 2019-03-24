@@ -63,7 +63,6 @@ public class WMSNCIPService extends JobIntentService {
             public void onResponse(String xml) {
                 Log.d(TAG, "HTTP request Actioned");
 
-
                 // Add parsing stuff here
                 WMSUserProfile userProfile;
 
@@ -91,7 +90,6 @@ public class WMSNCIPService extends JobIntentService {
             public void onErrorResponse(VolleyError error) {
                 Log.e("DENIS", "WMSNCIPSERVICE BROADCAST onErrorResponse");
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent(Constants.IntentActions.LOOKUP_USER_ERROR));
-
             }
         }) {
             @Override
@@ -141,13 +139,12 @@ public class WMSNCIPService extends JobIntentService {
         String url = Constants.APIUrls.checkoutBook;
         String requestBody = String.format(
                 Constants.RequestTemplates.checkoutBook,
-                prefs.getString("userBarcode", ""),
                 prefs.getString("principalID", ""),
+                prefs.getString("userBarcode", ""),
                 accessToken,
                 itemId,
                 prefs.getString("lastSelectedLocation","")
         );
-
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -155,11 +152,14 @@ public class WMSNCIPService extends JobIntentService {
                 Intent intent = new Intent(Constants.IntentActions.CHECKOUT_BOOK_RESPONSE);
                 intent.putExtra("xml", xml);
                 sendBroadcast(intent);
+                Log.d(TAG, xml);
                 Log.d(TAG, "broadcast sent");
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Error checking out book");
+                Log.e(TAG, String.valueOf(error.networkResponse.statusCode));
                 sendBroadcast(new Intent(Constants.IntentActions.CHECKOUT_BOOK_ERROR));
             }
         }) {
@@ -173,6 +173,7 @@ public class WMSNCIPService extends JobIntentService {
                 return requestBody.getBytes(StandardCharsets.UTF_8);
             }
         };
+        Log.d(TAG, "request added to queue");
         queue.add(request);
     }
 

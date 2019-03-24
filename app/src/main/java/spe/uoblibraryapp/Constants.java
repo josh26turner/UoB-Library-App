@@ -139,7 +139,7 @@ public final class Constants {
 
 
     public static final class APIUrls{
-        private final static String serverLocation = "https://uoblibrary.spe.cs.bris.ac.uk";
+        private final static String serverLocation = "https://uoblibraryapp.spe.cs.bris.ac.uk";
         public final static String patronProfile = "https://bub.share.worldcat.org/ncip/circ-patron";
         public final static String lookupUserAccount = serverLocation + "/auth/%s";
         public final static String checkoutBook = serverLocation + "/checkout";
