@@ -96,6 +96,11 @@ public final class Constants {
                     "&redirect_uri=" + encodedRedirectUrl +
                     "&response_type=token" +
                     "&scope=" + TextUtils.join("%20", scopes);
+
+        }
+        public static String tokenGenUrl(String refreshToken){
+            return "https://authn.sd00.worldcat.org/oauth2/accessToken?grant_type=refresh_token&refresh_token="
+                    + refreshToken + "&client_id=" + clientId;
         }
 
 
