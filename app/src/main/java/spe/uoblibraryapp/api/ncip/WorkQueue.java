@@ -29,6 +29,9 @@ public class WorkQueue {
         return workQueue.isEmpty();
     }
 
+    public void clear(){
+        workQueue.clear();
+    }
 
     class WorkQueueObject{
         private String action;

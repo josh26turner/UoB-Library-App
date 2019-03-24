@@ -42,11 +42,10 @@ public class NFC {
         if (isCheckedOut()) {
             nfcTag.close();
             throw new CheckedOutException();
-        } else {
-            //removeSecureSetting(); // REMOVE THE `//` AT THE START OF THE LINE WHEN RELEASING!!!!!
-            nfcTag.close();
         }
+
     }
+
 
     /**
      * Turns the intent into a tag
@@ -149,7 +148,7 @@ public class NFC {
      * Stops the alarm going off if you take a book through
      * @throws IOException - if the tag can't be communicated with
      */
-    private void removeSecureSetting() throws IOException {
+    public void removeSecureSetting() throws IOException {
         nfcTag.transceive(setSecurityOff(tagID));
     }
 
@@ -199,5 +198,10 @@ public class NFC {
         barcode.append('X');
 
         return barcode.toString();
+    }
+
+
+    public void close() throws IOException{
+        nfcTag.close();
     }
 }

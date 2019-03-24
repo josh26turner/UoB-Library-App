@@ -3,6 +3,7 @@ package spe.uoblibraryapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ActivityLibrarySelect extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
@@ -30,12 +32,12 @@ public class ActivityLibrarySelect extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(), listView.getItemAtPosition(i).toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), listView.getItemAtPosition(i).toString(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(ActivityLibrarySelect.this, ActivityScanNFC.class);
 
                 intent.putExtra("location", getLocationCode(i));
-                //Toast.makeText(getApplicationContext(),getLocationCode(i).toString() ,Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),getLocationCode(i),Toast.LENGTH_LONG).show();
 
                 startActivityForResult(intent, 2404);
                 ActivityScanNFC nfc = new ActivityScanNFC();
@@ -58,6 +60,11 @@ public class ActivityLibrarySelect extends AppCompatActivity {
     }
 
     private String getLocationCode(int i){
-        return Constants.LibraryDetails.libraryBranches.get(arrayAdapter.getItem(i));
+        Log.e("Library Select", arrayAdapter.getItem(i));
+        for (Map.Entry branch : Constants.LibraryDetails.libraryBranches.entrySet()){
+            if (branch.getValue().equals(arrayAdapter.getItem(i))) return (String) branch.getKey();
+        }
+
+        return "";
     }
 }

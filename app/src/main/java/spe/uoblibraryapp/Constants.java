@@ -72,13 +72,13 @@ public final class Constants {
 
     public static final class UserAuth {
         // Key Details for WMS NCIP and Availability
-        public static final String clientId = "hNzXT2bmWYLwmWCfMDC2bAC9U1xJWBQytemHHKwzCF2YsJFnRw3isuML5E8PrK0F48OU8ENiIVzwcDWA";
+        public static final String clientId = "LRQvSrRL1pjZCy8R0AyQpL45QtYvJs6SpjKSF2EmqzmVc0mpIhE85ahM2m4XbByK9qMhl9IcX8fOeOet";
 
         // OAuth2 flow
         public static final String redirectUrl = "uoblibrary://authenticate";
         public static final String authFailureUrl = "uoblibrary://authenticate#error";
 
-        public static final String[] scopes = {"WMS_NCIP", "WMS_Availability", "refresh_token"};
+        public static final String[] scopes = {"WMS_NCIP", "refresh_token"};
 
         private UserAuth() { }
 
@@ -96,6 +96,11 @@ public final class Constants {
                     "&redirect_uri=" + encodedRedirectUrl +
                     "&response_type=token" +
                     "&scope=" + TextUtils.join("%20", scopes);
+
+        }
+        public static String tokenGenUrl(String refreshToken){
+            return "https://authn.sd00.worldcat.org/oauth2/accessToken?grant_type=refresh_token&refresh_token="
+                    + refreshToken + "&client_id=" + clientId;
         }
 
 
@@ -107,19 +112,26 @@ public final class Constants {
 
     public static final class IntentActions {
         public static final String LOOKUP_USER = "spe.uoblibraryapp.api.ncip.LOOKUP_USER";
+        public static final String LOOKUP_USER_RESPONSE = "spe.uoblibraryapp.api.LOOKUP_USER_RESPONSE";
         public static final String LOOKUP_USER_ERROR = "spe.uoblibraryapp.api.ncip.LOOKUP_USER";
+        public final static String LOOKUP_USER_ACCOUNT = "spe.uoblibraryapp.api.LOOKUP_USER_ACCOUNT";
+        public final static String LOOKUP_USER_ACCOUNT_RESPONSE = "spe.uoblibraryapp.api.LOOKUP_USER_ACCOUNT_RESPONSE";
+        public final static String LOOKUP_USER_ACCOUNT_ERROR = "spe.uoblibraryapp.api.LOOKUP_USER_ACCOUNT_ERROR";
         public static final String CHECKOUT_BOOK = "spe.uoblibraryapp.api.ncip.CHECKOUT_BOOK";
-        public static final String BOOK_CHECK_OUT_RESPONSE = "spe.uoblibraryapp.api.BOOK_CHECK_OUT_RESPONSE";
+        public static final String CHECKOUT_BOOK_RESPONSE = "spe.uoblibraryapp.api.CHECKOUT_BOOK_RESPONSE";
+        public static final String CHECKOUT_BOOK_ERROR = "spe.uoblibraryapp.api.CHECKOUT_BOOK_ERROR";
         public static final String CANCEL_RESERVATION = "spe.uoblibraryapp.api.ncip.CANCEL_RESERVATION";
         public static final String CANCEL_RESERVATION_RESPONSE = "spe.uoblibraryapp.api.ncip.CANCEL_RESERVATION_RESPONSE";
         public static final String CANCEL_RESERVATION_ERROR = "spe.uoblibraryapp.api.ncip.CANCEL_RESERVATION_ERROR";
-        public static final String ACCESS_TOKEN_GENERATED = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_GENERATED";
-        public static final String ACCESS_TOKEN_NEEDED = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_NEEDED";
+
         public static final String AUTH_ERROR = "spe.uoblibraryapp.api.auth.AUTH_ERROR";
+
         public static final String AUTH_LOGOUT = "spe.uoblibraryapp.api.auth.AUTH_LOGOUT";
-        public static final String USER_PROFILE_RESPONSE = "spe.uoblibraryapp.api.USER_PROFILE_RESPONSE";
-        public final static String LOOKUP_USER_ACCOUNT = "spe.uoblibraryapp.api.LOOKUP_USER_ACCOUNT";
-        public final static String LOOKUP_USER_ACCOUNT_RESPONSE = "spe.uoblibraryapp.api.LOOKUP_USER_ACCOUNT_RESPONSE";
+        public static final String AUTH_LOGOUT_ERROR = "spe.uoblibraryapp.api.auth.AUTH_LOGOUT_ERROR";
+
+        public static final String ACCESS_TOKEN_NEEDED = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_NEEDED";
+        public static final String ACCESS_TOKEN_GENERATED = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_GENERATED";
+        public static final String ACCESS_TOKEN_ERROR = "spe.uoblibraryapp.api.auth.ACCESS_TOKEN_ERROR";
         private IntentActions() { }
     }
 
@@ -132,11 +144,10 @@ public final class Constants {
 
 
     public static final class APIUrls{
-        private final static String serverLocation = "https://uoblibrary.spe.cs.bris.ac.uk";
+        private final static String serverLocation = "https://uoblibraryapp.spe.cs.bris.ac.uk";
         public final static String patronProfile = "https://bub.share.worldcat.org/ncip/circ-patron";
         public final static String lookupUserAccount = serverLocation + "/auth/%s";
         public final static String checkoutBook = serverLocation + "/checkout";
-        public final static String bookAvailability = "https://worldcat.org/circ/availability/sru/service?x-registryId=" + LibraryDetails.institutionId + "&query=no:ocm%s";
         private APIUrls() { }
     }
 
