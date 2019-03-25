@@ -8,10 +8,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
+/**
+ * Constants
+ */
 public final class Constants {
     private Constants(){ }
 
 
+    /**
+     * Section 1: Library Details
+     */
     public static final class LibraryDetails {
         public static final String institutionId = "132607";
         public static final Map<String, Integer> borrowerCategories = Stream.of(new Object[][] {
@@ -70,6 +77,10 @@ public final class Constants {
         private LibraryDetails() { }
     }
 
+
+    /**
+     * Section 2: User Authentication details
+     */
     public static final class UserAuth {
         // Key Details for WMS NCIP and Availability
         public static final String clientId = "LRQvSrRL1pjZCy8R0AyQpL45QtYvJs6SpjKSF2EmqzmVc0mpIhE85ahM2m4XbByK9qMhl9IcX8fOeOet";
@@ -102,13 +113,28 @@ public final class Constants {
             return "https://authn.sd00.worldcat.org/oauth2/accessToken?grant_type=refresh_token&refresh_token="
                     + refreshToken + "&client_id=" + clientId;
         }
-
-
-
-
-
-
     }
+
+
+    /**
+     * Section 3: Server details
+     */
+    public static final class APIUrls{
+        private final static String serverLocation = "https://uoblibraryapp.spe.cs.bris.ac.uk";
+
+        /**
+         * DO NOT CHANGE
+         */
+        public final static String patronProfile = "https://bub.share.worldcat.org/ncip/circ-patron";
+        public final static String lookupUserAccount = serverLocation + "/auth/%s";
+        public final static String checkoutBook = serverLocation + "/checkout";
+        private APIUrls() { }
+    }
+
+
+    /**
+     * DO NOT CHANGE
+     */
 
     public static final class IntentActions {
         public static final String LOOKUP_USER = "spe.uoblibraryapp.api.ncip.LOOKUP_USER";
@@ -141,16 +167,6 @@ public final class Constants {
         public static final Integer cacheExpiryTime = 10; // in minutes
         private Cache() { }
     }
-
-
-    public static final class APIUrls{
-        private final static String serverLocation = "https://uoblibraryapp.spe.cs.bris.ac.uk";
-        public final static String patronProfile = "https://bub.share.worldcat.org/ncip/circ-patron";
-        public final static String lookupUserAccount = serverLocation + "/auth/%s";
-        public final static String checkoutBook = serverLocation + "/checkout";
-        private APIUrls() { }
-    }
-
 
     public static final class RequestTemplates {
         public static final String lookupUser = "<NCIPMessage xmlns=\"http://www.niso.org/2008/ncip\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:ncip=\"http://www.niso.org/2008/ncip\" xmlns:ns2=\"http://oclc.org/WCL/ncip/2011/extensions\" xsi:schemaLocation=\"http://www.niso.org/2008/ncip http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\" ncip:version=\"http://www.niso.org/schemas/ncip/v2_01/ncip_v2_01.xsd\">\n" +
