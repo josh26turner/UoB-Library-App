@@ -123,34 +123,26 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
             Date dateToday = new Date();
 
             int bookDueDate = daysBetween(dateToday, mostRecentDueDate);
-            if (bookDueDate <= 7)
-                if (bookDueDate == 0)
-                    output = String.format(
-                            "You have borrowed %s out of %s books. The book %s is due back today.",
-                            cacheManager.getUserProfile().getLoans().size(),
-                            Constants.LibraryDetails.borrowerCategories.get(prefs.getString("borrowerCategory", "")),
-                            bookList.get(0).getBook().getTitle()
-                    );
-                else if (bookDueDate == 1)
-                    output = String.format(
-                            "You have borrowed %s out of %s books. The book %s is due back in 1 day.",
-                            cacheManager.getUserProfile().getLoans().size(),
-                            Constants.LibraryDetails.borrowerCategories.get(prefs.getString("borrowerCategory", "")),
-                            bookList.get(0).getBook().getTitle()
-                    );
-                else
-                    output = String.format(
-                            "You have borrowed %s out of %s books. The book %s is due back in %s days.",
-                            cacheManager.getUserProfile().getLoans().size(),
-                            Constants.LibraryDetails.borrowerCategories.get(prefs.getString("borrowerCategory", "")),
-                            bookList.get(0).getBook().getTitle(), bookDueDate
-                    );
-
+            if (bookDueDate == 0)
+                output = String.format(
+                        "You have borrowed %s out of %s books. The book %s is due back today.",
+                        cacheManager.getUserProfile().getLoans().size(),
+                        Constants.LibraryDetails.borrowerCategories.get(prefs.getString("borrowerCategory", "")),
+                        bookList.get(0).getBook().getTitle()
+                );
+            else if (bookDueDate == 1)
+                output = String.format(
+                        "You have borrowed %s out of %s books. The book %s is due back tomorrow.",
+                        cacheManager.getUserProfile().getLoans().size(),
+                        Constants.LibraryDetails.borrowerCategories.get(prefs.getString("borrowerCategory", "")),
+                        bookList.get(0).getBook().getTitle()
+                );
             else
                 output = String.format(
-                        "You have borrowed %s out of %s books.",
+                        "You have borrowed %s out of %s books. The book %s is due back in %s days.",
                         cacheManager.getUserProfile().getLoans().size(),
-                        Constants.LibraryDetails.borrowerCategories.get(prefs.getString("borrowerCategory", ""))
+                        Constants.LibraryDetails.borrowerCategories.get(prefs.getString("borrowerCategory", "")),
+                        bookList.get(0).getBook().getTitle(), bookDueDate
                 );
         }
         else output = "Currently you have no loans.";
@@ -211,6 +203,7 @@ public class FragmentDashboard extends android.support.v4.app.Fragment {
                     updateDashboardReservations();
                 } else if (Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE.equals(intent.getAction())) {
                     updateAccountBlocked();
+                    updateDashboardLoans();
                 } else {
                     Toast toast = Toast.makeText(getContext(), "Refresh Failed",Toast.LENGTH_LONG);
                     toast.show();
