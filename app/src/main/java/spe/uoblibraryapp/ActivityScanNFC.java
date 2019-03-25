@@ -60,16 +60,13 @@ public class ActivityScanNFC extends AppCompatActivity {
                 Toast.makeText(this, "Please connect to the internet & try again.", Toast.LENGTH_LONG).show();
                 finish();
             }
-            if (!isInternetWorking()){
+            if (!isInternetWorking()) {
                 //No internet.
                 Toast.makeText(this, "Sneaky.", Toast.LENGTH_LONG).show();
                 finish();
 
             }
-
-
-
-            //Perform check in case user turns off NFC while in-app.
+        }
 
         //Perform check in case user turns off NFC while in-app.
         if (nfcAdapter.isEnabled()) {
@@ -84,8 +81,7 @@ public class ActivityScanNFC extends AppCompatActivity {
                 ViewDialog alert = new ViewDialog();
                 alert.showDialog(myAct, R.layout.dialog_problems_scanning_layout, true);
             });
-        }
-        else{
+        } else{
             //disabled.
             Toast.makeText(this, "Please enable NFC & try again.", Toast.LENGTH_LONG).show();
             Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
@@ -198,35 +194,10 @@ public class ActivityScanNFC extends AppCompatActivity {
             }
 
 
-
             Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
-            checkoutIntent.putExtra("itemId", nfc.getBarcode());
+            checkoutIntent.putExtra("itemId", barcode);
             // Send intent to WMSNCIPService with itemId
             WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
-
-
-        } catch (NFCTechException e) {
-            e.printStackTrace();
-            nDialog.setMessage("Not the right NFC/RFID type");
-            Log.d(TAG, "Not the right NFC/RFID type");
-        } catch (IntentException e) {
-            e.printStackTrace();
-            Log.d(TAG, "No tag in the intent");
-        } catch (IOException e) {
-            e.printStackTrace();
-            nDialog.setMessage("There was a problem with the tag. Hold phone still over tag.");
-            Log.d(TAG, "Can't connect to the tag");
-        } catch (BarcodeException e) {
-            e.printStackTrace();
-            nDialog.setMessage("There was a problem reading the tag");
-            Log.d(TAG, "There was a problem with the tag");
-        } catch (CheckedOutException e) {
-            Log.e(TAG, "Book checked out");
-            Toast.makeText(activityScanNFC, "Book checked out already", Toast.LENGTH_LONG).show();
-            nDialog.cancel();
-        } catch (NetworkErrorException e){
-            Toast.makeText(this, "Please connect to the internet & try again.", Toast.LENGTH_LONG).show();
-            finish();
         }
     }
 
@@ -290,10 +261,15 @@ public class ActivityScanNFC extends AppCompatActivity {
         return stringBuilder.toString().toUpperCase().replace('X','x');
     }
 
+
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
     }
+
+
+
+
     private boolean isInternetWorking() {
         try {
             String command = "ping -c 1 google.com";
@@ -302,6 +278,9 @@ public class ActivityScanNFC extends AppCompatActivity {
             return false;
         }
     }
+
+
+
 
     class MyBroadCastReceiver extends BroadcastReceiver {
         @Override
@@ -330,8 +309,6 @@ public class ActivityScanNFC extends AppCompatActivity {
                 }
 
 
-
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -350,9 +327,6 @@ public class ActivityScanNFC extends AppCompatActivity {
             dialog.show();
 
         }
-
-
-
 
     }
 
