@@ -228,6 +228,7 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         try {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE);
+            intentFilter.addAction(Constants.IntentActions.LOOKUP_USER_ACCOUNT_ERROR);
             registerReceiver(myBroadCastReceiver, intentFilter);
             Log.d(TAG, "Receiver Registered");
         } catch (Exception ex) {
@@ -247,15 +248,19 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         public void onReceive(Context context, Intent intent) {
             try {
                 Log.d(TAG, "onReceive() called");
-                SharedPreferences prefs = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
-                NavigationView navigationView = findViewById(R.id.nav_view);
-                View v = navigationView.getHeaderView(0);
-                TextView userName = v.findViewById(R.id.user_name);
-                TextView userEmail = v.findViewById(R.id.user_email);
+                if (Constants.IntentActions.LOOKUP_USER_ACCOUNT_RESPONSE.equals(intent.getAction())) {
+                    SharedPreferences prefs = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+                    NavigationView navigationView = findViewById(R.id.nav_view);
+                    View v = navigationView.getHeaderView(0);
+                    TextView userName = v.findViewById(R.id.user_name);
+                    TextView userEmail = v.findViewById(R.id.user_email);
 
-                userEmail.setText(prefs.getString("email", ""));
-                userName.setText(prefs.getString("name", ""));
-
+                    userEmail.setText(prefs.getString("email", ""));
+                    userName.setText(prefs.getString("name", ""));
+                } else {
+                    Toast.makeText(getApplicationContext(), "Cannot lookup user profile", Toast.LENGTH_LONG).show();
+//                    Log.e(TAG, "user lookup error");
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

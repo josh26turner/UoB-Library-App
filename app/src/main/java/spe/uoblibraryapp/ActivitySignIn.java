@@ -27,7 +27,7 @@ public class ActivitySignIn extends AppCompatActivity {
 
     private String TAG = "SignIn";
     private ProgressBar pBar;
-
+    private int tries = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,19 +69,22 @@ public class ActivitySignIn extends AppCompatActivity {
                 else {
                     // TODO need to change this... never actually checks if the url received is the url expected.
                     if (!isAuthorisationDenied(URL)) {
-                        processAuthorisationString(URL);
                         // Successful
+                        processAuthorisationString(URL);
                         Toast.makeText(getApplicationContext(), "Sign In Successful", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), ActivityHome.class));
                         finish();
                         return true;
                     } else {
-
-                        // TODO: redirect user to start of activity rather than finish it.
                         // User Denied Request
-                        Toast.makeText(getApplicationContext(), "Authentication Failed", Toast.LENGTH_SHORT).show();
-//                        finish();
-                        //I guess try again... // TODO Are we sure? if it fails repeatedly then the view constantly opens/closes forever. :/
+                        tries++;
+                         if (tries <= 2){
+                             Toast.makeText(getApplicationContext(), "("+ tries + "/3) Failed. Access required to your library account.", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                             Toast.makeText(getApplicationContext(), "("+ tries + "/3) Failed. Redirecting...", Toast.LENGTH_SHORT).show();
+                             finish();
+                         }
                         return true;
                     }
                 }
@@ -115,11 +118,10 @@ public class ActivitySignIn extends AppCompatActivity {
         Log.v("Tag", "Log: " + mywebview.getUrl());
         Log.v("Tag", "Con: " + Constants.UserAuth.oAuthUrl());
 
-        // Dont do anything when back button is pressed?
+        // Don't do anything when back button is pressed?..
 
         if (mywebview.getUrl().equals("https://authn.sd02.worldcat.org/wayf/metaauth-ui/cmnd/protocol/samlpost")){
             finish();
-
         }
         else if (mywebview.getUrl().equals(Constants.UserAuth.oAuthUrl())){
             finish();

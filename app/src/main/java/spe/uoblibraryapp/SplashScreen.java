@@ -20,8 +20,6 @@ import android.widget.Toast;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 
-import static java.lang.Thread.sleep;
-
 public class SplashScreen extends AppCompatActivity {
 
     private final String TAG = "SplashScreen";
@@ -123,7 +121,7 @@ public class SplashScreen extends AppCompatActivity {
                     else{
                         //Network connected but there is some problem with request -> SSO Down? User ran out of data?
                         Toast.makeText(getApplicationContext(), "Connection failed. Retrying. ", Toast.LENGTH_LONG).show();
-                        //TODO: Try request again.
+                        //TODO: Send request again.
                     }
                 }
             } catch (Exception ex) {
