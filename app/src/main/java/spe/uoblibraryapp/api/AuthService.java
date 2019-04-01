@@ -107,9 +107,9 @@ public class AuthService extends JobIntentService {
         if (addDays(parseDate(refreshTokenExpiry), -1).before(new Date())) {  // Subtracting 1 day to allow for a good overlap period between two active refresh tokens.
             startActivity(new Intent(this, ActivitySignIn.class));
         } else {
-            String url = "https://authn.sd00.worldcat.org/oauth2/accessToken?grant_type=refresh_token&refresh_token="
-                    + tokens.getString("refreshToken", "")
-                    + "&client_id=hNzXT2bmWYLwmWCfMDC2bAC9U1xJWBQytemHHKwzCF2YsJFnRw3isuML5E8PrK0F48OU8ENiIVzwcDWA";
+
+            String url = Constants.UserAuth.tokenGenUrl(tokens.getString("refreshToken", ""));
+
             RequestQueue queue = Volley.newRequestQueue(this);
             queue.start();
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
