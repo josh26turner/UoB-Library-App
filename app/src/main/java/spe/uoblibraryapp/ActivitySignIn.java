@@ -145,7 +145,7 @@ public class ActivitySignIn extends AppCompatActivity {
         return s.contains(Constants.UserAuth.authFailureUrl);
     }
     private boolean isAuthorisationSuccessful(String s) {
-        return s.equals(Constants.UserAuth.redirectUrl);
+        return s.contains(Constants.UserAuth.redirectUrl);
     }
 
     private Map<String, String> getURLParams(String url){
