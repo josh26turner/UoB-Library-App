@@ -1,3 +1,3 @@
 # Server Maintenance Guide
 
-Add stuff here
+The server is a Spring Boot Java HTTP server designed to be an API for the mobile application. It entails two main functions: checking out books and getting user profile information. In a sense it can be thought of as a librarian checking out the books on the library user's behalf, giving the check out proper authentication to the requests. The server also makes requests to get information on the user profile as the default information returned is not sufficient for our requirements. 1
