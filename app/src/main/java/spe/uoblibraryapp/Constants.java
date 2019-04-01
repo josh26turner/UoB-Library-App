@@ -84,10 +84,12 @@ public final class Constants {
     public static final class UserAuth {
         // Key Details for WMS NCIP and Availability
         public static final String clientId = "LRQvSrRL1pjZCy8R0AyQpL45QtYvJs6SpjKSF2EmqzmVc0mpIhE85ahM2m4XbByK9qMhl9IcX8fOeOet";
-
         // OAuth2 flow
         public static final String redirectUrl = "uoblibrary://authenticate";
         public static final String authFailureUrl = redirectUrl + "#error";
+
+        public static final String authFailureCancelledLogin = "#error=user_cancelled_login";
+        public static final String authFailureDeniedApplicationAccess = "#error=user_denied_application_access";
 
         public static final String[] scopes = {"WMS_NCIP", "refresh_token"};
 

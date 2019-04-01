@@ -121,7 +121,6 @@ public class AuthService extends JobIntentService {
                         accessToken = response.getString("access_token");
                         accessTokenExpiry = response.getString("expires_at");
                     } catch (JSONException e) {
-                        // TODO: should this broadcast auth error?
                         Intent accessTokenGeneratedIntent = new Intent(Constants.IntentActions.ACCESS_TOKEN_ERROR);
                         WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, accessTokenGeneratedIntent);
                         return;

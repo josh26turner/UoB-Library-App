@@ -121,7 +121,11 @@ public class SplashScreen extends AppCompatActivity {
                     else{
                         //Network connected but there is some problem with request -> SSO Down? User ran out of data?
                         Toast.makeText(getApplicationContext(), "Connection failed. Retrying. ", Toast.LENGTH_LONG).show();
-                        //TODO: Send request again.
+                        //TODO: ADD RETRY BUTTON HERE.
+                        //TODO: CHECK ME.
+                        Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
+                        WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
+
                     }
                 }
             } catch (Exception ex) {
