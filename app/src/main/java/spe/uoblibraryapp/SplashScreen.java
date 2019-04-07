@@ -122,7 +122,6 @@ public class SplashScreen extends AppCompatActivity {
                     else{
                         //Network connected but there is some problem with request -> SSO Down? User ran out of data?
                         showFailedConnectionSnackBar(findViewById(R.id.lin_lay), "Connection failed.", Snackbar.LENGTH_INDEFINITE);
-
                     }
                 }
             } catch (Exception ex) {

@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import static spe.uoblibraryapp.Constants.UserAuth.authFailureCancelledLogin;
+import static spe.uoblibraryapp.Constants.UserAuth.authFailureDeniedApplicationAccess;
+
 
 public class ActivitySignIn extends AppCompatActivity {
 
@@ -67,24 +70,32 @@ public class ActivitySignIn extends AppCompatActivity {
                 if (URL == null || URL.startsWith("http://") || URL.startsWith("https://"))
                     return false;
                 else {
-                    // TODO need to change this... never actually checks if the url received is the url expected.
                     if (!isAuthorisationDenied(URL)) {
-                        // Successful
-                        processAuthorisationString(URL);
-                        Toast.makeText(getApplicationContext(), "Sign In Successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(), ActivityHome.class));
-                        finish();
-                        return true;
-                    } else {
-                        // User Denied Request
-                        tries++;
-                         if (tries <= 2){
-                             Toast.makeText(getApplicationContext(), "("+ tries + "/3) Failed. Access required to your library account.", Toast.LENGTH_SHORT).show();
+                        if (isAuthorisationSuccessful(URL)){
+                            processAuthorisationString(URL);
+                            Toast.makeText(getApplicationContext(), "Sign In Successful", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), ActivityHome.class));
+                            finish();
+
                         }
-                        else{
-                             Toast.makeText(getApplicationContext(), "("+ tries + "/3) Failed. Redirecting...", Toast.LENGTH_SHORT).show();
-                             finish();
-                         }
+                        else {
+                            finish();
+                        }
+                        return true;
+
+                    } else {
+                        if (URL.contains(authFailureCancelledLogin)){
+                            finish();
+                        }
+                        else if (URL.contains(authFailureDeniedApplicationAccess)){
+                            tries++;
+                            if (tries <= 2) {
+                                Toast.makeText(getApplicationContext(), "(" + tries + "/3) Failed. Access required to your library account.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "(" + tries + "/3) Failed. Redirecting...", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }
                         return true;
                     }
                 }
@@ -98,7 +109,6 @@ public class ActivitySignIn extends AppCompatActivity {
                     // Inject CSS when page is done loading
                     injectCSS(view);
                 pBar.setVisibility(View.GONE);
-
                 super.onPageFinished(view, url);
             }
 
@@ -128,12 +138,14 @@ public class ActivitySignIn extends AppCompatActivity {
         }
         else{
             mywebview.loadUrl(Constants.UserAuth.oAuthUrl());
-            Toast.makeText(getApplicationContext(), "blyn1", Toast.LENGTH_SHORT).show();
         }
     }
 
     private boolean isAuthorisationDenied(String s) {
         return s.contains(Constants.UserAuth.authFailureUrl);
+    }
+    private boolean isAuthorisationSuccessful(String s) {
+        return s.contains(Constants.UserAuth.redirectUrl);
     }
 
     private Map<String, String> getURLParams(String url){
