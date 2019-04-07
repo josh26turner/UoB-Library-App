@@ -1,4 +1,5 @@
 # Requirements
+
 1. Validate, scan, take out (WMS) - same as self service machine
 1. Mobile Device application:
 	* Read RFID:
