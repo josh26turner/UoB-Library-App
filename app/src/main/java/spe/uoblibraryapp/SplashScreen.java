@@ -8,9 +8,11 @@ import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -114,23 +116,33 @@ public class SplashScreen extends AppCompatActivity {
                 }
                 else {
                     if (!isNetworkConnected()){
-                        //WiFi & Network is turned off...
-                        Toast.makeText(getApplicationContext(), "Connect to the internet & try again.", Toast.LENGTH_LONG).show();
-                        finish();
+                        //No internet connection.
+                        showFailedConnectionSnackBar(findViewById(R.id.lin_lay), "No Internet Connection!", Snackbar.LENGTH_INDEFINITE);
                     }
                     else{
                         //Network connected but there is some problem with request -> SSO Down? User ran out of data?
-                        Toast.makeText(getApplicationContext(), "Connection failed. Retrying. ", Toast.LENGTH_LONG).show();
-                        //TODO: ADD RETRY BUTTON HERE.
-                        //TODO: CHECK ME.
-                        Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
-                        WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
-
+                        showFailedConnectionSnackBar(findViewById(R.id.lin_lay), "Connection failed.", Snackbar.LENGTH_INDEFINITE);
                     }
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+
+
+        }
+
+        public void showFailedConnectionSnackBar(View view, String message, int duration) {
+            final Snackbar snackbar = Snackbar.make(view, message, duration);
+            snackbar.setAction("RETRY", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent getUserProfileIntent = new Intent(Constants.IntentActions.LOOKUP_USER);
+                    WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, WMSNCIPService.jobId, getUserProfileIntent);
+                    snackbar.dismiss();
+                }
+            });
+
+            snackbar.show();
         }
     }
 
