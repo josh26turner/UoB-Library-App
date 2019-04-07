@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.ConnectivityManager;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.NfcV;
@@ -19,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.w3c.dom.Document;
@@ -53,11 +56,21 @@ public class ActivityScanNFC extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         myBroadCastReceiver = new MyBroadCastReceiver();
         setContentView(R.layout.activity_home_nfc);
         setTitle("Checkout a New Book");
+
+        //load animation
+        AnimationDrawable nfcAnimation;
+        ImageView imageView = (ImageView) findViewById(R.id.imageView_NFC);
+        imageView.setBackgroundResource(R.drawable.animation_nfc);
+        nfcAnimation = (AnimationDrawable) imageView.getBackground();
+        nfcAnimation.start();
+
+
         Activity myAct = this;
         //if (nfcAdapter != null) handled by ActivityHome.
         if (nfcAdapter.isEnabled()) {

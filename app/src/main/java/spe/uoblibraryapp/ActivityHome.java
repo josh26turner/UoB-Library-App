@@ -22,6 +22,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 import spe.uoblibraryapp.api.AuthService;
 import spe.uoblibraryapp.api.IMService;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
@@ -110,9 +112,15 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 //Scan a New Book.
-                if (phoneHasNFC) {
+                if (phoneHasNFC && isOnline() && (!isOverdraw())) {
                     Intent LibraryNFCActivity = new Intent(ActivityHome.this, ActivityLibrarySelect.class);
                     startActivity(LibraryNFCActivity);
+                }
+                else if(!isOnline()){
+                    Toast.makeText(getApplicationContext(), "Could not connect to server. Please check your network settings.", Toast.LENGTH_LONG).show();
+                }
+                else if(isOverdraw()){
+                    Toast.makeText(getApplicationContext(), "You have reached your loan limit.", Toast.LENGTH_LONG).show();
                 }
                 else
                     Toast.makeText(getApplicationContext(), "Feature Disabled, your phone does not support NFC.", Toast.LENGTH_LONG).show();
@@ -122,6 +130,26 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
         // Get user account details.
         IMService.enqueueWork(getApplicationContext(), IMService.class, IMService.jobId, new Intent(Constants.IntentActions.LOOKUP_USER_ACCOUNT));
 
+    }
+
+    public boolean isOverdraw(){
+        CacheManager cacheManager = CacheManager.getInstance();
+        SharedPreferences prefs = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        if(cacheManager.getUserProfile().getLoans().size() >= Constants.LibraryDetails.borrowerCategories.get(prefs.getString("borrowerCategory", "")))
+            return true;
+        else
+            return false;
+    }
+
+    public boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 132.145.54.223");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        } catch (IOException e)          { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+        return false;
     }
 
     @Override
@@ -173,12 +201,18 @@ public class ActivityHome extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_scan) {
             boolean accountBlocked = userPrefs.getBoolean("accountBlocked", true);
-            if (phoneHasNFC && !accountBlocked) {
+            if (phoneHasNFC && !accountBlocked && isOnline() && (!isOverdraw())) {
                 startActivity(new Intent(this, ActivityLibrarySelect.class));
             } else if (accountBlocked) {
                 Toast.makeText(getApplicationContext(), "Feature Disabled, your account is blocked.", Toast.LENGTH_LONG).show();
                 return false;
-            } else {
+            } else if(!isOnline()){
+                Toast.makeText(getApplicationContext(), "Could not connect to server. Please check your network settings.", Toast.LENGTH_LONG).show();
+                return false;
+            } else if(isOverdraw()){
+                Toast.makeText(getApplicationContext(), "You have reached your loan limit.", Toast.LENGTH_LONG).show();
+                return false;
+            } else{
                 Toast.makeText(getApplicationContext(), "Feature Disabled, your phone does not support NFC.", Toast.LENGTH_LONG).show();
                 return false;
             }
