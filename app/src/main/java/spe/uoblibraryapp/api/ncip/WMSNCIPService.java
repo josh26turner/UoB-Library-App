@@ -62,7 +62,7 @@ public class WMSNCIPService extends JobIntentService {
             @Override
             public void onResponse(String xml) {
                 Log.d(TAG, "HTTP request Actioned");
-
+                Log.e(TAG, xml);
                 // Add parsing stuff here
                 WMSUserProfile userProfile;
 

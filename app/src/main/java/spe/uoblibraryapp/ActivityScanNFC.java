@@ -21,8 +21,15 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import spe.uoblibraryapp.api.XMLParser;
 import spe.uoblibraryapp.api.ncip.WMSNCIPService;
 import spe.uoblibraryapp.nfc.BarcodeException;
 import spe.uoblibraryapp.nfc.CheckedOutException;
@@ -62,7 +69,7 @@ public class ActivityScanNFC extends AppCompatActivity {
             }
             if (!isInternetWorking()) {
                 //No internet.
-                Toast.makeText(this, "Sneaky.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Cannot connect to the internet.", Toast.LENGTH_LONG).show();
                 finish();
 
             }
@@ -280,6 +287,28 @@ public class ActivityScanNFC extends AppCompatActivity {
     }
 
 
+    private boolean didCheckoutFail(String xml){
+        Document doc;
+        try {
+            doc = XMLParser.parse(xml);
+        } catch (IOException | ParserConfigurationException | SAXException ex){
+            return true;
+        }
+
+        NodeList problem = doc.getElementsByTagName("ns1:Problem");
+        if (problem.getLength() == 0) return false;
+
+        NodeList problemTypes = doc.getElementsByTagName("ns1:ProblemType");
+
+        if (problemTypes.getLength() == 1) {
+            if ("Unknown Item".equals(problemTypes.item(0).getTextContent()))
+                Toast.makeText(getApplicationContext(), "This book is confined to the library", Toast.LENGTH_LONG).show();
+            else Toast.makeText(getApplicationContext(), "Unknown Error checking book out", Toast.LENGTH_LONG).show();
+        }
+        else Toast.makeText(getApplicationContext(), "Unknown Error checking book out", Toast.LENGTH_LONG).show();
+
+        return true;
+    }
 
 
     class MyBroadCastReceiver extends BroadcastReceiver {
@@ -289,20 +318,26 @@ public class ActivityScanNFC extends AppCompatActivity {
                 Log.d(TAG, "onReceive() called");
                 if (Constants.IntentActions.CHECKOUT_BOOK_RESPONSE.equals(intent.getAction())) {
                     xmlCheckoutResponse = intent.getStringExtra("xml");
-                    try {
-                        nfcTag.removeSecureSetting();
-                        nfcTag.close();
 
-                        Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
-                        confirmIntent.putExtra("xml", xmlCheckoutResponse);
-                        startActivity(confirmIntent);
-                        finish();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                        secondScan = true;
-                        scanDialog.setMessage("Please scan the book again.");
-                        Log.d(TAG, "waiting for second scan.");
-                        // TODO cannot scan tag, ask user to rescan.
+                    if (didCheckoutFail(xmlCheckoutResponse)) {
+                        scanDialog.dismiss();
+                    }
+                    else {
+                        try {
+                            nfcTag.removeSecureSetting();
+                            nfcTag.close();
+
+                            Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
+                            confirmIntent.putExtra("xml", xmlCheckoutResponse);
+                            startActivity(confirmIntent);
+                            finish();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                            secondScan = true;
+                            scanDialog.setMessage("Please scan the book again.");
+                            Log.d(TAG, "waiting for second scan.");
+
+                        }
                     }
                 } else if (Constants.IntentActions.CHECKOUT_BOOK_ERROR.equals(intent.getAction())) {
                     Log.e(TAG, "error1");
