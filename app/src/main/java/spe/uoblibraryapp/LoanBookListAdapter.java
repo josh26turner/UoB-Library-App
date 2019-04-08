@@ -51,7 +51,7 @@ public class LoanBookListAdapter extends ArrayAdapter<WMSLoan> {
             Date dateToday = new Date();
             int bookDueDate = daysBetween(dateToday, dueDate);
             if (bookDueDate == 0) textViewStatus.setText("Due today");
-            if (bookDueDate == 1) textViewStatus.setText("Due tomorrow");
+            else if (bookDueDate == 1) textViewStatus.setText("Due tomorrow");
             else textViewStatus.setText(String.format(Locale.ENGLISH, "Due in %d days", bookDueDate));
         }
         return newView;
