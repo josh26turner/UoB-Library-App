@@ -185,12 +185,16 @@ public class ActivityScanNFC extends AppCompatActivity {
                     finish();
                 }
                 nfcTag = new NFC(scanIntent);
-                barcode = nfcTag.getBarcode();
+                nfcTag.putSecureSetting();
 
-                Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
-                checkoutIntent.putExtra("itemId", barcode);
-                // Send intent to WMSNCIPService with itemId
-                WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
+                Toast.makeText(getApplicationContext(), "Unabled Security", Toast.LENGTH_LONG).show();
+                barcode = nfcTag.getBarcode();
+                nfcTag.close();
+//
+//                Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
+//                checkoutIntent.putExtra("itemId", barcode);
+//                // Send intent to WMSNCIPService with itemId
+//                WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
 
 
             } catch (NFCTechException e) {

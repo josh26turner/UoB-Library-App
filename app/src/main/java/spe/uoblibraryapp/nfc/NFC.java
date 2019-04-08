@@ -156,7 +156,7 @@ public class NFC {
      * Makes the alarm go off if you take a book through
      * @throws IOException - if the tag can't be communicated with
      */
-    private void putSecureSetting() throws IOException {
+    public void putSecureSetting() throws IOException {
         nfcTag.transceive(setSecurityOn(tagID));
     }
 
