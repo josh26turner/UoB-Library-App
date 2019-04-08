@@ -8,19 +8,21 @@ To sign in to the app follow these steps
    
    ![alt text](.\screenshot1.png "Select user category")
 
-For external users select the first option, for anyone with a UoB login then use the latter.
+   If you are an external user select the first option, for anyone with a UoB login (for example ab12345@bristol.ac.uk) then use the latter.
 
 2. Enter your user details
    - External Users
-      1. Enter username and password
+      1. Enter username and password. 
+
+         If you have forgotten your password then use the link towards the bottom of the page to reset your password. This will send you an email that allows you to reset your parssword. If you have forgotten your username then please contact the library.
       2. Click `Sign In`
    - UoB Users
       1. Enter your username, **it is important to note that this ends with @bristol.ac.uk**
       2. Click `Next`
       3. Enter your password
       4. Click `Sign In`
-      5. Click `Yes` to keep you signed in
-3. Click `Allow` to grant us permission to view your account
+      5. Click `Yes` or `No` depending on your preference to stay logged in.
+3. We recommend clicking `Allow` to grant us permission to use your library account. If you do not click `Allow` you will not be able to use the app.
 
 ## Viewing Loans
 
