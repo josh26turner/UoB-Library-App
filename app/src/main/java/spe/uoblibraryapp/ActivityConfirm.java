@@ -19,6 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import spe.uoblibraryapp.api.WMSException;
 import spe.uoblibraryapp.api.WMSResponse;
+import spe.uoblibraryapp.api.XMLParser;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.wmsobjects.WMSCheckout;
@@ -40,16 +41,9 @@ public class ActivityConfirm extends AppCompatActivity {
         String xml = intent.getStringExtra("xml");
 
         try {
-            if (xml.equals("")) Log.e(TAG, "xml is empty");
-            WMSResponse response = new WMSNCIPResponse(xml);
-            Log.e(TAG, response.rawResponse());
-            if (response.didFail()) {
-                //TODO: CHANGE THIS WRONG TAG.
-                throw new WMSException("There was an error retrieving the User Profile");
-            }
             Document doc;
             try {
-                doc = response.parse();
+                doc = XMLParser.parse(xml);
             } catch (IOException | SAXException | ParserConfigurationException e) {
                 throw new WMSException("There was an error Parsing the WMS response");
             }
