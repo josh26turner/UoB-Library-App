@@ -39,10 +39,10 @@ public class NFC {
         systemInformation = getSystemInfo();
 
 
-        if (isCheckedOut()) {
-            nfcTag.close();
-            throw new CheckedOutException();
-        }
+//        if (isCheckedOut()) {
+//            nfcTag.close();
+//            throw new CheckedOutException();
+//        }
 
     }
 

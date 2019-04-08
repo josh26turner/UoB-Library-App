@@ -132,99 +132,34 @@ public class ActivityScanNFC extends AppCompatActivity {
      */
     @Override
     protected void onNewIntent(Intent scanIntent) {
-        ProgressDialog nDialog;
-        nDialog = new ProgressDialog(this);
-        nDialog.setMessage("Loading...");
-        nDialog.setTitle("Checkout in progress");
-        nDialog.setIndeterminate(false);
-        nDialog.setCancelable(false);
-        nDialog.show();
-        scanDialog = nDialog;
-        if (secondScan) {
-            try {
-                NFC nfc = new NFC(scanIntent);
-                if (nfc.getBarcode().equals(barcode)){
-                    nfc.removeSecureSetting();
-                    nfc.close();
-                    Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
-                    confirmIntent.putExtra("xml", xmlCheckoutResponse);
-                    startActivity(confirmIntent);
-                    finish();
-                } else {
-                    nfc.close();
-                    scanDialog.setMessage("Different book detected, scan the original book now.");
-                    // TODO: CHECK ME. {Inform user book is not same one and they need to scan the correct book.}
-                }
 
-
-            } catch (NFCTechException e) {
-                e.printStackTrace();
-                nDialog.setMessage("Not the right NFC/RFID type");
-                Log.d(TAG, "Not the right NFC/RFID type");
-            } catch (IntentException e) {
-                e.printStackTrace();
-                Log.d(TAG, "No tag in the intent");
-            } catch (IOException e) {
-                e.printStackTrace();
-                nDialog.setMessage("There was a problem with the tag. Hold phone still over tag.");
-                Log.d(TAG, "Can't connect to the tag");
-            } catch (BarcodeException e) {
-                e.printStackTrace();
-                nDialog.setMessage("There was a problem reading the tag");
-                Log.d(TAG, "There was a problem with the tag");
-            } catch (CheckedOutException e) {
-                Log.e(TAG, "Book checked out");
-                Toast.makeText(this, "Book checked out already", Toast.LENGTH_LONG).show();
-                nDialog.cancel();
+        try {
+            if (!isNetworkConnected()) {
+                // Not connected to Wifi!!!
+                Toast.makeText(this, "Please connect to the internet & try again.", Toast.LENGTH_LONG).show();
+                finish();
             }
-        } else {
-            try {
-                if (!isNetworkConnected()) {
-                    // Not connected to Wifi!!!
-                    Toast.makeText(this, "Please connect to the internet & try again.", Toast.LENGTH_LONG).show();
-                    finish();
-                }
-                nfcTag = new NFC(scanIntent);
-                nfcTag.putSecureSetting();
+            nfcTag = new NFC(scanIntent);
+            nfcTag.putSecureSetting();
+            Toast.makeText(getApplicationContext(), "Disabled Security", Toast.LENGTH_LONG).show();
 
-                Toast.makeText(getApplicationContext(), "Unabled Security", Toast.LENGTH_LONG).show();
-                barcode = nfcTag.getBarcode();
-                nfcTag.close();
-//
-//                Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
-//                checkoutIntent.putExtra("itemId", barcode);
-//                // Send intent to WMSNCIPService with itemId
-//                WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
+            nfcTag.close();
 
-
-            } catch (NFCTechException e) {
-                e.printStackTrace();
-                nDialog.setMessage("Not the right NFC/RFID type");
-                Log.d(TAG, "Not the right NFC/RFID type");
-            } catch (IntentException e) {
-                e.printStackTrace();
-                Log.d(TAG, "No tag in the intent");
-            } catch (IOException e) {
-                e.printStackTrace();
-                nDialog.setMessage("There was a problem with the tag. Hold phone still over tag.");
-                Log.d(TAG, "Can't connect to the tag");
-            } catch (BarcodeException e) {
-                e.printStackTrace();
-                nDialog.setMessage("There was a problem reading the tag");
-                Log.d(TAG, "There was a problem with the tag");
-            } catch (CheckedOutException e) {
-                Log.e(TAG, "Book checked out");
-                Toast.makeText(this, "Book checked out already", Toast.LENGTH_LONG).show();
-                nDialog.cancel();
-            }
-
-
-            Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
-            checkoutIntent.putExtra("itemId", barcode);
-            // Send intent to WMSNCIPService with itemId
-            WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
+        } catch (NFCTechException e) {
+            e.printStackTrace();
+            Log.d(TAG, "Not the right NFC/RFID type");
+        } catch (IntentException e) {
+            e.printStackTrace();
+            Log.d(TAG, "No tag in the intent");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d(TAG, "Can't connect to the tag");
+        } catch (CheckedOutException e) {
+            Log.e(TAG, "Book checked out");
+            Toast.makeText(this, "Book checked out already", Toast.LENGTH_LONG).show();
         }
     }
+
 
     @Override
     protected void onResume() {
