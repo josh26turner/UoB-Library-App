@@ -114,7 +114,7 @@ If your account is blocked you will be unable to checkout books. The reasons for
 
 ### Book Wont Scan
 
-There are several reasons why a book wont scan, they are:
+There are several reasons why a book will not scan, they are:
 
  - The book has already been checked out to another library user.
  - The book is a reference book and cannot be taken out of the library.
@@ -123,5 +123,5 @@ There are several reasons why a book wont scan, they are:
 
 ### Loan is always due tomorrow
 
-1 day loans will always have due date of tomorrow but in mny cases they will likely automatically renew, if it fails to automatically renew, you will receive an email informing you that the book is now due back. 
+1 day loans will always have due date of tomorrow but in many cases they will likely automatically renew, if it fails to automatically renew, you will receive an email informing you that the book is now due back. 
 
