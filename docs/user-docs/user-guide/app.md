@@ -6,7 +6,7 @@ To sign in to the app follow these steps
 
 1. Select your user category. 
    
-   ![alt text](.\screenshot1.png "Select user category")
+   ![alt text](https://github.com/josh26turner/UoB-Library-App/blob/docs-improvements/docs/user-docs/user-guide/screenshot1.png "Select user category")
 
    If you are an external user select the first option, for anyone with a UoB login (for example ab12345@bristol.ac.uk) then use the latter.
 
@@ -24,10 +24,25 @@ To sign in to the app follow these steps
       5. Click `Yes` or `No` depending on your preference to stay logged in.
 3. We recommend clicking `Allow` to grant us permission to use your library account. If you do not click `Allow` you will not be able to use the app.
 
+## Navigation
+
+There are two way of navigating the app:
+
+1. Using the menu.
+
+   ![alt text](https://github.com/josh26turner/UoB-Library-App/blob/docs-improvements/docs/user-docs/user-guide/menu.png "Menu")
+
+2. Swiping through the screens. You are able to swipe left and right on the screen, to move between the dashboard, loans and reservations.
+
+
+
 ## Viewing Loans
 
 - From the menu
    1. Press the menu button in the top corner
+
+      ![alt text](https://github.com/josh26turner/UoB-Library-App/blob/docs-improvements/docs/user-docs/user-guide/menu_button.png "Menu Button")
+
    2. Click `Loans`
 
 - You are also able to swipe left and right through each view
