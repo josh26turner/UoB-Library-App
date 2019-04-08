@@ -157,9 +157,7 @@ public class ActivityScanNFC extends AppCompatActivity {
                 } else {
                     nfc.close();
                     scanDialog.setMessage("Different book detected, scan the original book now.");
-                    // TODO: CHECK ME. {Inform user book is not same one and they need to scan the correct book.}
                 }
-
 
             } catch (NFCTechException e) {
                 e.printStackTrace();
