@@ -4,7 +4,11 @@
 ## Sign In
 To sign in to the app follow these steps
 
-1. Select your user category. For external users select the first option, for anyone with a UoB login then use the latter.
+1. Select your user category. 
+   
+   ![alt text](.\screenshot1.png "Select user category")
+
+For external users select the first option, for anyone with a UoB login then use the latter.
 
 2. Enter your user details
    - External Users
