@@ -355,6 +355,9 @@ public class ActivityScanNFC extends AppCompatActivity {
                     }
                 } else if (Constants.IntentActions.CHECKOUT_BOOK_ERROR.equals(intent.getAction())) {
                     Log.e(TAG, "error1");
+                    scanDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Unknown Error checking book out", Toast.LENGTH_LONG).show();
+
                 }
 
 
