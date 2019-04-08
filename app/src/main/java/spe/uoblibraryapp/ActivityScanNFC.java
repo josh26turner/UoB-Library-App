@@ -58,9 +58,10 @@ public class ActivityScanNFC extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         myBroadCastReceiver = new MyBroadCastReceiver();
         setContentView(R.layout.activity_home_nfc);
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
         setTitle("Checkout a New Book");
 
         //load animation
@@ -133,12 +134,14 @@ public class ActivityScanNFC extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent scanIntent) {
         ProgressDialog nDialog;
-        nDialog = new ProgressDialog(this);
+        nDialog = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
         nDialog.setMessage("Loading...");
         nDialog.setTitle("Checkout in progress");
         nDialog.setIndeterminate(false);
         nDialog.setCancelable(false);
         nDialog.show();
+
+
         scanDialog = nDialog;
         if (secondScan) {
             try {
@@ -148,6 +151,7 @@ public class ActivityScanNFC extends AppCompatActivity {
                     nfc.close();
                     Intent confirmIntent = new Intent(getApplicationContext(), ActivityConfirm.class);
                     confirmIntent.putExtra("xml", xmlCheckoutResponse);
+
                     startActivity(confirmIntent);
                     finish();
                 } else {
@@ -187,8 +191,11 @@ public class ActivityScanNFC extends AppCompatActivity {
                 nfcTag = new NFC(scanIntent);
                 barcode = nfcTag.getBarcode();
 
+
                 Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
+
                 checkoutIntent.putExtra("itemId", barcode);
+
                 // Send intent to WMSNCIPService with itemId
                 WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
 
@@ -215,10 +222,10 @@ public class ActivityScanNFC extends AppCompatActivity {
             }
 
 
-            Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
-            checkoutIntent.putExtra("itemId", barcode);
-            // Send intent to WMSNCIPService with itemId
-            WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
+//            Intent checkoutIntent = new Intent(Constants.IntentActions.CHECKOUT_BOOK);
+//            checkoutIntent.putExtra("itemId", barcode);
+//            // Send intent to WMSNCIPService with itemId
+//            WMSNCIPService.enqueueWork(getApplicationContext(), WMSNCIPService.class, 1000, checkoutIntent);
         }
     }
 
@@ -306,6 +313,7 @@ public class ActivityScanNFC extends AppCompatActivity {
         try {
             doc = XMLParser.parse(xml);
         } catch (IOException | ParserConfigurationException | SAXException ex){
+            Toast.makeText(getApplicationContext(), "This book is confined to the library", Toast.LENGTH_LONG).show();
             return true;
         }
 
@@ -334,6 +342,7 @@ public class ActivityScanNFC extends AppCompatActivity {
                     xmlCheckoutResponse = intent.getStringExtra("xml");
 
                     if (didCheckoutFail(xmlCheckoutResponse)) {
+                        Log.e(TAG, "erro222222222r1");
                         scanDialog.dismiss();
                     }
                     else {
@@ -354,7 +363,8 @@ public class ActivityScanNFC extends AppCompatActivity {
                         }
                     }
                 } else if (Constants.IntentActions.CHECKOUT_BOOK_ERROR.equals(intent.getAction())) {
-                    Log.e(TAG, "error1");
+
+                    Log.e(TAG, "erro11111111r1");
                 }
 
 

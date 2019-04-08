@@ -146,13 +146,15 @@ public class WMSNCIPService extends JobIntentService {
                 prefs.getString("lastSelectedLocation","")
         );
 
+
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String xml) {
                 Intent intent = new Intent(Constants.IntentActions.CHECKOUT_BOOK_RESPONSE);
                 intent.putExtra("xml", xml);
                 sendBroadcast(intent);
-                Log.d(TAG, xml);
+                Log.e(TAG, xml);
+
                 Log.d(TAG, "broadcast sent");
             }
         }, new Response.ErrorListener() {
