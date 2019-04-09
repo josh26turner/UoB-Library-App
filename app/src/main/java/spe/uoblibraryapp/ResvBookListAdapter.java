@@ -41,11 +41,22 @@ public class ResvBookListAdapter extends ArrayAdapter<WMSHold> {
         TextView res_len = newView.findViewById(R.id.res_len);
         TextView res_ready = newView.findViewById(R.id.res_ready);
         TextView res_loc = newView.findViewById(R.id.res_loc);
+        TextView res_of = newView.findViewById(R.id.res_of);
 
         resTitle.setText(title);
         resAuthor.setText(author);
-        res_pos.setText(pos.toString());
-        res_len.setText(len.toString());
+        try {
+            res_pos.setText(pos.toString());
+            res_len.setText(len.toString());
+            res_pos.setVisibility(View.VISIBLE);
+            res_len.setVisibility(View.VISIBLE);
+            res_of.setVisibility(View.VISIBLE);
+        } catch (NullPointerException ex){
+            res_pos.setVisibility(View.GONE);
+            res_len.setVisibility(View.GONE);
+            res_of.setVisibility(View.GONE);
+        }
+
         res_loc.setText(loc);
 
         res_ready.setText(getItem(position).getRequestStatusType());

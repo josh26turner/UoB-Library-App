@@ -153,7 +153,6 @@ public class WMSNCIPService extends JobIntentService {
                 Intent intent = new Intent(Constants.IntentActions.CHECKOUT_BOOK_RESPONSE);
                 intent.putExtra("xml", xml);
                 sendBroadcast(intent);
-                Log.e(TAG, xml);
 
                 Log.d(TAG, "broadcast sent");
             }
@@ -161,7 +160,6 @@ public class WMSNCIPService extends JobIntentService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Error checking out book");
-                Log.e(TAG, String.valueOf(error.networkResponse.statusCode));
                 sendBroadcast(new Intent(Constants.IntentActions.CHECKOUT_BOOK_ERROR));
             }
         }) {
