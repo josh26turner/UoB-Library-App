@@ -198,7 +198,6 @@ public class FragmentReservation extends android.support.v4.app.Fragment {
                     extras.putString("branchId", branchId);
                     intent.putExtras(extras);
                     WMSNCIPService.enqueueWork(getContext(), WMSNCIPService.class, WMSNCIPService.jobId, intent);
-                    Toast.makeText(getContext(), "Clicked.", Toast.LENGTH_LONG).show();
                 }
             });
             dialog.show();
