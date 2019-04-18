@@ -30,7 +30,7 @@ Stakeholders
 Use Case Diagram
 ================
 
-![Use Case Diagram](https://github.com/josh26turner/UoB-Library-App/blob/master/docs/portfolio/includes/Use-Case-Diagram.png "Use Case Diagram")
+![Use Case Diagram](https://github.com/josh26turner/UoB-Library-App/blob/master/docs/portfolio/includes/use-case-diagram.png "Use Case Diagram")
 
 Requirements
 ------------
