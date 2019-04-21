@@ -143,8 +143,8 @@ We have also followed this process to create requirements for all other sections
 | Show the user a list of their reservations | Must | MVP | Will fill will example data in MVP, in beta will use live data |
 | Communicate with OCLC WMS NCIP Patron service to get the users reservations | Must | Beta | Delayed until beta as new library system will not be active until after MVP release |
 | Books are sorted, with ones ready to collect at the top of the list | Must | MVP | - |
-| For each reservation show the title of the book | Must | MVP |
-| For each reservation show the author of the book | Must | MVP |
+| For each reservation show the title of the book | Must | MVP | - |
+| For each reservation show the author of the book | Must | MVP | - |
 | If books are ready to collect, show their pickup location | Must | Beta | - | 
 | If books are not ready to collect, show the position of the user in the queue | Must | Beta | - |
 | Display extra detail about the reservation if it is clicked | Should | Beta | - |
@@ -170,3 +170,12 @@ We have also followed this process to create requirements for all other sections
 | Has a button to display the users reservations | Must | MVP | - |
 
 
+# Non-Functional Requirements
+
+- A library admin (with no programming experience) must be able to add a new library branch to the app in under 5 minutes.
+- It must be possible to know how to checkout a book using the app after a 5 minute introduction.
+- The server must be able to handle 1 checkout per second.
+- Requests for the same data from OCLC must not be made within 1 minute of each other, to reduce load.
+- The app must be able to checkout books 100% of the time that the OCLC system is working.
+- The app must only allow access to the authenticated users details.
+- The app must work with any phone running android version > 5.0
