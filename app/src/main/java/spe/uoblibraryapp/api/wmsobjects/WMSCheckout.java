@@ -4,8 +4,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 
@@ -14,17 +12,12 @@ import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
  * @author rileyevans
  */
 public class WMSCheckout {
-    private String itemId;
     private WMSBook book;
-    private String userId;
-    private Date dueDate;
 
 
     public WMSCheckout(
-            WMSNCIPElement elementHolder,
-            String userId
+            WMSNCIPElement elementHolder
     ) throws WMSParseException {
-        this.userId = userId;
         Node node = elementHolder.getElem();
 
         // Check the node contains the correct data, before parsing.
@@ -48,15 +41,6 @@ public class WMSCheckout {
             Node child = childNodes.item(i);
 
             switch (child.getNodeName()) {
-                case "ns1:UserId":
-                    parseUserId(child);
-                    break;
-                case "ns1:ItemId":
-                    parseItemId(child);
-                    break;
-                case "ns1:DueDate":
-                    dueDate = parseDate(child.getTextContent());
-                    break;
                 case "ns1:ItemOptionalFields":
                     NodeList childsChildren = child.getChildNodes();
                     for (int j=0; j<childsChildren.getLength(); j++){
@@ -66,52 +50,11 @@ public class WMSCheckout {
                         }
                     }
                     break;
+                default:
+                    break;
             }
         }
     }
-
-
-
-    private void parseUserId(Node userIdNode) throws WMSParseException{
-        NodeList children = userIdNode.getChildNodes();
-        for (int i=0; i<children.getLength(); i++){
-            Node child = children.item(i);
-            if (child.getNodeName().equals("ns1:UserIdentifierValue")){
-                if (!userId.equals(child.getTextContent())){
-//                    throw new WMSParseException("UserId of response does not match UserId of the profile given");
-                }
-                return;
-            }
-        }
-    }
-
-    private void parseItemId(Node itemIdNode) throws WMSParseException{
-        NodeList children = itemIdNode.getChildNodes();
-        for (int i=0; i<children.getLength(); i++){
-            Node child = children.item(i);
-            if (child.getNodeName().equals("ns1:ItemIdentifierValue")){
-                itemId = child.getTextContent();
-                return;
-            }
-        }
-        if (this.itemId == null){
-            throw new WMSParseException("No ItemId element can be found");
-        }
-    }
-
-
-    /**
-     * To parse WMS dates into Java Dates
-     * @param strDate this is a date from WMS
-     * @return This returns the Java Date object from the parsed date
-     * @throws ParseException Throws if the date fails to parse
-     */
-    private Date parseDate(String strDate) throws ParseException{
-        strDate = strDate.replace("T", "-").replace("Z", "");
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
-        return format.parse(strDate);
-    }
-
 
     /**
      * Exists for the UI people to get book info for a checkout

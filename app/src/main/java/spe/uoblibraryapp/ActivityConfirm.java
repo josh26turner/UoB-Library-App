@@ -18,10 +18,8 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import spe.uoblibraryapp.api.WMSException;
-import spe.uoblibraryapp.api.WMSResponse;
 import spe.uoblibraryapp.api.XMLParser;
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
-import spe.uoblibraryapp.api.ncip.WMSNCIPResponse;
 import spe.uoblibraryapp.api.wmsobjects.WMSCheckout;
 
 public class ActivityConfirm extends AppCompatActivity {
@@ -48,7 +46,7 @@ public class ActivityConfirm extends AppCompatActivity {
                 throw new WMSException("There was an error Parsing the WMS response");
             }
             Node node = doc.getElementsByTagName("ns1:CheckOutItemResponse").item(0);
-            WMSCheckout checkout = new WMSCheckout(new WMSNCIPElement(node), userId);
+            WMSCheckout checkout = new WMSCheckout(new WMSNCIPElement(node));
 
             ((TextView) findViewById(R.id.txt_bookName)).setText(checkout.getBook().getTitle());
 
