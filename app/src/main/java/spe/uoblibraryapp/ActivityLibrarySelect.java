@@ -1,7 +1,6 @@
 package spe.uoblibraryapp;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -41,7 +39,7 @@ public class ActivityLibrarySelect extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(),getLocationCode(i),Toast.LENGTH_LONG).show();
 
                 startActivityForResult(intent, 2404);
-                ActivityScanNFC nfc = new ActivityScanNFC();
+//                ActivityScanNFC nfc = new ActivityScanNFC();
 
             }
         });
@@ -49,10 +47,11 @@ public class ActivityLibrarySelect extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == 2404)
-            if (data.hasExtra("ended"))
-                    if (data.getExtras().getString("ended").contains("true"))
-                        finish();
+        if (resultCode == RESULT_OK
+                && requestCode == 2404
+                && data.hasExtra("ended")
+                && data.getExtras().getString("ended").contains("true"))
+                    finish();
     }
 
     @Override
@@ -60,9 +59,9 @@ public class ActivityLibrarySelect extends AppCompatActivity {
         finish();
     }
 
-    private String getLocationCode(int i){
+    private String getLocationCode(int i) {
         Log.e("Library Select", arrayAdapter.getItem(i));
-        for (Map.Entry branch : Constants.LibraryDetails.libraryBranches.entrySet()){
+        for (Map.Entry branch : Constants.LibraryDetails.libraryBranches.entrySet()) {
             if (branch.getValue().equals(arrayAdapter.getItem(i))) return (String) branch.getKey();
         }
 
