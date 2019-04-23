@@ -18,7 +18,7 @@ University of Bristol Library Services comprises 9 libraries and 4 study centres
 Key central library services are managed by a library management system. This is currently being replaced with a new library services platform which will go live in January 2019. This new service, WorldShare Management Services (WMS) will be supplied as a software as a service solution by the supplier OCLC. WMS will also provide a new discovery service to find, locate and access all library materials, both print and digital. This will replace the current Library Search service.
 
 As part of the project to migrate to WMS, Library Services is keen to develop a suite of apps to support interactions with our services and collections. These apps would significantly enhance the user experience of our activities and enable us to deliver new and enhanced services to our users.
-The apps suggested for development through this project will be created to work with WMS. Access to WMS will be provided by Library Services staff. In addition OCLC has a Developer Network (https://www.oclc.org/developer/home.en.html) and a published directory of currently available APIs (https://platform.worldcat.org/api-explorer/apis).
+The apps suggested for development through this project will be created to work with WMS. Access to WMS will be provided by Library Services staff. In addition OCLC has a Developer Network (<https://www.oclc.org/developer/home.en.html>) and a published directory of currently available APIs (<https://platform.worldcat.org/api-explorer/apis>).
 
 The following are some of the mobile apps that we are keen to develop. We would welcome the opportunity to work with University of Bristol students to develop these. We believe that this would be both an excellent learning experience for students but would also allow Library Services to work in the co-design of future service offerings.
 
@@ -28,4 +28,3 @@ The following are some of the mobile apps that we are keen to develop. We would 
 
     Moving this operation to the users own mobile device would require that the near field communications (NFC) functionality on the device is used to interact with the RFID tag which would then, in turn, interact with the central system via SIP2.
     The output of this project would be a mobile app that is able to carry out these tasks of reading the borrower Ucard, the RFID tag, and communicating back to the central system. The user experience would be that of a significantly enhanced and flexible service for issuing books to themselves.
-
