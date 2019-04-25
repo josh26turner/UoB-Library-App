@@ -2,9 +2,11 @@
 
 ![alt text](https://github.com/josh26turner/UoB-Library-App/blob/master/docs/portfolio/includes/high-level-architecture.png "High level architecture")
 
-Each of the pairs of Activity Class and UI on the bottom two rows represent the different activities that will be in our application. The application will first open the "Login" activiy which will display the UI. Providing the login authenticates the application will then load the "Home" activity. This acts as the main homepage of the app upon login. Not included are in the diagram are the calls activities make loading a subsequent activity. But activities would contain buttons to load other activities when, and if, they are required. 
+The above picture provides an overview to the four main parts of the system we will create. The WMS Systm APIs and Library Book systems are already in place and to be used by us to create the system. The Android Application and the Spring Boot Server (will be referred to as the server from now on in this document) are the part of the system to be created by us.  
 
-Above this is more the "backend" part of our application. There are 5 main APIs and 3 main classes. The WMS, NFC Scanning and SSO Auth classes act as middleware style classes between the front end and the APIs, this is to make the development more the system more modular and easier to divide into parts such that it can be developed by multiple people. The APIs, on the very top row, are all accessed solely by the relevant class, beneath them in the diagram, and output will be consistent throughout development so all classes don't have to be changed per update. 
+The server will be an API for the Android Application, effectively acting a wrapper to make requests that a standard user cannot make, such as checking out a book which requires access to private keys that shouldn't be stored on a user's device.   
+
+The Android Application is the main way users will interact with our system, it will provide a method for scanning the RFID tags in the library books and checking them out. There will be three main packages: NFC, WMS and a main package. They will handle communicating with the RFID tag in the book, communicating with the WMS System API and handling the UI respectively.  
 
 
 ## Dynamic UML
@@ -17,5 +19,4 @@ This diagram details the flow of data as a request to the WMS API is made to get
 
 ![alt text](https://github.com/josh26turner/UoB-Library-App/blob/master/docs/portfolio/includes/Static-UML.png "Static UML")
 
-For WMS{API}Response class it will implement the WMSResponse interface (the {API} is a generalisation, for the NCIP API it wouldbe WMSNCIPResponse). This interface will specify the standard structure that all responses from the WMS API should take. The implementation will change per API which is why an implementation is best suited. This means all the calls to the different WMS APIs can be written in a standard form too. It also extends the XMLResponse class so that the response can be parsed. The parse method is under a protected view so the WMSNIPResponse, and other response classes, should extend the class to access this method. It is protected so that overrides the method with a super call. 
-
+This UML diagram details the layout and dependencies of the server. This simplifies the modelling of shared and separated classes. I chose this to model as it clearly lays out which classes can be shared and worked out a good way of getting methods required by multiple classes to layed out in an efficient, simple way. 
