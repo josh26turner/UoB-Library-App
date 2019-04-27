@@ -1,10 +1,10 @@
 # Release Testing
 
-Throughout development, testing was dynamic and aimed to target everything the end-user will interact with, whether this be normal, alternative or exception flow, our testing aims to cover every basis for the end user. 
+**Throughout development, our testing aimed to target everything the end-user will interact with which includeded consideration for normal, alternative and exception flows.**
 
-Every release is tested with it's own set of tests and every previous releases' tests where applicable. 
+**Every release is tested with its own set of tests and every previous releases' tests where applicable.** 
 
-eg: release 1.0.2 was tested with all the tests from 1.0.2, all the tests from release 1.0.0 and all the tests from release 1.0.1.
+*eg: release 1.0.2 was tested with all the tests from 1.0.2, all the tests from release 1.0.0 and all the tests from release 1.0.1.*
 
 - **Release 1.0.0**
     1. Menu button opens menu.
@@ -15,8 +15,8 @@ eg: release 1.0.2 was tested with all the tests from 1.0.2, all the tests from r
 - **Release 1.0.1**
     1. Check Application Icon displays correctly on the homescreen.
     1. Check Username displays correctly on the sidebar. 
-        - on *multiple screen sizes.
-        - on names exceeding bounds of the sidebar. [Anastasia Abategiovanni Junior]
+        - on <sup>1</sup>multiple screen sizes.
+        - on names exceeding bounds of the sidebar. [eg. Anastasia Abategiovanni Junior]
     1. Check Loan/Reservation/Overdue status displays correctly within each loan container.
 - **Release 1.0.2**
     1. Correct option showing the current page is shown on the sidebar.
@@ -25,18 +25,18 @@ eg: release 1.0.2 was tested with all the tests from 1.0.2, all the tests from r
 - **Release 1.0.3**
     1. Check the confirm pages opens when a book is scanned.
     1. Check application splash-screen displays correctly
-        - on *multiple screen sizes.
+        - on <sup>1</sup>multiple screen sizes.
         - in portrait mode.
-        - splash-screen remains portrait even if the phone is in landscape mode.
+        - splash-screen remains in portrait mode even if the phone is in landscape mode.
     1. Check sample login page displays correctly
-        - on *multiple screen sizes.
+        - on <sup>1</sup>multiple screen sizes.
         - in Landscape & Portrait modes.
 - **Release 1.0.4**
-    1. Check "No Loans" is displayed in the centre of the page when there are no loans 
+    1. Check *"No Loans"* is displayed in the centre of the page when there are no loans 
         - in Landscape & Portrait modes.
-    1. Check "No Reservations" is displayed in the centre of the page when there are no reservations.
+    1. Check *"No Reservations"* is displayed in the centre of the page when there are no reservations.
         - in Landscape & Portrait modes.
-- **Release 1.0.5**
+- **Release 1.0.5 - Implemented Live Loans & Reservations**
     1. Check to see whether their live loans are shown to the user.
     1. Check to see whether their live reservations are shown to the user.
     1. Check pressing an active loan opens a dialog showing the book, publisher and date due back.
@@ -48,7 +48,7 @@ eg: release 1.0.2 was tested with all the tests from 1.0.2, all the tests from r
     1. Dashboard is shown when the user opens the app.
     1. Pressing the loans cardview in dashboard redirects to the loans fragment.
     1. Pressing the reservations cardview in dashboard redirects to the reservations fragment.
-- **Release 1.0.8**
+- **Release 1.0.8: Implemented Single Sign-On login**
     1. The different sorting functions correctly sort the list of loans.
     1. Sorting is kept in place when a refresh occurs and a new book is added.
     1. Pressing the back button twice in the dashboard will exit the app.
@@ -68,7 +68,7 @@ eg: release 1.0.2 was tested with all the tests from 1.0.2, all the tests from r
     1. Scanning 'confined to library' material will not disable security.
     1. User denying access to NCIP Service after login will output a message stating access is required.
     1. Denying access to NCIP 3 times redirects to the start of the login process.
-- **Release 2.0.0: LIVE Checkout!**
+- **Release 2.0.0: Implemented Live Checkout**
     1. Logout redirects to the login and removes previous users data.
     1. Scanning a book will wait for confirmation from the API before disabling the security tag.
     1. Live checkout implemented, if a book scan is successful, the book security is disabled.

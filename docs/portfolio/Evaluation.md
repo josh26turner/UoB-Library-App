@@ -1,34 +1,47 @@
-How did we document the feedback we got.
+#How did we document the feedback we got.
+##How did we use the feedback to refine the app 
 
+# Evaluation
 
-How did we use the feedback to refine the app 
+Questionnaires felt contrained for our purpose so we preferred conducting free-flowing informal interviews. We sourced fellow students studying in the university libraries, asked them to use our application then asked for their feedback and where possible made and showed the user those changes straight away. 
 
-Most if not all of the user testing, refinement and feedback came directly from the end-users.
-Most of our discussions and improvements came from imformal discussions with random UoB students studying in the university libraries. We have a few samples written as questionnaires which facilitated a few of our biggest changes but there were other changes we made within the application that were solely as a result of informal discussions with students.
+As every student using the library has very similar goals, whether this be reading material in the library or taking materials away, we treated those interviewees as a representative sample. 1-in-6 of those students received a questionnaire where we asked for feedback on the navigation, feel and functionality of our product.<sup>1</sup>
 
-Arguably our biggest change coming as a result of user testing was the side-bar revamp and upgrade. We had two models with the team being 50/50 as to which would be better. Asking students, it was clear this was a no contest, rather than guessing what the end-user would like, we asked and delivered exactly what they wanted.
+## Interviews & Observations
 
-We gave these random users a small brief
-- "This is a beta version of the new app we are developing for the UoB libraries."
+We used release 1.0.6 and told thirty users, "This is a beta version of the new app we are developing for the UoB libraries" and gave them two tasks to complete so we could watch their interaction with our system. Task one asked the user to checkout a new book using the app and task two asked users to look around the app and tell us what functionality they could see the applications offers them.
 
-and some tasks such as:
-- "Take this phone and this book and checkout the book to your library account"
-- "Take this phone, the application icon is here, now, use it and tell us what functionality you can see"
+From our observations, we found users were expecting to be able to click the cardviews in the dashboard. In the next release, 1.0.7, pressing the cardviews on the dashboard page redirected the user to the corresponding loans and reservations fragment. Additionally, three-in-five users seemed unclear on the functionality of the floating action which led us to change its icon from a camera icon to a customised NFC icon which had more familiarity of that of a book. 
 
-and watched the users as they interacted with our system. 
+Furthermore, five-in-five users had difficulty understanding how to checkout a new book once they located the *"Scan a new book"* page. Despite instructions being clearly written, every user seemed to ignore this and get confused which led us to adding a *"Show me how"* button at the end of the page which would display the instruction only when requested. This helped remedy the problem however when we re-sampled this change, a significant three-in-five users were still confused. Some users would use the phone as a barcode reader, some users as a camera and one user even put the book over the phone thinking it would pick up the weight of the book before actually reading the instructions.
 
-From watching the users interact with the system, we found the login flow and the navigation system being very simple to use. 
+We went away and created a powerful visual cue which replaced the un-necessary NFC logo and the *"Show me how"* button in the *"Scan a new book"* page by means of a two-stage animation. The first stage shows a book being open on the last page with the RFID tag and the second stage showing a phone being held over the tag. This animation was better able to deliver the message as the third sample of ysers had no difficulties checking out a new book. 
 
-Every user we surveyed found the login very easy to do, partly because it uses SSO and looks identical to the library page. Additonally, every user we surveyed also found their way around the system without any problems, with the navigation pane, it is virtually impossible to get lost.
+## Questionnaires
 
-On the flipside, checking out a book initially seemed to be a very difficult process with every user featuring some sort of complexity. We firstly altered the floating action bar icon from a camera to an NFC, barcode looking, icon which helped prompt users in this direction. 
+We asked one-in-six users three questions relating to the overall application: "how did you find process of logging into the application?", "do you find the application intuitive to use?" and "when the application is released to the public, will you make use of the app?" and two questions on specific design choices. <sup>2</sup> 
 
-We fixed the difficulty locating the scan a new book page but we still had a problem once we were at the checkout a new book page.
-
-Despite instructions being clearly written, users seemed to ignore this, get confused and ask us for help so we added a "Show me how" button at the end of the page which when pressed displayed the instructions. This helped remedy the problem however some users would use the phone as a barcode reader, some users as a camera and one user putting the book over the phone, thinking it would pick up the weight of the book, before actually reading the instructions.
-
-We created an animation and added a powerful visual clue to the users which replaced the NFC logo on the checkout page, users now were greeted to an animation showing 2 stage, one where a book is open on the last page showing the tag and the other stage where the user was scanning the tag with the phone. Newly sampled users had no difficulties checking out a book - problem solved.
+From our results, every user stated the process of logging in was simple, familiar and easy to do. This is good news and we suspect it was a result of us using the existing UoB SSO interface which other existing UoB applications use. As per the requirements, we kept the UI as simple to use as possible which meant a maximum depth of three layers and the confidence for the user to explore the application knowing the multiple presses of the back button will always get them back to the home dashboard page. We were very excited to know our efforts paid off with four-in-five users stating the application was very intuitive to use. The fifth user had a problem with the dashboard cardviews not being clickable but this was resolved in release 1.0.7 from their feedback.
 
 
 
 
+
+
+
+They prefer the left -> design one!! [Reservation Dialog].
+They prefer the right --> [Bristol University Sidebar!!].
+
+Arguably our biggest change coming as a result of user testing was the side-bar revamp and upgrade. We had two models with the team being split as to which would be better.<sup>2</sup>  Asking students, it was clear this was a no contest, rather than guessing what the end-user would like, we asked and delivered exactly what they wanted.
+
+
+
+
+#__what kinds of discussions? what were you following? what techniques did you use? How many people influenced your design direction? what was the decision they influenced and why? How did you take their feedback on board?
+
+
+
+## References:
+
+1. eval_material_one.pdf
+2. eval_material_two.png

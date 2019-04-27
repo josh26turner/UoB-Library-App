@@ -24,4 +24,4 @@ There will be several issues when testing, this is because a lot of our key func
 
 To overcome this issue we will have to create an interface for each of these external services, then create two concrete classes which implement the interface:
 - one will be a *live* class that will query the APIs, this will be used in the production app.
-- one will be a *mock* class that will return dummy data as an api response. This will allow us to predict the outputs of the functions, therefore allowing us to check that they function correctly in the specific cases. Both classes will have identical functions to be accessed in the sam way.
+- one will be a *mock* class that will return dummy data as an api response. This will allow us to predict the outputs of the functions, therefore allowing us to check that they function correctly in the specific cases. Both classes will have identical functions to be accessed in the same way.
