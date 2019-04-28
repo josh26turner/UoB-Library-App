@@ -13,7 +13,9 @@ If the service is making a request to the server we would outline how data will 
 
 #### Challenges
 
-There were a few challenges the we faced when testing the Job Intent Services. Firstly, it is not possible to test an intent service directly, this point is made clear on the Android documentation
+There were a few challenges the we faced when testing the Job Intent Services. Firstly, it is not possible to test an intent service directly, this point is made clear on the Android documentation. However, there is also a method provided to help overcome this limitation. We had to split the logic aspects of the service from the service into a separate testable class, and then call the logic from inside the service. This poses a challenge as we needed to deicide how much logic we wanted to extract from the service and how much should be kept inside. We decided that a good split would be to have classes that generated the requests needed by the service and the service was responsible to for adding those requests to the request queue for them to be actioned on. This meant we were able to test each test independently, whilst also keeping the service in control of what is executed. 
+
+Secondly, we also faced issues working with the APIs themselves, since there was no sandbox environment, for us to test how to use the api before it was implemented. This meant that we had to be careful, when making requests to ensure that we kept track of what we did, so that it could be undone if it needed to be.
 
 
 ### NFC Scanning
