@@ -13,6 +13,9 @@ public class NfcTest {
         byte[] sum2 = {0x20, 0x27, 0x0, 0x1,0x2,0x3, 0x4, 0x5, 0x6, 0x7, (byte) 0xC2};
         assertEquals(2147483647, NFC.sum(sum2));
 
+        byte[] sum3 = {0x5A, 0x4C,(byte) 0x7F, (byte) 0x9C};
+        assertEquals(1514962844, NFC.sum(sum3));
+
         byte[] xCheck = {(byte) 0xC7, 0x5C, 0x74, (byte) 0xE3, 0x7E, 0x31, (byte) 0xDD, (byte) 0x88};
         assertEquals("151487817X", NFC.xCheck(xCheck));
     }
