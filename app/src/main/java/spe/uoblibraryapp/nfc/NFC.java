@@ -166,7 +166,7 @@ public class NFC {
      * @param bytes - the bytes to transform into number form
      * @return - the int value of all the hex digits
      */
-    private int sum(byte[] bytes){
+    static int sum(byte[] bytes){
         int sum = 0;
         int len = bytes.length;
         for (int i = 0; i < len; i++)
@@ -180,7 +180,7 @@ public class NFC {
      * @param bytes - the tag bytes
      * @return - the barcode
      */
-    private String xCheck(byte[] bytes) {
+    static String xCheck(byte[] bytes) {
         StringBuilder barcode = new StringBuilder();
 
         for (int i = 0; i < 6; i += 3){
