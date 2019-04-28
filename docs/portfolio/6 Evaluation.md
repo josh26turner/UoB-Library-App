@@ -19,3 +19,7 @@ Furthermore, all users had difficulty understanding how to checkout a new book o
 We went away and created a powerful visual cue which replaced the un-necessary NFC logo and the *"Show me how"* button in the *"Scan a new book"* page by means of a two-stage animation. The first stage shows a book being open on the last page with the RFID tag and the second stage showing a phone being held over the tag. This animation was better able to deliver the message as the third sample of users had no difficulties checking out a new book. 
 
 To conclude, through the use of interviews, we ensured our product meets every expectation of the end-user and rather than guessing, we delivered what was required.
+
+## Results  
+
+Results can be found here: https://github.com/josh26turner/UoB-Library-App/tree/master/docs/Testing/Testing%20Round%201
