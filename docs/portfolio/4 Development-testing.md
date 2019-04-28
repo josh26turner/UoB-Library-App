@@ -44,29 +44,8 @@ As the UI evolved we found that many of the tests that we had origionaly created
 
 # Continuous Integration
 
-In our project, we opted to use Circle CI to allow for continuous testing of each commit made. This ensured that if a new commit failed some tests, it was noticed and informed us through a notification in our team chat on Slack. We also used Circle CI to manage our deployment. This meant that the application would only be deployed if all the tests were successful. For our releases, we have a system where tagging a commit with a version number would trigger a release to be created, with a release being added to GitHub with an apk added as an asset. T
+In our project, we opted to use Circle CI to allow for continuous testing of each commit made. This ensured that if a new commit failed some tests, it was noticed and informed us through a notification in our team chat on Slack. We also used Circle CI to manage our deployment. This meant that the application would only be deployed if all the tests were successful. For our releases, we have a system where tagging a commit with a version number would trigger a release to be created, with a release being added to GitHub with an apk added as an asset.
 
 We also used a tool called Codacy. This tool analysed our code to ensure that the code we wrote was formatted correctly and up to a good standard. It was setup to check each pull request, this meant that when we merged our branches back into master, all our code was reviewed automatically. If Codacy found flaws in our code, such as inconsistent function/class naming or unused imports, it would comment on the pull request to inform us that the code was not up to standards and would detail what needs to be changed. Using this tool helped us to keep our code consistent among the team, whilst also making sure we did not write anything that would be error prone. 
 
 
-## Testing Frameworks
-
-
-
-We will use JUnit to write out tests, these will then be run on Circle CI after each commit. This will ensure that all our components constantly checked after each addition.
-
-
-
-These three components will have a similar testing strategy. Since they are all external services we will have to create mock services for each service, this will allow us to predict the data being *received* by our system, since it will be hard coded into the mock service. This allows us to ensure that the data is parsed correctly by our system, we can do this by creating unit tests to ensure that the data output of the parser matches what we expect when given the data in the mock service.
-
-We could also attempt to ensure that the requests made by our service are the same as what we are expecting them to be when *requesting a users loan history* for example.
-
-## Challenges with testing
-
-
-
-There will be several issues when testing, this is because a lot of our key functions rely on connections to external services. This makes it hard to test as we do not know the response of these external services until a request is made making it hard to check the output of a function is correct. 
-
-To overcome this issue we will have to create an interface for each of these external services, then create two concrete classes which implement the interface:
-- one will be a *live* class that will query the APIs, this will be used in the production app.
-- one will be a *mock* class that will return dummy data as an api response. This will allow us to predict the outputs of the functions, therefore allowing us to check that they function correctly in the specific cases. Both classes will have identical functions to be accessed in the same way.
