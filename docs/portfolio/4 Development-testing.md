@@ -7,7 +7,7 @@ We will use three different JobIntentServices, WMSNCIPService, AuthService and I
 
 If the service is making a request to the server we would outline how data will be sent with the request and in what format, as well as, HTTP methods and any headers that are required. Once we have agreed the protcol required for communicating to the server we could then create a set of tests that would ensure any request we made adhered to this pre-set protocol, by doing this it would allow us to ensure the API Request created in the service would be as expected when it reached our server. We carried out a similar process when creating requests that would be made to the OCLC WMS API, inspecting their documentation, we were able to create some tests to ensure that any request made would be in the correct format with the correct data. By following this approach we were able to ensure that the API requests were of the correct specification for the API.
 
-We will use unit tests for the testing of the requests, this will be supplemented by manual testing of the actual service, for reasons detailed below.
+We will use JUnit for the testing of the requests, this will be supplemented by manual testing of the actual service, for reasons detailed below.
 
 ### Challenges
 
@@ -38,17 +38,21 @@ We initialled attempted to contact Bilbiotheka for assistance with reading the t
 blah
 
 ## UI Testing
-Help?
+The User Interface is an important part of the application, so we must ensure that it is tested. We decided not to implement automated testing of the UI, this is because
 
 We will need to create tests for the UI to ensure that the app looks as we expect it to do, this will involve creating unit tests and also doing some manual testing. The unit tests will ensure that making a change to the UI does not affect another part without us knowing. We would also want to do standard user testing to ensure that the UI is easy to use and meets the requirements for accessibility, which are important to our client.
 
 ### Challenges
-blah
+
+As the UI evolved we found that many of the tests that we had origionaly created, were no longer relevant or had to be changed to 
 
 
 
+# Continuous Integration
 
+In our project, we opted to use Circle CI to allow for continuous testing of each commit made. This ensured that if a new commit failed some tests, it was noticed and informed us through a notification in our team chat on Slack. We also used Circle CI to manage our deployment. This meant that the application would only be deployed if all the tests were successful. For our releases, we have a system where tagging a commit with a version number would trigger a release to be created, with a release being added to GitHub with an apk added as an asset. T
 
+We also used a tool called Codacy. This tool analysed our code to ensure that the code we wrote was formatted correctly and up to a good standard. It was setup to check each pull request, this meant that when we merged our branches back into master, all our code was reviewed automatically. If Codacy found flaws in our code, such as inconsistent function/class naming or unused imports, it would comment on the pull request to inform us that the code was not up to standards and would detail what needs to be changed. Using this tool helped us to keep our code consistent among the team, whilst also making sure we did not write anything that would be error prone. 
 
 
 ## Testing Frameworks
