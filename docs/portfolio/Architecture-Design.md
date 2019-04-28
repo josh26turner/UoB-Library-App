@@ -2,7 +2,7 @@
 
 ![](https://github.com/josh26turner/UoB-Library-App/blob/master/docs/portfolio/includes/high-level-architecture.png "High level architecture")
 
-The above picture provides an overview to the four main parts of the system we will create. The WorldShare Management Services (WMS) System APIs and Library Book systems are already in place and to be used by us to create the system. The Android Application and the Spring Boot Server (will be referred to as the server from now on in this document) are the part of the system to be created by us.  
+The above picture provides an overview to the four main parts of the system we will create. The WorldShare Management Services (WMS) APIs and Library Book systems are already in place and to be used by us to create the system. The Android Application and the Spring Boot Server (will be referred to as the server from now on in this document) are the part of the system to be created by us.  
 
 The server will be an API for the Android Application, effectively acting a wrapper to make requests that a standard user cannot make, such as checking out a book which requires access to private keys that shouldn't be stored on a user's device.   
 
@@ -22,8 +22,9 @@ The WMS has a series of APIs that use standard HTTP/S methods to invoke. These A
 
 ![](https://github.com/josh26turner/UoB-Library-App/blob/master/docs/portfolio/includes/Dynamic-UML.png "Design UML")
 
-This diagram details the flow of data as a request to the WMS API is made to get the data on a particular user. The data would be loaded from the user when they sign in to the applicaiton. This part of the system is modelled as it shows well how the data will flow. It details what form it will be at the different stages in the flow and what parts need to be created and what they do. There will also be similar flows for the different calls to the WMS API and this design sets the precedent for the other API calls too. This requesting and response would be contained mostly within the big WMS box in the high level architecture diagram with the WMS API circle representing the same in the high level architecture. This show a higher level of abstraction of one part of the WMS Class in the high level architecture, more specifically this puts in more detail the handling of communication with the NCIP API for the WMS Service.  
-  
+This sequence diagram details the flow of data when a user logs in to the app as the data is parsed around different parts of the system. The server is not used in this particular flow. When the app is loaded for a new user a web view of the login website will be loaded for the user to enter the username and password. The application never reads the username and password it just gets sent straight to WMS and the app records the access token granted to it. It then uses this access token to make further requests. When logging in, it will then use this access token to get details about the user, most notably what books they have checked out and reserved books. This is done by making a request to the WMS API for that data and parsing the response (usually in XML form, however some will be JSON) and then inserting the relevant data into the UI to display to the user.  
+
+
 ## Static UML
 
 ![](https://github.com/josh26turner/UoB-Library-App/blob/master/docs/portfolio/includes/Static-UML.png "Static UML")
