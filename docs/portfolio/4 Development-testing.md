@@ -31,17 +31,6 @@ Main job was to take request from phone and wrap with extra permissions. Majorit
 
 The server interacted with a live system that the library uses so we couldn't make too many requests to check out books. We had to control the checking in and out of specific books as to not inflict upon actual library users, we didn't have a sandpit to test. This meant unit tests to be run at each update would have not worked as it is not separate from the outside world and therefore API calls wouldn't always get the same results. It was just a test when changed, make sure it works and then leave it. 
 
-## UI Testing
-The User Interface is an important part of the application, so we must ensure that it is tested. We decided not to implement automated testing of the UI, this is because
-
-We will need to create tests for the UI to ensure that the app looks as we expect it to do, this will involve creating unit tests and also doing some manual testing. The unit tests will ensure that making a change to the UI does not affect another part without us knowing. We would also want to do standard user testing to ensure that the UI is easy to use and meets the requirements for accessibility, which are important to our client.
-
-### Challenges
-
-As the UI evolved we found that many of the tests that we had origionaly created, were no longer relevant or had to be changed to 
-
-
-
 # Continuous Integration
 
 In our project, we opted to use Circle CI to allow for continuous testing of each commit made. This ensured that if a new commit failed some tests, it was noticed and informed us through a notification in our team chat on Slack. We also used Circle CI to manage our deployment. This meant that the application would only be deployed if all the tests were successful. For our releases, we have a system where tagging a commit with a version number would trigger a release to be created, with a release being added to GitHub with an apk added as an asset. T
