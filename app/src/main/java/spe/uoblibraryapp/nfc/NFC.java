@@ -100,20 +100,10 @@ public class NFC {
     /**
      * Converts the parts of the user blocks to the form printed on the barcode
      * @return - the printed version of the barcode
+     * @throws BarcodeException - if it's not a valid barcode
      */
     public String getBarcode() throws BarcodeException {
-        if (userBlocks.length >= 3) {
-            if ((userBlocks[0] == 0x04) && (userBlocks[1] == 0x11))
-                return new String(userBlocks, 2, userBlocks.length - 2);
-
-            else if ((userBlocks[0] == 0x11) && (userBlocks[1] == 0x04))
-                return Integer.toString(sum(Arrays.copyOfRange(userBlocks, 2, 6)));
-
-            else if ((userBlocks[0] == 0x41) && (userBlocks[1] == 0x08))
-                return xCheck(Arrays.copyOfRange(userBlocks, 2, 10));
-
-            else throw new BarcodeException("This is a new tag");
-        } else throw new BarcodeException("Error in the tag or reading the tag");
+        return parseTagToBarcode(userBlocks);
     }
 
     /**
@@ -166,7 +156,7 @@ public class NFC {
      * @param bytes - the bytes to transform into number form
      * @return - the int value of all the hex digits
      */
-    private int sum(byte[] bytes){
+    static int sum(byte[] bytes){
         int sum = 0;
         int len = bytes.length;
         for (int i = 0; i < len; i++)
@@ -180,7 +170,7 @@ public class NFC {
      * @param bytes - the tag bytes
      * @return - the barcode
      */
-    private String xCheck(byte[] bytes) {
+    static String xCheck(byte[] bytes) {
         StringBuilder barcode = new StringBuilder();
 
         for (int i = 0; i < 6; i += 3){
@@ -203,5 +193,31 @@ public class NFC {
 
     public void close() throws IOException{
         nfcTag.close();
+    }
+
+
+    /**
+     *
+     * @param userBlocks - the tag content
+     * @return - the printed version of the barcode
+     * @throws BarcodeException - if it's not a valid barcode
+     */
+    static String getBarcode(byte[] userBlocks) throws BarcodeException{
+        return parseTagToBarcode(userBlocks);
+    }
+
+    private static String parseTagToBarcode(byte[] userBlocks) throws BarcodeException {
+        if (userBlocks.length >= 3) {
+            if ((userBlocks[0] == 0x04) && (userBlocks[1] == 0x11))
+                return new String(userBlocks, 4, userBlocks.length - 4);
+
+            else if ((userBlocks[0] == 0x11) && (userBlocks[1] == 0x04))
+                return Integer.toString(sum(Arrays.copyOfRange(userBlocks, 2, 6)));
+
+            else if ((userBlocks[0] == 0x41) && (userBlocks[1] == 0x08))
+                return xCheck(Arrays.copyOfRange(userBlocks, 2, 10));
+
+            else throw new BarcodeException("This is a new tag");
+        } else throw new BarcodeException("Error in the tag or reading the tag");
     }
 }
