@@ -38,7 +38,8 @@ public class CancelReservationRequest extends WMSNCIPAPIRequest {
     }
 
     @Override
-    StringRequest createRequest(Context context) {
+    StringRequest createRequest(Context context) throws ParamsNotSetException{
+        super.createRequest(context);
         return new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String xml) {

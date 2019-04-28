@@ -56,7 +56,12 @@ public class WMSNCIPService extends JobIntentService {
         );
 
         Log.d(TAG, "request added to queue");
-        requestQueue.add(checkoutBookRequest.createRequest(getApplicationContext()));
+        try {
+            requestQueue.add(checkoutBookRequest.createRequest(getApplicationContext()));
+        } catch (ParamsNotSetException ex){
+            Log.e(TAG, "Params not set");
+        }
+
     }
 
     private void cancelReservation(String reservationId, String branchId){
@@ -71,7 +76,13 @@ public class WMSNCIPService extends JobIntentService {
         );
 
         Log.d(TAG, "request added to queue");
-        requestQueue.add(cancelReservationRequest.createRequest(getApplicationContext()));
+        Log.d(TAG, "request added to queue");
+        try {
+            requestQueue.add(cancelReservationRequest.createRequest(getApplicationContext()));
+        } catch (ParamsNotSetException ex){
+            Log.e(TAG, "Params not set");
+        }
+
     }
 
     @Override

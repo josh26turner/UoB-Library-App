@@ -11,14 +11,12 @@ public abstract class WMSNCIPAPIRequest {
     private boolean paramsAdded;
 
     StringRequest createRequest(Context context) throws ParamsNotSetException{
-        if (!paramsAdded) throw new ParamsNotSetException();
+        if (!paramsAdded) throw new ParamsNotSetException("Cannot create request before params are added");
         return null;
     }
 
     void setRequestBodyParams(String ... ps){
-        for (String p : ps){
-            requestBody = String.format(requestBody, p);
-        }
+        requestBody = String.format(requestBody, ps);
         paramsAdded = true;
     }
 }

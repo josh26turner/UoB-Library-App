@@ -1,4 +1,7 @@
 package spe.uoblibraryapp.api.ncip;
 
-public class ParamsNotSetException extends Exception {
+class ParamsNotSetException extends Exception {
+    ParamsNotSetException(String message){
+        super(message);
+    }
 }

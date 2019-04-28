@@ -22,7 +22,8 @@ public class CheckoutBookRequest extends WMSNCIPAPIRequest {
     }
 
     @Override
-    public StringRequest createRequest(Context context) {
+    public StringRequest createRequest(Context context) throws ParamsNotSetException{
+        super.createRequest(context);
         return new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String xml) {

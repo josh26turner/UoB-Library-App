@@ -68,11 +68,13 @@ public class LookupUserRequestTests {
         assertEquals("application/xml", request.getBodyContentType());
     }
 
-
-    // Test request body as bytes
-
-    // Test cannot create request before params have been added.
-
+    @Test
+    public void testRequestCannotBeCreatedBeforeParamsAdded() throws ParamsNotSetException{
+        LookupUserRequest lookupUserRequest = getExampleRequestPreParams();
+        exceptionRule.expect(ParamsNotSetException.class);
+        exceptionRule.expectMessage("Cannot create request before params are added");
+        lookupUserRequest.createRequest(null);
+    }
 
 
     private LookupUserRequest getExampleRequestAfterParams(){

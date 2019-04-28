@@ -112,8 +112,9 @@ public final class Constants {
 
         }
         public static String tokenGenUrl(String refreshToken){
-            return "https://authn.sd00.worldcat.org/oauth2/accessToken?grant_type=refresh_token&refresh_token="
-                    + refreshToken + "&client_id=" + clientId;
+//            return "https://authn.sd00.worldcat.org/oauth2/accessToken?grant_type=refresh_token&refresh_token="
+//                    + refreshToken + "&client_id=" + clientId;
+            return "https://uoblibraryapp.spe.cs.bris.ac.uk/quick-fix";
         }
     }
 
