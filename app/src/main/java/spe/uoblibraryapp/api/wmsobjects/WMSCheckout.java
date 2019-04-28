@@ -3,8 +3,6 @@ package spe.uoblibraryapp.api.wmsobjects;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.text.ParseException;
-
 import spe.uoblibraryapp.api.ncip.WMSNCIPElement;
 
 /**
@@ -21,21 +19,18 @@ public class WMSCheckout {
         Node node = elementHolder.getElem();
 
         // Check the node contains the correct data, before parsing.
-
+//        System.out.print(node.getNodeName());
+//        throw new WMSParseException(node.getNodeName());
         if (!node.getNodeName().equals("ns1:CheckOutItemResponse")) {
-            throw new WMSParseException("WMSUserProfile requires a <ns1:LookupUserResponse> Node");
+            throw new WMSParseException("WMSUserProfile requires a <ns1:CheckOutItemResponse> Node");
         }
 
         // Parse the node :o
-        try {
-            parseNode(node);
-        } catch (ParseException e) {
-            throw new WMSParseException(e.getMessage());
-        }
+        parseNode(node);
     }
 
 
-    private void parseNode(Node node) throws WMSParseException, ParseException {
+    private void parseNode(Node node) throws WMSParseException {
         NodeList childNodes = node.getChildNodes();
         for (int i=0; i<childNodes.getLength(); i++) {
             Node child = childNodes.item(i);

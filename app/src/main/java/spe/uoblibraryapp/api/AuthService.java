@@ -112,7 +112,7 @@ public class AuthService extends JobIntentService {
 
             RequestQueue queue = Volley.newRequestQueue(this);
             queue.start();
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     String accessToken;

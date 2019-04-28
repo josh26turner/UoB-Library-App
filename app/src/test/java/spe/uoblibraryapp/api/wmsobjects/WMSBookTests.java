@@ -1,6 +1,8 @@
 package spe.uoblibraryapp.api.wmsobjects;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -16,6 +18,9 @@ import static org.junit.Assert.fail;
 import static spe.uoblibraryapp.api.XMLParser.parse;
 
 public class WMSBookTests {
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     // Simple Getter Tests
 
@@ -101,6 +106,33 @@ public class WMSBookTests {
         assertEquals("Author does not match", "Kinney, Jeff." , book.getAuthor());
     }
 
+
+    @Test
+    public void testThrowsIfNodeIsNotBiliographicDescription() throws WMSParseException{
+        Document doc = null;
+        try {
+            doc = parse(
+                    "  <ns1:TestThis>\n" +
+                            "    <ns1:Author>Kinney, Jeff.</ns1:Author>\n" +
+                            "    <ns1:BibliographicRecordId>\n" +
+                            "      <ns1:BibliographicRecordIdentifier>317923541</ns1:BibliographicRecordIdentifier>\n" +
+                            "      <ns1:BibliographicRecordIdentifierCode ns1:Scheme=\"http://www.niso.org/ncip/v1_0/imp1/schemes/bibliographicrecordidentifiercode/bibliographicrecordidentifiercode.scm\">OCLC</ns1:BibliographicRecordIdentifierCode>\n" +
+                            "    </ns1:BibliographicRecordId>\n" +
+                            "    <ns1:PublicationDate>2009</ns1:PublicationDate>\n" +
+                            "    <ns1:Publisher>New York : Amulet Books,</ns1:Publisher>\n" +
+                            "    <ns1:Title>Diary of a wimpy kid : dog days /</ns1:Title>\n" +
+                            "    <ns1:Language ns1:Scheme=\"http://lcweb.loc.gov/standards/iso639-2/bibcodes.html\">eng</ns1:Language>\n" +
+                            "  </ns1:TestThis>\n");
+        } catch (ParserConfigurationException | IOException | SAXException e){
+            fail(e.getMessage());
+        }
+        NodeList nodes = doc.getChildNodes();
+
+        exceptionRule.expect(WMSParseException.class);
+        exceptionRule.expectMessage("WMSBook needs a <ns1:BibliographicDescription> Node");
+
+        new WMSBook(new WMSNCIPElement(nodes.item(0)));
+    }
 
 
 

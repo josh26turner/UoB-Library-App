@@ -33,25 +33,25 @@ public class WMSHold {
         Node element = elemHolder.getElem();
 
         if (!element.getNodeName().equals("ns1:RequestedItem")) {
-            throw new WMSParseException("Node is not correct loan node");
+            throw new WMSParseException("WMSHold needs a <ns1:RequestedItem> Node");
         }
 
         // Parse the node
+        parseNode(element);
+    }
+
+    private Date parseDate(String strDate) throws WMSParseException {
         try {
-            parseNode(element);
-        } catch (ParseException e) {
-            throw new WMSParseException(e.getMessage());
+            String replacedStrDate = strDate.replace("T", "-").replace("Z", "");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+            return format.parse(replacedStrDate);
+        } catch (ParseException ex){
+            throw new WMSParseException("Date failed to parse");
         }
     }
 
-    private Date parseDate(String strDate) throws ParseException {
-        String replacedStrDate = strDate.replace("T", "-").replace("Z", "");
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
-        return format.parse(replacedStrDate);
-    }
 
-
-    private void parseNode(Node node) throws ParseException, WMSParseException {
+    private void parseNode(Node node) throws WMSParseException {
         NodeList children = node.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);

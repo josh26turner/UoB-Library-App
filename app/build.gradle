@@ -23,7 +23,9 @@ android {
     packagingOptions {
         pickFirst  'META-INF/*'
     }
-
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -39,3 +41,4 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
 }
+
