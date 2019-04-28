@@ -25,10 +25,7 @@ We initialled attempted to contact Bilbiotheka for assistance with reading the t
 Challenges related to RFID scanning were significant. It couldn't be tested using a JDK method and there did exist a method to create a mock tag within the Android OS however documentation on it was sparse, one source said it was depreciated. This lead us to using actual library books to test, using logs to manually make sure the data was being parsed correctly and the returned barcode was the same as printed in the book. For security, we observed what the difference for a book was when checking it in and out using the self service machines. We found that the AFI byte in the tag was changed and on one value the alarm went off and on the other it didn't. So we wrote to the tag from the phone to change the AFI value and observed that we could make it so it didn't set off the alarm. That would have been inconvenient for our users.
 
 ## Server
-- Main job was to take request from phone and wrap with extra permissions. Majority of testing will take place on the application, only need to check it executes requests correctly. If request is misformed its the applications fault.
-- Unit Tests to test key components.
-- Manual testing of the api before implementing in java.
-- Before deployment the server is tested locally using cURL to simulate requests from the application and observing the results and adjusting where necessary.  
+Main job was to take request from phone and wrap with extra permissions. Majority of testing will take place on the application, only need to check it executes requests correctly. If request is misformed its the applications fault. Unit Tests can be used to test key components such as generating headers but not everything. The API will be tested using the online API service WMS provides to work out how it works and what is need. This is then implemented in Java for the server. Before deployment the server is tested locally using cURL to simulate requests from the application and observing the results and adjusting where necessary.  
 
 ### Challenges
 
