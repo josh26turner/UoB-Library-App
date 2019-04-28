@@ -1,11 +1,12 @@
-#How did we document the feedback we got.
-##How did we use the feedback to refine the app 
-
 # Evaluation
 
-Questionnaires felt contrained for our purpose so we preferred conducting free-flowing informal interviews. We sourced fellow students studying in the university libraries, asked them to use our application then asked for their feedback and where possible made and showed the user those changes straight away. 
+For evaluation, we put our app to the test in the real world. We interviewed some frequent library users around the campus and gave them brief access to the app. We define frequent users as those who use the library more than twice a week and are already familiar with the current library checkout system. The tests took place in mixed locations such as libraries and study centres. 
 
 As every student using the library has very similar goals, whether this be reading material in the library or taking materials away, we treated those interviewees as a representative sample. 1-in-6 of those students received a questionnaire where we asked for feedback on the navigation, feel and functionality of our product.<sup>1</sup>
+
+Each tester was given approximately 10 minutes of time and a list of tasks to complete such as logging in and out, check the current loans and reservations on their accounts, cancelling a reservation as well as checking out a book. We insisted on giving testers as little hint or guidance as possible in terms of navigation so we could study the intuition of our application.
+
+For our purposes, questionnaires felt contrained so we much preferred conducting free-flowing informal interviews as it allowed us to ask testers for feedback and apply that feedback immediately.
 
 ## Questionnaires
 
