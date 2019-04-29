@@ -1,6 +1,6 @@
 # Release Testing
 
-Throughout development, our testing aimed to target everything the end-user will interact with which includeded consideration for normal, alternative and exception flows.
+Throughout development, our testing aimed to target everything the end-user will interact with, which included consideration for normal, alternative and exception flows.
 
 Every release is tested with its own set of tests and every previous releases' tests where applicable.
 

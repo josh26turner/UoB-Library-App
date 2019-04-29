@@ -4,9 +4,9 @@
 
 The key stakeholders in our project are:
 - Students/Library Customers - They will be the main user of the application.
-- Librarians - They will need to be able to assist users of the library to use the application.
-- Library service staff - They will be responsible for distribution of the application.
-- OCLC staff - They will be the provider of the majority of APIs required by the application.
+- Librarians - They will need to be able to assist users of the library, who will be using the application.
+- Library service staff - They will be responsible for the distribution of the application.
+- OCLC staff - They will be the provider of the majority of APIs required by the application, and resonsible for technical assistance.
 
 
 ## Use Case Diagram
@@ -16,7 +16,7 @@ The key stakeholders in our project are:
 
 ## User Goal Flows
 
-The key user goals of our app are to be able to login and checkout books, below we have designed the user flow:
+The key user goals of our app are to be able to login, checkout books and cancel reservations. Below we have designed the user flow:
 
 ### Login
 
@@ -33,6 +33,7 @@ The key user goals of our app are to be able to login and checkout books, below 
 * Exceptional Flow:
     * The user decides to close the app part-way through logging in
     * The user loses internet connection while logging in.
+    * User does not allow permissions
 
 
 ### Checkout Book
@@ -56,29 +57,23 @@ The key user goals of our app are to be able to login and checkout books, below 
     * Open reservation page
     * Select reservation
     * Select cancel reservation
-* Alternative Flow:
-    * Perform login as described
-    * User has unpaid fines, shows warning on homepage and can choose to be directed to payment webpage
-    * User account is blocked, shows "account blocked" page, redirect to instrutions to visit service desk
 * Exceptional Flow:
-    * User has no internet connection
-    * SSO is offline.
-    * App will not work if WMS is offline, redirect to offline circulations info page.
-
+    * User has no internet connection, the user is then prompted to connect to the internet
+    * The book is already cancelled, during which the flow will continue as if it succeeded
 
 
 
 
 ## Flow Decomposition
 
-We have chosen to decompose the goal - Checkout Book:
+Decomposition of Checkout Book:
 
-* Once the checkout process is started the app should check the user library account status to ensure they are able to checkout a book.
+* Once the checkout process is started, the app should check the user library account status to ensure they are able to checkout a book.
 * The user should select their library branch. This could be done automatically using geofencing.
 * The user should then be asked to scan the RFID tag in the book.
 * The application reads the barcode from the book.
 * The application communiates with the OCLC WMS Platform to checkout the book.
-* If the checkout is successful, then the books security status on the RFID should be turned off, so that alarms do not sound.
+* If the checkout is successful, then the books security status on the RFID tag should be turned off, so that alarms do not sound.
 * The application should show a confirmation to inform the user the book has been checkout out.
 * If the checkout is not successful, then inform the user of the reason for failure.
 
@@ -92,7 +87,7 @@ This docomposition leads to the following requirements for checking out a book
 | Check if users account exceeds borrowing limit | Must | Final | - |
 | Allow users to select library branch | Must | Beta | - |
 | Automatically select library branch with geo-fencing | Could | - | Not added |
-| Be able to check the security status of a book, to check if it is already checked out | Must | MVP | - |
+| Be able to check the security status of a book | Must | MVP |  To check if it is already checked out |
 | Be able to read barcode from the RFID tag (ISO 15693) | Must | MVP | - |
 | Be able to communicate with the OCLC WMS NCIP Staff Service to checkout the book | Must | Beta | Delayed until beta as new library system will not be active until after MVP release |
 | Disable the security status of the RFID tag (ISO 15693) | Must | Beta | - |
@@ -101,14 +96,14 @@ This docomposition leads to the following requirements for checking out a book
 | If checkout fails display error message | Must | Final | - |
 
 
-We have also followed this process to create requirements for all other sections of the application:
+We have also followed this process, to create requirements for all other sections of the application:
 
 ### Home Page
 
 | Requirement | Importance | Planned Release | Notes |
 | ----------- | ---------- | --------------- | ----- |
 | Check if users account is blocked | Should | Beta | - |
-| Display a message if users account is blocked | Could | Final | - |
+| Display a message if the user's account is blocked | Could | Final | - |
 | Give the user an overview of their loans | Must | Beta | - |
 | The overview of loans has the next book due back | Must | Beta | - |
 | The overview of loans has the date the next book is due back | Must | Beta | - |
@@ -118,16 +113,16 @@ We have also followed this process to create requirements for all other sections
 | The overview of reservations shows the number of books ready for collection | Must | Beta | - |
 | The overview of reservations shows the pickup location, if a book is ready for collection | Must | Beta | - |
 | Allow the user to refresh the data | Must | Beta | - |
-| Automatically refresh the data if it is older than 10 minutes | Could | Beta | - |
+| Automatically refresh the data, if it is older than 10 minutes | Could | Beta | - |
 
 ### Loans
 
 | Requirement | Importance | Planned Release | Notes |
 | ----------- | ---------- | --------------- | ----- |
-| Show the user a list of their loans | Must | MVP | Will fill will example data in MVP, in beta will use live data |
+| Show the user a list of their loans | Must | MVP | Will fill with example data in MVP, in beta will use live data |
 | Communicate with OCLC WMS NCIP Patron service to get the users loans | Must | Beta | Delayed until beta as new library system will not be active until after MVP release |
-| For each loan in the list display the title of the book | Must | MVP | - |
-| For each loan in the list display the author of the book | Must | MVP | - |
+| For each loan in the list, display the title of the book | Must | MVP | - |
+| For each loan in the list, display the author of the book | Must | MVP | - |
 | Display the number of days until the book is due back | Must | MVP | - |
 | Inform the user that the book will auto-renew | Should | Beta | Not fulfilled, after attempting in beta. The API did not have the data needed |
 | Display extra detail about the loan if its clicked | Should | Beta | - |
@@ -176,6 +171,6 @@ We have also followed this process to create requirements for all other sections
 - It must be possible to know how to checkout a book using the app after a 5 minute introduction.
 - The server must be able to handle 1 checkout per second.
 - Requests for the same data from OCLC must not be made within 1 minute of each other, to reduce load.
-- The app must be able to checkout books 100% of the time that the OCLC system is working.
-- The app must only allow access to the authenticated users details.
-- The app must work with any phone running android version > 5.0
+- The app must be able to checkout books, 100% of the time that the OCLC system is working.
+- The app must have access to only the authenticated user's details.
+- The app must work with any phone running android version > 7.0
