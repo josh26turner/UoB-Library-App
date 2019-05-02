@@ -188,7 +188,7 @@ We applied the same process for requirements in all other sections of the applic
 
 ![](includes/high-level-architecture.png "High level architecture")
 
-The above picture provides an overview to the four main parts of the system. The WorldShare Management Services (WMS) APIs and Library Book systems are already in place and are to be used by us to create the system meanwhile the Android Application and the Spring Boot Server, now referred to as simply the server, are both parts of the system which will be created by us.
+The above picture provides an overview to the four main parts of the system. The WorldShare Management Services (WMS) APIs and Library Book systems are already in place and are to be used by us to create the system meanwhile the Android Application and the Spring Boot Server (will be referred to as the server from now on in this document) are both parts of the system, which we will create.
 
 The server will be an API for the Android Application, effectively acting a wrapper to make requests that a standard user cannot make, an example being checking out a book, something which requires access to private keys that for security, cannot be stored on a user's device.   
 
@@ -200,7 +200,7 @@ The two main external systems that our app and server will interact with are the
 
 The RFID tags follow the ISO 15693 standard and use the NfcV class in the Android SDK. These tags contain the ID of the book they are applied to and they also contain a byte which states whether this book is currently checked in to the library or not. We first read the ID from the tag and start the checkout process, if the checkout process is successful, we change that special security byte on the tag to checked out so it does not trigger the library security alarms.
 
-WMS has a series of APIs that use standard HTTP/S methods to invoke, these APIs will be widely used for login, book check-out and getting user details.
+WMS has a series of APIs that use standard HTTP/S methods to invoke, these APIs will be used for login, book check-out and getting user details.
 
 ## Dynamic UML
 
