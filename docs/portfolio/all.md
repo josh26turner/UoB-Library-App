@@ -24,7 +24,6 @@ The key stakeholders in our project are:
 
 ![Use Case Diagram](includes/use-case-diagram.png "Use Case Diagram")
 
-
 ## User Goal Flows
 
 The key user goals of our app are to be able to login, checkout books and cancel reservations. Below we have designed the user flow:
@@ -88,7 +87,7 @@ Decomposition of Checkout Book:
 * The application should show a confirmation to inform the user the book has been checkout out.
 * If the checkout is not successful, then inform the user of the reason for failure.
 
-This docomposition leads to the following requirements for checking out a book
+This decomposition leads to the following requirements for checking out a book
 
 ### Checkout Book
 
@@ -102,12 +101,12 @@ This docomposition leads to the following requirements for checking out a book
 | Be able to read barcode from the RFID tag (ISO 15693) | Must | MVP | - |
 | Be able to communicate with the OCLC WMS NCIP Staff Service to checkout the book | Must | Beta | Delayed until beta as new library system will not be active until after MVP release |
 | Disable the security status of the RFID tag (ISO 15693) | Must | Beta | - |
-| Give confirmation message when book is checkout out | Should | Beta | - |
+| Give confirmation message when book is checked out | Should | Beta | - |
 | Confirmation message contains book title | Could | Final | - |
-| If checkout fails display error message | Must | Final | - |
+| If checkout fails, display error message | Must | Final | - |
 
 
-We have also followed this process, to create requirements for all other sections of the application:
+We applied the same process for requirements in all other sections of the application:
 
 ### Home Page
 
@@ -116,15 +115,15 @@ We have also followed this process, to create requirements for all other section
 | Check if users account is blocked | Should | Beta | - |
 | Display a message if the user's account is blocked | Could | Final | - |
 | Give the user an overview of their loans | Must | Beta | - |
-| The overview of loans has the next book due back | Must | Beta | - |
-| The overview of loans has the date the next book is due back | Must | Beta | - |
-| The overview of loans shows how many books the user has checked out | Could | Beta | - |
+| The loans overview contains the next book due back | Must | Beta | - |
+| The loans overview contains the date the next book is due | Must | Beta | - |
+| The loans overview contains the number of books the user has checked out | Could | Beta | - |
 | Give the user an overview of their reservations | Must | Beta | - |
-| The overview of reservations shows the number of reservations the user has | Must | Beta | - |
-| The overview of reservations shows the number of books ready for collection | Must | Beta | - |
-| The overview of reservations shows the pickup location, if a book is ready for collection | Must | Beta | - |
+| The reservations overview shows the number of reservations the user currently has | Must | Beta | - |
+| The reservations overview shows the number of books ready for collection | Must | Beta | - |
+| The reservations overview shows the pickup location if a book is ready for collection | Must | Beta | - |
 | Allow the user to refresh the data | Must | Beta | - |
-| Automatically refresh the data, if it is older than 10 minutes | Could | Beta | - |
+| Automatically refresh the data, if older than 10 minutes | Could | Beta | - |
 
 ### Loans
 
@@ -136,11 +135,11 @@ We have also followed this process, to create requirements for all other section
 | For each loan in the list, display the author of the book | Must | MVP | - |
 | Display the number of days until the book is due back | Must | MVP | - |
 | Inform the user that the book will auto-renew | Should | Beta | Not fulfilled, after attempting in beta. The API did not have the data needed |
-| Display extra detail about the loan if its clicked | Should | Beta | - |
+| Display extra detail about the loan, if clicked | Should | Beta | - |
 | Be able to sort loans alphabetically | Could | Beta | - |
 | Be able to sort loans by due date | Should | Beta | - |
 | Allow the user to refresh the data | Must | Beta | - |
-| Automatically refresh the data if it is older than 10 minutes | Could | Beta | - |
+| Automatically refresh the data, if older than 10 minutes | Could | Beta | - |
 
 ### Reservations
 
@@ -149,11 +148,11 @@ We have also followed this process, to create requirements for all other section
 | Show the user a list of their reservations | Must | MVP | Will fill will example data in MVP, in beta will use live data |
 | Communicate with OCLC WMS NCIP Patron service to get the users reservations | Must | Beta | Delayed until beta as new library system will not be active until after MVP release |
 | Books are sorted, with ones ready to collect at the top of the list | Must | MVP | - |
-| For each reservation show the title of the book | Must | MVP | - |
-| For each reservation show the author of the book | Must | MVP | - |
+| For each reservation, show the title of the book | Must | MVP | - |
+| For each reservation, show the author of the book | Must | MVP | - |
 | If books are ready to collect, show their pickup location | Must | Beta | - | 
 | If books are not ready to collect, show the position of the user in the queue | Must | Beta | - |
-| Display extra detail about the reservation if it is clicked | Should | Beta | - |
+| Display extra detail about the reservation if clicked | Should | Beta | - |
 | Be able to cancel reservations | Could | Beta | - |
 | Be able to make reservations | Could | - | Not added |
 
@@ -170,7 +169,7 @@ We have also followed this process, to create requirements for all other section
 | ----------- | ---------- | --------------- | ----- |
 | Display the users name | Should | Beta | - |
 | Display the users login email | Could | Beta | - |
-| Has a button to the checkout book section | Must | MVP | - |
+| Has a button re-directing to the checkout book page | Must | MVP | - |
 | Has a button to the homepage | Must | Beta | Added when dashboard is created |
 | Has a button to display the users loans | Must | MVP | - | 
 | Has a button to display the users reservations | Must | MVP | - |
